@@ -259,6 +259,8 @@
   --lt-popup-padding-bottom: 32px;
   --lt-surface: var(--color-bg-light-1);
   --lt-surface-strong: var(--black-9);
+  --lt-table-surface: var(--color-table-bg-light-1);
+  --lt-table-row: var(--color-table-row-light-1);
   --lt-border: var(--color-border-subtle);
   --lt-text-primary: var(--color-text-primary);
   --lt-text-secondary: var(--color-text-secondary);
@@ -388,6 +390,7 @@
   border: 1px solid var(--lt-border);
   border-radius: 14px;
   overflow: hidden;
+
   background: var(--lt-surface-strong);
 }
 
@@ -530,6 +533,7 @@
 
 .lt-popup-native__row {
   cursor: pointer;
+
   background: var(--lt-surface-strong);
 }
 
@@ -584,6 +588,8 @@
 .lt-popup-native--dark {
   --lt-surface: var(--dark-popup-background);
   --lt-surface-strong: var(--dark-popup-background);
+  --lt-table-surface: var(--color-table-bg-dark-1, rgba(30, 41, 59, 0.9));
+  --lt-table-row: var(--color-table-row-dark-1);
   --lt-border: var(--color-border-subtle);
   --lt-text-primary: var(--color-text-primary);
   --lt-text-secondary: var(--color-text-secondary);
@@ -612,7 +618,7 @@
 }
 
 .lt-popup-native--dark .lt-popup-native__table thead th {
-  background: var(--color-table-bg-dark-1, rgba(30, 41, 59, 0.9));
+  background: var(--lt-table-surface);
   color: var(--lt-text-primary);
   border-bottom-color: color-mix(in srgb, var(--lt-accent) 42%, transparent);
 }
@@ -631,7 +637,7 @@
 }
 
 .lt-popup-native--dark .lt-popup-native__row {
-  background: transparent;
+  background: var(--lt-table-row);
 }
 
 .lt-popup-native--dark .lt-popup-native__row--selected {
