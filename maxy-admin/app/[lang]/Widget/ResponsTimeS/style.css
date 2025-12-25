@@ -205,7 +205,7 @@
 }
 
 .rt-url {
-  font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+  font-family: var(--font-mono);
   word-break: break-all;
 }
 
@@ -551,7 +551,7 @@
 }
 
 .rt-response-popup__cell-url {
-  font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+  font-family: var(--font-mono);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
