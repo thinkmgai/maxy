@@ -1,0 +1,70 @@
+<table class="report_table">
+    <thead>
+    <tr>
+        <th>
+            Date
+        </th>
+        <th>
+            OS
+        </th>
+        <th>
+            OS Rate
+        </th>
+        <th>
+            MAX (Time*)
+        </th>
+        <th>
+            MAX (CT)
+        </th>
+        <th>
+            MED (Time*)
+        </th>
+        <th>
+            MED (CT)
+        </th>
+        <th>
+            MIN (Time*)
+        </th>
+        <th>
+            MIN (CT)
+        </th>
+    </tr>
+    </thead>
+    {{#if this}}
+    {{#each this}}
+    <tr>
+        <td>
+            {{timestampToDate date}}
+        </td>
+        <td>
+            {{osType}}
+        </td>
+        <td>
+            {{round osRate}}
+        </td>
+        <td>
+            {{convertTime maxTime}}
+        </td>
+        <td>
+            {{comma maxCount}}
+        </td>
+        <td>
+            {{convertTime medTime}}
+        </td>
+        <td>
+            {{comma medCount}}
+        </td>
+        <td>
+            {{convertTime minTime}}
+        </td>
+        <td>
+            {{comma minCount}}
+        </td>
+    </tr>
+    {{/each}}
+    {{else}}
+    <tr>
+        <td colspan="12">데이터가 없습니다.</td>
+    </tr>
+    {{/if}}
+</table>

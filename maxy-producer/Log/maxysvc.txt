@@ -1,0 +1,43 @@
+2025-12-16 PM 04:09:47:[cluster]ERROR - Topic page-logs not found in cluster metadata
+2025-12-16 PM 04:09:47:[cluster]ERROR - Topic total-logs not found in cluster metadata
+2025-12-16 PM 04:14:22:[maxy_core]ERROR - SendMessage: list index out of range
+2025-12-16 PM 04:14:22:[conn]ERROR - <BrokerConnection client_id=kafka-python-producer-4, node_id=0 host=192.168.10.170:19092 <connected> [IPv4 ('192.168.10.170', 19092)]>: Closing connection. [Error 7] RequestTimedOutError: Request timed out after 30000.0 ms
+2025-12-16 PM 04:14:22:[sender]ERROR - <Sender client_id=kafka-python-producer-4 transactional_id=None>: Error sending produce request to node 0: [Error 7] RequestTimedOutError: Request timed out after 30000.0 ms
+2025-12-16 PM 04:14:22:[future]ERROR - Error processing errback
+Traceback (most recent call last):
+  File "/Users/hhsong/Project/maxyai/.venv/lib/python3.12/site-packages/kafka/future.py", line 90, in _call_backs
+    f(value)
+  File "/Users/hhsong/Project/maxyai/.venv/lib/python3.12/site-packages/kafka/producer/sender.py", line 402, in _failed_produce
+    self._complete_batch(batch, PartitionResponse(error=error))
+  File "/Users/hhsong/Project/maxyai/.venv/lib/python3.12/site-packages/kafka/producer/sender.py", line 541, in _complete_batch
+    self._fail_batch(batch, partition_response)
+  File "/Users/hhsong/Project/maxyai/.venv/lib/python3.12/site-packages/kafka/producer/sender.py", line 466, in _fail_batch
+    exception = partition_response.error(partition_response.error_message)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: 'RequestTimedOutError' object is not callable
+2025-12-16 PM 04:14:22:[sender]ERROR - <Sender client_id=kafka-python-producer-4 transactional_id=None>: Error sending produce request to node 0: [Error 7] RequestTimedOutError: Request timed out after 30000.0 ms
+2025-12-16 PM 04:14:22:[future]ERROR - Error processing errback
+Traceback (most recent call last):
+  File "/Users/hhsong/Project/maxyai/.venv/lib/python3.12/site-packages/kafka/future.py", line 90, in _call_backs
+    f(value)
+  File "/Users/hhsong/Project/maxyai/.venv/lib/python3.12/site-packages/kafka/producer/sender.py", line 402, in _failed_produce
+    self._complete_batch(batch, PartitionResponse(error=error))
+  File "/Users/hhsong/Project/maxyai/.venv/lib/python3.12/site-packages/kafka/producer/sender.py", line 541, in _complete_batch
+    self._fail_batch(batch, partition_response)
+  File "/Users/hhsong/Project/maxyai/.venv/lib/python3.12/site-packages/kafka/producer/sender.py", line 466, in _fail_batch
+    exception = partition_response.error(partition_response.error_message)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: 'RequestTimedOutError' object is not callable
+2025-12-16 PM 04:14:22:[sender]ERROR - <Sender client_id=kafka-python-producer-4 transactional_id=None>: Error sending produce request to node 0: [Error 7] RequestTimedOutError: Request timed out after 30000.0 ms
+2025-12-16 PM 04:14:22:[future]ERROR - Error processing errback
+Traceback (most recent call last):
+  File "/Users/hhsong/Project/maxyai/.venv/lib/python3.12/site-packages/kafka/future.py", line 90, in _call_backs
+    f(value)
+  File "/Users/hhsong/Project/maxyai/.venv/lib/python3.12/site-packages/kafka/producer/sender.py", line 402, in _failed_produce
+    self._complete_batch(batch, PartitionResponse(error=error))
+  File "/Users/hhsong/Project/maxyai/.venv/lib/python3.12/site-packages/kafka/producer/sender.py", line 541, in _complete_batch
+    self._fail_batch(batch, partition_response)
+  File "/Users/hhsong/Project/maxyai/.venv/lib/python3.12/site-packages/kafka/producer/sender.py", line 466, in _fail_batch
+    exception = partition_response.error(partition_response.error_message)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: 'RequestTimedOutError' object is not callable

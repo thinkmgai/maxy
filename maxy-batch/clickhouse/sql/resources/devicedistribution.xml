@@ -1,0 +1,29 @@
+<mapper namespace="devicedistribution">
+  <!--
+    Device Distribution (Valkey cache)
+    - Source: maxy_model_hourly
+    - Window: configurable hours (default: 24h)
+  -->
+  <select id="selectDeviceDistribution">
+    <![CDATA[
+    SELECT
+        package_id AS package_id,
+        server_type AS server_type,
+        os_type AS os_type,
+        device_model AS device_model,
+        uniqExactMerge(uniq_device_count) AS device_count,
+        sumMerge(sum_log_count) AS view_count,
+        sumMerge(sum_error_count) AS error_count,
+        sumMerge(sum_crash_count) AS crash_count
+    FROM maxy_model_hourly
+    WHERE hour_bucket >= toStartOfDay(now())
+      AND hour_bucket < toStartOfDay(addDays(now(), 1))
+    GROUP BY
+        package_id,
+        server_type,
+        os_type,
+        device_model
+    ORDER BY package_id, server_type, os_type, view_count DESC, device_model
+    ]]>
+  </select>
+</mapper>

@@ -1,0 +1,453 @@
+<style>
+    .maxy_box {
+        height: auto;
+    }
+
+    /* contents header: day mode*/
+    .contents_wrap {
+        padding: 10px 20px;
+    }
+
+    /* contents header, search_type_wrap: dark mode */
+    .dark_mode .contents_header input,
+    .dark_mode .search_type_wrap select,
+    .dark_mode .search_type_wrap input:read-only,
+    .dark_mode .search_type_wrap input {
+        background-color: #222 !important;
+        border: none !important;
+        color: #fff;
+    }
+
+    .dark_mode .contents_header span {
+        color: #FFF;
+    }
+
+    /* search_type_wrap: day mode*/
+    .search_type_wrap {
+        display: grid;
+        align-items: end;
+        justify-content: space-between;
+        grid-template-columns: 60% 40%;
+    }
+
+    .search_type_wrap > label {
+        font-size: 15px !important;
+    }
+
+    .search_type_wrap > .search_type_left {
+        display: flex;
+        flex-direction: column;
+        gap: 1.2em;
+    }
+
+    .search_type_wrap > .search_type_right h1 {
+        font-size: 16px;
+        font-weight: 500;
+        line-height: 20px;
+        color: rgb(83, 84, 87);
+    }
+
+    .search_type_wrap > .search_type_left > .user_info {
+        display: none;
+        height: 15px;
+        gap: .3em;
+    }
+
+    .search_type_wrap > .search_type_right {
+        display: flex;
+        justify-content: flex-end;
+        gap: 12px;
+        align-items: center;
+    }
+
+    .search_type_wrap > .search_type_left > .search_btn {
+        width: 130px;
+        height: 32px;
+        border-radius: 4px;
+        background-color: #E1E4E8;
+        display: flex;
+        align-items: center;
+        gap: 3px;
+        justify-content: center;
+    }
+
+    .search_type_right .search_key {
+        width: 13%;
+    }
+
+    .search_type_left .search_value {
+        width: 300px;
+        border-bottom: 1px solid var(--color-border-out-light);
+    }
+
+    /* search_type_wrap: dark mode*/
+    .dark_mode .search_type_wrap > .search_type_right h1 {
+        color: var(--black-9);
+    }
+
+    .dark_mode .search_type_wrap > .search_type_left > .search_btn {
+        background-color: var(--dark-button);
+        color: var(--black-9);
+    }
+
+    .dark_mode .search_type_wrap > .search_type_left > .search_btn > img {
+        content: url(/images/maxy/icon-search-wh.svg);
+    }
+
+    /* page_header, page_content: dark mode*/
+    .btn_common > img {
+        padding-top: 3px;
+    }
+
+    .dark_mode .btn_common {
+        filter: none !important;
+    }
+
+    .dark_mode .maxy_box {
+        border: none !important;
+    }
+
+    .search_type_left .uba_text_wrap {
+        height: 20px;
+        line-height: 20px;
+        display: flex;
+        gap: 10px;
+        align-items: center;
+    }
+
+    .img_search_p {
+        content: url(/images/maxy/icon-search-small-p.svg);
+    }
+
+    .calendar_input {
+        width: 120px;
+        min-width: 120px !important;
+    }
+
+    .time_line .graph_box li {
+        cursor: pointer;
+    }
+
+    .search_type_left .status {
+        height: 26px;
+    }
+
+    .search_type_left .status.search_before {
+        content: url(/images/maxy/icon-user-analysis.svg);
+    }
+
+    .search_type_left .status.search_after {
+        content: url(/images/maxy/icon-user-analysis-purple.svg);
+    }
+
+    .dark_mode .search_type_left .status.search_before {
+        content: url(/images/maxy/dark-icon-user-analysis.svg);
+    }
+
+    .dark_mode .search_type_left .status.search_after {
+        content: url(/images/maxy/dark-icon-user-analysis-purple.svg);
+    }
+
+    /*.dark_mode .search_type_left .img_user_analysis {*/
+    /*    content: url(/images/maxy/dark-icon-user-analysis.svg);*/
+    /*}*/
+
+    button.btn_user_reset {
+        margin-left: auto;
+        width: 17px;
+        height: 15px;
+        background: url(/images/maxy/icon-reset.svg) no-repeat 0 center / 17px;
+    }
+
+    .dark_mode button.btn_user_reset {
+        margin-left: auto;
+        width: 17px;
+        background: url(/images/maxy/dark-icon-reset.svg) no-repeat 0 center / 17px;
+    }
+
+    .search_type_left .user_search_wrap {
+        display: flex;
+        align-items: center;
+        gap: .5em;
+    }
+
+    input:disabled {
+        color: #AAAAAA !important;
+    }
+
+    .dark_mode input:disabled,
+    .dark_mode select:disabled {
+        color: #757575 !important;
+    }
+
+    /* Filter */
+
+    #btnFilterToggle.btn_common {
+        padding: 0 10px;
+    }
+
+    #btnFilterToggle.btn_common .icon_filter {
+        content: url("/images/maxy/icon-filter-2.svg");
+        width: 16px;
+        height: 20px;
+    }
+
+    .filter_area {
+        display: none;
+    }
+
+    .filter_wrap {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 1em;
+        padding: 10px;
+        background-color: var(--color-block-light-1);
+        border-radius: 4px;
+        margin-top: 10px;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        overflow-x: auto;
+    }
+
+    .filter_wrap .icon_wedge {
+        content: url("/images/maxy/icon-wedge.svg");
+        width: 12px;
+        height: 10px;
+    }
+
+    .filter_wrap .filter {
+        display: flex;
+        gap: .5em;
+        align-items: center;
+    }
+
+    .filter_wrap .filter input[type="checkbox"]:checked + label,
+    .page_header input[type="checkbox"]:checked + label {
+        background-image: url("/images/maxy/check-on-wh.svg");
+    }
+
+    .filter_wrap .filter input[type="text"] {
+        width: 60px;
+        height: 24px;
+    }
+
+    .filter_wrap .filter input[type="text"].input_big {
+        width: 120px;
+    }
+
+    .filter_wrap .filter label {
+        cursor: pointer;
+        white-space: nowrap;
+    }
+
+    .filter_wrap .btn_common {
+        height: 24px;
+        padding: 0 10px;
+    }
+
+    /* filter dark mode */
+    .dark_mode .filter_wrap {
+        background-color: var(--dark-background);
+    }
+
+    .dark_mode .filter_wrap .filter input[type="text"] {
+        background-color: var(--color-block-dark-2);
+        color: var(--color-block-dark-text-1);
+        border: none;
+    }
+
+    .dark_mode input[type="checkbox"] + label {
+        background: url(/images/maxy/dark-check-off.svg) no-repeat 0 center / 15px;
+    }
+
+    .user_flow_wrap .graph_wrap.exist_user_info {
+        height: calc(100vh - 225px);
+    }
+
+    .user_info_popup_wrap {
+        display: block;
+        position: absolute;
+        top: 178px;
+        left: -1300px;
+        visibility: visible;
+        transition: left 0.7s ease;
+        transform: initial;
+        width: 40%;
+        height: calc(100% - 194px);
+        background-color: var(--black-9);
+        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.35);
+        border-radius: 5px;
+        padding: 20px;
+        z-index: 12;
+    }
+
+    .dark_mode .user_info_popup_wrap {
+        background-color: var(--color-table-bg-dark-1);
+    }
+
+    .user_info_popup_wrap.show {
+        left: 0;
+    }
+
+    .user_info_popup_wrap .maxy_popup_grid_s_wrap {
+        height: 100%;
+        display: flex;
+        gap: 1.5em;
+        flex-direction: column;
+    }
+</style>
+
+<div class="contents_header">
+    <div class="ctts_h_left">
+        <span class="app_icon">A</span>
+        <select class="app_info_select" id="packageNm">
+        </select>
+    </div>
+    <div class="ctts_h_right">
+        <div class="calendar_wrap">
+            <button class="btn_calendar" id="uaCalendarBtn"></button>
+            <input class="calendar_input" id="uaCalendar" type="text">
+        </div>
+    </div>
+</div>
+
+<!-- 타임라인 그래프 -->
+<div class="time_line">
+    <img alt="" class="timestamp">
+    <ul class="graph_box" id="graph_boxU">
+        <li><span class="time_no">1</span></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li><span class="time_no">6</span></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li><span class="time_no">12</span></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li><span class="time_no">18</span></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li><span class="time_no">24</span></li>
+    </ul>
+</div>
+
+<div class="search_type_wrap">
+    <div class="search_type_left">
+        <div class="user_search_wrap">
+            <img alt="" class="status search_before" id="searchUser">
+            <select class="search_key" id="searchKey">
+                <option data-t="common.tableColumn.deviceId" value="deviceId"></option>
+                <option data-t="common.text.userId" value="userId"></option>
+            </select>
+            <input autocomplete="off"
+                   class="search_value"
+                   id="searchValue"
+                   tabindex="2"
+                   type="text"
+            />
+
+            <img alt="" class="img_search_p" id="doSearch">
+        </div>
+
+        <div class="user_info" id="userInfo">
+        </div>
+    </div>
+
+    <div class="search_type_right">
+        <button class="btn_common" id="btnFilterToggle">Filter<img class="icon_filter"></button>
+    </div>
+</div>
+
+<div class="filter_area">
+    <div class="filter_wrap">
+        <img class="icon_wedge">
+        <div class="filter">
+            <input id="filter__aliasValue" type="checkbox"><label for="filter__aliasValue"></label>
+            <label data-t="common.text.filter.aliasValue" for="filter__aliasValue"></label>
+            <input class="input_big" id="filterVal__aliasValue" type="text"/>
+        </div>
+        <div class="filter">
+            <input id="filter__loadingTime" type="checkbox"><label for="filter__loadingTime"></label>
+            <label data-t="common.text.filter.loadingTime" for="filter__loadingTime"></label>
+            <input id="filterVal__loadingTime"
+                   maxlength="8"
+                   oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+                   type="text"/>
+        </div>
+        <div class="filter">
+            <input id="filter__responseTime" type="checkbox"><label for="filter__responseTime"></label>
+            <label data-t="common.text.filter.responseTime" for="filter__responseTime"></label>
+            <input id="filterVal__responseTime"
+                   maxlength="8"
+                   oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+                   type="text"/>
+        </div>
+        <div class="filter">
+            <input id="filter__intervaltime" type="checkbox"><label for="filter__intervaltime"></label>
+            <label data-t="common.text.filter.intervaltime" for="filter__intervaltime"></label>
+            <input id="filterVal__intervaltime"
+                   maxlength="8"
+                   oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+                   type="text"/>
+        </div>
+        <div class="filter">
+            <input id="filter__eventIntervaltime" type="checkbox"><label for="filter__eventIntervaltime"></label>
+            <label data-t="common.text.filter.eventIntervaltime" for="filter__eventIntervaltime"></label>
+            <input id="filterVal__eventIntervaltime"
+                   maxlength="8"
+                   oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+                   type="text"/>
+        </div>
+        <div class="filter">
+            <input id="filter__eventCount" type="checkbox"><label for="filter__eventCount"></label>
+            <label data-t="common.text.filter.eventCount" for="filter__eventCount"></label>
+            <input id="filterVal__eventCount"
+                   maxlength="8"
+                   oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+                   type="text"/>
+        </div>
+        <div class="filter">
+            <input id="filter__requestCount" type="checkbox"><label for="filter__requestCount"></label>
+            <label data-t="common.text.filter.requestCount" for="filter__requestCount"></label>
+            <input id="filterVal__requestCount"
+                   maxlength="8"
+                   oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+                   type="text"/>
+        </div>
+        <div class="filter">
+            <input id="filter__errorCount" type="checkbox"><label for="filter__errorCount"></label>
+            <label data-t="common.text.filter.errorCount" for="filter__errorCount"></label>
+            <input id="filterVal__errorCount"
+                   maxlength="8"
+                   oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+                   type="text"/>
+        </div>
+    </div>
+</div>
+
+<div class="user_flow_wrap maxy_box" id="maxyUserFlowWrap">
+    <div class="graph_wrap enable_scrollbar">
+        <div class="no_data" id="noData"></div>
+        <div class="graph" id="appFlowChart"></div>
+    </div>
+</div>
+
+<div class="user_info_popup_wrap" id="maxyUserInfo"></div>
+<div class="maxy_popup_common_wrap" id="maxyPopupWrap"></div>
+<div class="maxy_popup_common_wrap" id="maxySessionReplayPopupWrap"></div>
+<div class="dimmed" data-content="dimmed"></div>
+<div class="s_replay_dimmed" data-content="dimmed"></div>

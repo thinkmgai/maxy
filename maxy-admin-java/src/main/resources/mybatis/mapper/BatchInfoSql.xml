@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkm.maxy.mapper.BatchInfoMapper">
+
+    <select id="selectBatchHistoryListWithEndDtIsNull"
+            resultType="BatchHistoryVO">
+        select batch_run_id,
+               batch_nm,
+               start_dt,
+               end_dt,
+               intervaltime,
+               return_msg,
+               reg_dt,
+               parameter_start_dt,
+               parameter_end_dt
+        from maxy_batch_history
+        where end_dt is null
+    </select>
+
+    <select
+            id="selectBatchHistory"
+            parameterType="BatchHistoryVO"
+            resultType="BatchHistoryVO"
+    >
+        select batch_run_id,
+        batch_id as id,
+        (select mbj.job_name_desc
+        from maxy_batch_jobs mbj
+        where mbj.id = mbh.batch_id
+        ) as batch_nm,
+        type,
+        start_dt,
+        end_dt,
+        intervaltime,
+        return_msg,
+        reg_dt,
+        parameter_start_dt,
+        parameter_end_dt
+        from maxy_batch_history mbh
+        where start_dt between #{from} and #{to}
+        <if test='id != null and id >= 0'>
+            and batch_id = #{id}
+        </if>
+        order by batch_run_id desc
+    </select>
+
+    <select id="selectMaxyBatchJobs" resultType="BatchInfoVO">
+        select j.id,
+               j.job_name,
+               j.job_name_desc,
+               j.description,
+               j.cron_expression,
+               j.parameters,
+               j.use_yn,
+               'Y' as batch_yn,
+               max(h.reg_dt) as last_run
+        from maxy_batch_jobs j
+                 left join maxy_batch_history h on j.id = h.batch_id
+        group by j.id, j.job_name, j.job_name_desc, j.description,
+                 j.cron_expression, j.parameters, j.use_yn
+        order by j.id
+    </select>
+
+    <select id="selectBatchJobById" parameterType="int">
+        select id, parameters
+        from maxy_batch_jobs
+        where id = #{id};
+    </select>
+
+    <select
+            id="selectMaxyBatchInfo"
+            parameterType="Map"
+            resultType="BatchInfoVO"
+    >
+        select
+        batch_id,
+        batch_nm,
+        batch_yn,
+        batch_desc,
+        batch_interval,
+        batch_option1,
+        batch_option1_desc,
+        batch_option2,
+        batch_option2_desc,
+        batch_option3,
+        batch_option3_desc,
+        batch_option4,
+        batch_option4_desc,
+        reg_id,
+        reg_dt,
+        upd_id,
+        upd_dt,
+        batch_kill_file,
+        IF(batch_type = 1, 'N', 'Y') AS batch_type,
+        batch_jar_file,
+        batch_main_class,
+        batch_log_file
+        from maxy_batch_info
+        <where>
+            1 = 1
+            <if test='batchNm != null and batchNm != ""'>
+                AND (batch_nm like concat('%', #{batchNm}, '%'))
+            </if>
+            <if test='batchYn != "" and batchYn != null'>
+                AND batch_yn = #{batchYn}
+            </if>
+        </where>
+    </select>
+
+    <insert
+            id="insertMaxyBatchInfo"
+            parameterType="BatchInfoVO"
+    >
+        insert into maxy_batch_info (batch_nm,
+                                     batch_yn,
+                                     batch_desc,
+                                     batch_interval,
+                                     batch_option1,
+                                     batch_option2,
+                                     batch_option3,
+                                     batch_option4,
+                                     reg_id,
+                                     reg_dt,
+                                     batch_kill_file,
+                                     batch_jar_file,
+                                     batch_main_class,
+                                     batch_log_file)
+        values (#{batchName},
+                'Y',
+                #{batchDesc},
+                #{batchInterval},
+                #{batchOption1},
+                #{batchOption2},
+                #{batchOption3},
+                #{batchOption4},
+                #{userNo},
+                #{regDt},
+                #{batchKillFile},
+                #{batchJarFile},
+                #{batchMainClass},
+                #{batchLogFile})
+    </insert>
+
+    <update id="updateBatchJobs" parameterType="Map">
+        update maxy_batch_jobs
+        set job_name_desc   = #{jobNameDesc},
+            description     = #{description},
+            cron_expression = #{cronExpression},
+            parameters      = #{parameters},
+            use_yn          = #{useYn},
+            upd_dt          = #{regDt},
+            upd_no          = #{userNo}
+        where id = #{id}
+    </update>
+
+    <update id="updateMaxyBatchType" parameterType="Map">
+        update maxy_batch_info
+        set batch_type       = #{batchType},
+            upd_dt           = #{regDt},
+            upd_id           = #{userNo}
+        where batch_nm = #{batchNm}
+    </update>
+
+    <delete id="deleteBatchJob" parameterType="BatchInfoVO">
+        delete
+        from maxy_batch_jobs
+        where id = #{id}
+    </delete>
+
+    <delete id="deleteMaxyBatchHistory" parameterType="BatchHistoryVO">
+        DELETE FROM
+        maxy_batch_history
+        WHERE
+        batch_run_id in
+        <foreach collection="batchRunIdList" item="batchRunIds" open="(" close=")" separator=",">
+            #{batchRunIds}
+        </foreach>
+    </delete>
+</mapper>

@@ -1,0 +1,66 @@
+<style>
+    .detail_table {
+        width: 100%;
+    }
+
+    .detail_table, .detail_table td, .detail_table th {
+        padding: 8px;
+    }
+
+    .detail_table tr {
+        background-color: white;
+    }
+
+    .detail_table tr:nth-child(even) {
+        background-color: #F7F7F7;
+    }
+
+    .detail_table .error_row {
+        background-color: #DDB1A8 !important;
+    }
+
+    .detail_table > thead > tr {
+        background-color: #E1E1E1 !important;
+        text-align: left;
+    }
+</style>
+<table class="detail_table">
+    <thead>
+    <tr>
+        <th>
+            이름
+        </th>
+        <th>
+            시간
+        </th>
+        <th>
+            파일 크기
+        </th>
+        <th>
+            프로토콜
+        </th>
+        <th>
+            상태
+        </th>
+    </tr>
+    </thead>
+    {{#dataList}}
+    <tr class="{{downYn resourceDown}}">
+        <td>
+            {{name}}
+        </td>
+        <td>
+            {{timeCut duration}}
+        </td>
+        <td>
+            {{convertSize transferSize}}
+        </td>
+        <td>
+            {{emptyCheck nextHopProtocol}}
+        </td>
+        <td>
+            {{status resourceDown}}
+        </td>
+    </tr>
+    {{/dataList}}
+</table>

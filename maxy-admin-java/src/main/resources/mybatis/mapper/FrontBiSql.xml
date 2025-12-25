@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkm.maxy.mapper.FrontBiMapper">
+    <select id="selectFrontBiInfoList" resultType="CamelMap" parameterType="FrontBiVO">
+        select base_date,
+               count_new,
+               count_mau,
+               count_dau,
+               count_ccu,
+               count_pv,
+               count_error,
+               count_revisit,
+               avg_use_time,
+               avg_lcp,
+               avg_inp,
+               avg_cls,
+               avg_fcp,
+               avg_ttfb
+        from maxy_front_bi_day_info
+        where base_date between #{from} and #{to}
+          and package_nm = #{packageNm}
+          and server_type = #{serverType}
+        group by base_date
+    </select>
+
+
+    <select id="selectFrontBiMonthlyInfoList" resultType="CamelMap" parameterType="FrontBiVO">
+        select base_month, app_mau_count
+        from maxy_bi_monthly_info
+        where base_month between #{from} and #{to}
+          and package_nm = #{packageNm}
+          and server_type = #{serverType}
+          and os_type = 'front'
+        group by base_month
+    </select>
+    
+    <select id="selectTopErrorLogListFromReport" resultType="CamelMap" parameterType="FrontBiVO"><![CDATA[
+        WITH TopErrors AS (
+            -- 상위 10개 에러 유형 조회
+            SELECT SUM(count_error)                                               AS count,
+                   res_msg                                                        AS msg,
+                   SUM(count_error) * 100.0 / (SELECT SUM(count_error)
+                                               FROM maxy_front_report_error_msg
+                                               WHERE base_date BETWEEN #{from} AND #{to}
+                                                 AND package_nm = #{packageNm}
+                                                 AND server_type = #{serverType}) AS rate
+            FROM maxy_front_report_error_msg
+            WHERE base_date BETWEEN #{from} AND #{to}
+              AND package_nm = #{packageNm}
+              AND server_type = #{serverType}
+            GROUP BY res_msg
+            ORDER BY SUM(count_error) DESC
+            LIMIT 10),
+             AllErrors AS (
+                 -- 전체 에러 집계 (기준값)
+                 SELECT SUM(count_error) AS total_cnt
+                 FROM maxy_front_report_error_msg
+                 WHERE base_date BETWEEN #{from} AND #{to}
+                   AND package_nm = #{packageNm}
+                   AND server_type = #{serverType}),
+             OtherErrors AS (
+                 -- 상위 10개를 제외한 나머지 에러 집계
+                 SELECT SUM(count_error)                                             AS count,
+                        'Other'                                                      AS msg,
+                        SUM(count_error) * 100.0 / (SELECT total_cnt FROM AllErrors) AS rate
+                 FROM maxy_front_report_error_msg
+                 WHERE base_date BETWEEN #{from} AND #{to}
+                   AND package_nm = #{packageNm}
+                   AND server_type = #{serverType}
+                   AND res_msg NOT IN (SELECT msg FROM TopErrors)
+                 HAVING SUM(count_error) > 0)
+        -- 최종 결과를 UNION
+        SELECT msg,
+               count,
+               rate,
+               -- Other 항목을 가장 아래로 정렬하기 위한 가중치
+               IF(msg = 'Other', 1, 0) AS is_other
+        FROM (SELECT *
+              FROM TopErrors
+              UNION ALL
+              SELECT *
+              FROM OtherErrors) AS combined_results
+        ORDER BY is_other, count DESC;
+    ]]></select>
+</mapper>

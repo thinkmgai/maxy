@@ -1,0 +1,118 @@
+<style>
+    .check_app_ver_wrap {
+        gap: 15px;
+        height: 30vh;
+        overflow: auto;
+    }
+
+    .os_type_wrap {
+        margin-bottom: 10px;
+    }
+
+    .check_app_ver_wrap .os_type_header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding-left: 10px;
+        border: 1px solid #e3e3e3;
+        border-radius: var(--radius);
+    }
+
+    .check_app_ver_wrap .os_type_header.act {
+        border-bottom: none;
+        border-radius: 10px 10px 0 0;
+    }
+
+    .check_app_ver_wrap .os_type_header .folding_btn {
+        background-size: 14px 14px;
+        background: transparent url("../../images/maxy/arrow-down.svg") no-repeat center center;
+        width: 40px;
+        height: 40px;
+    }
+
+    .dark_mode .check_app_ver_wrap .os_type_header .folding_btn {
+        background: transparent url("../../images/maxy/dark-arrow-down.svg") no-repeat center center;
+    }
+
+    .check_app_ver_wrap .os_type_header.act .folding_btn {
+        background-size: 14px 14px;
+        background: transparent url("../../images/maxy/arrow-up.svg") no-repeat center center;
+        width: 40px;
+        height: 40px;
+    }
+
+    .dark_mode .check_app_ver_wrap .os_type_header.act .folding_btn {
+        background: transparent url("../../images/maxy/dark-arrow-up.svg") no-repeat center center;
+    }
+
+    .check_app_ver_wrap .os_type_detail {
+        overflow: auto;
+        align-items: center;
+        width: 100%;
+        max-height: 100px;
+        padding-left: 10px;
+        padding-right: 10px;
+        border: 1px solid #e3e3e3;
+        border-radius: var(--radius);
+        border-top: none;
+        display: none;
+    }
+
+    .dark_mode .check_app_ver_wrap .os_type_detail {
+        border: 1px solid #3F4142;
+    }
+    .check_app_ver_wrap .os_type_detail.act {
+        display: block;
+        border-radius: 0 0 10px 10px;
+    }
+
+    .check_app_ver_wrap .os_type_detail label {
+        display: inline-flex;
+    }
+
+    .check_app_ver_wrap .type_check {
+        user-select: none;
+        background: url("../../images/maxy/check-off-t.svg") left transparent no-repeat;
+        background-size: 14px 14px;
+        height: 40px;
+        border-radius: 3px;
+        padding-left: 1.5em;
+        padding-right: 1em;
+    }
+
+    .check_app_ver_wrap .type_check.on {
+        background: url("../../images/maxy/check-on-t.svg") left transparent no-repeat;
+        background-size: 14px;
+    }
+
+    .dark_mode .check_app_ver_wrap .type_check {
+        background: url("../../images/maxy/check-off-t-bk.svg") left transparent no-repeat;
+        color: white;
+    }
+
+    .dark_mode .check_app_ver_wrap .type_check.on {
+        background: url("../../images/maxy/check-on-t-bk.svg") left transparent no-repeat;
+    }
+
+    .dark_mode .check_app_ver_wrap .os_type_header {
+        border: 1px solid #3F4142;
+    }
+</style>
+<div class="check_app_ver_wrap enable_scrollbar">
+    {{#each this as | item ostype | }}
+    <div class="os_type_wrap">
+        <div class="os_type_header">
+            <input type="checkbox" id="{{ostype}}__checkOsType">
+            <label class="type_check" for="{{ostype}}__checkOsType">{{ostype}}</label>
+            <button class="folding_btn"></button>
+        </div>
+
+        <div class="os_type_detail enable_scrollbar">
+            {{#each this}}
+            <input type="checkbox" id="{{ostype}}__{{@key}}_checkOsType" data-ostype="{{ostype}}" data-appver="{{@key}}">
+            <label class="type_check" for="{{ostype}}__{{@key}}_checkOsType">{{@key}}</label>
+            {{/each}}
+        </div>
+    </div>
+    {{/each}}
+</div>

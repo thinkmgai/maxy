@@ -1,0 +1,302 @@
+<!--suppress CssUnusedSymbol -->
+<!--  로그 분석 > Error / Crash > 팝업 -->
+<style>
+    .maxy_popup_title_wrap .maxy_popup_title_right {
+        min-width: auto !important;
+    }
+
+    .maxy_log_stack_wrap i.icon_title {
+        width: 17px;
+        height: 16px;
+        content: url("/images/maxy/icon-log-stack-title-gray.svg");
+    }
+
+    .bp, .mk_check, .mk_error, .mk_crash {
+        display: inline;
+    }
+
+    .log_stack .bp::before, .log_stack .mk_check::before, .log_stack .mk_error::before, .log_stack .mk_crash::before {
+        margin-right: 0.2em;
+    }
+
+    .tippy-box[data-theme~='maxy-tooltip'] {
+        max-width: 450px !important;
+    }
+
+    .button_wrap {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        margin-top: -10px;
+    }
+
+    .button_wrap .btn_common {
+        margin-left: auto;
+    }
+
+    .type_tab_wrap {
+        display: flex;
+        margin-bottom: 1px !important;
+    }
+
+    .type_tab_wrap .type_tab {
+        text-align: center;
+        min-width: 5vw;
+        max-width: 7vw;
+        padding: 8px 15px 8px 15px;
+        border-radius: 8px 8px 0 0;
+        border: 1px solid #e3e5e8;
+        border-bottom: none;
+        cursor: pointer;
+    }
+
+    .type_tab_wrap .type_tab.selected {
+        background-color: #EBEBEB;
+        font-weight: bold;
+    }
+
+    .stack_wrap .log_stack.maxy_box:not(:first-child) {
+        display: none;
+    }
+
+    .stack_wrap .log_stack.maxy_box:nth-child(1) {
+        overflow-y: scroll;
+    }
+
+    .dark_mode .log_stack_table {
+        background-color: var(--color-block-dark-1)
+    }
+
+    .dark_mode .type_tab_wrap .type_tab {
+        border: 1px solid var(--color-block-dark-1);
+    }
+
+    .dark_mode .type_tab.selected {
+        background-color: var(--color-block-dark-1);
+    }
+
+    .native_stack_table {
+        width: 100%;
+        height: 100%;
+        overflow-y: scroll;
+        padding: 15px;
+        cursor: pointer;
+    }
+
+    .native_stack_table li {
+        margin-bottom: 5px;
+    }
+
+    .native_stack_table .trace {
+        padding: 7px 0 7px 0;
+        border-bottom: 1px solid var(--color-border-out-light);
+        margin-bottom: 0 !important;
+    }
+
+    .native_stack_table .data {
+        line-height: 18px;
+        transform: none !important;
+        perspective: none !important;
+        word-break: break-all;
+    }
+
+    .native_stack_table .thread_name > .data {
+        font-size: 14px;
+    }
+
+    .native_stack_table li:last-child > .data {
+        margin-bottom: 0;
+    }
+
+    .native_stack_table .trace:hover,
+    .native_stack_table .trace.selected {
+        background-color: #F6F7FF;
+    }
+
+    .native_stack_table .subline, .native_stack_table .child {
+        display: none;
+        line-height: 18px;
+        word-break: break-all;
+        padding: 0 20px 0 20px;
+    }
+
+    .native_stack_table .target {
+        background-color: #FFF0F0;;
+    }
+
+    .dark_mode .native_stack_table {
+        color: white;
+    }
+
+    .dark_mode .native_stack_table li {
+        background-color: var(--color-block-dark-1);
+    }
+
+    .dark_mode .native_stack_table .target {
+        background-color: #493434;
+    }
+
+    .dark_mode .native_stack_table .trace:hover,
+    .dark_mode .native_stack_table .trace.selected {
+        background: #2B324A;
+    }
+
+    .dark_mode .native_stack_table .trace {
+        border-bottom: 1px solid var(--black-6);
+    }
+
+    .stack_button_wrap {
+        margin-bottom: 0 !important;
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .log_detail_wrap.maxy_box .btn_common {
+        background-color: white;
+        font-weight: normal;
+        border: 1px solid var(--logo-blue-2);
+    }
+
+    .dark_mode .log_detail_wrap.maxy_box .btn_common {
+        background-color: inherit;
+    }
+
+    .log_stack.maxy_box {
+        -webkit-user-select: auto;
+    }
+
+    .device_info.user_id {
+        display: none;
+    }
+
+    .dark_mode .maxy_popup_common textarea:read-only {
+        border: none;
+    }
+
+    .except_dimmed {
+        width: 74vw;
+        height: 94vh;
+        display: none;
+        z-index: 16;
+        position: fixed;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -48%);
+        background-color: transparent;
+    }
+
+    .log_stack_table tbody tr::-webkit-scrollbar:horizontal {
+        display: none !important;
+    }
+
+    /* #디버깅 가이드 */
+    .img_debug_off {
+        width: 26px;
+        margin: 8px;
+        display: none;
+    }
+
+    .popup_right_side_wrap {
+        width: 90%;
+        height: calc(100% - 60px);
+        top: 60px;
+    }
+</style>
+<div class="maxy_popup_common maxy_log_stack_wrap" id="{{id}}__popup">
+    <div class="maxy_popup_title_wrap">
+        <div class="maxy_popup_title_left">
+            <i class="icon_title"></i>
+            <span>{{title}} Stack</span>
+            <div class="device_info_wrap cursor_pointer">
+                <div class="device_info" data-tooltip="{{param.deviceId}}" id="deviceInfo">
+                    <i class="icon_device"></i>
+                    <span class="device_name">{{modelMapper param.deviceModel}}</span>
+                </div>
+                <div class="device_info" id="appVersion">
+                    <i class="icon_gear"></i>
+                    {{param.appVer}}
+                </div>
+                <div class="device_info" id="osVer">
+                    <i class="icon_os {{osTypeMapper param.osType}}"></i>
+                    {{osTypeMapper param.osVer}}
+                </div>
+                <div class="device_info" id="os">
+                    <i class="icon_network_type"></i>
+                    <span id="logInfo__comType"></span>
+                </div>
+                <div class="device_info" id="comSensitivity">
+                    <i class="icon_network"></i>
+                    <span id="logInfo__comSensitivity"></span>
+                </div>
+                <div class="device_info" id="cpuUsage">
+                    <i class="icon_cpu"></i>
+                    <span id="logInfo__cpuUsage"></span>
+                </div>
+                <div class="device_info" id="memoryUsage">
+                    <i class="icon_memory"></i>
+                    <span id="logInfo__memUsage"></span>
+                </div>
+                <div class="device_info user_id" id="userId">
+                    <i class="icon_user"></i>
+                    <span id="userIdTxt"></span>
+                </div>
+            </div>
+        </div>
+        <div class="maxy_popup_title_right">
+            <button>
+                <img alt="" class="img_debug_off gray"> <!-- #디버깅 가이드-->
+            </button>
+            <img alt="" class="btn_page_flow" id="btnPageFlow">
+        </div>
+    </div>
+
+    <div class="log_detail_wrap maxy_box" id="logInfo__detailWrap">
+        <label for="logInfo__resMsg">Notice</label>
+        <div class="separator"></div>
+        <textarea class="log_detail_text enable_scrollbar" id="logInfo__resMsg" readonly></textarea>
+        <a class="btn_common" id="btnExcept">Exception</a>
+    </div>
+
+    <div class="stack_button_wrap">
+        <div class="type_tab_wrap">
+            <span class="type_tab selected" data-type="tab_1">Procedure</span>
+            <span class="type_tab" data-type="tab_2">Prime</span>
+            <span class="type_tab" data-type="tab_3"></span>
+            <span class="type_tab" data-type="tab_4"></span>
+            <span class="type_tab" data-type="tab_5">Symbolication</span>
+        </div>
+        <div class="button_wrap" id="logInfo__buttonWrap">
+            <a class="btn_common" id="btnDownload">Full Download</a>
+        </div>
+    </div>
+
+    <div class="stack_wrap">
+        <div class="log_stack maxy_box no_data" id="tab_1"></div>
+        <div class="log_stack maxy_box" id="tab_2"></div>
+        <div class="log_stack maxy_box" id="tab_3"></div>
+        <div class="log_stack maxy_box" id="tab_4"></div>
+        <div class="log_stack maxy_box" id="tab_5"></div>
+    </div>
+
+    <!--debugging guide navbar #디버깅 가이드-->
+    <div class="maxy_popup_gray_bg_wrap popup_right_side_wrap">
+        <div id="{{id}}__debugGuide"></div>
+    </div>
+</div>
+
+<div class="maxy_popup_common_extra_small" id="exceptConfirmPopup">
+    <div class="popup_header">
+        <img alt="" class="img_caution">
+        <h4>Exception</h4>
+
+    </div>
+    <div class="confirm_msg" data-t="system.except.msg.exceptConfirm"></div>
+    <textarea class="textarea_item" id="exceptLog"></textarea>
+
+    <div class="popup_footer">
+        <button class="btn_common" data-t="common.btn.cancel" id="btnCancel"></button>
+        <button class="btn_common opposite" data-t="common.btn.save" id="btnSave"></button>
+    </div>
+</div>
+
+<div class="except_dimmed" data-content="dimmed"></div>

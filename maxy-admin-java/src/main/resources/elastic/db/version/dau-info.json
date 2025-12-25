@@ -1,0 +1,39 @@
+{
+  "track_total_hits": true,
+  "size": 0,
+  "query": {
+    "bool": {
+      "filter": [
+        {
+          "term": {
+            "packageNm": #{packageNm}
+          }
+        },
+        {
+          "term": {
+            "serverType": #{serverType}
+          }
+        },
+        #[isOsType]
+        {
+          "term": {
+            "osType": #{osType}
+          }
+        },
+        #[/isOsType]
+        #[isAppVer]
+        {
+          "term": {
+            "appVer": #{appVer}
+          }
+        },
+        #[/isAppVer]
+        {
+          "term": {
+            "accessDate": #{accessDate}
+          }
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,368 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkm.maxy.mapper.MenuMapper">
+
+    <!-- 메뉴 권한 조회 -->
+    <select id="selectMenuRoleList" resultType="MenuVO" parameterType="MenuVO">
+        select mam.menu_id,
+               mam.delete_yn,
+               mamr.role_gbn
+        from maxy_admin_menu mam
+                 inner join maxy_admin_menu_role mamr on mam.menu_id = mamr.menu_id
+        where mam.delete_yn = 'N'
+          and mamr.role_gbn = #{roleGbn}
+    </select>
+
+    <!-- 관리 페이지 메뉴 목록 조회 -->
+    <select id="selectGroupManagementMenuList" resultType="MenuVO" parameterType="MenuVO">
+        select t.menu_id,
+               t.menu_nm,
+               t.up_menu_id,
+               t.menu_url,
+               t.menu_desc,
+               t.order_seq,
+               t.grp_level,
+               t.delete_yn,
+               t.icon_on,
+               t.icon_off,
+               t.full_order
+        from (select t1.menu_id,
+                     t1.menu_nm,
+                     t1.up_menu_id,
+                     t1.menu_url,
+                     t1.menu_desc,
+                     t1.order_seq,
+                     t1.grp_level,
+                     t1.delete_yn,
+                     t1.icon_on,
+                     t1.icon_off,
+                     t1.order_seq * 100 as full_order
+              from maxy_admin_menu t1
+              where t1.grp_level = '2'
+                and t1.delete_yn = 'N'
+                and t1.app_type = '0'
+                and t1.menu_id like 'GM%'
+              union all
+              select t2.menu_id,
+                     t2.menu_nm,
+                     t2.up_menu_id,
+                     t2.menu_url,
+                     t2.menu_desc,
+                     t2.order_seq,
+                     t2.grp_level,
+                     t2.delete_yn,
+                     t2.icon_on,
+                     t2.icon_off,
+                     (select order_seq
+                      from maxy_admin_menu
+                      where menu_id = t2.up_menu_id) * 100 + order_seq * 10 as full_order
+              from maxy_admin_menu t2
+              where t2.grp_level = '3'
+                and t2.delete_yn = 'N'
+                and t2.app_type = '0'
+                and t2.menu_id like 'GM%') t
+                 inner join maxy_admin_menu_role mamr on t.menu_id = mamr.menu_id
+            and mamr.role_gbn = #{roleGbn}
+        order by t.full_order
+    </select>
+
+    <!-- FRONT용 관리 페이지 메뉴 목록 조회 -->
+    <select id="selectFrontGroupManagementMenuList" resultType="MenuVO" parameterType="MenuVO">
+        select t.menu_id,
+               t.menu_nm,
+               t.up_menu_id,
+               t.menu_url,
+               t.menu_desc,
+               t.order_seq,
+               t.grp_level,
+               t.delete_yn,
+               t.icon_on,
+               t.icon_off,
+               t.full_order
+        from (select t1.menu_id,
+                     t1.menu_nm,
+                     t1.up_menu_id,
+                     t1.menu_url,
+                     t1.menu_desc,
+                     t1.order_seq,
+                     t1.grp_level,
+                     t1.delete_yn,
+                     t1.icon_on,
+                     t1.icon_off,
+                     t1.order_seq * 100 as full_order
+              from maxy_admin_menu t1
+              where t1.grp_level = '2'
+                and t1.delete_yn = 'N'
+                and t1.app_type = '1'
+                and t1.menu_id like 'FM%'
+                and t1.app_type = '1'
+              union all
+              select t2.menu_id,
+                     t2.menu_nm,
+                     t2.up_menu_id,
+                     t2.menu_url,
+                     t2.menu_desc,
+                     t2.order_seq,
+                     t2.grp_level,
+                     t2.delete_yn,
+                     t2.icon_on,
+                     t2.icon_off,
+                     (select order_seq
+                      from maxy_admin_menu
+                      where menu_id = t2.up_menu_id) * 100 + order_seq * 10 as full_order
+              from maxy_admin_menu t2
+              where t2.grp_level = '3'
+                and t2.delete_yn = 'N'
+                and t2.app_type = '1'
+                and t2.menu_id like 'FM%'
+                and t2.app_type = '1') t
+                 inner join maxy_admin_menu_role mamr on t.menu_id = mamr.menu_id
+            and mamr.role_gbn = #{roleGbn}
+        order by t.full_order
+    </select>
+
+    <!-- 슈퍼 관리자의 관리자 페이지 메뉴 목록 조회 -->
+    <select id="selectSystemManagementMenuList" resultType="MenuVO" parameterType="MenuVO">
+        select t.menu_id,
+               t.menu_nm,
+               t.up_menu_id,
+               t.menu_url,
+               t.menu_desc,
+               t.order_seq,
+               t.grp_level,
+               t.delete_yn,
+               t.icon_on,
+               t.icon_off,
+               t.full_order
+        from (select t1.menu_id,
+                     t1.menu_nm,
+                     t1.up_menu_id,
+                     t1.menu_url,
+                     t1.menu_desc,
+                     t1.order_seq,
+                     t1.grp_level,
+                     t1.delete_yn,
+                     t1.icon_on,
+                     t1.icon_off,
+                     t1.order_seq * 100 as full_order
+              from maxy_admin_menu t1
+              where t1.grp_level = '2'
+                and t1.delete_yn = 'N'
+                and t1.menu_id like 'SM%'
+              union all
+              select t2.menu_id,
+                     t2.menu_nm,
+                     t2.up_menu_id,
+                     t2.menu_url,
+                     t2.menu_desc,
+                     t2.order_seq,
+                     t2.grp_level,
+                     t2.delete_yn,
+                     t2.icon_on,
+                     t2.icon_off,
+                     (select order_seq
+                      from maxy_admin_menu
+                      where menu_id = t2.up_menu_id) * 100 + order_seq * 10 as full_order
+              from maxy_admin_menu t2
+              where t2.grp_level = '3'
+                and t2.delete_yn = 'N'
+                and t2.menu_id like 'SM%') t
+        order by t.full_order
+    </select>
+
+    <!-- 권한별 메뉴 조회 -->
+    <select id="selectMenuListByRoleGbn" resultType="MenuVO" parameterType="MenuVO">
+        select mam.menu_id,
+               mam.menu_nm,
+               mam.up_menu_id,
+               mam.menu_url,
+               mam.order_seq,
+               mam.grp_level,
+               mam.icon_on,
+               app_type
+        from maxy_admin_menu mam
+                 inner join maxy.maxy_admin_menu_role mamr on mam.menu_id = mamr.menu_id
+        where mam.delete_yn = 'N'
+          and mamr.role_gbn = #{roleGbn}
+        order by order_seq
+    </select>
+
+    <!-- 전체 메뉴 조회 -->
+    <select id="selectMenuList" resultType="MenuVO">
+        select menu_id,
+               menu_nm,
+               up_menu_id,
+               menu_url,
+               order_seq,
+               grp_level,
+               icon_on,
+               app_type
+        from maxy_admin_menu
+        where delete_yn = 'N'
+        order by order_seq
+    </select>
+
+    <!-- 전체 메뉴 조회 - 메뉴 설정 -->
+    <select id="selectAllMenuList" resultType="MenuVO">
+        select a.*,
+               (select IF(count(1) > 0, 'Y', 'N')
+                from maxy_admin_menu
+                where up_menu_id = a.menu_id) as sub_menu_yn,
+               substr(a.menu_id, 1, 2)        as menuGrp
+        from (select mam.menu_id,
+                     mam.menu_nm,
+                     mam.up_menu_id,
+                     mam.menu_url,
+                     mam.menu_desc,
+                     mam.order_seq,
+                     mam.grp_level,
+                     mam.delete_yn,
+                     mam.icon_on,
+                     mam.icon_off,
+                     mam.app_type,
+                     mam.full_order,
+                     mamr.role_gbn
+              from (select t1.menu_id,
+                           t1.menu_nm,
+                           t1.up_menu_id,
+                           t1.menu_url,
+                           t1.menu_desc,
+                           t1.order_seq,
+                           t1.grp_level,
+                           t1.delete_yn,
+                           t1.icon_on,
+                           t1.icon_off,
+                           t1.app_type,
+                           t1.order_seq * 1000 as full_order
+                    from maxy_admin_menu t1
+                    where t1.grp_level = '1'
+                    union all
+                    select t2.menu_id,
+                           t2.menu_nm,
+                           t2.up_menu_id,
+                           t2.menu_url,
+                           t2.menu_desc,
+                           t2.order_seq,
+                           t2.grp_level,
+                           t2.delete_yn,
+                           t2.icon_on,
+                           t2.icon_off,
+                           t2.app_type,
+                           (select order_seq
+                            from maxy_admin_menu
+                            where menu_id = t2.up_menu_id) * 1000 + order_seq * 100 as full_order
+                    from maxy_admin_menu t2
+                    where t2.grp_level = '2'
+                    union all
+                    select tt3.menu_id,
+                           tt3.menu_nm,
+                           tt3.up_menu_id,
+                           tt3.menu_url,
+                           tt3.menu_desc,
+                           tt3.order_seq,
+                           tt3.grp_level,
+                           tt3.delete_yn,
+                           tt3.icon_on,
+                           tt3.icon_off,
+                           tt3.app_type,
+                           (select order_seq
+                            from maxy_admin_menu
+                            where menu_id = tt3.up_up_menu_id) * 1000 +
+                           (select order_seq
+                            from maxy_admin_menu
+                            where menu_id = tt3.up_menu_id) * 100 +
+                           order_seq + 10 as full_order
+                    from (select t3.menu_id,
+                                 t3.menu_nm,
+                                 t3.up_menu_id,
+                                 t3.menu_url,
+                                 t3.menu_desc,
+                                 t3.order_seq,
+                                 t3.grp_level,
+                                 t3.delete_yn,
+                                 t3.icon_on,
+                                 t3.icon_off,
+                                 t3.app_type,
+                                 (select order_seq
+                                  from maxy_admin_menu
+                                  where menu_id = t3.up_menu_id) as up_order_seq,
+                                 (select up_menu_id
+                                  from maxy_admin_menu
+                                  where menu_id = t3.up_menu_id) as up_up_menu_id
+                          from maxy_admin_menu t3
+                          where t3.grp_level = '3') tt3) mam
+                       left join (select max(role_gbn) as role_gbn, menu_id
+                                  from maxy_admin_menu_role mamr2
+                                  group by menu_id) mamr
+                                 on mamr.menu_id = mam.menu_id
+              group by mam.menu_id) a
+        order by a.full_order
+    </select>
+
+    <!-- 메뉴 ID로 메뉴 목록 조회 -->
+    <select id="selectMenuListByMenuId" resultType="MenuVO" parameterType="MenuVO">
+        select menu_id,
+               menu_nm,
+               up_menu_id,
+               menu_url,
+               menu_desc,
+               order_seq,
+               grp_level,
+               delete_yn,
+               reg_no,
+               reg_dt,
+               upd_no,
+               upd_dt,
+               icon_on,
+               icon_off
+        from maxy_admin_menu
+        where menu_id = #{menuId}
+    </select>
+
+    <!-- 메뉴 ID로 본인 포함한 하위 메뉴 ID 목록 가져오기 -->
+    <select id="selectMenuListByUpMenuId" resultType="MenuVO" parameterType="MenuVO">
+        select menu_id
+        from maxy_admin_menu
+        where menu_id = #{menuId}
+           or up_menu_id = #{menuId}
+    </select>
+
+    <!-- 메뉴 ID로 메뉴 삭제 여부 수정 -->
+    <update id="updateMenuByMenuId" parameterType="MenuVO">
+        update maxy_admin_menu
+        set delete_yn = #{deleteYn},
+        upd_dt = #{regDt},
+        upd_no = #{userNo}
+        where menu_id = #{menuId}
+        <if test='upMenuId != null and upMenuId != ""'>
+            or up_menu_id = #{upMenuId}
+        </if>
+    </update>
+
+    <!-- 메뉴 ID로 메뉴 순서 수정 -->
+    <update id="updateMenuOrderByMenuId" parameterType="MenuVO">
+        update maxy_admin_menu
+        set order_seq = #{orderSeq},
+            upd_dt    = #{regDt},
+            upd_no    = #{userNo}
+        where menu_id = #{menuId}
+    </update>
+
+    <!-- 메뉴 ID 와 RoleGbn 리스트로 권한 삭제 -->
+    <delete id="deleteMenuRoleByMenuIdAndRoleGbn" parameterType="MenuVO">
+        delete
+        from maxy_admin_menu_role
+        where menu_id = #{menuId}
+          and role_gbn != #{superRoleGbn}
+    </delete>
+
+    <!-- RoleGbn 만큼 반복하면서 권한 추가 -->
+    <insert id="insertMenuRole" parameterType="MenuVO">
+        replace into maxy_admin_menu_role (menu_id, role_gbn, reg_no, reg_dt, upd_no, upd_dt)
+        values
+        <foreach collection="roleGbnList" item="roleGbn" separator=",">
+            (#{menuId}, #{roleGbn}, #{userNo}, #{regDt}, #{userNo}, #{regDt})
+        </foreach>
+    </insert>
+</mapper>

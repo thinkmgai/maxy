@@ -1,0 +1,150 @@
+{
+  "aggs": {
+    "2": {
+      "date_histogram": {
+        "field": "logTm",
+        "format": "hour_minute_second",
+        "fixed_interval": "30s",
+        "time_zone": "Asia/Seoul",
+        "min_doc_count": 0
+      }
+    }
+  },
+  "size": 0,
+  "stored_fields": [
+    "*"
+  ],
+  "script_fields": {},
+  "docvalue_fields": [
+    {
+      "field": "logTm",
+      "format": "date_time"
+    },
+    {
+      "field": "regDt",
+      "format": "date_time"
+    }
+  ],
+  "_source": {
+    "excludes": []
+  },
+  "query": {
+    "bool": {
+      "must": [
+        {
+          "term" : {
+            "packageNm": {
+              "value": #{packageNm}
+            }
+          }
+        },
+        {
+          "term" : {
+            "serverType": {
+              "value": #{serverType}
+            }
+          }
+        }
+        #[isAppVer]
+        ,{
+          "term" : {
+            "appVer" : {
+              "value" : #{appVer}
+            }
+          }
+        }
+          #[/isAppVer]
+          #[searchDeviceId]
+      ,{
+          "term":{
+            "deviceId.raw" : {
+              "value" : #{searchValue}
+      }
+        }
+        }
+        #[/searchDeviceId]
+        #[searchVipYn]
+      ,{
+          "term":{
+            "vipYn" : {
+              "value" : #{vipYn}
+      }
+        }
+        }
+        #[/searchVipYn]
+        #[searchLogType]
+      ,{
+          "term":{
+            "logTypeNm" : {
+              "value" : #{logTp}
+      }
+        }
+        }
+        #[/searchLogType]
+        #[searchOsType]
+      ,{
+          "term":{
+            "osType" : {
+              "value" : #{osType}
+      }
+        }
+        }
+        #[/searchOsType]
+        #[searchUserNm]
+            ,{
+                "match":{
+                  "userNm" : {
+                    "query": #{searchValue}
+            }
+          }
+        }
+        #[/searchUserNm]
+        #[searchUserId]
+      ,{
+          "match":{
+            "userId" : {
+              "query": #{searchValue}
+      }
+        }
+        }
+        #[/searchUserId]
+        #[searchReqUrl]
+      ,{
+          "term":{
+            "reqUrl" : {
+              "query": #{searchValue},
+        "operator": "and"
+        }
+        }
+        }
+        #[/searchReqUrl]
+        #[searchPhoneNo]
+      ,{
+          "term":{
+            "phoneNo" : {
+              "query": #{searchValue},
+        "operator": "and"
+        }
+        }
+        }
+        #[/searchPhoneNo]
+      ],
+      "filter": [
+        {
+          "match_all": {}
+        },
+        {
+          "range": {
+            "logTm": {
+              "from": #{searchToTime},
+              "to": #{searchFromTime},
+              "format": "epoch_millis"
+            }
+          }
+        }
+      ],
+      "should": [],
+      "must_not": []
+    }
+  }
+}

@@ -1,0 +1,244 @@
+<style>
+    .maxy_front_popup_content_wrap {
+        grid-template-rows: minmax(118px, 12%) minmax(105px, 10%) minmax(352px, 78%) !important;
+    }
+
+    @media screen and (max-height: 816px) {
+        .maxy_front_popup_content_wrap {
+            grid-template-rows: minmax(118px, 12%) minmax(80px, 10%) minmax(352px, 78%) !important;
+        }
+    }
+
+
+    .maxy_popup_common .user_info_wrap .content_wrap {
+        height: 100%;
+        display: grid;
+        grid-template-rows: 40% auto;
+    }
+
+    .web_chart_wrap .top {
+        grid-template-columns: 100% !important;
+        border-bottom: none !important;
+        height: 100% !important;
+    }
+
+    .maxy_popup_common .user_info_wrap .content_wrap .bot {
+        padding: 1em;
+    }
+
+    .maxy_popup_common .user_info_wrap .content_wrap .bot {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        align-items: center;
+    }
+
+    .content_wrap .text {
+        word-break: break-all;
+        max-height: 24px;
+        overflow: auto;
+    }
+
+    .history_wrap {
+        display: grid;
+        grid-template-rows: 15px 46px auto;
+        height: 100%;
+        min-height: 0; /* 그리드 아이템이 최소 크기를 가지지 않도록 함 */
+    }
+
+    .history_wrap .content_wrap {
+        min-height: 0; /* 그리드 아이템의 최소 높이 제한 해제 */
+    }
+
+    .history_wrap .content_wrap .enable_scrollbar {
+        height: 100%;
+    }
+
+    .history_wrap .type_tab {
+        border-bottom: none;
+    }
+
+    .web_chart_wrap {
+        grid-template-rows: minmax(40px, 8%) minmax(230px, 46%);
+    }
+
+    .web_chart_wrap .user_info_wrap .content_wrap {
+        display: block;
+    }
+
+    .maxy_popup_gray_bg_wrap .maxy_popup_title_left .title {
+        font-weight: bold;
+    }
+
+    .content_wrap.performance,
+    .content_wrap.history {
+        width: 100%;
+        height: 100%;
+    }
+
+    #performance, #history {
+        width: 100%;
+        max-width: 100%;
+        overflow-x: auto;
+    }
+
+    #performanceList,
+    #historyList {
+        border: 1px solid #e3e5e8;
+        box-shadow: none !important;
+        width: 100%;
+        height: 100%;
+        box-sizing: border-box;
+    }
+
+    .dark_mode .maxy_popup_common.front .performance .btn_yn {
+        color: #101010;
+    }
+</style>
+<div class="maxy_popup_common front" id="{{id}}">
+    <div class="maxy_popup_grid_s_wrap">
+        <div class="maxy_popup_title_wrap front">
+            <div class="maxy_popup_title_left">
+                <img alt="" class="icon_user_profiling">
+                <span>User Profiling</span>
+            </div>
+        </div>
+
+        <div class="maxy_front_popup_content_wrap">
+            <div class="user_info_wrap maxy_box">
+                <div class="content_wrap">
+                    <div class="top">
+                        <div class="info-item">
+                            <div class="key">
+                                <img class="icon_url_b">
+                                <span>Access</span>
+                            </div>
+                            <span class="text" id="parentLogDate"></span>
+                        </div>
+                        <div class="info-item">
+                            <div class="key">
+                                <img class="icon_feeldex_p">
+                                <span>Feeldex</span>
+                            </div>
+                            <span class="feeldex" id="feeldex"></span>
+                        </div>
+                    </div>
+                    <div class="bot">
+                        <div class="info-item">
+                            <div class="key">
+                                <img class="icon_info_b">
+                                <span>Browser</span>
+                            </div>
+                            <span class="text" id="browser"></span>
+                        </div>
+                        <div class="info-item">
+                            <div class="key">
+                                <img class="icon_use_type_b">
+                                <span>Use Type</span>
+                            </div>
+                            <span class="text" id="platform"></span>
+                        </div>
+                        <div class="info-item">
+                            <div class="key">
+                                <img class="icon_os_type_b">
+                                <span>OS</span>
+                            </div>
+                            <span class="text" id="os"></span>
+                        </div>
+                        <div class="info-item">
+                            <div class="key">
+                                <img class="icon_device_type_b">
+                                <span>Device</span>
+                            </div>
+                            <span class="text" id="deviceModel"></span>
+                        </div>
+                        <div class="info-item">
+                            <div class="key">
+                                <img class="icon_location_b">
+                                <span>Location</span>
+                            </div>
+                            <span class="text" id="timezone"></span>
+                        </div>
+                        <div class="info-item">
+                            <div class="key">
+                                <img class="icon_user_id_b">
+                                <span>User ID</span>
+                            </div>
+                            <span class="text" id="userId"></span>
+                        </div>
+                        <div class="info-item">
+                            <div class="key">
+                                <img class="icon_user_ip_b">
+                                <span>User IP</span>
+                            </div>
+                            <span class="text" id="ip"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="core_vital_txt_wrap">
+                <div class="vital">
+                    <div class="title">Largest Contentful Paint</div>
+                    <div class="value" id="lcp"></div>
+                </div>
+                <div class="vital">
+                    <div class="title">Interaction to Next Paint</div>
+                    <div class="value" id="inp"></div>
+                </div>
+                <div class="vital">
+                    <div class="title">Cumulative Layout Shift</div>
+                    <div class="value" id="cls"></div>
+                </div>
+            </div>
+            <div class="history_wrap">
+                <div class="bold">Session History</div>
+
+                <div class="type_tab">
+                    <button class="selected tab" data-type="performance">Performance</button>
+                    <button class="tab" data-type="history">History</button>
+                </div>
+                <div class="content_wrap performance" id="performance">
+                    <div class="enable_scrollbar" id="performanceList"></div>
+                </div>
+                <div class="content_wrap history" id="history">
+                    <div class="enable_scrollbar tabulator-no-hover" id="historyList"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 상세 정보를 표시할 컨테이너 -->
+    <div class="maxy_popup_gray_bg_wrap popup_right_side_wrap">
+        <div class="maxy_popup_title_wrap">
+            <div class="maxy_popup_title_left">
+                <img class="img_profiling" alt="" src="">
+                <span class="title" id="title">Profiling / </span>
+                <span>Page Loading</span>
+            </div>
+            <div class="maxy_popup_title_right">
+                <img alt="" class="btn_front_page_flow" id="btnPageFlow">
+            </div>
+        </div>
+        <div class="web_chart_wrap">
+            <div class="user_info_wrap maxy_box">
+                <div class="content_wrap">
+                    <div class="top">
+                        <div class="item all">
+                            <div class="key">
+                                <img class="icon_url">
+                                <span>Target URL</span>
+                            </div>
+                            <div class="url enable_scrollbar" id="reqUrl"></div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="web_vital_wrap maxy_box dv5_wrap" id="{{id}}__{{topChartId}}">
+
+            </div>
+            <div class="web_performance_wrap maxy_box" id="{{id}}__{{botChartId}}">
+
+            </div>
+        </div>
+    </div>
+</div>

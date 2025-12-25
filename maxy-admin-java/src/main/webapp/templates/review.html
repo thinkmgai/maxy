@@ -1,0 +1,79 @@
+<style>
+.review_list_wrap .user_box {
+    margin-bottom: 1em;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.review_list_wrap .star_box {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+.review_list_wrap .star_box img {
+    width: 14px;
+}
+
+.review_list_wrap .star_box .dt {
+    font-size: 12px;
+    color: #808080;
+}
+
+.review_list_wrap .comment_box {
+    margin-top: 10px;
+}
+
+.review_list_wrap .admin_comment {
+    margin-top: 1em;
+}
+
+.review_list_wrap .admin_comment > input[type="text"] {
+    width: 100%;
+}
+
+.review_list_wrap .admin_comment .comment_btns {
+    display: flex;
+    gap: 1em;
+    margin-top: .5em;
+    justify-content: flex-end;
+}
+
+.gm_mini_box.trend_wrap {
+    margin-bottom: 0;
+}
+</style>
+
+{{#reviewList}}
+    <ul class="review_list_wrap">
+        <li class="user_box">
+            <img src="/images/maxy/img-common-user.svg" alt="" width="25px">
+            <span class="user_id">{{setName name}}</span>
+        </li>
+        <li class="star_box">
+            <div>
+                {{setStar rating}}
+            </div>
+            <span class="dt">{{tsToDttm updatedDateTs updatedDate}}</span>
+        </li>
+        <li class="comment_box">
+            <span class="comment">{{content}}</span>
+        </li>
+<!--        {{#if (isNeedReplyBox replyContent)}}-->
+<!--        {{#if (isEmptyReply replyContent)}}-->
+<!--        <li class="admin_comment comp">-->
+<!--            <p>관리자</p>-->
+<!--            <span>{{replyContent}}</span>-->
+<!--        </li>-->
+<!--        {{/if}}-->
+<!--        <li class="admin_comment">-->
+<!--            <input type="text" placeholder="Reply to this review" id="r{{id}}">-->
+<!--            <div class="comment_btns">-->
+<!--                <button id="{{id}}" class="doSave" data-id="{{id}}">저장</button><button>취소</button>-->
+<!--            </div>-->
+<!--        </li>-->
+<!--        {{/if}}-->
+    </ul>
+
+{{/reviewList}}

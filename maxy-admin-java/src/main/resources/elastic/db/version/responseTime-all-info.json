@@ -1,0 +1,82 @@
+{
+  "size": 0,
+  "aggs": {
+    "res": {
+      "composite": {
+        "sources": [
+          {
+            "osType": {
+              "terms": {
+                "field": "osType",
+                "order": "desc"
+              }
+            }
+          },
+          {
+            "appVer": {
+              "terms": {
+                "field": "appVer",
+                "order": "desc"
+              }
+            }
+          }
+        ],
+        "size": 1000
+      },
+      "aggs": {
+        "responseTime": {
+          "avg": {
+            "field": "intervaltime"
+          }
+        }
+      }
+    }
+  },
+  "query": {
+    "bool": {
+      "filter": [
+        {
+          "term": {
+            "packageNm": #{packageNm}
+          }
+        },
+        {
+          "term": {
+            "serverType": #{serverType}
+          }
+        },
+        {
+          "terms": {
+            "osType": #{_rawOsType}
+          }
+        },
+        {
+          "terms": {
+            "appVer": #{_rawAppVer}
+          }
+        },
+        {
+          "terms": {
+            "logType": ["524291", "8388612", "8388613", "524292"]
+          }
+        },
+        {
+          "range": {
+            "intervaltime": {
+              "gte": 0
+            }
+          }
+        },
+        {
+          "range": {
+            "logTm": {
+              "gte": #{from},
+              "lte": #{to},
+              "time_zone": "Z"
+            }
+          }
+        }
+      ]
+    }
+  }
+}

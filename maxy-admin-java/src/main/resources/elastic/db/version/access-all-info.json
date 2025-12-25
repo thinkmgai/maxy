@@ -1,0 +1,65 @@
+{
+  "size": 0,
+  "aggs": {
+    "res": {
+      "composite": {
+        "sources": [
+          {
+            "osType": {
+              "terms": {
+                "field": "osType",
+                "order": "desc"
+              }
+            }
+          },
+          {
+            "appVer": {
+              "terms": {
+                "field": "appVer",
+                "order": "desc"
+              }
+            }
+          }
+        ],
+        "size": 1000
+      },
+      "aggs": {
+        "install": {
+          "filter": {
+            "term": {
+              "appCreateYn": "Y"
+            }
+          }
+        }
+      }
+    }
+  },
+  "query": {
+    "bool": {
+      "filter": [
+        {
+          "term": {
+            "packageNm": #{packageNm}
+          }
+        },
+        {
+          "term": {
+            "serverType": #{serverType}
+          }
+        },
+        #[isOsType]
+        {
+          "term": {
+            "osType": #{osType}
+          }
+        },
+        #[/isOsType]
+        {
+          "terms": {
+            "accessDate": #{_rawAccessDate}
+          }
+        }
+      ]
+    }
+  }
+}

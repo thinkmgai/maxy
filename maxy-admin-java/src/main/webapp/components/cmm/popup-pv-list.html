@@ -1,0 +1,183 @@
+<!--
+    종합 분석 > PV Equalizer 팝업
+    로그 분석 > PV > 팝업
+-->
+<style>
+    .maxy_popup_common .tabulator {
+        overflow: visible;
+    }
+
+    .maxy_popup_common .maxy_popup_title_wrap .maxy_popup_title_right {
+        min-width: auto;
+    }
+
+    .maxy_popup_common .tabulator-table {
+        background: none !important;
+    }
+
+    .dark_mode .tabulator .tabulator-tableholder .tabulator-table {
+        background: none !important;
+    }
+
+    .log_info_box {
+        height: 100px;
+    }
+
+    .log_info_box .log_info_text_wrap {
+        display: grid;
+        grid-template-columns: 10% 90%;
+    }
+
+    .log_info_box .log_info_text_wrap h4 {
+        text-align: left;
+    }
+
+    .maxy_popup_common .summary_dv_wrap #title {
+        flex: 0 0 auto; /* grow:0, shrink:1, basis:auto */
+        white-space: nowrap;
+        line-height: normal;
+        overflow: auto;
+        display: block;
+        font-weight: bold;
+    }
+
+    .log_info_box .log_info_text_wrap h4 {
+        margin-bottom: 0 !important;
+    }
+
+    .device_info.user_id {
+        display: none;
+    }
+
+    .tooltip_title {
+        line-height: 16px;
+        font-size: 12px;
+        font-weight: 700;
+        font-family: "Pretendard", sans-serif;
+    }
+
+    .tooltip_content {
+        line-height: 15px;
+        font-family: "Pretendard", sans-serif;
+        font-size: 12px;
+    }
+
+    .tooltip-circle {
+        display: inline-block;
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        margin-right: 5px;
+    }
+
+    .maxy_popup_common .maxy_popup_grid_s_wrap {
+        display: flex;
+        height: 100%;
+        flex-direction: column;
+        gap: 0.5em;
+    }
+
+    /* 제목 영역 - 고정 높이 */
+    .maxy_popup_common .maxy_popup_grid_s_wrap .maxy_popup_title_wrap {
+        flex: 0 0 auto; /* 내용에 맞게 높이 자동 조정 */
+    }
+
+    /* 요약 정보 영역 - 고정 높이 */
+    .maxy_popup_common .maxy_popup_grid_s_wrap .summary_dv_wrap {
+        flex: 0 0 auto; /* 내용에 맞게 높이 자동 조정 */
+    }
+
+    /* 리스트 영역 - 가변 높이 (전체 공간의 50%) */
+    .maxy_popup_common .maxy_popup_grid_s_wrap .list {
+        flex: 5; /* 비율 5 */
+        min-height: 0; /* 필수: flex 아이템이 컨테이너보다 작아질 수 있도록 함 */
+        overflow: auto; /* 내용이 넘칠 경우 스크롤 표시 */
+    }
+
+    /* 페이징 버튼 영역 - 고정 높이 */
+    .maxy_popup_common .maxy_popup_grid_s_wrap .paging_btn_wrap {
+        flex: 0 0 auto; /* 내용에 맞게 높이 자동 조정 */
+        margin-top: 0;
+        margin-bottom: 1em;
+    }
+
+    /* 차트 영역 - 가변 높이 (전체 공간의 40%) */
+    .maxy_popup_common .maxy_popup_grid_s_wrap .chart {
+        flex: 4; /* 비율 4 */
+        min-height: 0; /* 필수: flex 아이템이 컨테이너보다 작아질 수 있도록 함 */
+    }
+</style>
+
+<div class="maxy_popup_common" id="{{id}}__popup">
+    <div class="maxy_popup_grid_s_wrap">
+        <div class="maxy_popup_title_wrap">
+            <div class="maxy_popup_title_left">
+                <img class="maxy_popup_analysis_icon" alt="">
+                <span class="popup_title">Analysis/</span>
+                <span>{{popupType}}</span>
+                <span id="count" class="popup_count"></span>
+                <div class="device_info_wrap cursor_pointer">
+                    <div class="device_info" id="deviceModel">
+                        <i class="icon_device" id="iconDevice"></i>
+                        <span class="device_name" id="logInfo__deviceModel">-</span>
+                    </div>
+                    <div class="device_info" id="pvAppVer">
+                        <i class="icon_gear"></i>
+                        <span id="logInfo__appVer">-</span>
+                    </div>
+                    <div class="device_info" id="osVer">
+                        <i class="" id="iconOsVer"></i>
+                        <span id="logInfo__osVer">-</span>
+                    </div>
+                    <div class="device_info" id="comSensitivity">
+                        <i class="icon_network"></i>
+                        <span id="logInfo__comSensitivity">-</span>
+                    </div>
+                    <div class="device_info" id="cpuUsage">
+                        <i class="icon_cpu"></i>
+                        <span id="logInfo__cpuUsage">-</span>
+                    </div>
+                    <div class="device_info" id="memoryUsage">
+                        <i class="icon_memory"></i>
+                        <span id="logInfo__memUsage">-</span>
+                    </div>
+                    <div class="device_info user_id" id="userId">
+                        <i class="icon_user"></i>
+                        <span id="logInfo__userId">-</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="maxy_popup_title_right">
+                <img class="btn_page_flow" id="btnPageFlow" alt="">
+            </div>
+        </div>
+
+        <div class="summary_dv_wrap">
+            <div>
+                <span id="title">{{pageNm}}</span>
+                <span id="reqUrl" class="url">{{reqUrl}}</span>
+                <button class="btn_alias"></button>
+            </div>
+            <div class="dv_count">
+                <div>
+                    <h4 data-t="dashboard.bi.pageview"></h4>
+                    <div id="pPageView"></div>
+                </div>
+                <div>
+                    <h4 data-t="dashboard.bi.viewer"></h4>
+                    <div id="pViewer"></div>
+                </div>
+
+            </div>
+        </div>
+
+        <div id="{{id}}__logList" class="list"></div>
+        <div id="buttonDiv" class="paging_btn_wrap">
+            <button class="btn_move_page tabulator-page" id="btnLoadData" data-t="common.btn.prev"></button>
+            <button class="btn_move_page tabulator-page" id="btnLoadDatas" data-t="common.btn.next"></button>
+        </div>
+
+        <div id="{{id}}__logChart" class="chart"></div>
+    </div>
+</div>

@@ -1,0 +1,15 @@
+.device-distribution-modal__table {
+  min-width: 880px;
+}
+
+.device-distribution-modal__table th.device-distribution-modal__col--os,
+.device-distribution-modal__table td.device-distribution-modal__col--os {
+  width: 12%;
+  text-align: left;
+}
+
+.device-distribution-modal__table th.device-distribution-modal__col--model,
+.device-distribution-modal__table td.device-distribution-modal__col--model {
+  width: 26%;
+  text-align: left;
+}

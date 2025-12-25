@@ -1,0 +1,64 @@
+{
+  "size": 9999,
+  "query": {
+    "bool": {
+      "filter": [
+        {
+          "term": {
+            "packageNm": #{packageNm}
+          }
+        },
+        {
+          "term": {
+            "serverType": #{serverType}
+          }
+        },
+        {
+          "term": {
+            "deviceId.raw": #{deviceId}
+          }
+        },
+        #[isOsType]
+        {
+          "term": {
+            "osType": #{osType}
+          }
+        },
+        #[/isOsType]
+        {
+          "range": {
+            "logTm": {
+              "gte": #{fromDt},
+              "lte": #{toDt},
+              "time_zone": "Z"
+            }
+          }
+        }
+      ]
+    }
+  },
+  "sort": [
+    {
+      "logTm": {
+        "order": "asc"
+      }
+    }
+  ]
+  , "_source": {
+      "includes": [
+        "logTm",
+        "deviceId",
+        "deviceModel",
+        "userId",
+        "logType",
+        "appVer",
+        "reqUrl",
+        "userNo",
+        "clientNm",
+        "clientNo",
+        "birthDay",
+        "bizCode",
+        "bizSubCode"
+      ]
+  }
+}

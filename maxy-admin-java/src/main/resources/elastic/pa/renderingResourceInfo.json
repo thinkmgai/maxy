@@ -1,0 +1,55 @@
+{
+  "size": 9999,
+  "query": {
+    "bool": {
+      "must": [
+        {
+          "term": {
+            "packageNm": #{packageNm}
+          }
+        },
+        {
+          "term": {
+            "serverType": #{serverType}
+          }
+        },
+        #[isOsType]
+        {
+          "term": {
+            "osType": #{osType}
+          }
+        },
+        #[/isOsType]
+        #[isReqUrl]
+        {
+          "term": {
+            "reqUrl.raw": #{reqUrl}
+          }
+        },
+        #[/isReqUrl]
+        {
+          "range": {
+            "logTm": {
+              "gte": #{pageStartTm},
+              "lte": #{pageEndTm},
+              "time_zone": "Z"
+            }
+          }
+        },
+        {
+          "term": {
+            "deviceId.raw": #{deviceId}
+          }
+        }
+      ]
+    }
+  },
+  "sort": [
+    {
+      "logTm": {
+        "order": "asc"
+      }
+    }
+  ],
+  "_source": ["resMsg"]
+}

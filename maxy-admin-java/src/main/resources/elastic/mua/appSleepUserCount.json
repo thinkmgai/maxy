@@ -1,0 +1,45 @@
+{
+  "aggs": {
+    "sleepCount": {
+      "date_range": {
+        "field": "sleepDate",
+        "ranges": [
+          {
+            "from": "now/d",
+            "to": "now"
+          }
+        ],
+        "time_zone": "Asia/Seoul"
+      }
+    }
+  },
+  "size": 0,
+  "query": {
+    "bool": {
+      "filter": [
+        {
+          "term": {
+            "packageNm": #{packageNm}
+          }
+        },
+        {
+          "term": {
+            "serverType": #{serverType}
+          }
+        },
+        #[isAppVer]
+        {
+          "term": {
+            "appVer": #{appVer}
+          }
+        },
+        #[/isAppVer]
+        {
+          "term": {
+            "deviceSt": "S"
+          }
+        }
+      ]
+    }
+  }
+}

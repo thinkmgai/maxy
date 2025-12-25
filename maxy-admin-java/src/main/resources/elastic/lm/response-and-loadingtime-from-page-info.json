@@ -1,0 +1,56 @@
+{
+  "query": {
+    "bool": {
+      "filter": [
+        {
+          "term": {
+            "packageNm": {
+              "value": #{packageNm}
+            }
+          }
+        },
+        {
+          "term": {
+            "serverType": {
+              "value": #{serverType}
+            }
+          }
+        },
+        #[isOsType]
+        {
+          "term": {
+            "osType": #{osType}
+          }
+        },
+        #[/isOsType]
+        {
+          "term": {
+            "deviceId.raw": {
+              "value": #{deviceId}
+            }
+          }
+        },
+        {
+          "range": {
+            "pageStartTm": {
+              "lte": #{from},
+              "time_zone": "Z"
+            }
+          }
+        },
+        {
+          "range": {
+            "pageEndTm": {
+              "gte": #{from},
+              "time_zone": "Z"
+            }
+          }
+        }
+      ]
+    }
+  },
+  "_source": [
+    "loadingTime",
+    "responseTime"
+  ]
+}

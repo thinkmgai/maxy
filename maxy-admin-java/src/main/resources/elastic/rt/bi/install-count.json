@@ -1,0 +1,43 @@
+{
+  "query": {
+    "bool": {
+      "filter": [
+        {
+          "term": {
+            "packageNm": #{packageNm}
+          }
+        },
+        {
+          "term": {
+            "serverType": #{serverType}
+          }
+        },
+        #[isOsType]
+        {
+          "term": {
+            "osType": #{osType}
+          }
+        },
+        #[/isOsType]
+        #[isAppVer]
+        {
+          "term": {
+            "appVer": #{appVer}
+          }
+        },
+        #[/isAppVer]
+        {
+          "range": {
+            "createdDate": {
+              "from": #{fromTimestamp},
+              "to": #{toTimestamp},
+              "include_lower": true,
+              "include_upper": true,
+              "time_zone": "Z"
+            }
+          }
+        }
+      ]
+    }
+  }
+}

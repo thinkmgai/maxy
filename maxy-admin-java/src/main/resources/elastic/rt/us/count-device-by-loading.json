@@ -1,0 +1,55 @@
+{
+  "aggs": {
+    "res": {
+      "terms": {
+        "field": "deviceModel",
+        "order": {
+          "avg": "desc"
+        },
+        "size": 10
+      },
+      "aggs": {
+        "avg": {
+          "avg": {
+            "field": "loadingTime"
+          }
+        }
+      }
+    }
+  },
+  "size": 0,
+  "query": {
+    "bool": {
+      "filter": [
+        {
+          "term": {
+            "packageNm": #{packageNm}
+          }
+        },
+        {
+          "term": {
+            "serverType": #{serverType}
+          }
+        },
+        #[isAppVer]
+        {
+          "term": {
+            "appVer": #{appVer}
+          }
+        },
+        #[/isAppVer]
+        {
+          "range": {
+            "pageStartTm": {
+              "from": #{fromTimestamp},
+              "to": #{toTimestamp},
+              "include_lower": true,
+              "include_upper": true,
+              "time_zone": "Z"
+            }
+          }
+        }
+      ]
+    }
+  }
+}

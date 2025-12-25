@@ -1,0 +1,22 @@
+{{#data}}
+<div class="config_list_item" id="item__{{id}}">
+    <div class="list_item">
+        <span>Target Key: {{reqUrl}}</span>
+    </div>
+    <div class="list_item" style="width:20%;">
+        <div>
+            <span>{{fromHour}}시 {{fromMin}}분</span>
+        </div>
+        <div>
+            <span>~</span>
+        </div>
+        <div>
+            <span>{{toHour}}시 {{toMin}}분</span>
+        </div>
+    </div>
+    <div class="list_item" style="width:29%;">
+        <span>Interval: {{interval}} 분</span>
+        <button onclick="SM0700.func.key.delete({{id}})"><img src="/images/maxy/icon-delete.svg" alt="-"></button>
+    </div>
+</div>
+{{/data}}

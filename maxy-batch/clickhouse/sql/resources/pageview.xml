@@ -1,0 +1,55 @@
+<mapper namespace="pageview">
+  <select id="selectTopCrashByPage">
+    <![CDATA[
+    SELECT
+        package_id AS package_nm,
+        server_type AS server_type,
+        os_type AS os_type,
+        page_name AS page_url,
+        sumMerge(sum_crash_count) AS crash_count
+    FROM maxy_page_daily
+    WHERE log_date = today()
+    GROUP BY package_id, server_type, os_type, page_name
+    HAVING page_url != ''
+      AND crash_count > 0
+    ORDER BY crash_count DESC
+    LIMIT 15 BY package_id, server_type, os_type
+    ]]>
+  </select>
+
+  <select id="selectTopErrorByPage">
+    <![CDATA[
+    SELECT
+        package_id AS package_nm,
+        server_type AS server_type,
+        os_type AS os_type,
+        page_name AS page_url,
+        sumMerge(sum_error_count) AS error_count
+    FROM maxy_page_daily
+    WHERE log_date = today()
+    GROUP BY package_id, server_type, os_type, page_name
+    HAVING page_url != ''
+      AND error_count > 0
+    ORDER BY error_count DESC
+    LIMIT 15 BY package_id, server_type, os_type
+    ]]>
+  </select>
+
+  <select id="selectTopLogByPage">
+    <![CDATA[
+    SELECT
+        package_id AS package_nm,
+        server_type AS server_type,
+        os_type AS os_type,
+        page_name AS page_url,
+        sumMerge(sum_log_count) AS log_count
+    FROM maxy_page_daily
+    WHERE log_date = today()
+    GROUP BY package_id, server_type, os_type, page_name
+    HAVING page_url != ''
+      AND log_count > 0
+    ORDER BY log_count DESC
+    LIMIT 15 BY package_id, server_type, os_type
+    ]]>
+  </select>
+</mapper>

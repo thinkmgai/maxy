@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkm.maxy.mapper.PackageMapper">
+
+    <select id="selectSuperUsers" resultType="PackageVO" parameterType="PackageVO">
+        select user_no
+        from maxy_user
+        where role_gbn = '0011'
+          and delete_yn = 'N';
+    </select>
+    <select id="selectOsTypeListByAppInfo" resultType="PackageVO" parameterType="PackageVO">
+        select distinct (os_type)
+        from maxy.maxy_app_ver
+        where package_nm = #{packageNm}
+          and server_type = #{serverType}
+          and os_type != 'A'
+    </select>
+
+    <select id="selectAllUseAppInfo" resultType="PackageVO">
+        select package_nm, server_type, display_nm
+        from maxy_app_package
+        where use_yn = 'Y'
+    </select>
+
+    <select id="selectAppInfoList" resultType="PackageVO">
+        SELECT
+            app.package_nm,
+            app.server_type,
+            app.display_nm,
+            app.monitoring_yn,
+            app.use_yn,
+            app.zip_yn,
+            app.full_msg_yn,
+            app.full_req_msg_yn,
+            app.info_yn,
+            app.integration_yn,
+            app.s_replay_yn,
+            app.app_type,
+            app.log_bundle_unit,
+            app.log_period,
+            app.page_log_period,
+            app.session_log_period,
+            app.reg_dt,
+            app.reg_id,
+            app.`order`,
+            app.logging_rate,
+            app.logging_rate_mobile,
+            app.logging_rate_pc,
+            app.session_rate_mobile,
+            app.session_rate_pc,
+            app.session_based_criteria,
+            feeldex.lcp,
+            feeldex.inp,
+            feeldex.cls
+        FROM maxy_app_package app
+                 LEFT JOIN maxy_front_feeldex_config feeldex
+                           ON app.package_nm = feeldex.package_nm
+                               AND app.server_type = feeldex.server_type
+        ORDER BY app.`order`
+    </select>
+
+    <insert id="insertAppInfo" parameterType="PackageVO">
+        replace into maxy_app_package (package_nm,
+                                       server_type,
+                                       display_nm,
+                                       monitoring_yn,
+                                       use_yn,
+                                       zip_yn,
+                                       full_msg_yn,
+                                       full_req_msg_yn,
+                                       info_yn,
+                                       integration_yn,
+                                       s_replay_yn,
+                                       app_type,
+                                       log_bundle_unit,
+                                       log_period,
+                                       page_log_period,
+                                       session_log_period,
+                                       `order`,
+                                       logging_rate,
+                                       logging_rate_mobile,
+                                       logging_rate_pc,
+                                       session_rate_mobile,
+                                       session_rate_pc,
+                                       session_based_criteria,
+                                       reg_dt,
+                                       reg_id)
+        values (#{packageNm},
+                #{serverType},
+                #{displayNm},
+                #{monitoringYn},
+                #{useYn},
+                #{zipYn},
+                #{fullMsgYn},
+                #{fullReqMsgYn},
+                #{infoYn},
+                #{integrationYn},
+                #{sReplayYn},
+                #{appType},
+                #{logBundleUnit},
+                #{logPeriod},
+                #{pageLogPeriod},
+                #{sessionLogPeriod},
+                #{order},
+                #{loggingRateMobile},
+                #{loggingRateMobile},
+                #{loggingRatePc},
+                #{sessionRateMobile},
+                #{sessionRatePc},
+                #{sessionBasedCriteria},
+                #{regDt},
+                #{userNo})
+    </insert>
+
+    <insert id="insertAppUser" parameterType="PackageVO">
+        insert into maxy_app_package_user (package_nm,
+                                           server_type,
+                                           user_no,
+                                           use_yn)
+        values (#{packageNm},
+                #{serverType},
+                #{userNo},
+                #{useYn})
+    </insert>
+
+    <update id="updateAppUser" parameterType="PackageVO">
+        update maxy_app_package_user
+        set use_yn = #{useYn}
+        where package_nm = #{packageNm}
+          and server_type = #{serverType}
+    </update>
+
+    <insert id="insertAllAppVer" parameterType="PackageVO">
+        replace into maxy_app_ver (package_nm,
+                                   server_type,
+                                   os_type,
+                                   app_ver,
+                                   use_yn,
+                                   reg_dt)
+        values (#{packageNm},
+                #{serverType},
+                'A',
+                'A',
+                'Y',
+                #{regDt})
+    </insert>
+
+    <select id="selectAppInfoUser" resultType="int" parameterType="PackageVO">
+        select count(1)
+        from maxy_app_package_user
+        where package_nm = #{packageNm}
+          and server_type = #{serverType}
+    </select>
+
+    <select id="selectAppInfoUserList">
+        select seq,
+               package_nm,
+               server_type,
+               user_no,
+               use_yn
+        from maxy_app_package_user
+        where package_nm = #{packageNm}
+          and server_type = #{serverType}
+    </select>
+
+    <delete id="deleteAppInfo" parameterType="PackageVO">
+        delete
+        from maxy_app_package
+        where package_nm = #{packageNm}
+          and server_type = #{serverType}
+    </delete>
+
+    <delete id="deleteAppInfoUser" parameterType="PackageVO">
+        delete
+        from maxy_app_package_user
+        where package_nm = #{packageNm}
+          and server_type = #{serverType}
+    </delete>
+
+    <delete id="deleteAppVer" parameterType="PackageVO">
+        delete
+        from maxy_app_ver
+        where package_nm = #{packageNm}
+          and server_type = #{serverType}
+    </delete>
+
+    <select id="selectSessionReplayRule" resultType="SessionReplayRuleVO">
+        select
+            seq,
+            package_nm,
+            server_type,
+            selector,
+            target,
+            remark,
+            use_yn,
+            reg_dt
+        from maxy_session_replay_block_target
+        where package_nm = #{packageNm}
+        and server_type = #{serverType}
+    </select>
+
+    <insert id="insertSessionReplayRule" parameterType="SessionReplayRuleVO">
+        insert into maxy_session_replay_block_target (package_nm,
+                                                      server_type,
+                                                      selector,
+                                                      target,
+                                                      remark,
+                                                      use_yn,
+                                                      reg_dt,
+                                                      reg_no)
+        values (#{packageNm},
+                #{serverType},
+                #{selector},
+                #{target},
+                #{remark},
+                #{useYn},
+                #{regDt},
+                #{userNo})
+    </insert>
+
+    <delete id="deleteSessionReplayRule" parameterType="SessionReplayRuleVO">
+        delete from maxy_session_replay_block_target
+        where seq = ${seq}
+    </delete>
+</mapper>

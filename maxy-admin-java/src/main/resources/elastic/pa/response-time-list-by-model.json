@@ -1,0 +1,57 @@
+{
+  "size": 10000,
+  "query": {
+    "bool": {
+      "filter": [
+        {
+          "terms": {
+            "logType": ["8388612", "524291"]
+          }
+        },
+        {
+          "term": {
+            "packageNm": #{packageNm}
+          }
+        },
+        {
+          "term": {
+            "serverType": #{serverType}
+          }
+        },
+        #[isOsType]
+        {
+          "term": {
+            "osType": #{osType}
+          }
+        },
+        #[/isOsType]
+        {
+          "term": {
+            "deviceModel": #{deviceModel}
+          }
+        },
+        {
+          "term": {
+            "reqUrl.raw": #{reqUrl}
+          }
+        },
+        {
+          "range": {
+            "logTm": {
+              "gte": #{from},
+              "lte": #{to},
+              "time_zone": "Z"
+            }
+          }
+        }
+      ]
+    }
+  },
+  "sort": [
+    {
+      "logTm": {
+        "order": "desc"
+      }
+    }
+  ]
+}

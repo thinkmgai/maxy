@@ -1,0 +1,66 @@
+{
+  "size": #{size},
+  "query": {
+    "bool": {
+      "must_not": [
+        {
+          "term": {
+            "intervaltime": 0
+          }
+        }
+      ],
+      "filter": [
+        {
+          "term": {
+            "packageNm": #{packageNm}
+          }
+        },
+        {
+          "term": {
+            "serverType": #{serverType}
+          }
+        },
+        #[isOsType]
+        {
+          "term": {
+            "osType": #{osType}
+      }
+        },
+        #[/isOsType]
+        {
+          "range": {
+            "pageEndTm": {
+              "from": #{fromTimestamp},
+              "to": #{toTimestamp},
+              "include_lower": true,
+              "include_upper": true,
+              "time_zone": "Z"
+            }
+          }
+        }
+      ]
+    }
+  },
+  "_source": [
+    "logType",
+    "reqUrl",
+    "intervaltime",
+    "deviceId",
+    "deviceModel",
+    "appVer",
+    "comType",
+    "avgComSensitivity",
+    "avgCpuUsage",
+    "simOperatorNm",
+    "pageStartTm",
+    "pageEndTm",
+    "userId",
+    "userNm",
+    "birthDay",
+    "clientNm",
+    "loadingTime"
+  ],
+"sort": [
+  {"pageEndTm": "DESC"}
+]
+}

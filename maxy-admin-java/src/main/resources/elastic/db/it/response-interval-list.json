@@ -1,0 +1,76 @@
+{
+  "size": #{size},
+  "query": {
+    "bool": {
+      "minimum_should_match": 1,
+      "must_not": [
+        {
+          "term": {
+            "intervaltime": 0
+          }
+        }
+      ],
+      "should": [
+        {
+          "term": {
+            "logType": "524291"
+          }
+        },
+        {
+          "term": {
+            "logType": "8388612"
+          }
+        }
+      ],
+      "filter": [
+        {
+          "term": {
+            "packageNm": #{packageNm}
+          }
+        },
+        {
+          "term": {
+            "serverType": #{serverType}
+          }
+        },
+        #[isOsType]
+        {
+          "term": {
+            "osType": #{osType}
+      }
+        },
+        #[/isOsType]
+        {
+          "range": {
+            "logTm": {
+              "to": #{toTimestamp},
+              "include_lower": true,
+              "include_upper": true,
+              "time_zone": "Z"
+            }
+          }
+        }
+      ]
+    }
+  },
+  "_source": [
+    "logType",
+    "reqUrl",
+    "intervaltime",
+    "deviceId",
+    "deviceModel",
+    "appVer",
+    "comType",
+    "comSensitivity",
+    "cpuUsage",
+    "simOperatorNm",
+    "logTm",
+    "userId",
+    "userNm",
+    "birthDay",
+    "clientNm"
+  ],
+  "sort": [
+    {"logTm": "DESC"}
+]
+}

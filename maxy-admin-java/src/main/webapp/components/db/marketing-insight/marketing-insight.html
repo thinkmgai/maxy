@@ -1,0 +1,90 @@
+<style>
+    .marketing_insight_tooltip_name {
+        line-height: 16px;
+        font-size: 12px;
+        font-weight: 700;
+        font-family: "Pretendard", sans-serif;
+    }
+
+    .marketing_insight_tooltip {
+        line-height: 15px;
+        font-family: "Pretendard", sans-serif;
+        font-size: 12px;
+    }
+
+    @media screen and (max-height: 816px) {
+        #maxyComponent__MARKETING_INSIGHT .maxy_component_item {
+            max-height: 26vh;
+        }
+    }
+
+    #maxyComponent__MARKETING_INSIGHT .maxy_component_item {
+        max-height: 27vh;
+    }
+
+    .tooltip-circle {
+        display: inline-block;
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        margin-right: 5px;
+    }
+
+    .tooltip-circle.user {
+        background-color: #FFF; /* 예시 색상 */
+        border: 1px solid #000;
+    }
+
+    .tooltip-circle.reach {
+        background-color: var(--logo-purple-1);
+    }
+
+    .tooltip-circle.bounce {
+        background-color: #CA4A4A;
+    }
+
+    /* 툴팁 내에서 b 태그 스타일이 정상적으로 적용되도록 하기 */
+    .highcharts-tooltip b {
+        font-weight: bold;
+    }
+
+    /* Marketing Insight 헤더 레이아웃 */
+    #maxyComponent__MARKETING_INSIGHT .header_title {
+        display: flex;
+        align-items: center;
+        width: 100%;
+    }
+
+    #maxyComponent__MARKETING_INSIGHT .header_title h4 {
+        margin: 0;
+        display: inline-block;
+    }
+
+    #maxyComponent__MARKETING_INSIGHT .header_title .ic_question {
+        margin-left: 8px;
+        display: inline-block;
+    }
+
+    #maxyComponent__MARKETING_INSIGHT .header_title .maxy_component_btn_wrap {
+        margin-left: auto !important;
+        display: inline-block;
+    }
+</style>
+<div class="maxy_component_wrap" id="maxyComponent__MARKETING_INSIGHT">
+    <div class="maxy_component_header flex_column">
+        <div class="header_title">
+            <h4>{{fmtTitle}}</h4>
+            <img class="ic_question" alt="?">
+            <div class="maxy_component_btn_wrap" style="margin-left: auto">
+                <button class="maxy_component_btn" data-btn="all">ALL</button>
+            </div>
+        </div>
+        <div class="header_title">
+            <div class="maxy_component_subtitle">
+                <span data-loc="pre" data-pre-url=""></span>
+                <span data-loc="req" data-req-url=""></span>
+            </div>
+        </div>
+    </div>
+    <div class="maxy_component_item" id="{{id}}__chart"></div>
+</div>

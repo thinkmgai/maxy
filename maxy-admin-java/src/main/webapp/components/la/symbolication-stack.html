@@ -1,0 +1,37 @@
+<!-- Symbolication Stack 템플릿 -->
+<!-- items가 있으면 성공으로 간주하여 테이블 형식으로 데이터 표시 -->
+<!-- items가 없으면 error로 간주하여 에러 메시지 표시 -->
+{{#if error}}
+<!-- 에러 발생 시 에러 메시지 표시 -->
+<div class="error-container">
+    <div class="error-message">
+        <h4 data-t="common.msg.symbolError"></h4>
+        <p class="error-detail">{{error}}</p>
+    </div>
+</div>
+{{else}}
+<!-- 정상 데이터가 있을 때 테이블 형식으로 표시 -->
+<table class="log_stack_table">
+    <thead>
+    <tr>
+        <th>Stack Frame Number</th>
+        <th>Module</th>
+        <th>Stack Address</th>
+        <th>Symbol</th>
+        <th>Symbol Path</th>
+    </tr>
+    </thead>
+    <tbody class="enable_scrollbar">
+    <!-- 객체 배열 형태의 데이터 처리 -->
+    {{#each items}}
+    <tr>
+        <td>{{stackFrameNumber}}</td>
+        <td>{{appName}}</td>
+        <td>{{crashMemory}}</td>
+        <td>{{exceptionName}}</td>
+        <td>{{exceptionPath}}:{{exceptionLine}}</td>
+    </tr>
+    {{/each}}
+    </tbody>
+</table>
+{{/if}}

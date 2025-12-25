@@ -1,0 +1,715 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkm.maxy.mapper.DashboardMapper">
+
+    <!--  baseDate ~ 현재까지의 log count 집계  -->
+    <select id="selectLogCountFromBiDayInfo" parameterType="DashboardVO" resultType="DashboardVO">
+        select base_date, app_log_count, app_error_count, app_crash_count
+        from maxy_bi_day_info
+        where base_date between #{fromDt} and #{toDt}
+          and package_nm = #{packageNm}
+          and server_type = #{serverType}
+          and os_type = #{osType}
+    </select>
+
+    <update id="updateChartConfig" parameterType="DashboardConfigVO">
+        update maxy_dashboard_config
+        set component_1 = #{component1},
+            component_2 = #{component2},
+            component_3 = #{component3},
+            component_4 = #{component4},
+            component_5 = #{component5},
+            component_6 = #{component6},
+            component_7 = #{component7},
+            component_8 = #{component8},
+            upd_dt      = #{regDt},
+            upd_no      = #{userNo}
+        where user_no = #{userNo}
+    </update>
+
+    <update id="updateComponentConfig" parameterType="DashboardConfigVO">
+        update maxy_dashboard_config
+        <set>
+            <if test='optLogmeterLogWeight != null'>
+                opt_logmeter_log_weight = #{optLogmeterLogWeight},
+            </if>
+            <if test='optLogmeterErrorWeight != null'>
+                opt_logmeter_error_weight = #{optLogmeterErrorWeight},
+            </if>
+            <if test='optLogmeterCrashWeight != null'>
+                opt_logmeter_crash_weight = #{optLogmeterCrashWeight},
+            </if>
+            <if test='optLogmeterTime != null'>
+                opt_logmeter_time = #{optLogmeterTime},
+            </if>
+            <if test='optPvequalizerMaxSize != null'>
+                opt_pvequalizer_max_size = #{optPvequalizerMaxSize},
+            </if>
+            <if test='optPageviewMaxSize != null'>
+                opt_pageview_max_size = #{optPageviewMaxSize},
+            </if>
+            <if test='optFavoritesMaxSize != null'>
+                opt_favorites_max_size = #{optFavoritesMaxSize},
+            </if>
+            <if test='optLoadingtimescatterRange != null'>
+                opt_loadingtimescatter_range = #{optLoadingtimescatterRange},
+            </if>
+            <if test='optLoadingtimescatterSize != null'>
+                opt_loadingtimescatter_size = #{optLoadingtimescatterSize},
+            </if>
+            <if test='optResponsetimescatterRange != null'>
+                opt_responsetimescatter_range = #{optResponsetimescatterRange},
+            </if>
+            <if test='optResponsetimescatterSize != null'>
+                opt_responsetimescatter_size = #{optResponsetimescatterSize},
+            </if>
+            upd_dt = #{regDt},
+            upd_no = #{userNo}
+        </set>
+        where user_no = #{userNo}
+    </update>
+
+    <insert id="insertChartConfig" parameterType="DashboardConfigVO">
+        insert into maxy_dashboard_config (user_no,
+                                           component_1, component_2, component_3,
+                                           component_4, component_5, component_6,
+                                           component_7, component_8,
+                                           reg_dt,
+                                           reg_no,
+                                           upd_dt,
+                                           upd_no)
+        values (#{userNo},
+                #{component1}, #{component2}, #{component3},
+                #{component4}, #{component5}, #{component6},
+                #{component7}, #{component8},
+                #{regDt}, #{userNo}, #{regDt}, #{userNo})
+    </insert>
+
+    <select id="selectChartConfigByUserNo" parameterType="DashboardConfigVO" resultType="CamelMap">
+        select seq,
+               user_no,
+               component_1,
+               component_2,
+               component_3,
+               component_4,
+               component_5,
+               component_6,
+               component_7,
+               component_8,
+               opt_logmeter_log_weight,
+               opt_logmeter_error_weight,
+               opt_logmeter_crash_weight,
+               opt_logmeter_time,
+               opt_pvequalizer_max_size,
+               opt_pageview_max_size,
+               opt_favorites_max_size,
+               opt_loadingtimescatter_size,
+               opt_loadingtimescatter_range,
+               opt_responsetimescatter_size,
+               opt_responsetimescatter_range,
+               reg_no,
+               reg_dt,
+               upd_no,
+               upd_dt
+        from maxy_dashboard_config
+        where user_no = #{userNo}
+    </select>
+
+    <select id="selectComponentConfig" parameterType="DashboardConfigVO" resultType="DashboardConfigVO">
+        select
+            <choose>
+                <when test='type == "logmeter"'>
+                    opt_logmeter_log_weight,
+                    opt_logmeter_error_weight,
+                    opt_logmeter_crash_weight,
+                    opt_logmeter_time
+                </when>
+                <when test='type == "pvequalizer"'>
+                    opt_pvequalizer_max_size
+                </when>
+                <when test='type == "pageview"'>
+                    opt_pageview_max_size
+                </when>
+                <when test='type == "favorites"'>
+                    opt_favorites_max_size
+                </when>
+                <when test='type == "loadingtimescatter"'>
+                    opt_loadingtimescatter_size,
+                    opt_loadingtimescatter_range
+                </when>
+                <when test='type == "responsetimescatter"'>
+                    opt_responsetimescatter_size,
+                    opt_responsetimescatter_range
+                </when>
+                <when test='type == "marketinginsight"'>
+                    opt_marketinginsight_from,
+                    opt_marketinginsight_from_title,
+                    opt_marketinginsight_to,
+                    opt_marketinginsight_to_title
+                </when>
+            </choose>
+        from maxy_dashboard_config
+        where user_no = #{userNo}
+    </select>
+
+    <select id="selectChartComponentList" resultType="CamelMap">
+        select seq,
+               name,
+               `key`,
+               type,
+               chart_type,
+               optional
+        from maxy_dashboard_component
+    </select>
+
+    <select id="selectFavoritePages" parameterType="DashboardVO" resultType="DashboardVO">
+        select req_url, monitoring_yn
+        from maxy_app_page
+        where monitoring_yn = 'Y'
+          and use_yn = 'Y'
+          and package_nm = #{packageNm}
+          and server_type = #{serverType}
+    </select>
+
+    <update id="updateBiUseInfo" parameterType="DashboardVO">
+        update maxy_bi_useinfo
+        set install_use_yn      = #{installUseYn},
+            mau_count_use_yn    = #{mauCountUseYn},
+            iosuser_use_yn      = #{iosuserUseYn},
+            anduser_use_yn      = #{anduserUseYn},
+            user_use_yn         = #{userUseYn},
+            run_use_yn          = #{runUseYn},
+            sleep_use_yn        = #{sleepUseYn},
+            login_use_yn        = #{loginUseYn},
+            intervaltime_use_yn = #{intervaltimeUseYn},
+            reconnect_use_yn    = #{reconnectUseYn},
+            error_use_yn        = #{errorUseYn},
+            crash_use_yn        = #{crashUseYn},
+            mau_count_use_yn    = #{mauCountUseYn},
+            ccu_count_use_yn    = #{ccuCountUseYn},
+            upd_dt              = #{regDt},
+            upd_no              = #{userNo}
+        where package_nm = #{packageNm}
+          and server_type = #{serverType}
+          and os_type = 'A'
+          and user_no = #{userNo}
+    </update>
+
+    <insert id="insertBiUseInfo" parameterType="DashboardVO">
+        insert into maxy_bi_useinfo (package_nm,
+                                     server_type,
+                                     os_type,
+                                     user_no,
+                                     install_use_yn,
+                                     delete_use_yn,
+                                     iosuser_use_yn,
+                                     anduser_use_yn,
+                                     user_use_yn,
+                                     run_use_yn,
+                                     sleep_use_yn,
+                                     login_use_yn,
+                                     intervaltime_use_yn,
+                                     reconnect_use_yn,
+                                     error_use_yn,
+                                     crash_use_yn,
+                                     mau_count_use_yn,
+                                     ccu_count_use_yn,
+                                     reg_dt,
+                                     reg_no,
+                                     upd_dt,
+                                     upd_no)
+        values (#{packageNm}, #{serverType}, 'A', #{userNo},
+                'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y',
+                #{regDt}, #{userNo}, #{regDt}, #{userNo})
+    </insert>
+
+    <select id="selectBiUseInfo" parameterType="DashboardVO" resultType="DashboardVO">
+        select package_nm,
+               server_type,
+               user_no,
+               install_use_yn,
+               delete_use_yn,
+               iosuser_use_yn,
+               anduser_use_yn,
+               user_use_yn,
+               reconnect_use_yn,
+               run_use_yn,
+               sleep_use_yn,
+               login_use_yn,
+               intervaltime_use_yn,
+               mau_count_use_yn,
+               ccu_count_use_yn,
+               log_use_yn,
+               error_use_yn,
+               crash_use_yn
+        from maxy_bi_useinfo
+        where package_nm = #{packageNm}
+          and server_type = #{serverType}
+          and user_no = #{userNo}
+        limit 1
+    </select>
+
+    <select id="selectBiMonthlyInfoList" resultType="DashboardVO" parameterType="DashboardVO">
+        select base_month,
+        package_nm,
+        server_type,
+        os_type,
+        app_mau_count
+        from maxy_bi_monthly_info
+        where package_nm = #{packageNm}
+        and server_type = #{serverType}
+        <if test='osType != "A"'>
+            and os_type = #{osType}
+        </if>
+        and base_month between #{fromDt} and #{toDt}
+        union all
+        select base_month,
+        package_nm,
+        server_type,
+        'A' as os_type,
+        sum(app_mau_count) as app_mau_count
+        from maxy_bi_monthly_info
+        where package_nm = #{packageNm}
+        and server_type = #{serverType}
+        and base_month between #{fromDt} and #{toDt}
+        group by base_month, package_nm, server_type
+        order by base_month
+    </select>
+
+    <select id="selectDailyBiDayInfoList" parameterType="DashboardVO" resultType="DashboardVO"><![CDATA[
+        SELECT base_date,
+               package_nm,
+               server_type,
+               os_type,
+               app_install_count,
+               app_delete_count,
+               app_ios_connect_count,
+               app_android_connect_count,
+               app_connect_count,
+               app_reconnect_count,
+               app_use_count,
+               app_sleep_user_count,
+               app_login_user_count,
+               app_avg_use_time,
+               app_error_count,
+               app_crash_count,
+               app_log_count,
+               app_ios_user_rating,
+               app_android_user_rating,
+               app_mau_count,
+               IF(os_type = 'A', COALESCE((SELECT app_install_count
+                                           FROM maxy_bi_day_info AS sub
+                                           WHERE sub.base_date = mbdi.base_date
+                                             AND sub.package_nm = mbdi.package_nm
+                                             AND sub.server_type = mbdi.server_type
+                                             AND sub.os_type = 'Android'), 0), 0) AS android_install_count,
+               IF(os_type = 'A', COALESCE((SELECT app_install_count
+                                           FROM maxy_bi_day_info AS sub
+                                           WHERE sub.base_date = mbdi.base_date
+                                             AND sub.package_nm = mbdi.package_nm
+                                             AND sub.server_type = mbdi.server_type
+                                             AND sub.os_type = 'iOS'), 0), 0)     AS ios_install_count
+        FROM maxy_bi_day_info mbdi
+        where base_date between #{fromDt} and #{toDt}
+          and package_nm = #{packageNm}
+          and server_type = #{serverType}
+          and os_type = #{osType}
+        order by base_date
+        ]]></select>
+
+    <select id="selectWarningLimitValue" parameterType="DashboardVO" resultType="DashboardConfigVO">
+        select opt_loadingtimescatter_range, opt_responsetimescatter_range
+        from maxy_dashboard_config
+        where user_no = #{userNo}
+    </select>
+
+    <select id="selectVersionComparisonData" parameterType="DashboardVO" resultType="java.util.Map">
+        select package_nm                  as packageNm,
+               server_type                 as serverType,
+               os_type                     as osType,
+               app_ver                     as appVer,
+               install_cnt                 as install,
+               dau_cnt                     as dau,
+               error_cnt                   as error,
+               crash_cnt                   as crash,
+               (select sum(mrap.med_renderingtime) / count(1)
+                from maxy_report_app_performance mrap
+                where package_nm = #{packageNm}
+                  and server_type = #{serverType}
+                  and (
+                    (os_type = #{osType1} AND app_ver = #{appVer1}) OR
+                    (os_type = #{osType2} AND app_ver = #{appVer2})
+                    )
+                  and base_date = #{accessDate}
+                  and mrbs.os_type = mrap.os_type
+                  and mrbs.app_ver = mrap.app_ver
+                group by os_type, app_ver) as loadingTime,
+               (select sum(mrbs.total_response_time) / (select sum(med_responsetime_cnt) as callCnt
+                                                        from maxy_report_app_performance mrap
+                                                        where mrap.base_date = #{accessDate}
+                                                          and mrap.package_nm = #{packageNm}
+                                                          and mrap.server_type = #{serverType}
+                                                          and (
+                                                            (os_type = #{osType1} AND app_ver = #{appVer1}) OR
+                                                            (os_type = #{osType2} AND app_ver = #{appVer2})
+                                                            )
+                                                          and mrap.base_date = mrbs2.base_date
+                                                          and mrap.os_type = mrbs2.os_type
+                                                          and mrap.app_ver = mrbs2.app_ver
+                                                        group by os_type,
+                                                                 app_ver) as responseTime
+                from maxy_report_basic_status mrbs2
+                where package_nm = #{packageNm}
+                  and server_type = #{serverType}
+                  and (
+                    (os_type = #{osType1} AND app_ver = #{appVer1}) OR
+                    (os_type = #{osType2} AND app_ver = #{appVer2})
+                    )
+                  and base_date = #{accessDate}
+                  and mrbs.os_type = mrbs2.os_type
+                  and mrbs.app_ver = mrbs2.app_ver
+                group by os_type, app_ver) as responseTime
+        from maxy_report_basic_status mrbs
+        where package_nm = #{packageNm}
+          and server_type = #{serverType}
+          and (
+            (os_type = #{osType1} AND app_ver = #{appVer1}) OR
+            (os_type = #{osType2} AND app_ver = #{appVer2})
+            )
+          and base_date = #{accessDate}
+        group by os_type, app_ver
+    </select>
+
+    <select id="selectTotalVersionData" parameterType="DashboardVO" resultType="java.util.Map">
+        select sum(install_cnt)                  as install,
+               sum(dau_cnt)                      as dau,
+               sum(error_cnt)                    as error,
+               sum(crash_cnt)                    as crash,
+               (select sum(mrap.med_renderingtime) / count(1)
+                from maxy_report_app_performance mrap
+                where package_nm = #{packageNm}
+                  and server_type = #{serverType}
+                  and app_ver != 'A'
+                  and base_date = #{accessDate}) as loadingTime,
+               (select sum(mrbs2.total_response_time) / (select sum(med_responsetime_cnt) as callCnt
+                                                         from maxy_report_app_performance mrap
+                                                         where mrap.base_date = #{accessDate}
+                                                           and mrap.package_nm = #{packageNm}
+                                                           and mrap.server_type = #{serverType})
+                from maxy_report_basic_status mrbs2
+                where package_nm = #{packageNm}
+                  and server_type = #{serverType}
+                  and app_ver != 'A'
+                  and base_date = #{accessDate}) as responseTime
+        from maxy_report_basic_status mrbs
+        where package_nm = #{packageNm}
+          and server_type = #{serverType}
+          and app_ver != 'A'
+          and base_date = #{accessDate}
+    </select>
+
+    <select id="selectAllVersionData" parameterType="DashboardVO" resultType="java.util.Map">
+        select
+        os_type as osType,
+        app_ver as appVer,
+        sum(install_cnt) as install,
+        sum(dau_cnt) as dau,
+        sum(error_cnt) as error,
+        sum(crash_cnt) as crash,
+        (select
+        sum(mrap.med_renderingtime) / count(1)
+        from
+        maxy_report_app_performance mrap
+        where
+        package_nm = #{packageNm} and
+        server_type = #{serverType} and
+        app_ver != 'A' and
+        base_date in
+        <foreach item="date" index="index" collection="accessDateList" open="(" separator="," close=")">
+            #{date}
+        </foreach>
+        and
+        mrbs.os_type = mrap.os_type and
+        mrbs.app_ver = mrap.app_ver
+        group by
+        os_type, app_ver) as loadingTime,
+        (select
+        sum(a.responseTime)
+        from (
+        select
+        base_date,
+        os_type,
+        app_ver,
+        sum(mrbs2.total_response_time) / (select
+        sum(med_responsetime_cnt) as callCnt
+        from
+        maxy_report_app_performance mrap
+        where
+        mrap.base_date in
+        <foreach item="date" index="index" collection="accessDateList" open="(" separator="," close=")">
+            #{date}
+        </foreach>
+        and
+        mrap.package_nm = #{packageNm} and
+        mrap.server_type = #{serverType}
+        and mrap.base_date = mrbs2.base_date
+        and mrap.os_type = mrbs2.os_type
+        and mrap.app_ver = mrbs2.app_ver
+        group by
+        os_type,
+        app_ver) as responseTime
+        from
+        maxy_report_basic_status mrbs2
+        where
+        package_nm = #{packageNm} and
+        server_type = #{serverType} and
+        app_ver != 'A' and
+        base_date in
+        <foreach item="date" index="index" collection="accessDateList" open="(" separator="," close=")">
+            #{date}
+        </foreach>
+        group by
+        base_date, os_type, app_ver) a
+        where a.os_type = mrbs.os_type and
+        a.app_ver = mrbs.app_ver) / #{diff} as responseTime
+        from
+        maxy_report_basic_status mrbs
+        where
+        package_nm = #{packageNm} and
+        server_type = #{serverType} and
+        app_ver != 'A' and
+        base_date in
+        <foreach item="date" index="index" collection="accessDateList" open="(" separator="," close=")">
+            #{date}
+        </foreach>
+        group by
+        os_type, app_ver
+    </select>
+
+    <select id="selectLogCountFromReportBasicStatus" parameterType="DashboardVO" resultType="DashboardVO">
+        select base_date,
+        sum(total_log_cnt) as app_log_count,
+        sum(error_cnt) as app_error_count,
+        sum(crash_cnt) as app_crash_count
+        from maxy_report_basic_status
+        where base_date between #{fromDt} and #{toDt}
+        and package_nm = #{packageNm}
+        and server_type = #{serverType}
+        <if test='osType != "A"'>
+            and os_type = #{osType}
+        </if>
+        group by base_date
+    </select>
+
+    <select id="selectTopErrorLogListByReportError" parameterType="DashboardVO" resultType="java.util.Map">
+        WITH TopErrors AS (
+        -- 상위 10개 에러 유형 조회
+        SELECT
+        SUM(error_cnt) AS count,
+        error_msg AS msg,
+        SUM(error_cnt) * 100.0 / (SELECT SUM(error_cnt)
+        FROM maxy_report_error
+        WHERE base_date BETWEEN #{fromDt} AND #{toDt}
+        AND package_nm = #{packageNm}
+        AND server_type = #{serverType}
+        <if test='osType != "A"'>
+            AND os_type = #{osType}
+        </if>) AS rate
+        FROM maxy_report_error
+        WHERE base_date BETWEEN #{fromDt} AND #{toDt}
+        AND package_nm = #{packageNm}
+        AND server_type = #{serverType}
+        <if test='osType != "A"'>
+            AND os_type = #{osType}
+        </if>
+        GROUP BY error_msg
+        ORDER BY SUM(error_cnt) DESC
+        LIMIT 10
+        ),
+        AllErrors AS (
+        -- 전체 에러 집계 (기준값)
+        SELECT
+        SUM(error_cnt) AS total_cnt
+        FROM maxy_report_error
+        WHERE base_date BETWEEN #{fromDt} AND #{toDt}
+        AND package_nm = #{packageNm}
+        AND server_type = #{serverType}
+        <if test='osType != "A"'>
+            AND os_type = #{osType}
+        </if>
+        ),
+        OtherErrors AS (
+        -- 상위 10개를 제외한 나머지 에러 집계
+        SELECT
+        SUM(error_cnt) AS count,
+        'Other' AS msg,
+        SUM(error_cnt) * 100.0 / (SELECT total_cnt FROM AllErrors) AS rate
+        FROM maxy_report_error
+        WHERE base_date BETWEEN #{fromDt} AND #{toDt}
+        AND package_nm = #{packageNm}
+        AND server_type = #{serverType}
+        <if test='osType != "A"'>
+            AND os_type = #{osType}
+        </if>
+        AND error_msg NOT IN (SELECT msg FROM TopErrors)
+        HAVING SUM(error_cnt) > 0
+        )
+        -- 최종 결과를 UNION
+        SELECT
+        msg,
+        count,
+        rate,
+        CASE
+        WHEN msg = 'Other' THEN 1 ELSE 0
+        END AS is_other -- Other 항목을 가장 아래로 정렬하기 위한 가중치
+        FROM (
+        SELECT * FROM TopErrors
+        UNION ALL
+        SELECT * FROM OtherErrors
+        ) AS combined_results
+        ORDER BY is_other ASC, count DESC;
+    </select>
+
+    <select id="selectTopCrashLogListByReportCrash" parameterType="DashboardVO" resultType="java.util.Map">
+        WITH TopCrashs AS (
+        -- 상위 10개 에러 유형 조회
+        SELECT
+        SUM(crash_cnt) AS count,
+        crash_nm AS crashNm,
+        cause_by AS causeBy,
+        SUM(crash_cnt) * 100.0 / (SELECT SUM(crash_cnt)
+        FROM maxy_report_crash
+        WHERE base_date BETWEEN #{fromDt} AND #{toDt}
+        AND package_nm = #{packageNm}
+        AND server_type = #{serverType}
+        <if test='osType != "A"'>
+            AND os_type = #{osType}
+        </if>) AS rate
+        FROM maxy_report_crash
+        WHERE base_date BETWEEN #{fromDt} AND #{toDt}
+        AND package_nm = #{packageNm}
+        AND server_type = #{serverType}
+        <if test='osType != "A"'>
+            AND os_type = #{osType}
+        </if>
+        GROUP BY crash_nm, cause_by
+        ORDER BY SUM(crash_cnt) DESC
+        LIMIT 10
+        ),
+        AllCrashs AS (
+        -- 전체 에러 집계 (기준값)
+        SELECT
+        SUM(crash_cnt) AS total_cnt
+        FROM maxy_report_crash
+        WHERE base_date BETWEEN #{fromDt} AND #{toDt}
+        AND package_nm = #{packageNm}
+        AND server_type = #{serverType}
+        <if test='osType != "A"'>
+            AND os_type = #{osType}
+        </if>
+        ),
+        OtherCrashs AS (
+        -- 상위 10개를 제외한 나머지 에러 집계
+        SELECT
+        SUM(crash_cnt) AS count,
+        'Other' AS crashNm,
+        '' AS causeBy,
+        SUM(crash_cnt) * 100.0 / (SELECT total_cnt FROM AllCrashs) AS rate
+        FROM maxy_report_crash
+        WHERE base_date BETWEEN #{fromDt} AND #{toDt}
+        AND package_nm = #{packageNm}
+        AND server_type = #{serverType}
+        <if test='osType != "A"'>
+            AND os_type = #{osType}
+        </if>
+        AND (crash_nm, cause_by) NOT IN (SELECT crashNm, causeBy FROM TopCrashs)
+        HAVING SUM(crash_cnt) > 0
+        )
+        -- 최종 결과를 UNION
+        SELECT
+        crashNm,
+        causeBy,
+        count,
+        rate,
+        CASE
+        WHEN crashNm = 'Other' THEN 1 ELSE 0
+        END AS is_other -- Other 항목을 가장 아래로 정렬하기 위한 가중치
+        FROM (
+        SELECT * FROM TopCrashs
+        UNION ALL
+        SELECT * FROM OtherCrashs
+        ) AS combined_results
+        ORDER BY is_other ASC, count DESC;
+    </select>
+
+    <select id="selectVersionComparisonRowInfo" parameterType="DashboardVO" resultType="java.util.Map">
+        SELECT
+        mrbs.base_date AS baseDate,
+        mrbs.dau_cnt AS dau,
+        mrbs.error_cnt AS error,
+        mrbs.crash_cnt AS crash,
+        mrap.loadingTime AS loadingTime,
+        COALESCE(responseTimeCalc.responseTime, 0) AS responseTime
+        FROM maxy_report_basic_status mrbs
+        LEFT JOIN (
+        SELECT base_date, AVG(med_renderingtime) AS loadingTime
+        FROM maxy_report_app_performance
+        WHERE package_nm = #{packageNm}
+        AND server_type = #{serverType}
+        AND os_type = #{osType}
+        AND app_ver = #{appVer}
+        GROUP BY base_date
+        ) AS mrap ON mrbs.base_date = mrap.base_date
+        LEFT JOIN (
+        SELECT
+        mrbs.base_date,
+        SUM(mrbs.total_response_time) /
+        COALESCE(
+        (SELECT SUM(mrap.med_responsetime_cnt)
+        FROM maxy_report_app_performance mrap
+        WHERE mrap.package_nm = #{packageNm}
+        AND mrap.server_type = #{serverType}
+        AND mrap.os_type = #{osType}
+        AND mrap.app_ver = #{appVer}
+        AND mrap.base_date = mrbs.base_date
+        ), 1) AS responseTime
+        FROM maxy_report_basic_status mrbs
+        WHERE mrbs.package_nm = #{packageNm}
+        AND mrbs.server_type = #{serverType}
+        AND mrbs.os_type = #{osType}
+        AND mrbs.app_ver = #{appVer}
+        GROUP BY mrbs.base_date
+        ) AS responseTimeCalc ON mrbs.base_date = responseTimeCalc.base_date
+        WHERE
+        mrbs.package_nm = #{packageNm}
+        AND mrbs.server_type = #{serverType}
+        AND mrbs.os_type = #{osType}
+        AND mrbs.app_ver = #{appVer}
+        AND mrbs.base_date IN
+        <foreach item="date" index="index" collection="accessDateList" open="(" separator="," close=")">
+            #{date}
+        </foreach>
+        ORDER BY mrbs.base_date;
+    </select>
+
+    <select id="selectMarketingInsightConfig" parameterType="DashboardVO" resultType="DashboardConfigVO">
+        select req_url, pre_url
+        from maxy_marketing_insight_config
+        where package_nm = #{packageNm}
+          and server_type = #{serverType}
+          and user_no = #{userNo}
+    </select>
+
+    <insert id="upsertPageMarketingInsight" parameterType="DashboardVO">
+        INSERT INTO maxy_marketing_insight_config (
+            package_nm, server_type, user_no, pre_url, req_url, reg_dt, upd_dt
+        ) VALUES (
+            #{packageNm}, #{serverType}, #{userNo}, #{preUrl}, #{reqUrl}, #{regDt}, #{regDt}
+        )
+        ON DUPLICATE KEY UPDATE
+            pre_url = VALUES (pre_url),
+            req_url = VALUES (req_url),
+            upd_dt = VALUES (upd_dt)
+    </insert>
+</mapper>

@@ -1,0 +1,206 @@
+<style>
+    .maxy_component_wrap > .swiper {
+        height: calc(100% - 20px);
+    }
+
+    .maxy_component_wrap .page_wrap {
+        display: grid;
+        /*grid-template-columns: repeat(3, 1fr);*/
+        grid-gap: 0.7vh;
+        padding: 1px;
+    }
+
+    .maxy_component_wrap .page {
+        width: 100%;
+        background: #FFFFFF;
+        border: 1px solid var(--color-border-in-light);
+        border-radius: 7px;
+        overflow: hidden;
+        cursor: default;
+    }
+
+    .maxy_component_wrap .page .page_contents_row[data-type='error'],
+    .maxy_component_wrap .page .page_contents_row[data-type='crash'] {
+        cursor: pointer;
+    }
+
+    .maxy_component_wrap .page_header {
+        padding-left: 7px;
+        padding-right: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .maxy_component_wrap .page_header.webview, .maxy_component_wrap .page_header {
+        background: #E6F4FD;
+    }
+
+    .maxy_component_wrap .page_header.native {
+        background: #ECEDFF;
+    }
+
+    .maxy_component_wrap .page_header i {
+        width: 27px;
+        height: 28px;
+        scale: 0.7;
+    }
+
+    .maxy_component_wrap .page_header i {
+        background-repeat: no-repeat;
+    }
+
+    .maxy_component_wrap .page_header i.check_webview, .maxy_component_wrap .page_header i.check {
+        background-image: url("/images/maxy/icon-check-blue.svg");
+    }
+
+    .dark_mode .maxy_component_wrap .page_header i.check_webview, .dark_mode .maxy_component_wrap .page_header i.check {
+        background-image: url("/images/maxy/dark-icon-check-blue.svg");
+    }
+
+    .maxy_component_wrap .page_header i.check_native {
+        background-image: url("/images/maxy/icon-check-purple.svg");
+    }
+
+    .dark_mode .maxy_component_wrap .page_header i.check_native {
+        background-image: url("/images/maxy/dark-icon-check-purple.svg");
+    }
+
+    .maxy_component_wrap .page_header .page_header_title {
+        margin-right: 2px;
+        line-height: 28px;
+        font-size: 12px;
+        font-weight: 500;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .maxy_component_wrap .page_header.webview .page_header_count, .maxy_component_wrap .page_header .page_header_count {
+        color: #006AE5;
+        font-size: 11px;
+        font-weight: 500;
+        text-align: right;
+        margin-left: auto;
+    }
+
+    .maxy_component_wrap .page_header.native .page_header_count {
+        color: #7277FF;
+    }
+
+    .maxy_component_wrap .page_header_top {
+        width: 100%;
+        display: grid;
+        grid-template-columns: 0.5fr 2fr 0.1fr;
+        align-items: center;
+    }
+
+    .maxy_component_wrap .page_contents {
+        padding: 1vh;
+        font-size: 11px;
+        height: calc(15vh - 28px);
+        border: 0;
+        background: white;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        gap: 0.4vh;
+    }
+
+    .maxy_component_wrap .page_contents .page_contents_sub {
+        color: #8C8C8C;
+    }
+
+    .maxy_component_wrap .page_contents .page_contents_value {
+        font-weight: 500;
+        font-size: 12px;
+        color: #444444;
+    }
+
+    .maxy_component_wrap .page_contents .page_contents_value.error {
+        color: #FCB500 !important;
+    }
+
+    .maxy_component_wrap .page_contents .page_contents_value.crash {
+        color: #FF6969 !important;
+    }
+
+    .maxy_component_wrap .page_contents_row {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+    }
+
+    .dark_mode .maxy_component_wrap .page_wrap .page.webview, .dark_mode .maxy_component_wrap .page_wrap .page {
+        background-color: #222222;
+        border: 1px solid #00507C;
+    }
+
+    .dark_mode .maxy_component_wrap .page_wrap .page.native {
+        border: 1px solid #474B88;
+    }
+
+    .dark_mode .maxy_component_wrap .page_header {
+        background-color: #275544;
+    }
+
+    .dark_mode .maxy_component_wrap .page_header.webview, .dark_mode .maxy_component_wrap .page_header {
+        background-color: #00507C;
+    }
+
+    .dark_mode .maxy_component_wrap .page_header.native {
+        background: #474B88;
+    }
+
+    .dark_mode .maxy_component_wrap .page_header.native .page_header_count {
+        color: #A5A8FF;
+    }
+
+    .dark_mode .maxy_component_wrap .page_header.webview .page_header_count, .dark_mode .maxy_component_wrap .page_header .page_header_count {
+        color: #34B6FF;
+    }
+
+    .dark_mode .maxy_component_wrap .page_header .page_header_title {
+        color: white;
+    }
+
+    .dark_mode .maxy_component_wrap .page_contents {
+        background: #222222;
+    }
+
+    .dark_mode .maxy_component_wrap .page_contents .page_contents_sub {
+        color: #E2E2E2;
+    }
+
+    .dark_mode .maxy_component_wrap .page_contents .page_contents_value {
+        color: #fff;
+    }
+
+    @media screen and (min-height: 1060px) {
+        .maxy_component_wrap .page_header {
+            height: 3vh;
+        }
+
+        .maxy_component_wrap .page_contents {
+            height: 12vh;
+        }
+    }
+
+    .btn_favorites_all {
+        display: none;
+    }
+</style>
+<div class="maxy_component_wrap">
+    <div class="maxy_component_header space_between">
+        <div class="header_title">
+            <h4>{{fmtTitle}}</h4>
+            <img alt="?"
+                 class="ic_question"
+            >
+        </div>
+        <div class="maxy_component_btn_wrap">
+            <button class="maxy_component_btn btn_favorites_all" id="{{id}}Btn__all">ALL</button>
+        </div>
+    </div>
+    <div class="maxy_component_item no_data" id="{{id}}__chart"></div>
+</div>

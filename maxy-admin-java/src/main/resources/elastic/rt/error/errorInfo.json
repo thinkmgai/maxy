@@ -1,0 +1,63 @@
+{
+  "aggs": {
+    "count": {
+      "terms": {
+        "field": "resMsg.raw",
+        "size": 10
+      },
+      "aggs": {
+        "logType": {
+          "terms": {
+            "field": "logTypeNm",
+            "size": 10
+          }
+        },
+        "logTypeDnm": {
+          "terms": {
+            "field": "logTypeDnm",
+            "size": 10
+          }
+        }
+      }
+    }
+  },
+  "size": 0,
+  "query": {
+    "bool": {
+      "must": [
+        {
+          "term": {
+            "packageNm": #{packageNm}
+          }
+        },
+        {
+          "term": {
+            "serverType": #{serverType}
+          }
+        },
+        #[isOsType]
+        {
+          "term": {
+            "osType": #{osType}
+          }
+        },
+        #[/isOsType]
+        #[isAppVer]
+        {
+          "term": {
+            "appVer": #{appVer}
+          }
+        },
+        #[/isAppVer]
+        {
+          "range": {
+            "logTm": {
+              "gte": #{fromTimestamp},
+              "lte": #{toTimestamp}
+            }
+          }
+        }
+      ]
+    }
+  }
+}

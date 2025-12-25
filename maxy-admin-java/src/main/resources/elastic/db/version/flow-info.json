@@ -1,0 +1,61 @@
+{
+  "track_total_hits": true,
+  "size": 0,
+  "aggs": {
+    "loadingTime": {
+      "percentiles": {
+        "field": "loadingTime",
+        "percents": [50]
+      }
+    },
+    "error": {
+      "sum": {
+        "field": "errorCount"
+      }
+    },
+    "crash": {
+      "sum": {
+        "field": "crashCount"
+      }
+    }
+  },
+  "query": {
+    "bool": {
+      "filter": [
+        {
+          "term": {
+            "packageNm": #{packageNm}
+          }
+        },
+        {
+          "term": {
+            "serverType": #{serverType}
+          }
+        },
+        #[isOsType]
+        {
+          "term": {
+            "osType": #{osType}
+          }
+        },
+        #[/isOsType]
+        #[isAppVer]
+        {
+          "term": {
+            "appVer": #{appVer}
+          }
+        },
+        #[/isAppVer]
+        {
+          "range": {
+            "pageStartTm": {
+              "gte": #{from},
+              "lte": #{to},
+              "time_zone": "Z"
+            }
+          }
+        }
+      ]
+    }
+  }
+}

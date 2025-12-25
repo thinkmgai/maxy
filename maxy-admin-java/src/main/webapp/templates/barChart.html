@@ -1,0 +1,12 @@
+<ul class="list-group">
+    {{#datas}}
+    <li class="list-group-item icon-people"
+        title="{{key}} {{cnt}} ({{makePercent cnt totalCnt}})">
+        <div class="per-wrap">
+            <div class="percentage" style="width: {{makePercent cnt totalCnt}};"></div>
+        </div>
+        <span class="title">{{key}}</span>
+        <span class="counter">{{cnt}} ({{makePercent cnt totalCnt}})</span>
+    </li>
+    {{/datas}}
+</ul>

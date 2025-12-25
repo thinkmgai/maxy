@@ -1,0 +1,128 @@
+<style>
+    #{{id}}__navbar .right_navbar_content {
+               height: 100%;
+               display: flex;
+               flex-direction: column;
+           }
+
+    #{{id}}__navbar .right_navbar_title_left {
+               font-weight: 700;
+                display: flex;
+                gap: .8em;
+               flex-direction: column;
+               align-items: flex-start !important;
+           }
+
+    #{{id}}__navbar .right_navbar_title_left > div {
+               font-weight: 500;
+               color: var(--logo-blue-1);
+           }
+
+    #{{id}}__navbar .content {
+               margin-top: 1.5vh;
+               display: grid;
+               gap: 4%;
+               grid-template-columns: 48% 48%;
+           }
+
+    #{{id}}__navbar .content:nth-last-child(1) {
+               margin-top: 5vh;
+           }
+
+    #{{id}}__navbar .os_wrap,
+           #{{id}}__navbar .version_wrap,
+                  #{{id}}__navbar .package_wrap {
+                             display: flex;
+                             align-items: center;
+                             gap: .5em;
+                         }
+
+    #{{id}}__navbar .os_wrap select {
+               width: 80px;
+           }
+
+    #{{id}}__navbar .package_wrap {
+               margin-bottom: 12px;
+           }
+
+    #{{id}}__navbar .bottom {
+               position: relative;
+           }
+
+    #{{id}}__navbar .bottom .line {
+               position: absolute;
+               top: -20px;
+               left: 0;
+               width: 80%;
+               height: 1px;
+               background-color: black;
+           }
+
+    #{{id}}__navbar .bottom .text {
+               position: absolute;
+               top: -26px;
+               left: -40px;
+           }
+
+    #{{id}}__navbar .os_wrap .title {
+               width: 30px;
+           }
+
+    #{{id}}__navbar .version_wrap select {
+               width: 63px;
+           }
+
+    #{{id}}__navbar .package_wrap .opt_package:disabled {
+               opacity: 1;
+               background: none;
+               color: black;
+           }
+</style>
+
+<div class="right_navbar" id="{{id}}__navbar">
+    <div class="right_navbar_content">
+        <div class="right_navbar_header">
+            <div class="right_navbar_title_left">
+                <h4>Component Setting (A/B)</h4>
+                <div data-t="management.components.msg.comparison.select"></div>
+            </div>
+        </div>
+        <div class="content_wrap">
+            <div class="content package">
+                <div class="package_wrap">
+                    <span>App</span>
+                    <select class="opt_package" id="packageName" disabled></select>
+                </div>
+            </div>
+
+            <div class="content">
+                <div class="os_wrap">
+                    <span class="title">OS</span>
+                    <select class="os_type" id="aOsType"></select>
+                </div>
+                <div class="version_wrap">
+                    <span>Version</span>
+                    <select class="version" id="aVersion"></select>
+                </div>
+            </div>
+            <div class="content">
+                <div class="os_wrap bottom">
+                    <span class="title">OS</span>
+                    <select class="os_type" id="bOsType"></select>
+                    <div class="line"></div>
+                </div>
+                <div class="version_wrap bottom">
+                    <span>Version</span>
+                    <select class="version" id="bVersion"></select>
+                    <div class="text">VS</div>
+                    <div class="line"></div>
+                </div>
+            </div>
+        </div>
+        <div class="right_navbar_footer">
+            <button class="btn_common opposite btn_component_setting_save"
+                    data-t="common.btn.save"
+                    data-type="{{id}}"></button>
+        </div>
+    </div>
+</div>

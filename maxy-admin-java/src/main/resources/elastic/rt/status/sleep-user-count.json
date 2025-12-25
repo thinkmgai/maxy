@@ -1,0 +1,61 @@
+{
+  "aggs": {
+    "sleepCount": {
+      "date_histogram": {
+        "field": "sleepDate",
+        "interval": "1d",
+        "time_zone": "Asia/Seoul",
+        "format": "yyyy-MM-dd",
+        "extended_bounds": {
+          "min": #{fromDt},
+          "max": #{toDt}
+        }
+      }
+    }
+  },
+  "size": 0,
+  "query": {
+    "bool": {
+      "filter": [
+        {
+          "term": {
+            "packageNm": #{packageNm}
+          }
+        },
+        {
+          "term": {
+            "serverType": #{serverType}
+          }
+        },
+        #[isOsType]
+        {
+          "term": {
+            "osType": #{osType}
+          }
+        },
+        #[/isOsType]
+        #[isAppVer]
+        {
+          "term": {
+            "appVer": #{appVer}
+          }
+        },
+        #[/isAppVer]
+        {
+          "term": {
+            "deviceSt": "S"
+          }
+        },
+        {
+          "range": {
+            "sleepDate": {
+              "gte": #{fromTimestamp},
+              "lte": #{toTimestamp},
+              "time_zone": "Z"
+            }
+          }
+        }
+      ]
+    }
+  }
+}

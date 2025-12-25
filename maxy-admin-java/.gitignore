@@ -1,0 +1,17 @@
+.idea/*
+.svn/*
+target/*
+build/*
+out/*
+log/*
+logs/*
+/tmp/*
+/src/main/webapp/common/demo/*
+/*.iml
+/src/main/webapp/tmp/*
+sdk.min.js
+maxy_app.js
+maxy.sdk.js
+.env*
+.DS_Store
+.vscode/*

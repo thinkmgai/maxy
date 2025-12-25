@@ -1,0 +1,52 @@
+{
+  "query": {
+    "bool": {
+      "filter": [
+        {
+          "term": {
+            "packageNm": #{packageNm}
+          }
+        },
+        {
+          "term": {
+            "serverType": #{serverType}
+          }
+        },
+        #[isAppVer]
+        {
+          "term": {
+            "appVer": #{appVer}
+          }
+        },
+        #[/isAppVer]
+        {
+          "term": {
+            "osType": #{osType}
+          }
+        },
+        {
+          "term": {
+            "deviceId": #{deviceId}
+          }
+        },
+        {
+          "range": {
+            "logTm": {
+              "from": #{from},
+              "to": #{to},
+              "include_lower": true,
+              "include_upper": true,
+              "time_zone": "Z"
+            }
+          }
+        }
+      ]
+    }
+  },
+  "size": 1,
+  "_source": {
+    "exclude": [
+      "contents"
+    ]
+  }
+}

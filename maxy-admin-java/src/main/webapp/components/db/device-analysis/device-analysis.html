@@ -1,0 +1,50 @@
+<style>
+    .device_analysis .maxy_component_item.flex_column {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        position: relative;
+        justify-content: flex-end;
+        padding-bottom: 5px;
+    }
+
+    #showAllAnalysis {
+        display: none;
+    }
+
+    #maxyComponent__DEVICE_DISTRIBUTION .maxy_component_item {
+        height: 30.5vh;
+        min-height: 225px;
+    }
+</style>
+<div class="maxy_component_wrap">
+    <div class="maxy_component_header space_between">
+        <div class="header_title flex_column">
+            <div class="header_title space_between">
+                <h4 id="analysisTitle">{{fmtTitle}}</h4>
+                <img class="ic_question"
+                     alt="?"
+                >
+            </div>
+            <div class="maxy_component_tab">
+                <span class="btn_tab on" data-tab="bubbleError">
+                    <img class="error_img" src="/images/maxy/icon-error-grey.svg" alt="">
+                    <span>Error</span>
+                </span>
+                <span class="btn_tab" data-tab="bubbleCrash">
+                    <img class="crash_img" src="/images/maxy/icon-crash-grey.svg" alt="">
+                        <span>Crash</span>
+                </span>
+            </div>
+        </div>
+        <div class="maxy_component_btn_wrap">
+            <button class="maxy_component_btn" id="showAllAnalysis" data-date="MONTH">ALL</button>
+        </div>
+    </div>
+    <div class="maxy_component_item_wrap" id="bubbleError">
+        <div class="maxy_component_item" id="bubble_errorChart"></div>
+    </div>
+    <div class="maxy_component_item_wrap hidden" id="bubbleCrash">
+        <div class="maxy_component_item" id="bubble_crashChart"></div>
+    </div>
+</div>

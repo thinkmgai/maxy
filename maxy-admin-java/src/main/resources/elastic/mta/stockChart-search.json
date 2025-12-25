@@ -1,0 +1,112 @@
+{
+  "aggs": {
+    "2": {
+      "date_histogram": {
+        #[isNotSearchPv]
+        "field": "logTm",
+        #[/isNotSearchPv]
+        #[isSearchPv]
+        "field": "pageStartTm",
+        #[/isSearchPv]
+        "fixed_interval": #{interval},
+        "format": "epoch_millis",
+        "extended_bounds": {
+          "min": #{searchFromDt},
+          "max": #{searchToDt}
+        }
+      }
+    }
+  },
+  "size": 0,
+  "query": {
+    "bool": {
+      "filter": [
+        {
+          "term" : {
+            "packageNm": {
+              "value": #{packageNm}
+          }
+        }
+      },
+        {
+          "term" : {
+            "serverType": {
+              "value": #{serverType}
+          }
+        }
+      }
+        #[searchDeviceId]
+          ,{
+            "term":{
+            "deviceId.raw" : {
+            "value" : #{searchValue}
+            }
+          }
+        }
+        #[/searchDeviceId]
+        #[isOsType]
+          ,{
+            "term":{
+            "osType" : {
+            "value" : #{osType}
+            }
+          }
+        }
+        #[/isOsType]
+        #[isAppVer]
+        ,{
+          "term": {
+            "appVer": #{appVer}
+          }
+        }
+        #[/isAppVer]
+        #[searchUserNm]
+          ,{
+            "term": {
+            "userNm.raw": #{searchValue}
+          }
+        }
+        #[/searchUserNm]
+        #[searchUserId]
+          ,{
+            "term": {
+            "userId.raw": #{searchValue}
+          }
+        }
+        #[/searchUserId]
+        #[searchReqUrl]
+        ,{
+          "wildcard": {
+            "reqUrl.raw": {
+              "value": #{searchValue}
+            }
+          }
+        }
+        #[/searchReqUrl]
+        #[searchPageUrl]
+        ,{
+          "wildcard": {
+            "pageUrl.raw": {
+              "value": #{searchValue}
+            }
+          }
+        }
+        #[/searchPageUrl]
+        ,{
+          "range": {
+            #[isSearchPv]
+            "pageStartTm": {
+            #[/isSearchPv]
+            #[isNotSearchPv]
+            "logTm": {
+            #[/isNotSearchPv]
+              "from": #{searchFromDt},
+              "to": #{searchToDt},
+              "format": "epoch_millis"
+            }
+          }
+        }
+      ]
+    }
+  }
+}

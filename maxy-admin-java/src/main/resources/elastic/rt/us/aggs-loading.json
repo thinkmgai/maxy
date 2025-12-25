@@ -1,0 +1,66 @@
+{
+  "aggs": {
+    "avg": {
+      "avg": {
+        "field": "loadingTime"
+      }
+    },
+    "max": {
+      "max": {
+        "field": "loadingTime"
+      }
+    },
+    "min": {
+      "min": {
+        "field": "loadingTime"
+      }
+    }
+  },
+  "size": 0,
+  "query": {
+    "bool": {
+      "filter": [
+        {
+          "term": {
+            "packageNm": #{packageNm}
+          }
+        },
+        {
+          "term": {
+            "serverType": #{serverType}
+          }
+        }
+        #[isAppVer]
+        ,{
+          "term": {
+            "appVer": #{appVer}
+          }
+        }
+        #[/isAppVer]
+        ,{
+          "term": {
+            "osType": #{osType}
+          }
+        },
+        {
+          "range": {
+            "pageStartTm": {
+              "from": #{fromTimestamp},
+              "to": #{toTimestamp},
+              "include_lower": true,
+              "include_upper": true,
+              "time_zone": "Z"
+            }
+          }
+        }
+      ],
+      "must_not": [
+        {
+          "term": {
+            "loadingTime": "0"
+          }
+        }
+      ]
+    }
+  }
+}

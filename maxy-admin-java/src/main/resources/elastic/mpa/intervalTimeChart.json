@@ -1,0 +1,93 @@
+{
+  "aggs": {
+    "key": {
+      "date_histogram": {
+        "field": "pageStartTm",
+        "fixed_interval": #{interval},
+        "extended_bounds": {
+        "min": #{from},
+        "max": #{to}
+        }
+      },
+      "aggs": {
+        "avgTime": {
+          "percentiles": {
+            "field": "loadingTime",
+            "percents": [50]
+          }
+        },
+        "maxTime": {
+          "max": {
+            "field": "loadingTime"
+          }
+        },
+        "minTime": {
+          "min": {
+            "field": "loadingTime"
+          }
+        }
+      }
+    }
+  },
+  "size": 0,
+  "query": {
+    "bool": {
+      "filter": [
+        {
+          "term": {
+            "packageNm": #{packageNm}
+          }
+        },
+        {
+          "term": {
+            "serverType": #{serverType}
+          }
+        },
+        #[isOsType]
+        {
+          "term": {
+            "osType": #{osType}
+          }
+        },
+        #[/isOsType]
+        #[isAppVer]
+        {
+          "term": {
+            "appVer": #{appVer}
+          }
+        },
+        #[/isAppVer]
+        #[searchDeviceId]
+        {
+          "term": {
+            "deviceId.raw": #{searchValue}
+          }
+        },
+        #[/searchDeviceId]
+        #[searchUserNm]
+        {
+          "term": {
+            "userNm.raw": #{searchValue}
+          }
+        },
+        #[/searchUserNm]
+        #[searchUserId]
+        {
+          "term": {
+            "userId.raw": #{searchValue}
+          }
+        },
+        #[/searchUserId]
+        {
+          "range": {
+            "pageStartTm": {
+              "gte": #{from},
+              "lte": #{to},
+              "time_zone": "Z"
+            }
+          }
+        }
+      ]
+    }
+  }
+}

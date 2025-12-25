@@ -1,0 +1,516 @@
+{
+  "title": {
+    "sideMenu": "Management function",
+    "desc": {
+      "components": "You can select items to be placed on the comprehensive analysis screen.",
+      "frontComponents": "You can view the items placed on the dashboard.",
+      "basicInformation": "You can set the availability of items placed at the top of the comprehensive analysis screen under [Basic Information].",
+      "requiredField": "Required selection",
+      "aliasManagement": "You can set the items placed in Favorites at the bottom right of the monitoring app's web view, native page management, and comprehensive analysis screen.",
+      "aliasManagementSub": "We recommend that you select page items that your users use frequently.",
+      "logDescription": "We define logs for each type collected by MAXY.",
+      "user": "You can manage MAXY users.",
+      "userpoint": "When registering a user",
+      "initialpassword": "Reset PW is [the first three digits of your ID + the current month and day (MMdd) + !@].",
+      "passwordex": "Ex) ID: maxy / PW: max0725!@",
+      "userFlowStatistics": "You can check aggregate information about user behavior for monitored apps.",
+      "userFlowList": "You can view the user list of the monitored app.",
+      "deviceList": "You can view the status of all devices registered.",
+      "monitoring": "This feature only displays logs that occurred on the registered page of the selected device. It works when you search by Device ID in Log Analysis > Real-time Log Search.",
+      "notification": "You can check received notifications from MAXY mobile app monitoring.",
+      "notificationSetting": "You can set up notifications for MAXY mobile app monitoring.",
+      "obfuscation": "Manage obfuscation rule files by app build version.",
+      "aibot": "This is a list of data analyzed by MAXY AI. Data is stored for up to 7 days.",
+      "model": "Manage device models.",
+      "sessionReplayBlock1": "A function that blocks areas that should not be monitored by Session Replay.",
+      "sessionReplayBlock2": "By registering monitoring exclusion elements for each app, you can exclude both the DOM and contents of the area from session recording.",
+      "sessionReplayBlock3": "Blocking rules can be applied by adding the ID or class of the UI containing sensitive information."
+    },
+    "userManagement": "Register / Delete",
+    "deviceList": "Device List",
+    "monitoringSetting": "Monitoring Screen Settings",
+    "notificationList": "Notification List",
+    "notificationSetting": "Notification Settings",
+    "flowdetail": "Flow details inquiry",
+    "model": "Device Model"
+  },
+  "components": {
+    "desc": {
+      "logmeter": "Visually represents the form in which real-time log data is received.",
+      "responsetimescatter": "Monitors Response Time with device-specific data.",
+      "loadingtimescatter": "Monitors Loading Time with device-specific data.",
+      "pvequalizer": "Monitors each page view of the monitoring app.",
+      "devicedistribution": "Monitors Error and Crash of devices by operating system with high frequency of use.",
+      "accessibility": "Monitors user accessibility of the monitoring app.",
+      "resourceusage": "Monitors resource usage of devices with high frequency of use.",
+      "favorites": "Monitors performance for each major page specified by the administrator.",
+      "pageview": "Monitors Error and Crash for each page of the monitoring app.",
+      "responsetimeline": "Response time is controlled in real time based on Logmeter.",
+      "loadingtimeline": "Loading time is controlled in real time based on Logmeter.",
+      "areadistribution": "Analyze app performance distribution by region based on today statistics.",
+      "versioncomparison": "Compare and analyze key monitoring items for each OS version based on previous day statistics.",
+      "crashesbyversion": "The part where the crash occurred is useful.",
+      "versionconversion": "Displays usage rates by OS and app version.",
+      "marketinginsight": "Analyze user behavior patterns by setting a start URL and a destination URL.",
+      "frontpageloading": "Analyzes page performance over the last 5 minutes.",
+      "frontresponsetime": "Analyzes Ajax performance over the last 5 minutes.",
+      "fronterror": "Visualizes the error count from the last 5 minutes.",
+      "frontregionalanalysis": "Analyzes regional app performance distribution based on today’s statistics.",
+      "frontpagerequested": "Visualizes the page count from the last 5 minutes.",
+      "frontajaxresponse": "Visualizes the Ajax count from the last 5 minutes.",
+      "frontlivesessionview": "Visualizes current connection session in real time."
+    },
+    "setting": {
+      "title": {
+        "logmeter": "Logmeter Settings",
+        "responsetimescatter": "Response Time (S) Settings",
+        "loadingtimescatter": "Loading Time (S) Settings",
+        "pvequalizer": "PV Equalizer Settings",
+        "devicedistribution": "",
+        "accessibility": "",
+        "resourceusage": "",
+        "favorites": "Favorites Settings",
+        "pageview": "Page View Settings",
+        "responsetimeline": "",
+        "loadingtimeline": "",
+        "areadistribution": "",
+        "versioncomparison": "Version Comparison Settings",
+        "crashesbyversion": "",
+        "marketinginsight": "Marketing Insight Settings"
+      },
+      "subtitle": {
+        "logmeter": "Logmeter Settings",
+        "responsetimescatter": "Warning Time",
+        "loadingtimescatter": "Warning Time",
+        "pvequalizer": "PV Equalizer Settings",
+        "devicedistribution": "",
+        "accessibility": "",
+        "resourceusage": "",
+        "favorites": "",
+        "pageview": "",
+        "responsetimeline": "",
+        "loadingtimeline": "",
+        "areadistribution": "",
+        "versioncomparison": "",
+        "crashesbyversion": "",
+        "marketinginsight": "Marketing Insight Settings"
+      },
+      "tip": {
+        "logmeter": "Tip: Indicates the weight of a single block displayed in the container.",
+        "responsetimescatter": "Tip: Time can be set within a maximum of $1ms and a minimum of $2ms.",
+        "loadingtimescatter": "Tip: Time can be set within a maximum of $1ms and a minimum of $2ms.",
+        "pvequalizer": "Tip: The maximum number of page views that can be displayed is $1.",
+        "devicedistribution": "",
+        "accessibility": "",
+        "resourceusage": "",
+        "favorites": "Tip: The maximum number of pages that can be displayed is $1.",
+        "pageview": "Tip: The maximum number of page views that can be displayed is $1.",
+        "responsetimeline": "",
+        "loadingtimeline": "",
+        "areadistribution": "",
+        "versioncomparison": "",
+        "crashesbyversion": "",
+        "marketinginsight": "Tip: For accurate analysis, the Start and Reach URLs should be the page where the user flows are linked."
+      },
+      "prefix": {
+        "logmeter": {
+          "error": "Error Weight",
+          "crash": "Crash Weight"
+        },
+        "responsetimescatter": "Sets the baseline for usability degradation intervals.",
+        "loadingtimescatter": "Sets the baseline for usability degradation intervals.",
+        "pvequalizer": "Number of page views to analyze",
+        "devicedistribution": "",
+        "accessibility": "",
+        "resourceusage": "",
+        "favorites": "Number of pages to analyze",
+        "pageview": "Number of page views to analyze",
+        "responsetimeline": "",
+        "loadingtimeline": "",
+        "areadistribution": "",
+        "versioncomparison": "",
+        "crashesbyversion": "",
+        "marketinginsight": {
+          "from": "From",
+          "to": "To",
+          "title": "Title"
+        }
+      },
+      "postfix": {
+        "logmeter": "qty.",
+        "responsetimescatter": "ms (1/1,000 sec)",
+        "loadingtimescatter": "ms (1/1,000 sec)",
+        "pvequalizer": "qty.",
+        "devicedistribution": "",
+        "accessibility": "",
+        "resourceusage": "",
+        "favorites": "qty.",
+        "pageview": "qty.",
+        "responsetimeline": "",
+        "loadingtimeline": "",
+        "areadistribution": "",
+        "versioncomparison": "",
+        "crashesbyversion": ""
+      },
+      "desc": {
+        "logmeter": "Visually represents the form in which real-time log data is received.",
+        "responsetimescatter": "Monitors Response Time data by device.",
+        "loadingtimescatter": "Monitors Loading Time data by device.",
+        "pvequalizer": "Monitors each page view of the monitoring app.",
+        "devicedistribution": "Monitors Errors and Crashes by frequently used device operating systems.",
+        "accessibility": "Monitors the user accessibility of the monitoring app.",
+        "resourceusage": "Monitors resource usage on frequently used devices.",
+        "favorites": "Monitors the performance of key pages specified by the admin.",
+        "pageview": "Monitors Errors and Crashes on each page of the monitoring app.",
+        "responsetimeline": "Real-time monitoring of Response Time based on Logmeter.",
+        "loadingtimeline": "Real-time monitoring of Loading Time based on Logmeter.",
+        "areadistribution": "Analyzes app performance distribution by region based on today’s statistics.",
+        "versioncomparison": "Compares and analyzes key monitoring items by OS version.",
+        "crashesbyversion": "Monitors Crashes by version."
+      },
+      "weight": "Weight",
+      "maximum": "Maximum Number to Display",
+      "range": "Range"
+    },
+    "msg": {
+      "componentsMax": "You can select up to 8.",
+      "requiredInput": "This is a required input value.",
+      "requiredWeight": " weight is a required input.",
+      "weightMax": "The maximum value of ",
+      "maxValue": "The maximum value is",
+      "comparison.select": "Please select the target for comparative analysis."
+    }
+  },
+  "bi": {
+    "install": "Number of installations of monitoring apps and ratio compared to previous day",
+    "ios": "iOS ratio of monitoring apps",
+    "android": "Android ratio of monitoring apps",
+    "ccu": "Number of users using the monitoring app per minute",
+    "mau": "Number of users using the monitoring app per month and percentage compared to previous day",
+    "dau": "Number of users using the monitoring app per day and ratio compared to the previous day",
+    "pv": "Number of pages of monitoring app viewed by users and ratio compared to previous day",
+    "revisit": "Number of users who reuse the monitoring app (Retention Rate) and percentage compared to the previous day",
+    "sleep": "Number of users who do not use the monitoring app after installation and ratio compared to the previous day",
+    "login": "Number of logins today by users who installed the monitoring app and ratio compared to the previous day",
+    "stay": "Average time spent on monitoring app users and percentage compared to previous day",
+    "log": "Number of data logs collected for analysis by monitoring app and ratio compared to previous day",
+    "error": "Number of errors collected for analysis by monitoring app and ratio compared to previous day",
+    "crash": "Number of crashes collected for analysis of monitor apps and ratio compared to previous day"
+  },
+  "alias": {
+    "title": "You can set the items placed in Favorites at the bottom right of the monitoring app's web view, native page management, and comprehensive analysis screen.",
+    "subTitle": "We recommend that you select page items that your users use frequently.",
+    "subTitle2": "The new page will take effect the next day.",
+    "text": {
+      "monitoringOn": "Monitoring ON",
+      "monitoringOff": "Monitoring OFF",
+      "noUse": "Not Used",
+      "use": "Used",
+      "pageName": "Page Name",
+      "pageDesc": "Page Description",
+      "pageModify": "Edit page info.",
+      "aliasName": "Alias Name",
+      "aliasDesc": "Alias Description",
+      "aliasModify": "Edit alias info.",
+      "aliasReg": "Alias information registration"
+    },
+    "btn": {
+      "csvDownload": "CSV Download",
+      "csvErrorDownload": "Error CSV Download",
+      "csvUpload": "CSV Upload",
+      "pageReg": "Page Register",
+      "pageParameter": "Page parameter management",
+      "pageParameterSet": "Page parameter settings",
+      "noset": "Unspecified URL"
+    },
+    "pageParameter": {
+      "info": "Controls the strings to include/exclude from the request URL."
+    },
+    "noset": {
+      "info": "Here is a list of unspecified URLs that were collected through monitoring today and that users are accessing."
+    }
+  },
+  "log": {
+    "maxy": {
+      "info": "MAXY Information Collection Log"
+    },
+    "webserver": {
+      "start": "Start execution of the local webserver of the monitored device",
+      "error": "An error occurred during operation of the local webserver of the monitored device.",
+      "end": "Complete execution of Local Webserver of the monitored device"
+    },
+    "webNavigation": {
+      "start": "Start loading mobile web page",
+      "response": "Mobile web page loading response",
+      "end": "Finish loading mobile web page",
+      "error": "An error occurred when loading the mobile web page.",
+      "scriptError": "Mobile web page Javascript error occurred",
+      "redirection": "Mobile web page redirection",
+      "resourceDownStart": "Start downloading resources for mobile web pages",
+      "resourceDownEnd": "Finish downloading resources for mobile web page",
+      "ssl": "Mobile web pages communicate with SSL",
+      "click": "Click(Point Up) event in mobile web page",
+      "pageLoad": "Mobile Web Page Lifecycle Load Event",
+      "pageBack": "Go back during mobile web page Lifecycle PageShow event",
+      "pageRefresh": "Refresh during mobile web page Lifecycle PageShow event",
+      "pageForward": "Mobile Web Page Lifecycle PageShow Event",
+      "pageHide": "Mobile Web Page Lifecycle PageHide Event",
+      "pagePushState": "PushState event of mobile web page History object",
+      "pagePopState": "Mobile web page back event occurs",
+      "pageUnload": "Mobile web page Lifecycle Unload event called when leaving the page",
+      "pageHashChange": "Only the hash (#) is changed on the target mobile web page",
+      "pageReadyStateChange": "Mobile Web Page Lifecycle ReadyStateChange Event",
+      "pageDOMContentLoaded": "Mobile Web Page Lifecycle DOMContentLoaded Event",
+      "loadingTime": "The time it takes for a mobile web page to become ready to work.",
+      "login": "Check whether the monitoring target is logged in or not",
+      "logout": "Check whether the monitoring target logs out",
+      "bizError": "Mobile web page customer Business error occurred",
+      "webVital": "Mobile web page Web Vital Log collected",
+      "popupInfo": "Collect popup information when a popup is called",
+      "searchKeyword": "Search keyword collection",
+      "termsComplete": "Collection of information on completion of agreement to terms and conditions",
+      "subscribeComplete": "Collect product subscription completion information",
+      "bottomPopupInfo": "Collecting information about the called popup when a bottom popup is called."
+    },
+    "resourceDown": {
+      "inf": "Download INF file for Resource Download of MiAPS Hybrid",
+      "start": "Start Resource Download of MiAPS Hybrid",
+      "end": "Complete Resource Download of MiAPS Hybrid",
+      "error": "An error occurred during Resource Download of MiAPS Hybrid."
+    },
+    "httpRequest": {
+      "request": "Initiates an Http request between Client¹ and Server",
+      "response(Legacy)": "Responds to Http requests between Client¹ and Server",
+      "response": "Responds to Http requests between Client¹ and Server",
+      "error": "Error occurred during Http request between Client¹ and Server",
+      "exception": "Exception occurred during Http request between Client¹ and Server"
+    },
+    "nativeAction": {
+      "start": "A request from the native area of the monitoring target is initiated.",
+      "end": "Request terminated in native area of monitoring target",
+      "error": "An error occurs in the native area of the monitoring target.",
+      "appStart": "Monitored target starts running",
+      "appForeground": "Monitoring target changed from Background to Foreground",
+      "appBackground": "Monitoring target changed from Foreground to Background",
+      "appTerminate": "Monitored object terminates abnormally",
+      "deepLink": "Deep Link",
+      "appNotResponse": "ANR",
+      "appPageStart": "Native app page start",
+      "appPageEnd": "Native app page end",
+      "bizError": "Native customer Business error occurred",
+      "actionClick": "Tagging when a Click Event that requires collection occurs in the Native app",
+      "installReferer": "Native app Install referer collection log",
+      "appFirstStart": "Native app first run"
+    },
+    "native": {
+      "crash": "A crash occurred in the native area."
+    },
+    "customTag": {
+      "common": "Defines general indicators excluding errors automatically collected from monitoring targets.",
+      "error": "Define separate issues excluding errors automatically collected from monitoring targets.",
+      "alarm": "Defines separate notification items excluding errors automatically collected from monitoring targets."
+    },
+    "ajax": {
+      "submit": "Run HTML submit",
+      "request": "Creates an XMLHttpRequest(Ajax) object",
+      "send": "Start sending XMLHttpRequest(Ajax)",
+      "response": "Receive response following sending XMLHttpRequest(Ajax)",
+      "error": "XMLHttpRequest (Ajax) response status code is 3xx, 4xx or 5xx",
+      "exception": "An exception occurred during XMLHttpRequest (Ajax) transmission"
+    },
+    "autoTag": {
+      "start": "Auto Tag page started",
+      "end": "Auto Tag page terminated",
+      "action": "Auto Tag action occurred"
+    }
+  },
+  "user": {
+    "user": "User",
+    "administrator": "Administrator",
+    "share": "(Ratio)",
+    "modify": "Edit page info.",
+    "name": "User Name",
+    "id": "User ID",
+    "register": "Register User",
+    "detail": "User Detail",
+    "general": "General User",
+    "group": "Group Manager",
+    "groupName": "Group Name",
+    "permission": "Authority",
+    "specifyApp": "List of users by app",
+    "groupModify": "Modify group",
+    "currentGroupName": "Current group name",
+    "newGroupName": "New group name",
+    "userflowdetail": "User flow details",
+    "moveappname": "App name to move",
+    "movepackagename": "App name to move",
+    "moveservertype": "Server type to move",
+    "initialpassword": "Reset PW is [the first three digits of your ID + the current month and day (MMdd) + !@].",
+    "specifiedApp": "Specified App",
+    "btn": {
+      "appSelection": "List of viewable apps",
+      "appModify": "Change Viewable Apps",
+      "appAdd": "Register Viewable Apps",
+      "specifyApp": "Specify app",
+      "groupManagement": "Group Management",
+      "subGroupAdd": "Add subgroup",
+      "groupAdd": "Add group",
+      "groupDelete": "Delete group",
+      "groupNmModify": "Modify group name",
+      "parentGroup": "Parent group",
+      "alluserlist": "List of all users"
+    },
+    "msg": {
+      "userName": "User name is a required field.",
+      "userId": "User ID is a required field.",
+      "userIdValid": "Please enter at least 4 characters for the User ID.",
+      "permissionEmpty": "Please enter a value for permission distinction.",
+      "emailEmpty": "Email is a required field.",
+      "groupDelete": "Would you like to delete the group?",
+      "addGroupError": "You cannot add any more subgroups.",
+      "selectGroup": "Please select a group.",
+      "duplicationuser": "There are duplicate users.",
+      "accountReset": "Would you like to reset your account?",
+      "accountResetSuccess": "Your account has been reset.",
+      "resetdesc": "User information will be reset. ",
+      "resetpassword": "Reset PW is [the first three digits of your ID + the current month and day (MMdd) + !@].",
+      "unregisteredapp": "This app is not managed by the group administrator.",
+      "specialchar": "Special characters cannot be entered.",
+      "noGrant": "You do not have permission.",
+      "nogroup": "Please create a group first in group management."
+    }
+  },
+  "device": {
+    "text": {
+      "management": "Monitoring Device Management",
+      "vipYn": "VIP",
+      "webPerformance": "Web Performance Check",
+      "setting": "Monitoring Screen Settings",
+      "logPage": "Logging Target Page information",
+      "properties": "Properties",
+      "targetPage": "Registration target page"
+    },
+    "btn": {
+      "all": "All",
+      "pageName": "Page Name",
+      "reqUrl": "Requested URL",
+      "logging": "Register Logging Target",
+      "monitoringDelete": "Delete Monitoring Target",
+      "monitoringAdd": "Directly Register Monitoring Target",
+      "pageAdd": "Register Page",
+      "pageDelete": "Delete Page",
+      "viewitems": "View Items"
+    },
+    "msg": {
+      "deviceIdEmpty": "Device ID is empty.",
+      "targetIdEmpty": "You are not registered as a monitoring target. You can modify it after registration.",
+      "deviceSelect": "Please select a device.",
+      "userIdEmpty": "User ID is empty.",
+      "differentPackage": "The registered device needs to be changed to the corresponding app in order to appear in the monitoring device management list.",
+      "pageSelect": "Please select a page.",
+      "loggingPageSelect": "No data has been changed.",
+      "loggingTargetDelete": "Are you sure you want to delete the logging destination?"
+    }
+  },
+  "alarm": {
+    "title": {
+      "error": "Collection Error threshold (Number of Errors)",
+      "crash": "Collection Crash threshold (Number of Crashes)",
+      "cpu": "CPU Usage (%)",
+      "memory": "Memory Usage (%)",
+      "network": "Network (Status)",
+      "loadingTime": "Loading Time threshold (ms)",
+      "responseTime": "Response Time threshold (ms)",
+      "install": "App installation rate compared to previous day (%)",
+      "login": "Login rate compared to previous day (%)",
+      "dau": "DAU ratio compared to previous day (%)",
+      "pv": "PV ratio compared to previous day (%)",
+      "errorPct": "Error rate compared to the previous day (%)",
+      "crashPct": "Crash rate compared to the previous day (%)",
+      "duplicate": "Duplicate Allowed"
+    },
+    "msg": {
+      "ios": "iOS data collection unavailable",
+      "minmaxall": "Please enter a minimum of 10 and a maximum of 100",
+      "minmaxcrashalim": "Please enter a minimum of 1 and a maximum of 100",
+      "minmaxperformance": "Please enter a minimum of 500 and a maximum of 3000",
+      "statusread": "Would you like to change the status to 'Read'?",
+      "changestatus": "The status has been changed to ‘read’.",
+      "alertPeriodMax": "If repeated more than 10 times per day, it may cause increased load on the server and network communication.",
+      "limitValueRequired": "The maximum threshold is a required field.",
+      "alarmMsgRequired": "The Alarm Msg is a required field."
+    },
+    "tip": {
+      "error": "Please enter a minimum of 10 and a maximum of 100.",
+      "crash": "Please enter a minimum of 1 and a maximum of 100.",
+      "pct": "Please enter a minimum of 10% and a maximum of 100%.",
+      "memory": "Please enter a minimum of 10mb and a maximum of 100mb.",
+      "comSensitivity": "Please select between Bad and Too Bad.",
+      "time": "Please input within a minimum of 500ms and a maximum of 3,000ms."
+    },
+    "ex": {
+      "error": "Example) The error that occurred on the login page exceeded the threshold.",
+      "crash": "Example) The crash that occurred on the login page exceeded the threshold.",
+      "cpu": "Example) CPU usage of iPhone XS exceeds 70%.",
+      "memory": "Example) The memory usage of iPhone XS exceeds 100mb.",
+      "comSensitivity": "Example) The network sensitivity of Galaxy S23 was calculated as Too Bad.",
+      "loadingTime": "Example) The loading time of the login screen exceeded the threshold.",
+      "responseTime": "Example) The response time on the login screen exceeded the threshold.",
+      "install": "Example) The app installation rate compared to the previous day exceeded 100%.",
+      "login": "Example) The login rate compared to the previous day exceeded 100%.",
+      "dau": "Example) The DAU ratio compared to the previous day exceeded 100%.",
+      "pv": "Example) The PV ratio compared to the previous day exceeded 100%.",
+      "errorRatio": "Example) The error occurrence rate compared to the previous day exceeded 100%.",
+      "crashRatio": "Example) The crash occurrence rate compared to the previous day exceeded 100%."
+    },
+    "type": {
+      "error": "Error",
+      "crash": "Crash",
+      "resource": "Resource Usage",
+      "app": "App Performance Metrics",
+      "usability": "Usability Metrics"
+    },
+    "text": {
+      "read": "Read",
+      "unread": "Not Read"
+    }
+  },
+  "model": {
+    "popup": {
+      "title": "Device Model Info"
+    }
+  },
+  "obfuscation": {
+    "msg": {
+      "paramempty": "The parameter is empty.",
+      "fileempty": "Please upload your file.",
+      "jsonortext": "You can only upload JSON or text files."
+    }
+  },
+  "aibot": {
+    "popup": {
+      "title": "MAXY AI Bot Settings",
+      "option": "Run cycle (days)",
+      "tip": "Tip. The maximum notification cycle per day is 10.",
+      "round": "Round $1",
+      "aiperform": "AI performance analysis",
+      "aiusability": "AI usability analysis"
+    },
+    "text": {
+      "option": "Option"
+    }
+  },
+  "dsym": {
+    "title": {
+      "desc": "Manage DSYM files by app build version. (Please upload the DSYM file to get a more detailed StackTrace in case of a crash.)"
+    },
+    "text": {
+      "dropZone": "DSYM.zip Drag and Drop",
+      "dropZoneDesc1": "When uploading DSYM compressed file, AppVer, AppBuildNum, and UUID are extracted and automatically registered.",
+      "dropZoneDesc2": "Only compressed files can be uploaded. (Support formats: ZIP, GZ, GZIP)",
+      "dropZoneDesc3": "File size must be {size} or less.",
+      "validFile": "Please upload the compressed DSYM file.",
+      "validDsym": "If the DSYM file is not uploaded, that version of the symbolization function is not available."
+    }
+  }
+}

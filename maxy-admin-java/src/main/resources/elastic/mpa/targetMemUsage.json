@@ -1,0 +1,65 @@
+{
+  "aggs": {
+    "maxMem": {
+      "max": {
+        "field": "memUsage"
+      }
+    },
+    "minMem": {
+      "min": {
+        "field": "memUsage"
+      }
+    },
+    "avgMem": {
+      "avg": {
+        "field": "memUsage"
+      }
+    }
+  },
+  "size": 0,
+  "query": {
+    "bool": {
+      "filter": [
+        {
+          "term": {
+            "packageNm": #{packageNm}
+          }
+        },
+        {
+          "term": {
+            "serverType": #{serverType}
+          }
+        },
+        #[isOsType]
+        {
+          "term": {
+            "osType": #{osType}
+          }
+        },
+        #[/isOsType]
+        #[isAppVer]
+        {
+          "term": {
+            "appVer": #{appVer}
+          }
+        },
+        #[/isAppVer]
+        #[deviceModel]
+        {
+          "term": {
+            "deviceModel": #{deviceModel}
+          }
+        },
+        #[/deviceModel]
+        {
+          "range": {
+            "logTm": {
+              "gte": #{fromDt},
+              "lte": #{toDt}
+            }
+          }
+        }
+      ]
+    }
+  }
+}

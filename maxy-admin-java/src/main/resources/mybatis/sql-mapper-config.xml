@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+    <!-- UNDER_SCORE 로 된 SQL 결과 컬럼들을 CamelCase 로 변환. 이 설정 없으면 VO 매핑 안됨  -->
+    <settings>
+        <setting name="mapUnderscoreToCamelCase" value="true"/>
+        <setting name="cacheEnabled" value="false"/>
+        <setting name="localCacheScope" value="STATEMENT"/>
+    </settings>
+    <typeAliases>
+        <!-- UNDER_SCORE 로 된 SQL 결과 컬럼들을 CamelCase 로 변환 후 Map 으로 반환 -->
+        <typeAlias alias="CamelMap" type="com.thinkm.common.util.CamelHashMap"/>
+
+        <typeAlias alias="UserVO" type="com.thinkm.maxy.vo.UserVO"/>
+        <typeAlias alias="MenuVO" type="com.thinkm.maxy.vo.MenuVO"/>
+        <typeAlias alias="ExceptLogVO" type="com.thinkm.maxy.vo.ExceptLogVO"/>
+        <typeAlias alias="LogVO" type="com.thinkm.maxy.vo.LogVO"/>
+        <typeAlias alias="PackageVO" type="com.thinkm.maxy.vo.PackageVO"/>
+        <typeAlias alias="BatchHistoryVO" type="com.thinkm.maxy.vo.BatchHistoryVO"/>
+        <typeAlias alias="BatchInfoVO" type="com.thinkm.maxy.vo.BatchInfoVO"/>
+        <typeAlias alias="PagesVO" type="com.thinkm.maxy.vo.PagesVO"/>
+        <typeAlias alias="UserGroupVO" type="com.thinkm.maxy.vo.UserGroupVO"/>
+        <typeAlias alias="DeviceVO" type="com.thinkm.maxy.vo.DeviceVO"/>
+        <typeAlias alias="StoreVO" type="com.thinkm.maxy.vo.StoreVO"/>
+        <typeAlias alias="PageSummaryVO" type="com.thinkm.maxy.vo.PageSummaryVO"/>
+        <typeAlias alias="LogLevelVO" type="com.thinkm.maxy.vo.LogLevelVO"/>
+        <typeAlias alias="DevicePageVO" type="com.thinkm.maxy.vo.DevicePageVO"/>
+        <typeAlias alias="DashboardVO" type="com.thinkm.maxy.vo.DashboardVO"/>
+        <typeAlias alias="DashboardConfigVO" type="com.thinkm.maxy.vo.DashboardComponentVO"/>
+        <typeAlias alias="AlarmVO" type="com.thinkm.maxy.vo.AlarmVO"/>
+        <typeAlias alias="MessageVO" type="com.thinkm.maxy.vo.MessageVO"/>
+        <typeAlias alias="IntegrationVO" type="com.thinkm.maxy.vo.IntegrationVO"/>
+        <typeAlias alias="ReportVO" type="com.thinkm.maxy.vo.ReportVO"/>
+        <typeAlias alias="ObfuscationVO" type="com.thinkm.maxy.vo.ObfuscationVO"/>
+        <typeAlias alias="ModelVO" type="com.thinkm.maxy.vo.ModelVO"/>
+        <typeAlias alias="ReportVO" type="com.thinkm.maxy.vo.ReportVO"/>
+        <typeAlias alias="SystemLogVO" type="com.thinkm.maxy.vo.SystemLogVO"/>
+        <typeAlias alias="BotVO" type="com.thinkm.maxy.vo.BotVO"/>
+        <typeAlias alias="ScheduledMailVO" type="com.thinkm.maxy.vo.ScheduledMailVO"/>
+        <typeAlias alias="DsymFileInfoVO" type="com.thinkm.maxy.vo.DsymFileInfoVO"/>
+        <typeAlias alias="AppInfoVO" type="com.thinkm.maxy.vo.AppInfoVO"/>
+        <typeAlias alias="AuditLog" type="com.thinkm.common.config.audit.AuditLog"/>
+        <typeAlias alias="FrontBiVO" type="com.thinkm.maxy.vo.FrontBiVO"/>
+        <typeAlias alias="FrontUrl" type="com.thinkm.maxy.vo.FrontUrl"/>
+        <typeAlias alias="FrontFeeldexVO" type="com.thinkm.maxy.vo.FrontFeeldexVO"/>
+        <typeAlias alias="UserAppVO" type="com.thinkm.maxy.vo.UserAppVO"/>
+        <typeAlias alias="SessionReplayBlockTargetVO" type="com.thinkm.maxy.vo.SessionReplayBlockTargetVO"/>
+        <typeAlias alias="AlertHistoryVO" type="com.thinkm.maxy.vo.AlertHistoryVO"/>
+        <typeAlias alias="AlertLimitConfigVO" type="com.thinkm.maxy.vo.AlertLimitConfigVO"/>
+        <typeAlias alias="AlertSendConfigVO" type="com.thinkm.maxy.vo.AlertSendConfigVO"/>
+        <typeAlias alias="AlertSendTargetVO" type="com.thinkm.maxy.vo.AlertSendTargetVO"/>
+        <typeAlias alias="SessionReplayRuleVO" type="com.thinkm.maxy.vo.SessionReplayRuleVO"/>
+    </typeAliases>
+</configuration>

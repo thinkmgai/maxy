@@ -1,0 +1,30 @@
+<style>
+</style>
+<div class="right_navbar" id="{{id}}__navbar">
+    <div class="right_navbar_content">
+        <div class="right_navbar_header">
+            <h4 data-t="management.components.setting.title.{{id}}"></h4>
+            <img class="ic_question" id="{{id}}__navbar_tooltip">
+        </div>
+        <div class="navbar_input_wrap">
+            <label class="txt_prefix" data-t="management.components.setting.prefix.{{id}}.error" for="{{id}}__optErrorWeight"></label>
+            <div class="inner_wrap">
+                <input data-type="{{param.type}}" id="{{id}}__optErrorWeight" type="text" maxlength="9">
+                <span class="txt_postfix short" data-t="management.components.setting.postfix.{{id}}"></span>
+            </div>
+        </div>
+        <div class="navbar_input_wrap">
+            <label class="txt_prefix" data-t="management.components.setting.prefix.{{id}}.crash" for="{{id}}__optCrashWeight"></label>
+            <div class="inner_wrap">
+                <input data-type="{{param.type}}" id="{{id}}__optCrashWeight" type="text" maxlength="9">
+                <span class="txt_postfix short" data-t="management.components.setting.postfix.{{id}}"></span>
+            </div>
+        </div>
+        <div class="txt_gray txt_tip" data-t="management.components.setting.tip.{{id}} 30"></div>
+    </div>
+    <div class="right_navbar_footer">
+        <button class="btn_common opposite btn_component_setting_save"
+                data-t="common.btn.save"
+                data-type="{{id}}"></button>
+    </div>
+</div>

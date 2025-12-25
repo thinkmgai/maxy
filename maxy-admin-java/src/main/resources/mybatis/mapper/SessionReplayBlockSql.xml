@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkm.maxy.mapper.SessionReplayBlockMapper">
+    
+    <select id="selectBlockTargets" resultType="SessionReplayBlockTargetVO" parameterType="SessionReplayBlockTargetVO">
+        SELECT seq, package_nm, server_type, selector, target, remark, reg_dt, reg_no
+        FROM maxy_session_replay_block_target
+        WHERE package_nm = #{packageNm}
+          AND server_type = #{serverType}
+        ORDER BY reg_dt DESC
+    </select>
+    
+    <insert id="insertBlockTarget" parameterType="SessionReplayBlockTargetVO">
+        INSERT INTO maxy_session_replay_block_target
+            (package_nm, server_type, selector, target, remark, reg_dt, reg_no)
+        VALUES
+            (#{packageNm},
+             #{serverType},
+             #{selector},
+             #{target},
+             #{remark},
+             #{regDt},
+             #{regNo})
+    </insert>
+    
+    <update id="updateBlockTarget" parameterType="SessionReplayBlockTargetVO">
+        UPDATE maxy_session_replay_block_target
+        SET selector = #{selector},
+            target = #{target},
+            remark = #{remark},
+            reg_dt = #{regDt},
+            reg_no = #{regNo}
+        WHERE seq = #{seq}
+    </update>
+    
+    <delete id="deleteBlockTargets" parameterType="java.util.List">
+        DELETE FROM maxy_session_replay_block_target
+        WHERE seq IN
+        <foreach collection="list" item="item" open="(" separator="," close=")">
+            #{item.seq}
+        </foreach>
+    </delete>
+    
+</mapper>

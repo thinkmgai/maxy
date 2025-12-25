@@ -1,0 +1,76 @@
+{
+  "aggs": {
+    "page": {
+      "terms": {
+        "field": "aliasValue",
+        "size": 20
+      },
+      "aggs": {
+        "viewer": {
+          "cardinality": {
+            "field": "deviceId.raw"
+          }
+        },
+        "stay": {
+          "avg": {
+            "field": "intervaltime"
+          }
+        },
+        "avgRenderingTime": {
+          "avg": {
+            "field": "loadingTime"
+          }
+        },
+        "Error": {
+          "sum": {
+            "field": "errorCount"
+          }
+        },
+        "Crash": {
+          "sum": {
+            "field": "crashCount"
+          }
+        }
+      }
+    }
+  },
+  "size": 0,
+  "query": {
+    "bool": {
+      "must": [
+        {
+          "term": {
+            "packageNm": #{packageNm}
+          }
+        },
+        {
+          "term": {
+            "serverType": #{serverType}
+          }
+        },
+        #[isOsType]
+        {
+          "term": {
+            "osType": #{osType}
+          }
+        },
+        #[/isOsType]
+        #[isAppVer]
+        {
+          "term": {
+            "appVer": #{appVer}
+          }
+        },
+        #[/isAppVer]
+        {
+          "range": {
+            "logDate": {
+              "gte": #{fromTimestamp},
+              "lte": #{toTimestamp}
+            }
+          }
+        }
+      ]
+    }
+  }
+}

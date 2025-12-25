@@ -1,0 +1,46 @@
+<style>
+    .device_analysis .maxy_component_item.flex_column {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        position: relative;
+        justify-content: flex-end;
+        padding-bottom: 5px;
+    }
+
+    .dark_mode #maxyComponent__CRASHES_BY_VERSION .highcharts-point.highcharts-color-0,
+    .dark_mode #maxyComponent__CRASHES_BY_VERSION .highcharts-series.highcharts-series-0.highcharts-column-series.highcharts-tracker > path {
+        stroke: none;
+    }
+</style>
+<div class="maxy_component_wrap">
+    <div class="maxy_component_header space_between">
+        <div class="header_title flex_column">
+            <div class="header_title space_between">
+                <h4 id="analysisTitle">{{fmtTitle}}</h4>
+                <img class="ic_question"
+                     alt="?"
+                >
+            </div>
+            <div class="maxy_component_tab">
+                <span class="btn_tab" data-tab="androidCrash">
+                    <img class="android_crash" src="/images/maxy/icon-android-light-grey.svg" alt="">
+                    <span>Android</span>
+                </span>
+                <span class="btn_tab" data-tab="iosCrash">
+                    <img class="ios_crash" src="/images/maxy/icon-ios-light-grey.svg" alt="">
+                    <span>iOS</span>
+                </span>
+            </div>
+        </div>
+        <div class="maxy_component_btn_wrap">
+            <button class="maxy_component_btn">ALL</button>
+        </div>
+    </div>
+    <div class="maxy_component_item_wrap" id="androidCrashWrap">
+        <div class="maxy_component_item" id="androidCrash"></div>
+    </div>
+    <div class="maxy_component_item_wrap" id="iosCrashWrap">
+        <div class="maxy_component_item" id="iosCrash"></div>
+    </div>
+</div>

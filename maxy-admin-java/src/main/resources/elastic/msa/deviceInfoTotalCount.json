@@ -1,0 +1,28 @@
+{
+  "query": {
+    "bool": {
+      "must": [
+        {
+          "bool" : {
+            "must" : [
+              {
+                "term" : {
+                  "packageNm" : {
+                    "value" : #{packageNm}
+                  }
+                }
+              },
+              {
+                "term" : {
+                  "serverType" : {
+                    "value" : #{serverType}
+                  }
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

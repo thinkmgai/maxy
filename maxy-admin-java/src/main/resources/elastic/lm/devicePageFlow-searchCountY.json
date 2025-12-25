@@ -1,0 +1,41 @@
+{
+  "query" : {
+    "bool" : {
+      "must" : [
+        {
+          "bool" : {
+            "must" : [
+              {
+                "term" : {
+                  "packageNm" : {
+                    "value" : #{packageNm}
+                }
+              }
+            },
+              {
+                "term" : {
+                  "serverType" : {
+                    "value" : #{serverType}
+                }
+              }
+            }
+            ],
+            "adjust_pure_negative" : true
+          }
+        },
+        {
+          "range" : {
+            "pageStartTm" : {
+              "from" : #{yesterdayFrom},
+              "to" : #{yesterdayTo},
+              "include_lower" : false,
+              "include_upper" : true,
+              "time_zone": "Z"
+            }
+          }
+        }
+      ],
+      "adjust_pure_negative" : true
+    }
+  }
+}

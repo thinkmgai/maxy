@@ -1,0 +1,55 @@
+{
+  "size": 0,
+  "aggs": {
+    "documents_per_day": {
+      "date_histogram": {
+        "field": "logTm",
+        "calendar_interval": "day",
+        "format": "yyyy-MM-dd",
+        "time_zone": "Asia/Seoul"
+      },
+      "aggs": {
+        "daily_count": {
+          "value_count": {
+            "field": "_id"
+          }
+        }
+      }
+    },
+    "average_count": {
+      "avg_bucket": {
+        "buckets_path": "documents_per_day>daily_count"
+      }
+    }
+  },
+  "query": {
+    "bool": {
+      "filter": [
+        {
+          "term": {
+            "packageNm": #{packageNm}
+          }
+        },
+        {
+          "term": {
+            "serverType": #{serverType}
+          }
+        }
+        #[isOsType]
+      ,{
+          "term": {
+            "osType": #{osType}
+          }
+        }
+        #[/isOsType]
+      ,{
+          "range": {
+            "logTm": {
+              "lte": "now"
+            }
+          }
+        }
+      ]
+    }
+  }
+}

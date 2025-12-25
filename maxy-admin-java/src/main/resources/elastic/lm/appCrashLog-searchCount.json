@@ -1,0 +1,125 @@
+{
+  "query" : {
+    "bool" : {
+      "must" : [
+        {
+          "bool" : {
+            "must" : [
+              {
+                "term" : {
+                  "packageNm" : {
+                    "value" : #{packageNm}
+                  }
+                }
+              },
+              {
+                "term" : {
+                  "serverType" : {
+                    "value" : #{serverType}
+                  }
+                }
+              }
+   #[isAppVer]
+              ,{
+                "term" : {
+                  "appVer" : {
+                    "value" : #{appVer}
+                  }
+                }
+              }
+    #[/isAppVer]
+    #[searchDeviceId]
+            ,{
+                "term":{
+                  "deviceId.raw" : {
+                    "value" : #{searchValue}
+                   }
+                }
+              }
+    #[/searchDeviceId]
+    #[searchVipYn]
+            ,{
+                "term":{
+                  "vipYn" : {
+                    "value" : #{vipYn}
+                  }
+                }
+              }
+    #[/searchVipYn]
+    #[searchLogType]
+            ,{
+                "term":{
+                  "logTypeNm" : {
+                    "value" : #{logTp}
+                }
+              }
+            }
+    #[/searchLogType]
+    #[searchOsType]
+            ,{
+                "term":{
+                  "osType" : {
+                    "value" : #{osType}
+                }
+              }
+            }
+    #[/searchOsType]
+    #[searchUserNm]
+            ,{
+                "match":{
+                  "userNm" : {
+                    "query": #{searchValue}
+                  }
+                }
+             }
+    #[/searchUserNm]
+    #[searchUserId]
+            ,{
+                "match":{
+                  "userId" : {
+                    "query": #{searchValue}
+                  }
+                }
+              }
+    #[/searchUserId]
+    #[searchReqUrl]
+            ,{
+                "term":{
+                  "reqUrl" : {
+                    "query": #{searchValue},
+                    "operator": "and"
+                  }
+                }
+              }
+    #[/searchReqUrl]
+    #[searchPhoneNo]
+            ,{
+                "term":{
+                  "phoneNo" : {
+                    "query": #{searchValue},
+                    "operator": "and"
+                  }
+                }
+              }
+    #[/searchPhoneNo]
+            ],
+            "adjust_pure_negative" : true
+          }
+        },
+        {
+          "range" : {
+            "logTm" : {
+              "from" : #{fromDt},
+              "to" : #{toDt},
+              "include_lower" : false,
+              "include_upper" : true,
+              "time_zone" : "Z"
+            }
+          }
+        }
+
+      ],
+      "adjust_pure_negative" : true
+    }
+  }
+}

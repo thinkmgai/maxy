@@ -1,0 +1,1033 @@
+<div class="maxy_popup_common_wrap" id="maxyPopupWrap"><!--
+    종합 분석 > LoadingTime Scatter > 팝업
+    종합 분석 > LoadingTime Line Chart > 팝업
+-->
+<style>
+    .maxy_popup_title_left .title {
+        font-weight: 700 !important;
+    }
+
+    .maxy_popup_title_left .mg_left {
+        margin-left: 16px;
+    }
+
+    .maxy_popup_common .maxy_popup_title_wrap .maxy_popup_title_left > span:nth-of-type(2) {
+        overflow: auto;
+        text-overflow: initial;
+    }
+
+    .tippy-box {
+        max-width: 350px;
+        word-wrap: break-word;
+    }
+
+    .tippy-box[data-theme~='maxy-resource-tooltip'] .maxy_tooltip_header {
+        word-break: break-all;
+    }
+
+    .sub_title .icon {
+        width: 10px;
+        height: 12px;
+        display: none;
+    }
+
+    .sub_title .icon.on {
+        display: inline-block;
+    }
+
+    .tabulator .tabulator-header .tabulator-col.tabulator-sortable .tabulator-col-title {
+        padding-right: 0;
+    }
+
+    .popup_right_side_wrap {
+        width: 90%;
+        height: calc(100% - 80px);
+        top: 80px;
+    }
+
+    .event_time_line_wrap {
+        padding: 15px 20px 0 15px !important;
+    }
+
+    #loadingTimePopup__logList,
+    #loadingTimeLinePopup__logList {
+        height: 100% !important;
+    }
+    .sub_title_left .btn_alias {
+        display: none;
+    }
+</style>
+<div class="maxy_popup_common" id="loadingTimePopup__popup" style="display: block;">
+
+    <div class="maxy_popup_grid_s_wrap">
+        <div class="maxy_popup_title_wrap">
+            <div class="maxy_popup_title_left">
+                <img class="img_profiling" alt="" src="">
+                <span class="title" id="title">Profiling/</span>
+                <span>Loading Time</span>
+                <div id="count" class="popup_count">(1)</div>
+                <div class="sub_title_wrap cursor_pointer">
+                    <span class="sub_title mg_left" id="pDeviceName">
+                        <i class="icon_device"></i>
+                        <span class="device_name">갤럭시 s20 플러스</span>
+                    </span>
+                    <span class="sub_title" id="pAppVer">
+                        <i class="icon_app_ver"></i>
+                        <span>1.9.2</span>
+                    </span>
+                    <span class="sub_title" id="pOsVer">
+                        <i class="icon_os android"></i>
+                        <span>13</span>
+                    </span>
+                    <span class="sub_title" id="pComType">
+                        <i class="icon_network_type"></i>
+                        <span id="pComTypeTxt">WiFi</span>
+                    </span>
+                    <span class="sub_title" id="pSimOperator">
+                        <i class="icon_simoperator"></i>
+                        <span id="pSimOperatorNm">SKT</span>
+                    </span>
+                    <span class="sub_title" id="pLocation">
+                        <i class="icon_time_zone"></i>
+                        <span id="pTimeZone">Asia/Seoul</span>
+                    </span>
+                    <span class="sub_title" id="pLogType">
+                        <i class="icon_log_type webview"></i>
+                        <span id="pLogTypeNm">Web View</span>
+                    </span>
+                    <span class="sub_title user_id" id="pUserId" style="display: none;">
+                        <i class="icon_user"></i>
+                        <span id="pUserIdTxt"></span>
+                    </span>
+                </div>
+
+            </div>
+
+            <div class="maxy_popup_title_right">
+                <img class="btn_page_flow" id="btnPageFlow" alt="" style="display: inline;">
+            </div>
+        </div>
+
+        <div class="maxy_popup_sub_title">
+            <div class="sub_title_left">
+                <span class="desc" id="pAliasValue" style="display: none;"></span>
+                <span class="url" id="pReqUrl" style="max-width: 97%;">https://miaps.thinkm.co.kr/miapshybrid/native.html</span>
+                <button class="btn_alias" style="display: inline-block;"></button>
+            </div>
+        </div>
+
+        <div class="maxy_table_wrap_v2 tabulator" id="loadingTimePopup__logList" role="grid" tabulator-layout="fitDataFill"><div class="tabulator-header" role="rowgroup"><div class="tabulator-header-contents" role="rowgroup"><div class="tabulator-headers" role="row" style="height: 30px;"><div class="tabulator-col tabulator-sortable tabulator-col-sorter-element" role="columnheader" aria-sort="none" tabulator-field="intervaltime" style="min-width: 40px; width: 98px; height: 30px;"><div class="tabulator-col-content"><div class="tabulator-col-title-holder"><div class="tabulator-col-title">Time</div><div class="tabulator-col-sorter"><div class="tabulator-arrow"></div></div></div></div></div><span class="tabulator-col-resize-handle" style="height: 30px;"></span><div class="tabulator-col tabulator-sortable tabulator-col-sorter-element" role="columnheader" aria-sort="none" tabulator-field="feeldex" style="min-width: 40px; width: 98px; height: 30px;"><div class="tabulator-col-content"><div class="tabulator-col-title-holder"><div class="tabulator-col-title">Feeldex</div><div class="tabulator-col-sorter"><div class="tabulator-arrow"></div></div></div></div></div><span class="tabulator-col-resize-handle" style="height: 30px;"></span><div class="tabulator-col tabulator-sortable tabulator-col-sorter-element" role="columnheader" aria-sort="none" tabulator-field="deviceId" style="min-width: 40px; width: 222px; height: 30px;"><div class="tabulator-col-content"><div class="tabulator-col-title-holder"><div class="tabulator-col-title">Device ID</div><div class="tabulator-col-sorter"><div class="tabulator-arrow"></div></div></div></div></div><span class="tabulator-col-resize-handle" style="height: 30px;"></span><div class="tabulator-col tabulator-sortable tabulator-col-sorter-element" role="columnheader" aria-sort="none" tabulator-field="userId" style="min-width: 40px; width: 123px; height: 30px;"><div class="tabulator-col-content"><div class="tabulator-col-title-holder"><div class="tabulator-col-title">User ID</div><div class="tabulator-col-sorter"><div class="tabulator-arrow"></div></div></div></div></div><span class="tabulator-col-resize-handle" style="height: 30px;"></span><div class="tabulator-col tabulator-sortable tabulator-col-sorter-element" role="columnheader" aria-sort="none" tabulator-field="pageStartTm" style="min-width: 40px; width: 172px; height: 30px;"><div class="tabulator-col-content"><div class="tabulator-col-title-holder"><div class="tabulator-col-title">Time Stamp</div><div class="tabulator-col-sorter"><div class="tabulator-arrow"></div></div></div></div></div><span class="tabulator-col-resize-handle" style="height: 30px;"></span><div class="tabulator-col tabulator-sortable tabulator-col-sorter-element" role="columnheader" aria-sort="none" tabulator-field="avgComSensitivity" style="min-width: 40px; width: 148px; height: 30px;"><div class="tabulator-col-content"><div class="tabulator-col-title-holder"><div class="tabulator-col-title">Network</div><div class="tabulator-col-sorter"><div class="tabulator-arrow"></div></div></div></div></div><span class="tabulator-col-resize-handle" style="height: 30px;"></span><div class="tabulator-col tabulator-sortable tabulator-col-sorter-element" role="columnheader" aria-sort="none" tabulator-field="reqUrl" style="min-width: 40px; width: 370px; height: 30px;"><div class="tabulator-col-content"><div class="tabulator-col-title-holder"><div class="tabulator-col-title">Page URL</div><div class="tabulator-col-sorter"><div class="tabulator-arrow"></div></div></div></div></div><span class="tabulator-col-resize-handle" style="height: 30px;"></span><div class="tabulator-col tabulator-sortable tabulator-col-sorter-element" role="columnheader" aria-sort="none" tabulator-field="logType" style="display: none; min-width: 40px; height: 30px;"><div class="tabulator-col-content"><div class="tabulator-col-title-holder"><div class="tabulator-col-title">logType</div><div class="tabulator-col-sorter"><div class="tabulator-arrow"></div></div></div></div></div></div><br><div class="tabulator-frozen-rows-holder" style="min-width: 0px;"></div></div></div><div class="tabulator-tableholder" tabindex="0" style="height: calc(100% - 50px); max-height: calc(100% - 50px);"><div class="tabulator-table" role="rowgroup" style="padding-top: 0px; padding-bottom: 0px;"><div class="tabulator-row tabulator-selectable tabulator-row-odd selected_row" role="row"><div class="tabulator-cell" role="gridcell" tabulator-field="intervaltime" style="width: 98px; height: 30px;">112ms</div><span class="tabulator-col-resize-handle" style="height: 30px;"></span><div class="tabulator-cell" role="gridcell" tabulator-field="feeldex" style="width: 98px; height: 30px;"><span class="feeldex very_good"></span></div><span class="tabulator-col-resize-handle" style="height: 30px;"></span><div class="tabulator-cell" role="gridcell" tabulator-field="deviceId" style="width: 222px; display: block; text-overflow: ellipsis; margin: auto; height: 30px;">hs</div><span class="tabulator-col-resize-handle" style="height: 30px;"></span><div class="tabulator-cell" role="gridcell" tabulator-field="userId" style="width: 123px; text-align: left; height: 30px;">-</div><span class="tabulator-col-resize-handle" style="height: 30px;"></span><div class="tabulator-cell" role="gridcell" tabulator-field="pageStartTm" style="width: 172px; height: 30px;">2025-11-05 15:47:52.511</div><span class="tabulator-col-resize-handle" style="height: 30px;"></span><div class="tabulator-cell" role="gridcell" tabulator-field="avgComSensitivity" style="width: 148px; height: 30px;"><span class="network_status very_good"></span><span class="txt">Very Good</span></div><span class="tabulator-col-resize-handle" style="height: 30px;"></span><div class="tabulator-cell" role="gridcell" tabulator-field="reqUrl" style="width: 370px; height: 30px;">https://miaps.thinkm.co.kr/miapshybrid/native.html</div><span class="tabulator-col-resize-handle" style="height: 30px;"></span><div class="tabulator-cell" role="gridcell" tabulator-field="logType" style="display: none; height: 30px;">131073</div></div></div></div></div>
+        <input type="hidden" id="maxIntervalTime">
+    </div>
+
+    <div class="maxy_popup_gray_bg_wrap popup_right_side_wrap hidden">
+        <div class="web_chart_wrap">
+            <div class="web_vital_wrap maxy_box" id="loadingTimePopup__webVitalFull"><!--
+    종합 분석 > LoadingTime Scatter > 팝업 > Performance
+    종합 분석 > LoadingTime Line Chart > 팝업 > Performance
+    성능 분석 > LoadingTime > 팝업 > Performance
+-->
+<style>
+    .web_vital_data_box > .maxy_box {
+        display: none;
+    }
+</style>
+
+<div class="web_vital_text_wrap">
+    <p class="vital_title ft-13 bold">Performance</p>
+    <div data-t="dashboard.waterfall.webVitalDesc">Event Timings 및 Core Web Vitals</div>
+    <div class="web_vital_data_box">
+        <div class="maxy_box" id="loadingTimePopup__webVitalFullLcpBox" style="display: flex;">
+            <div class="title">LARGEST CONTENTFUL PAINT</div>
+            <div class="web_vital_data">
+                <span class="bp bp_green"></span>
+                <span class="value">0.124</span>
+                s
+            </div>
+        </div>
+
+        <div class="maxy_box" id="loadingTimePopup__webVitalFullClsBox" style="display: flex;">
+            <div class="title">CUMULATIVE LAYOUT SHIFT</div>
+            <div class="web_vital_data">
+                <span class="bp bp_green"></span>
+                <span class="value">0.0358</span>
+            </div>
+        </div>
+
+        <div class="maxy_box" id="loadingTimePopup__webVitalFullInpBox" style="display: flex;">
+            <div class="title">INTERACTION TO NEXT PAINT</div>
+            <div class="web_vital_data">
+                <span class="bp bp_green"></span>
+                <span class="value">16</span>
+                ms
+            </div>
+        </div>
+
+    </div>
+    <div class="web_vital_inline_box"><div data-key="domInteractive">
+            <span class="title" style="color: #888888">DOM Interactive</span>
+            <span class="text">108ms</span>
+        </div><div data-key="fcp">
+            <span class="title" style="color: #888888">FCP</span>
+            <span class="text">124ms</span>
+        </div><div data-key="loadTime">
+            <span class="title" style="color: #888888">Loading Time</span>
+            <span class="text">112ms</span>
+        </div><div data-key="fid">
+            <span class="title" style="color: #888888">FID</span>
+            <span class="text">19m 18s</span>
+        </div><div data-key="ttfb">
+            <span class="title" style="color: #888888">TTFB</span>
+            <span class="text">26ms</span>
+        </div></div>
+    <div class="web_vital_chart" id="loadingTimePopup__webVitalFullChart" data-highcharts-chart="23" aria-hidden="false" role="region" aria-label="Chart. Highcharts interactive chart." style="overflow: hidden;"><div id="highcharts-screen-reader-region-before-23" aria-hidden="false" style="position: relative;"><div aria-hidden="false" style="position: absolute; width: 1px; height: 1px; overflow: hidden; white-space: nowrap; clip: rect(1px, 1px, 1px, 1px); margin-top: -3px; opacity: 0.01;"><h6>Chart</h6><div>Combination chart with 2 data series.</div><div>The chart has 1 X axis displaying Time. Data range: 0 seconds.</div><div>The chart has 1 Y axis displaying categories. </div></div></div><div aria-hidden="false" class="highcharts-announcer-container" style="position: relative;"><div aria-hidden="false" aria-live="polite" aria-atomic="true" style="position: absolute; width: 1px; height: 1px; overflow: hidden; white-space: nowrap; clip: rect(1px, 1px, 1px, 1px); margin-top: -3px; opacity: 0.01;"></div><div aria-hidden="false" aria-live="assertive" aria-atomic="true" style="position: absolute; width: 1px; height: 1px; overflow: hidden; white-space: nowrap; clip: rect(1px, 1px, 1px, 1px); margin-top: -3px; opacity: 0.01;"></div><div aria-hidden="false" aria-live="polite" aria-atomic="true" style="position: absolute; width: 1px; height: 1px; overflow: hidden; white-space: nowrap; clip: rect(1px, 1px, 1px, 1px); margin-top: -3px; opacity: 0.01;"></div><div aria-hidden="false" aria-live="polite" aria-atomic="true" style="position: absolute; width: 1px; height: 1px; overflow: hidden; white-space: nowrap; clip: rect(1px, 1px, 1px, 1px); margin-top: -3px; opacity: 0.01;"></div></div><div id="highcharts-jng2tj8-2161" dir="ltr" style="position: relative; overflow: hidden; width: 1077px; height: 303px; text-align: left; line-height: normal; z-index: 0; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); user-select: none; touch-action: manipulation; outline: none; padding: 0px;" class="highcharts-container " aria-hidden="false" tabindex="0"><div aria-hidden="false" class="highcharts-a11y-proxy-container-before" style="top: 0px; left: 0px; white-space: nowrap; position: absolute;"></div><svg version="1.1" class="highcharts-root" style="font-family: -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, Helvetica, Arial, &quot;Apple Color Emoji&quot;, &quot;Segoe UI Emoji&quot;, &quot;Segoe UI Symbol&quot;, sans-serif; font-size: 1rem;" xmlns="http://www.w3.org/2000/svg" width="1077" height="303" viewBox="0 0 1077 303" aria-hidden="false" aria-label="Interactive chart"><desc aria-hidden="true">Created with Highcharts 12.2.0</desc><defs aria-hidden="true"><filter id="highcharts-drop-shadow-23"><feDropShadow dx="1" dy="1" flood-color="#000000" flood-opacity="0.75" stdDeviation="2.5"></feDropShadow></filter><clipPath id="highcharts-jng2tj8-2169-"><rect x="0" y="0" width="979" height="240" fill="none"></rect></clipPath></defs><rect fill="#ffffff" class="highcharts-background" filter="none" x="0" y="0" width="1077" height="303" rx="0" ry="0" aria-hidden="true"></rect><rect fill="none" class="highcharts-plot-background" x="78" y="20" width="979" height="240" filter="none" aria-hidden="true"></rect><g class="highcharts-pane-group" data-z-index="0" aria-hidden="true"></g><rect fill="none" class="highcharts-plot-border" data-z-index="1" stroke="#cccccc" stroke-width="0" x="78" y="20" width="979" height="240" aria-hidden="true"></rect><g class="highcharts-grid highcharts-yaxis-grid" data-z-index="1" aria-hidden="true"><path fill="none" stroke="#e6e6e6" stroke-width="1" stroke-dasharray="none" data-z-index="1" class="highcharts-grid-line" d="M 78 80.5 L 1057 80.5" opacity="1"></path><path fill="none" stroke="#e6e6e6" stroke-width="1" stroke-dasharray="none" data-z-index="1" class="highcharts-grid-line" d="M 78 140.5 L 1057 140.5" opacity="1"></path><path fill="none" stroke="#e6e6e6" stroke-width="1" stroke-dasharray="none" data-z-index="1" class="highcharts-grid-line" d="M 78 200.5 L 1057 200.5" opacity="1"></path><path fill="none" stroke="#e6e6e6" stroke-width="1" stroke-dasharray="none" data-z-index="1" class="highcharts-grid-line" d="M 78 260.5 L 1057 260.5" opacity="1"></path><path fill="none" stroke="#e6e6e6" stroke-width="1" stroke-dasharray="none" data-z-index="1" class="highcharts-grid-line" d="M 78 20.5 L 1057 20.5" opacity="1"></path></g><g class="highcharts-grid highcharts-xaxis-grid" data-z-index="1" aria-hidden="true"><path fill="none" stroke="#e6e6e6" stroke-width="0" stroke-dasharray="none" data-z-index="1" class="highcharts-grid-line" d="M 78.5 20 L 78.5 260" opacity="1"></path><path fill="none" stroke="#e6e6e6" stroke-width="0" stroke-dasharray="none" data-z-index="1" class="highcharts-grid-line" d="M 179.5 20 L 179.5 260" opacity="1"></path><path fill="none" stroke="#e6e6e6" stroke-width="0" stroke-dasharray="none" data-z-index="1" class="highcharts-grid-line" d="M 280.5 20 L 280.5 260" opacity="1"></path><path fill="none" stroke="#e6e6e6" stroke-width="0" stroke-dasharray="none" data-z-index="1" class="highcharts-grid-line" d="M 382.5 20 L 382.5 260" opacity="1"></path><path fill="none" stroke="#e6e6e6" stroke-width="0" stroke-dasharray="none" data-z-index="1" class="highcharts-grid-line" d="M 483.5 20 L 483.5 260" opacity="1"></path><path fill="none" stroke="#e6e6e6" stroke-width="0" stroke-dasharray="none" data-z-index="1" class="highcharts-grid-line" d="M 585.5 20 L 585.5 260" opacity="1"></path><path fill="none" stroke="#e6e6e6" stroke-width="0" stroke-dasharray="none" data-z-index="1" class="highcharts-grid-line" d="M 686.5 20 L 686.5 260" opacity="1"></path><path fill="none" stroke="#e6e6e6" stroke-width="0" stroke-dasharray="none" data-z-index="1" class="highcharts-grid-line" d="M 787.5 20 L 787.5 260" opacity="1"></path><path fill="none" stroke="#e6e6e6" stroke-width="0" stroke-dasharray="none" data-z-index="1" class="highcharts-grid-line" d="M 889.5 20 L 889.5 260" opacity="1"></path><path fill="none" stroke="#e6e6e6" stroke-width="0" stroke-dasharray="none" data-z-index="1" class="highcharts-grid-line" d="M 990.5 20 L 990.5 260" opacity="1"></path></g><g class="highcharts-axis highcharts-yaxis" data-z-index="2" aria-hidden="true"><path fill="none" class="highcharts-axis-line" stroke="#333333" stroke-width="0" data-z-index="7" d="M 78 20 L 78 260"></path></g><g class="highcharts-axis highcharts-xaxis" data-z-index="2" aria-hidden="true"><path fill="none" class="highcharts-tick" stroke="#333333" stroke-width="1" d="M 78.5 260 L 78.5 270" opacity="1"></path><path fill="none" class="highcharts-tick" stroke="#333333" stroke-width="1" d="M 179.5 260 L 179.5 270" opacity="1"></path><path fill="none" class="highcharts-tick" stroke="#333333" stroke-width="1" d="M 280.5 260 L 280.5 270" opacity="1"></path><path fill="none" class="highcharts-tick" stroke="#333333" stroke-width="1" d="M 382.5 260 L 382.5 270" opacity="1"></path><path fill="none" class="highcharts-tick" stroke="#333333" stroke-width="1" d="M 483.5 260 L 483.5 270" opacity="1"></path><path fill="none" class="highcharts-tick" stroke="#333333" stroke-width="1" d="M 585.5 260 L 585.5 270" opacity="1"></path><path fill="none" class="highcharts-tick" stroke="#333333" stroke-width="1" d="M 686.5 260 L 686.5 270" opacity="1"></path><path fill="none" class="highcharts-tick" stroke="#333333" stroke-width="1" d="M 787.5 260 L 787.5 270" opacity="1"></path><path fill="none" class="highcharts-tick" stroke="#333333" stroke-width="1" d="M 889.5 260 L 889.5 270" opacity="1"></path><path fill="none" class="highcharts-tick" stroke="#333333" stroke-width="1" d="M 990.5 260 L 990.5 270" opacity="1"></path><path fill="none" class="highcharts-axis-line" stroke="#333333" stroke-width="1" data-z-index="7" d="M 78 260.5 L 1057 260.5"></path></g><g class="highcharts-series-group" data-z-index="3" filter="none" clip-path="none" aria-hidden="false"><g class="highcharts-series highcharts-series-0 highcharts-xrange-series highcharts-tracker highcharts-dense-data" data-z-index="0.1" opacity="1" transform="translate(78,20) scale(1 1)" clip-path="url(#highcharts-jng2tj8-2169-)" aria-hidden="false" role="region" tabindex="-1" aria-label="Series 1, series 1 of 2 with 12 data points." style="outline: none;"><g class="highcharts-point" tabindex="-1" role="img" aria-label="1월 1일 목요일 오전 09:00:00.000, x2: 0, y: 0. Series 1." style="outline: none;"><path fill="rgba(0,0,0,0)" d="M 0 15.5 L 0 15.5 A 1.5 1.5 0 0 1 1.5 17 L 1.5 43 A 1.5 1.5 0 0 1 0 44.5 L 0 44.5 A 1.5 1.5 0 0 1 -1.5 43 L -1.5 17 A 1.5 1.5 0 0 1 0 15.5 Z" class="highcharts-point highcharts-partfill-original" stroke="rgba(0,0,0,0)" stroke-width="0" opacity="1" filter="none"></path></g><g class="highcharts-point" tabindex="-1" role="img" aria-label="1월 1일 목요일 오전 09:00:00.000, x2: 0, y: 1. Series 1." style="outline: none;"><path fill="rgba(0,0,0,0)" d="M 0 75.5 L 0 75.5 A 1.5 1.5 0 0 1 1.5 77 L 1.5 103 A 1.5 1.5 0 0 1 0 104.5 L 0 104.5 A 1.5 1.5 0 0 1 -1.5 103 L -1.5 77 A 1.5 1.5 0 0 1 0 75.5 Z" class="highcharts-point highcharts-partfill-original" stroke="rgba(0,0,0,0)" stroke-width="0" opacity="1" filter="none"></path></g><g class="highcharts-point" tabindex="-1" role="img" aria-label="1월 1일 목요일 오전 09:00:00.000, x2: 0, y: 2. Series 1." style="outline: none;"><path fill="rgba(0,0,0,0)" d="M 0 135.5 L 0 135.5 A 1.5 1.5 0 0 1 1.5 137 L 1.5 163 A 1.5 1.5 0 0 1 0 164.5 L 0 164.5 A 1.5 1.5 0 0 1 -1.5 163 L -1.5 137 A 1.5 1.5 0 0 1 0 135.5 Z" class="highcharts-point highcharts-partfill-original" stroke="rgba(0,0,0,0)" stroke-width="0" opacity="1" filter="none"></path></g><g class="highcharts-point" tabindex="-1" role="img" aria-label="1월 1일 목요일 오전 09:00:00.000, x2: 0, y: 3. Series 1." style="outline: none;"><path fill="rgba(0,0,0,0)" d="M 0 195.5 L 0 195.5 A 1.5 1.5 0 0 1 1.5 197 L 1.5 223 A 1.5 1.5 0 0 1 0 224.5 L 0 224.5 A 1.5 1.5 0 0 1 -1.5 223 L -1.5 197 A 1.5 1.5 0 0 1 0 195.5 Z" class="highcharts-point highcharts-partfill-original" stroke="rgba(0,0,0,0)" stroke-width="0" opacity="1" filter="none"></path></g><g class="highcharts-point" tabindex="-1" role="img" aria-label="1월 1일 목요일 오전 09:00:00.040, x2: 72.10000002384186, y: 2. Series 1." style="outline: none;"><path fill="#71B8E7" d="M 0 135.5 L 0 135.5 A 1.5 1.5 0 0 1 1.5 137 L 1.5 163 A 1.5 1.5 0 0 1 0 164.5 L 0 164.5 A 1.5 1.5 0 0 1 -1.5 163 L -1.5 137 A 1.5 1.5 0 0 1 0 135.5 Z" class="highcharts-point highcharts-partfill-original" stroke="#ffffff" stroke-width="0" opacity="1" filter="none"></path></g><g class="highcharts-point" tabindex="-1" role="img" aria-label="1월 1일 목요일 오전 09:00:00.074, x2: 74.40000000596046, y: 2. Series 1." style="outline: none;"><path fill="#71B8E7" d="M 0 135.5 L 0 135.5 A 1.5 1.5 0 0 1 1.5 137 L 1.5 163 A 1.5 1.5 0 0 1 0 164.5 L 0 164.5 A 1.5 1.5 0 0 1 -1.5 163 L -1.5 137 A 1.5 1.5 0 0 1 0 135.5 Z" class="highcharts-point highcharts-partfill-original" stroke="#ffffff" stroke-width="0" opacity="1" filter="none"></path></g><g class="highcharts-point" tabindex="-1" role="img" aria-label="1월 1일 목요일 오전 09:00:00.074, x2: 74.5, y: 2. Series 1." style="outline: none;"><path fill="#71B8E7" d="M 0 135.5 L 0 135.5 A 1.5 1.5 0 0 1 1.5 137 L 1.5 163 A 1.5 1.5 0 0 1 0 164.5 L 0 164.5 A 1.5 1.5 0 0 1 -1.5 163 L -1.5 137 A 1.5 1.5 0 0 1 0 135.5 Z" class="highcharts-point highcharts-partfill-original" stroke="#ffffff" stroke-width="0" opacity="1" filter="none"></path></g><g class="highcharts-point" tabindex="-1" role="img" aria-label="1월 1일 목요일 오전 09:00:00.075, x2: 82.5, y: 2. Series 1." style="outline: none;"><path fill="#71B8E7" d="M 0 135.5 L 0 135.5 A 1.5 1.5 0 0 1 1.5 137 L 1.5 163 A 1.5 1.5 0 0 1 0 164.5 L 0 164.5 A 1.5 1.5 0 0 1 -1.5 163 L -1.5 137 A 1.5 1.5 0 0 1 0 135.5 Z" class="highcharts-point highcharts-partfill-original" stroke="#ffffff" stroke-width="0" opacity="1" filter="none"></path></g><g class="highcharts-point" tabindex="-1" role="img" aria-label="1월 1일 목요일 오전 09:00:00.117, x2: 133.80000001192093, y: 2. Series 1." style="outline: none;"><path fill="#71B8E7" d="M 0 135.5 L 0 135.5 A 1.5 1.5 0 0 1 1.5 137 L 1.5 163 A 1.5 1.5 0 0 1 0 164.5 L 0 164.5 A 1.5 1.5 0 0 1 -1.5 163 L -1.5 137 A 1.5 1.5 0 0 1 0 135.5 Z" class="highcharts-point highcharts-partfill-original" stroke="#ffffff" stroke-width="0" opacity="1" filter="none"></path></g><g class="highcharts-point" tabindex="-1" role="img" aria-label="1월 1일 목요일 오전 09:00:00.141, x2: 207.40000000596046, y: 2. Series 1." style="outline: none;"><path fill="#71B8E7" d="M 0 135.5 L 0 135.5 A 1.5 1.5 0 0 1 1.5 137 L 1.5 163 A 1.5 1.5 0 0 1 0 164.5 L 0 164.5 A 1.5 1.5 0 0 1 -1.5 163 L -1.5 137 A 1.5 1.5 0 0 1 0 135.5 Z" class="highcharts-point highcharts-partfill-original" stroke="#ffffff" stroke-width="0" opacity="1" filter="none"></path></g><g class="highcharts-point" tabindex="-1" role="img" aria-label="1월 1일 목요일 오전 09:00:00.211, x2: 225.7000000178814, y: 2. Series 1." style="outline: none;"><path fill="#71B8E7" d="M 0 135.5 L 0 135.5 A 1.5 1.5 0 0 1 1.5 137 L 1.5 163 A 1.5 1.5 0 0 1 0 164.5 L 0 164.5 A 1.5 1.5 0 0 1 -1.5 163 L -1.5 137 A 1.5 1.5 0 0 1 0 135.5 Z" class="highcharts-point highcharts-partfill-original" stroke="#ffffff" stroke-width="0" opacity="1" filter="none"></path></g><g class="highcharts-point" tabindex="-1" role="img" aria-label="1월 1일 목요일 오전 09:00:00.233, x2: 250.7000000178814, y: 2. Series 1." style="outline: none;"><path fill="#71B8E7" d="M 0 135.5 L 0 135.5 A 1.5 1.5 0 0 1 1.5 137 L 1.5 163 A 1.5 1.5 0 0 1 0 164.5 L 0 164.5 A 1.5 1.5 0 0 1 -1.5 163 L -1.5 137 A 1.5 1.5 0 0 1 0 135.5 Z" class="highcharts-point highcharts-partfill-original" stroke="#ffffff" stroke-width="0" opacity="1" filter="none"></path></g></g><g class="highcharts-markers highcharts-series-0 highcharts-xrange-series" data-z-index="0.1" opacity="1" transform="translate(78,20) scale(1 1)" clip-path="none" aria-hidden="true"></g><g class="highcharts-series highcharts-series-1 highcharts-scatter-series highcharts-color-0 highcharts-tracker" data-z-index="0.1" opacity="1" transform="translate(78,20) scale(1 1)" clip-path="url(#highcharts-jng2tj8-2169-)" aria-hidden="true"></g><g class="highcharts-markers highcharts-series-1 highcharts-scatter-series highcharts-color-0 highcharts-tracker" data-z-index="0.1" opacity="1" transform="translate(78,20) scale(1 1)" clip-path="none" aria-hidden="true"></g></g><text x="534" class="highcharts-title" data-z-index="4" style="font-size: 1.2em;" text-align="center" y="25" text-anchor="middle" transform-origin="10 22" transform="translate(0,0) scale(1 1)" aria-hidden="true"></text><text x="534" class="highcharts-subtitle" data-z-index="4" text-align="center" y="24" text-anchor="middle" transform-origin="10 15" transform="translate(0,0) scale(1 1)" style="font-size: 0.8em; fill: rgb(102, 102, 102);" aria-hidden="true"></text><text x="10" text-anchor="start" class="highcharts-caption" data-z-index="4" style="font-size: 0.8em; fill: rgb(102, 102, 102);" text-align="left" y="300" transform-origin="10 15" transform="translate(0,0) scale(1 1)" aria-hidden="true"></text><path fill="none" class="highcharts-crosshair highcharts-crosshair-thin" data-z-index="4" stroke="#cccccc" stroke-width="1" d="M 106.5 20 L 106.5 260" style="pointer-events: none;" visibility="hidden" aria-hidden="true"></path><g class="highcharts-plot-lines-5" data-z-index="5" aria-hidden="true"><path fill="none" class="highcharts-plot-line " stroke="#FF8C00" stroke-width="1" d="M 78.5 20 L 78.5 260"></path><path fill="none" class="highcharts-plot-line " stroke="#1E90FF" stroke-width="1" d="M 78.5 20 L 78.5 260"></path><path fill="none" class="highcharts-plot-line " stroke="#DAA520" stroke-width="1" d="M 78.5 20 L 78.5 260"></path><path fill="none" class="highcharts-plot-line " stroke="#66CC66" stroke-width="1" d="M 78.5 20 L 78.5 260"></path><path fill="none" class="highcharts-plot-line " stroke="#A178D4" stroke-width="1" d="M 78.5 20 L 78.5 260"></path><path fill="none" class="highcharts-plot-line " stroke="#FF5733" stroke-width="1" d="M 78.5 20 L 78.5 260"></path><path fill="none" class="highcharts-plot-line " stroke="#E3C23E" stroke-width="1" d="M 1056.5 20 L 1056.5 260"></path></g><text x="83" text-anchor="start" class="highcharts-plot-line-label " data-z-index="5" transform="translate(0,0)" text-align="undefined" y="30" style="font-size: 0.8em; font-weight: bold; fill: rgb(255, 140, 0);" aria-hidden="true">Fetch</text><text x="83" text-anchor="start" class="highcharts-plot-line-label " data-z-index="5" transform="translate(0,0)" text-align="undefined" y="46" style="font-size: 0.8em; font-weight: bold; fill: rgb(30, 144, 255);" aria-hidden="true">TTFB</text><text x="83" text-anchor="start" class="highcharts-plot-line-label " data-z-index="5" transform="translate(0,0)" text-align="undefined" y="62" style="font-size: 0.8em; font-weight: bold; fill: rgb(218, 165, 32);" aria-hidden="true">DOM Content Loaded</text><text x="83" text-anchor="start" class="highcharts-plot-line-label " data-z-index="5" transform="translate(0,0)" text-align="undefined" y="78" style="font-size: 0.8em; font-weight: bold; fill: rgb(102, 204, 102);" aria-hidden="true">Loading Time</text><text x="83" text-anchor="start" class="highcharts-plot-line-label " data-z-index="5" transform="translate(0,0)" text-align="undefined" y="94" style="font-size: 0.8em; font-weight: bold; fill: rgb(161, 120, 212);" aria-hidden="true">FCP</text><text x="83" text-anchor="start" class="highcharts-plot-line-label " data-z-index="5" transform="translate(0,0)" text-align="undefined" y="110" style="font-size: 0.8em; font-weight: bold; fill: rgb(255, 87, 51);" aria-hidden="true">LCP</text><text x="1061" text-anchor="start" class="highcharts-plot-line-label " data-z-index="5" transform="translate(0,0)" text-align="undefined" y="126" style="font-size: 0.8em; font-weight: bold; fill: rgb(227, 194, 62);" aria-hidden="true">FID</text><g class="highcharts-axis-labels highcharts-yaxis-labels" data-z-index="7" aria-hidden="true"><text x="63" text-anchor="end" transform="translate(0,0)" style="cursor: default; font-size: 0.8em; fill: rgb(51, 51, 51);" y="54" opacity="1">Actions</text><text x="63" text-anchor="end" transform="translate(0,0)" style="cursor: default; font-size: 0.8em; fill: rgb(51, 51, 51);" y="114" opacity="1">Errors</text><text x="63" text-anchor="end" transform="translate(0,0)" style="cursor: default; font-size: 0.8em; fill: rgb(51, 51, 51);" y="174" opacity="1">Resources</text><text x="63" text-anchor="end" transform="translate(0,0)" style="cursor: default; font-size: 0.8em; fill: rgb(51, 51, 51);" y="234" opacity="1">Long Tasks</text></g><g class="highcharts-axis-labels highcharts-xaxis-labels" data-z-index="7" aria-hidden="true"><text x="78" text-anchor="middle" transform="translate(0,0)" style="cursor: default; font-size: 0.8em; fill: rgb(51, 51, 51);" y="285" opacity="1">0ms</text><text x="179.41834610228" text-anchor="middle" transform="translate(0,0)" style="cursor: default; font-size: 0.8em; fill: rgb(51, 51, 51);" y="285" opacity="1">2m 0s</text><text x="280.83669220455" text-anchor="middle" transform="translate(0,0)" style="cursor: default; font-size: 0.8em; fill: rgb(51, 51, 51);" y="285" opacity="1">4m 0s</text><text x="382.25503830683" text-anchor="middle" transform="translate(0,0)" style="cursor: default; font-size: 0.8em; fill: rgb(51, 51, 51);" y="285" opacity="1">6m 0s</text><text x="483.67338440911" text-anchor="middle" transform="translate(0,0)" style="cursor: default; font-size: 0.8em; fill: rgb(51, 51, 51);" y="285" opacity="1">8m 0s</text><text x="585.09173051139" text-anchor="middle" transform="translate(0,0)" style="cursor: default; font-size: 0.8em; fill: rgb(51, 51, 51);" y="285" opacity="1">10m 0s</text><text x="686.51007661366" text-anchor="middle" transform="translate(0,0)" style="cursor: default; font-size: 0.8em; fill: rgb(51, 51, 51);" y="285" opacity="1">12m 0s</text><text x="787.92842271594" text-anchor="middle" transform="translate(0,0)" style="cursor: default; font-size: 0.8em; fill: rgb(51, 51, 51);" y="285" opacity="1">14m 0s</text><text x="889.34676881822" text-anchor="middle" transform="translate(0,0)" style="cursor: default; font-size: 0.8em; fill: rgb(51, 51, 51);" y="285" opacity="1">16m 0s</text><text x="990.7651149205" text-anchor="middle" transform="translate(0,0)" style="cursor: default; font-size: 0.8em; fill: rgb(51, 51, 51);" y="285" opacity="1">18m 0s</text></g></svg><div aria-hidden="false" class="highcharts-a11y-proxy-container-after" style="top: 0px; left: 0px; white-space: nowrap; position: absolute;"><div class="highcharts-a11y-proxy-group highcharts-a11y-proxy-group-zoom"></div><div class="highcharts-a11y-proxy-group highcharts-a11y-proxy-group-chartMenu"></div></div></div><div id="highcharts-screen-reader-region-after-23" aria-hidden="false" style="position: relative;"><div aria-hidden="false" style="position: absolute; width: 1px; height: 1px; overflow: hidden; white-space: nowrap; clip: rect(1px, 1px, 1px, 1px); margin-top: -3px; opacity: 0.01;"><div id="highcharts-end-of-chart-marker-23" class="highcharts-exit-anchor" tabindex="0" aria-hidden="false">End of interactive chart.</div></div></div></div>
+</div>
+</div>
+            <div class="web_performance_wrap maxy_box" id="loadingTimePopup__waterfall"><!--
+    종합 분석 > LoadingTime Scatter > 팝업 > Waterfall
+    종합 분석 > LoadingTime Line Chart > 팝업 > Waterfall
+    성능 분석 > LoadingTime > 팝업 > Waterfall
+-->
+
+<style>
+    .waterfall_graph_title_wrap {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .highcharts-tooltip-container {
+        transform: scale(1, 1) !important;
+    }
+
+    .yaxis_header > span {
+        display: flex;
+        align-items: flex-end;
+    }
+</style>
+
+<div class="waterfall_graph_title_wrap">
+    <span class="waterfall_title ft-13">Water Fall</span>
+    <div class="sub_title_right">
+        <span id="tabRequestsCount" class="request_count">34 /</span>
+        <span id="allRequestCount" class="request_count">34</span>
+        <span id="requestsText">Requests</span>
+    </div>
+</div>
+
+<div class="waterfall_graph_data_wrap">
+    <div class="graph_title">
+        <button id="btnAll" class="selected exist" data-type="all">All</button>
+        <button data-type="xhr" disabled="">Fetch/XHR</button>
+        <button data-type="reformNavigation" class="exist">Doc</button>
+        <button data-type="css" class="exist">CSS</button>
+        <button data-type="script" class="exist">JS</button>
+        <button data-type="link" disabled="">LINK</button>
+        <button data-type="font" disabled="">Font</button>
+        <button data-type="img" class="exist">IMG</button>
+        <button data-type="media" disabled="">Media</button>
+        <button data-type="manifest" disabled="">Manifest</button>
+        <button data-type="ws" disabled="">WS</button>
+        <button data-type="other" class="exist">Other</button>
+        <button data-type="action" disabled="">Action</button>
+        <button data-type="error" disabled="">Errors</button>
+        <button data-type="resource" class="exist">Resource</button>
+        <button data-type="longtask" disabled="">Long Tasks</button>
+    </div>
+
+    <div class="waterfall_time" id="loadingTimePopup__waterfall__time" data-highcharts-chart="24" aria-hidden="false" role="region" aria-label="Chart. Highcharts interactive chart." style="overflow: hidden;"><div id="highcharts-screen-reader-region-before-24" aria-hidden="false" style="position: relative;"><div aria-hidden="false" style="position: absolute; width: 1px; height: 1px; overflow: hidden; white-space: nowrap; clip: rect(1px, 1px, 1px, 1px); margin-top: -3px; opacity: 0.01;"><h6>Chart</h6><div>Chart with 0 data points.</div><div>The chart has 1 X axis displaying Time. Data range: 17 hours.</div><div>The chart has 1 Y axis displaying values. Data ranges from 0 to 0.</div></div></div><div aria-hidden="false" class="highcharts-announcer-container" style="position: relative;"><div aria-hidden="false" aria-live="polite" aria-atomic="true" style="position: absolute; width: 1px; height: 1px; overflow: hidden; white-space: nowrap; clip: rect(1px, 1px, 1px, 1px); margin-top: -3px; opacity: 0.01;"></div><div aria-hidden="false" aria-live="assertive" aria-atomic="true" style="position: absolute; width: 1px; height: 1px; overflow: hidden; white-space: nowrap; clip: rect(1px, 1px, 1px, 1px); margin-top: -3px; opacity: 0.01;"></div><div aria-hidden="false" aria-live="polite" aria-atomic="true" style="position: absolute; width: 1px; height: 1px; overflow: hidden; white-space: nowrap; clip: rect(1px, 1px, 1px, 1px); margin-top: -3px; opacity: 0.01;"></div><div aria-hidden="false" aria-live="polite" aria-atomic="true" style="position: absolute; width: 1px; height: 1px; overflow: hidden; white-space: nowrap; clip: rect(1px, 1px, 1px, 1px); margin-top: -3px; opacity: 0.01;"></div></div><div id="highcharts-jng2tj8-2170" dir="ltr" style="position: relative; overflow: hidden; width: 1077px; height: 32px; text-align: left; line-height: normal; z-index: 0; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); user-select: none; touch-action: manipulation; outline: none; padding: 0px;" class="highcharts-container " aria-hidden="false" tabindex="0"><div aria-hidden="false" class="highcharts-a11y-proxy-container-before" style="top: 0px; left: 0px; white-space: nowrap; position: absolute;"></div><svg version="1.1" class="highcharts-root" style="font-family: -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, Helvetica, Arial, &quot;Apple Color Emoji&quot;, &quot;Segoe UI Emoji&quot;, &quot;Segoe UI Symbol&quot;, sans-serif; font-size: 1rem;" xmlns="http://www.w3.org/2000/svg" width="1077" height="32" viewBox="0 0 1077 32" aria-hidden="true" aria-label="Interactive chart"><desc>Created with Highcharts 12.2.0</desc><defs><filter id="highcharts-drop-shadow-24"><feDropShadow dx="1" dy="1" flood-color="#000000" flood-opacity="0.75" stdDeviation="2.5"></feDropShadow></filter><clipPath id="highcharts-jng2tj8-2174-"><rect x="0" y="0" width="607" height="0" fill="none"></rect></clipPath></defs><rect fill="#ffffff" class="highcharts-background" filter="none" x="0" y="0" width="1077" height="32" rx="0" ry="0"></rect><rect fill="none" class="highcharts-plot-background" x="460" y="-10" width="607" height="0" filter="none"></rect><g class="highcharts-pane-group" data-z-index="0"></g><g class="highcharts-grid highcharts-xaxis-grid" data-z-index="1"><path fill="none" stroke="#e6e6e6" stroke-width="1" stroke-dasharray="none" data-z-index="1" class="highcharts-grid-line" d="M 566.5 -9.5 L 566.5 -9.5" opacity="1"></path><path fill="none" stroke="#e6e6e6" stroke-width="1" stroke-dasharray="none" data-z-index="1" class="highcharts-grid-line" d="M 709.5 -9.5 L 709.5 -9.5" opacity="1"></path><path fill="none" stroke="#e6e6e6" stroke-width="1" stroke-dasharray="none" data-z-index="1" class="highcharts-grid-line" d="M 852.5 -9.5 L 852.5 -9.5" opacity="1"></path><path fill="none" stroke="#e6e6e6" stroke-width="1" stroke-dasharray="none" data-z-index="1" class="highcharts-grid-line" d="M 994.5 -9.5 L 994.5 -9.5" opacity="1"></path></g><rect fill="none" class="highcharts-plot-border" data-z-index="1" stroke="#cccccc" stroke-width="0" x="460" y="-10" width="607" height="0"></rect><g class="highcharts-label highcharts-no-data" transform="translate(721,-66)" data-z-index="1"><text x="43" data-z-index="1" y="60.5" text-anchor="middle" style="font-size: 11px; font-weight: bold; fill: rgb(213, 220, 223);">Data is being processed</text></g><g class="highcharts-axis highcharts-xaxis" data-z-index="2"><path fill="none" class="highcharts-axis-line" stroke="#333333" stroke-width="0" data-z-index="7" d="M 460 -10 L 1067 -10"></path></g><g class="highcharts-series-group" data-z-index="3" filter="none"><g class="highcharts-series highcharts-series-0 highcharts-xrange-series highcharts-tracker" data-z-index="0.1" opacity="1" transform="translate(460,-10) scale(1 1)" clip-path="url(#highcharts-jng2tj8-2174-)" aria-hidden="true"></g><g class="highcharts-markers highcharts-series-0 highcharts-xrange-series" data-z-index="0.1" opacity="1" transform="translate(460,-10) scale(1 1)" clip-path="none"></g></g><text x="539" class="highcharts-title" data-z-index="4" style="font-size: 1.2em;" text-align="center" y="25" text-anchor="middle" transform-origin="10 22" transform="translate(0,0) scale(1 1)"></text><text x="539" class="highcharts-subtitle" data-z-index="4" text-align="center" y="24" text-anchor="middle" transform-origin="10 15" transform="translate(0,0) scale(1 1)" style="font-size: 0.8em; fill: rgb(102, 102, 102);"></text><text x="10" text-anchor="start" class="highcharts-caption" data-z-index="4" style="font-size: 0.8em; fill: rgb(102, 102, 102);" text-align="left" y="29" transform-origin="10 15" transform="translate(0,0) scale(1 1)"></text><g class="highcharts-axis-labels highcharts-xaxis-labels" data-z-index="7"><text x="566.97869484435" text-anchor="middle" transform="translate(0,0)" style="cursor: default; font-size: 12px; fill: rgb(51, 51, 51);" y="17" opacity="1">3h 0m</text><text x="709.61695463683" text-anchor="middle" transform="translate(0,0)" style="cursor: default; font-size: 12px; fill: rgb(51, 51, 51);" y="17" opacity="1">7h 0m</text><text x="852.2552144293" text-anchor="middle" transform="translate(0,0)" style="cursor: default; font-size: 12px; fill: rgb(51, 51, 51);" y="17" opacity="1">11h 0m</text><text x="994.89347422177" text-anchor="middle" transform="translate(0,0)" style="cursor: default; font-size: 12px; fill: rgb(51, 51, 51);" y="17" opacity="1">15h 0m</text></g></svg><div aria-hidden="false" class="highcharts-a11y-proxy-container-after" style="top: 0px; left: 0px; white-space: nowrap; position: absolute;"><div class="highcharts-a11y-proxy-group highcharts-a11y-proxy-group-zoom"></div><div class="highcharts-a11y-proxy-group highcharts-a11y-proxy-group-chartMenu"></div></div></div><div id="highcharts-screen-reader-region-after-24" aria-hidden="false" style="position: relative;"><div aria-hidden="false" style="position: absolute; width: 1px; height: 1px; overflow: hidden; white-space: nowrap; clip: rect(1px, 1px, 1px, 1px); margin-top: -3px; opacity: 0.01;"><div id="highcharts-end-of-chart-marker-24" class="highcharts-exit-anchor" tabindex="0" aria-hidden="false">End of interactive chart.</div></div></div></div>
+    <div class="yaxis_header">
+        <span>NAME</span>
+        <span>SIZE</span>
+        <span>CODE</span>
+        <span>DURATION</span>
+    </div>
+
+    <div class="waterfall_chart enable_scrollbar">
+        <div class="waterfall_yaxis_list" id="waterfallYaxisList">
+                <div class="yaxis">
+                   <div class="category ">
+                       <i class="type_reformNavigation"></i>
+                        DNS Lookup
+                    </div>
+                    <div class="transfer-size">10 KB</div>
+                    <div class="status-code">
+                        <span class="success">200</span>
+                    </div>
+                    <div class="duration">0ms</div>
+                </div>
+            
+                <div class="yaxis">
+                   <div class="category ">
+                       <i class="type_reformNavigation"></i>
+                        TCP Connect Start
+                    </div>
+                    <div class="transfer-size">10 KB</div>
+                    <div class="status-code">
+                        <span class="success">200</span>
+                    </div>
+                    <div class="duration">0ms</div>
+                </div>
+            
+                <div class="yaxis">
+                   <div class="category ">
+                       <i class="type_reformNavigation"></i>
+                        Request Time
+                    </div>
+                    <div class="transfer-size">10 KB</div>
+                    <div class="status-code">
+                        <span class="success">200</span>
+                    </div>
+                    <div class="duration">18ms</div>
+                </div>
+            
+                <div class="yaxis">
+                   <div class="category ">
+                       <i class="type_reformNavigation"></i>
+                        Response Time
+                    </div>
+                    <div class="transfer-size">10 KB</div>
+                    <div class="status-code">
+                        <span class="success">200</span>
+                    </div>
+                    <div class="duration">1ms</div>
+                </div>
+            
+                <div class="yaxis">
+                   <div class="category ">
+                       <i class="type_reformNavigation"></i>
+                        Dom Processing
+                    </div>
+                    <div class="transfer-size">10 KB</div>
+                    <div class="status-code">
+                        <span class="success">200</span>
+                    </div>
+                    <div class="duration">84ms</div>
+                </div>
+            
+                <div class="yaxis">
+                   <div class="category ">
+                       <i class="type_reformNavigation"></i>
+                        Dom Load
+                    </div>
+                    <div class="transfer-size">10 KB</div>
+                    <div class="status-code">
+                        <span class="success">200</span>
+                    </div>
+                    <div class="duration">2ms</div>
+                </div>
+            
+                <div class="yaxis">
+                   <div class="category " title="long-animation-frame">
+                       <i class="type_unknown"></i>
+                        long-animation-frame
+                    </div>
+                    <div class="transfer-size">0</div>
+                    <div class="status-code">
+                        <span class="etc">-</span>
+                    </div>
+                    <div class="duration">59ms</div>
+                </div>
+            
+                <div class="yaxis">
+                   <div class="category " title="https://miaps.thinkm.co.kr/miapshybrid/resource/img/icon03.png">
+                       <i class="type_img"></i>
+                        icon03.png
+                    </div>
+                    <div class="transfer-size">0</div>
+                    <div class="status-code">
+                        <span class="success">200</span>
+                    </div>
+                    <div class="duration">17ms</div>
+                </div>
+            
+                <div class="yaxis">
+                   <div class="category " title="https://miaps.thinkm.co.kr/miapshybrid/resource/js/config.js">
+                       <i class="type_script"></i>
+                        config.js
+                    </div>
+                    <div class="transfer-size">5 KB</div>
+                    <div class="status-code">
+                        <span class="success">200</span>
+                    </div>
+                    <div class="duration">32ms</div>
+                </div>
+            
+                <div class="yaxis">
+                   <div class="category " title="https://miaps.thinkm.co.kr/miapshybrid/vendor/require/require.js">
+                       <i class="type_script"></i>
+                        require.js
+                    </div>
+                    <div class="transfer-size">85 KB</div>
+                    <div class="status-code">
+                        <span class="success">200</span>
+                    </div>
+                    <div class="duration">31ms</div>
+                </div>
+            
+                <div class="yaxis">
+                   <div class="category " title="https://fonts.gstatic.com/s/lato/v25/S6uyw4BMUTPHjx4wXiWtFCc.woff2">
+                       <i class="type_css"></i>
+                        S6uyw4BMUTPHjx4wXiWtFCc.woff2
+                    </div>
+                    <div class="transfer-size">0</div>
+                    <div class="status-code">
+                        <span class="success">200</span>
+                    </div>
+                    <div class="duration">0ms</div>
+                </div>
+            
+                <div class="yaxis">
+                   <div class="category " title="https://fonts.gstatic.com/s/lato/v25/S6u9w4BMUTPHh6UVSwiPGQ3q5d0.woff2">
+                       <i class="type_css"></i>
+                        S6u9w4BMUTPHh6UVSwiPGQ3q5d0.woff2
+                    </div>
+                    <div class="transfer-size">0</div>
+                    <div class="status-code">
+                        <span class="success">200</span>
+                    </div>
+                    <div class="duration">0ms</div>
+                </div>
+            
+                <div class="yaxis">
+                   <div class="category " title="https://miaps.thinkm.co.kr/miapshybrid/resource/img/title_before.png">
+                       <i class="type_css"></i>
+                        title_before.png
+                    </div>
+                    <div class="transfer-size">0</div>
+                    <div class="status-code">
+                        <span class="success">200</span>
+                    </div>
+                    <div class="duration">2ms</div>
+                </div>
+            
+                <div class="yaxis">
+                   <div class="category " title="https://miaps.thinkm.co.kr/miapshybrid/resource/img/title_home.png">
+                       <i class="type_css"></i>
+                        title_home.png
+                    </div>
+                    <div class="transfer-size">0</div>
+                    <div class="status-code">
+                        <span class="success">200</span>
+                    </div>
+                    <div class="duration">3ms</div>
+                </div>
+            
+                <div class="yaxis">
+                   <div class="category " title="https://miaps.thinkm.co.kr/miapshybrid/vendor/semantic/themes/default/assets/fonts/icons.woff2">
+                       <i class="type_css"></i>
+                        icons.woff2
+                    </div>
+                    <div class="transfer-size">0</div>
+                    <div class="status-code">
+                        <span class="success">200</span>
+                    </div>
+                    <div class="duration">4ms</div>
+                </div>
+            
+                <div class="yaxis">
+                   <div class="category " title="https://miaps.thinkm.co.kr/miapshybrid/vendor/semantic/themes/default/assets/fonts/outline-icons.woff2">
+                       <i class="type_css"></i>
+                        outline-icons.woff2
+                    </div>
+                    <div class="transfer-size">0</div>
+                    <div class="status-code">
+                        <span class="success">200</span>
+                    </div>
+                    <div class="duration">4ms</div>
+                </div>
+            
+                <div class="yaxis">
+                   <div class="category " title="https://miaps.thinkm.co.kr/miapshybrid/vendor/semantic/themes/default/assets/fonts/brand-icons.woff2">
+                       <i class="type_css"></i>
+                        brand-icons.woff2
+                    </div>
+                    <div class="transfer-size">0</div>
+                    <div class="status-code">
+                        <span class="success">200</span>
+                    </div>
+                    <div class="duration">3ms</div>
+                </div>
+            
+                <div class="yaxis">
+                   <div class="category " title="https://miaps.thinkm.co.kr/miapshybrid/native.js">
+                       <i class="type_script"></i>
+                        native.js
+                    </div>
+                    <div class="transfer-size">6 KB</div>
+                    <div class="status-code">
+                        <span class="success">200</span>
+                    </div>
+                    <div class="duration">17ms</div>
+                </div>
+            
+                <div class="yaxis">
+                   <div class="category " title="https://miaps.thinkm.co.kr/favicon.ico">
+                       <i class="type_other"></i>
+                        favicon.ico
+                    </div>
+                    <div class="transfer-size">0</div>
+                    <div class="status-code">
+                        <span class="success">200</span>
+                    </div>
+                    <div class="duration">5ms</div>
+                </div>
+            
+                <div class="yaxis">
+                   <div class="category " title="first-paint">
+                       <i class="type_unknown"></i>
+                        first-paint
+                    </div>
+                    <div class="transfer-size">0</div>
+                    <div class="status-code">
+                        <span class="etc">-</span>
+                    </div>
+                    <div class="duration">0ms</div>
+                </div>
+            
+                <div class="yaxis">
+                   <div class="category " title="largest-contentful-paint">
+                       <i class="type_unknown"></i>
+                        largest-contentful-paint
+                    </div>
+                    <div class="transfer-size">0</div>
+                    <div class="status-code">
+                        <span class="etc">-</span>
+                    </div>
+                    <div class="duration">0ms</div>
+                </div>
+            
+                <div class="yaxis">
+                   <div class="category " title="first-contentful-paint">
+                       <i class="type_unknown"></i>
+                        first-contentful-paint
+                    </div>
+                    <div class="transfer-size">0</div>
+                    <div class="status-code">
+                        <span class="etc">-</span>
+                    </div>
+                    <div class="duration">0ms</div>
+                </div>
+            
+                <div class="yaxis">
+                   <div class="category " title="https://miaps.thinkm.co.kr/miapshybrid/vendor/jquery/jquery.min.js">
+                       <i class="type_script"></i>
+                        jquery.min.js
+                    </div>
+                    <div class="transfer-size">85 KB</div>
+                    <div class="status-code">
+                        <span class="success">200</span>
+                    </div>
+                    <div class="duration">13ms</div>
+                </div>
+            
+                <div class="yaxis">
+                   <div class="category " title="https://miaps.thinkm.co.kr/miapshybrid/vendor/miaps/js/miaps_property.js">
+                       <i class="type_script"></i>
+                        miaps_property.js
+                    </div>
+                    <div class="transfer-size">1 KB</div>
+                    <div class="status-code">
+                        <span class="success">200</span>
+                    </div>
+                    <div class="duration">12ms</div>
+                </div>
+            
+                <div class="yaxis">
+                   <div class="category " title="https://miaps.thinkm.co.kr/miapshybrid/vendor/handlebars/handlebars-4.0.11.js">
+                       <i class="type_script"></i>
+                        handlebars-4.0.11.js
+                    </div>
+                    <div class="transfer-size">163 KB</div>
+                    <div class="status-code">
+                        <span class="success">200</span>
+                    </div>
+                    <div class="duration">24ms</div>
+                </div>
+            
+                <div class="yaxis">
+                   <div class="category " title="https://miaps.thinkm.co.kr/miapshybrid/vendor/toastify/toastify.min.js">
+                       <i class="type_script"></i>
+                        toastify.min.js
+                    </div>
+                    <div class="transfer-size">7 KB</div>
+                    <div class="status-code">
+                        <span class="success">200</span>
+                    </div>
+                    <div class="duration">21ms</div>
+                </div>
+            
+                <div class="yaxis">
+                   <div class="category " title="https://miaps.thinkm.co.kr/miapshybrid/vendor/semantic/semantic.min.js">
+                       <i class="type_script"></i>
+                        semantic.min.js
+                    </div>
+                    <div class="transfer-size">270 KB</div>
+                    <div class="status-code">
+                        <span class="success">200</span>
+                    </div>
+                    <div class="duration">22ms</div>
+                </div>
+            
+                <div class="yaxis">
+                   <div class="category " title="https://miaps.thinkm.co.kr/miapshybrid/vendor/miaps/js/miaps_hybrid.js">
+                       <i class="type_script"></i>
+                        miaps_hybrid.js
+                    </div>
+                    <div class="transfer-size">78 KB</div>
+                    <div class="status-code">
+                        <span class="success">200</span>
+                    </div>
+                    <div class="duration">41ms</div>
+                </div>
+            
+                <div class="yaxis">
+                   <div class="category " title="https://miaps.thinkm.co.kr/miapshybrid/vendor/miaps/js/miaps_notify.js">
+                       <i class="type_script"></i>
+                        miaps_notify.js
+                    </div>
+                    <div class="transfer-size">3 KB</div>
+                    <div class="status-code">
+                        <span class="success">200</span>
+                    </div>
+                    <div class="duration">14ms</div>
+                </div>
+            
+                <div class="yaxis">
+                   <div class="category " title="https://miaps.thinkm.co.kr/miapshybrid/vendor/miaps/js/miaps_page.js">
+                       <i class="type_script"></i>
+                        miaps_page.js
+                    </div>
+                    <div class="transfer-size">44 KB</div>
+                    <div class="status-code">
+                        <span class="success">200</span>
+                    </div>
+                    <div class="duration">17ms</div>
+                </div>
+            
+                <div class="yaxis">
+                   <div class="category " title="https://miaps.thinkm.co.kr/miapshybrid/vendor/miaps/js/miaps_ui_ex.js">
+                       <i class="type_script"></i>
+                        miaps_ui_ex.js
+                    </div>
+                    <div class="transfer-size">9 KB</div>
+                    <div class="status-code">
+                        <span class="success">200</span>
+                    </div>
+                    <div class="duration">16ms</div>
+                </div>
+            
+                <div class="yaxis">
+                   <div class="category " title="layout-shift">
+                       <i class="type_unknown"></i>
+                        layout-shift
+                    </div>
+                    <div class="transfer-size">0</div>
+                    <div class="status-code">
+                        <span class="etc">-</span>
+                    </div>
+                    <div class="duration">0ms</div>
+                </div>
+            
+                <div class="yaxis">
+                   <div class="category " title="pointerdown">
+                       <i class="type_unknown"></i>
+                        pointerdown
+                    </div>
+                    <div class="transfer-size">0</div>
+                    <div class="status-code">
+                        <span class="etc">-</span>
+                    </div>
+                    <div class="duration">16ms</div>
+                </div>
+            
+                <div class="yaxis">
+                   <div class="category " title="hidden">
+                       <i class="type_unknown"></i>
+                        hidden
+                    </div>
+                    <div class="transfer-size">0</div>
+                    <div class="status-code">
+                        <span class="etc">-</span>
+                    </div>
+                    <div class="duration">0ms</div>
+                </div>
+            </div>
+        <div id="loadingTimePopup__waterfall__waterfall" data-highcharts-chart="25" aria-hidden="false" role="region" aria-label="Chart. Highcharts interactive chart." style="overflow: hidden;"><div id="highcharts-screen-reader-region-before-25" aria-hidden="false" style="position: relative;"><div aria-hidden="false" style="position: absolute; width: 1px; height: 1px; overflow: hidden; white-space: nowrap; clip: rect(1px, 1px, 1px, 1px); margin-top: -3px; opacity: 0.01;"><h6>Chart</h6><div>Combination chart with 2 data series.</div><div>The chart has 1 X axis displaying Time. Data range: 17 hours.</div><div>The chart has 1 Y axis displaying categories. </div></div></div><div aria-hidden="false" class="highcharts-announcer-container" style="position: relative;"><div aria-hidden="false" aria-live="polite" aria-atomic="true" style="position: absolute; width: 1px; height: 1px; overflow: hidden; white-space: nowrap; clip: rect(1px, 1px, 1px, 1px); margin-top: -3px; opacity: 0.01;"></div><div aria-hidden="false" aria-live="assertive" aria-atomic="true" style="position: absolute; width: 1px; height: 1px; overflow: hidden; white-space: nowrap; clip: rect(1px, 1px, 1px, 1px); margin-top: -3px; opacity: 0.01;"></div><div aria-hidden="false" aria-live="polite" aria-atomic="true" style="position: absolute; width: 1px; height: 1px; overflow: hidden; white-space: nowrap; clip: rect(1px, 1px, 1px, 1px); margin-top: -3px; opacity: 0.01;"></div><div aria-hidden="false" aria-live="polite" aria-atomic="true" style="position: absolute; width: 1px; height: 1px; overflow: hidden; white-space: nowrap; clip: rect(1px, 1px, 1px, 1px); margin-top: -3px; opacity: 0.01;"></div></div><div id="highcharts-jng2tj8-2175" dir="ltr" style="position: relative; overflow: hidden; width: 617px; height: 1040px; text-align: left; line-height: normal; z-index: 0; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); user-select: none; touch-action: manipulation; outline: none; padding: 0px;" class="highcharts-container " aria-hidden="false" tabindex="0"><div aria-hidden="false" class="highcharts-a11y-proxy-container-before" style="top: 0px; left: 0px; white-space: nowrap; position: absolute;"></div><svg version="1.1" class="highcharts-root" style="font-family: -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, Helvetica, Arial, &quot;Apple Color Emoji&quot;, &quot;Segoe UI Emoji&quot;, &quot;Segoe UI Symbol&quot;, sans-serif; font-size: 1rem;" xmlns="http://www.w3.org/2000/svg" width="617" height="1040" viewBox="0 0 617 1040" aria-hidden="false" aria-label="Interactive chart"><desc aria-hidden="true">Created with Highcharts 12.2.0</desc><defs aria-hidden="true"><filter id="highcharts-drop-shadow-25"><feDropShadow dx="1" dy="1" flood-color="#000000" flood-opacity="0.75" stdDeviation="2.5"></feDropShadow></filter><clipPath id="highcharts-jng2tj8-2183-"><rect x="0" y="0" width="587" height="1020" fill="none"></rect></clipPath></defs><rect fill="#ffffff" class="highcharts-background" filter="none" x="0" y="0" width="617" height="1040" rx="0" ry="0" aria-hidden="true"></rect><rect fill="none" class="highcharts-plot-background" x="10" y="10" width="587" height="1020" filter="none" aria-hidden="true"></rect><g class="highcharts-pane-group" data-z-index="0" aria-hidden="true"></g><rect fill="none" class="highcharts-plot-border" data-z-index="1" stroke="#cccccc" stroke-width="0" x="10" y="10" width="587" height="1020" aria-hidden="true"></rect><g class="highcharts-grid highcharts-xaxis-grid" data-z-index="1" aria-hidden="true"><path fill="none" stroke="#e6e6e6" stroke-width="0" stroke-dasharray="none" data-z-index="1" class="highcharts-grid-line" d="M 113.5 10 L 113.5 1030" opacity="1"></path><path fill="none" stroke="#e6e6e6" stroke-width="0" stroke-dasharray="none" data-z-index="1" class="highcharts-grid-line" d="M 320.5 10 L 320.5 1030" opacity="1"></path><path fill="none" stroke="#e6e6e6" stroke-width="0" stroke-dasharray="none" data-z-index="1" class="highcharts-grid-line" d="M 527.5 10 L 527.5 1030" opacity="1"></path><path fill="none" stroke="#e6e6e6" stroke-width="0" stroke-dasharray="none" data-z-index="1" class="highcharts-grid-line" d="M 10.5 10 L 10.5 1030" opacity="1"></path><path fill="none" stroke="#e6e6e6" stroke-width="0" stroke-dasharray="none" data-z-index="1" class="highcharts-grid-line" d="M 216.5 10 L 216.5 1030" opacity="1"></path><path fill="none" stroke="#e6e6e6" stroke-width="0" stroke-dasharray="none" data-z-index="1" class="highcharts-grid-line" d="M 423.5 10 L 423.5 1030" opacity="1"></path></g><g class="highcharts-grid highcharts-yaxis-grid" data-z-index="1" aria-hidden="true"><path fill="none" stroke="#e6e6e6" stroke-width="1" stroke-dasharray="none" data-z-index="1" class="highcharts-grid-line" d="M 10 40.5 L 597 40.5" opacity="1"></path><path fill="none" stroke="#e6e6e6" stroke-width="1" stroke-dasharray="none" data-z-index="1" class="highcharts-grid-line" d="M 10 70.5 L 597 70.5" opacity="1"></path><path fill="none" stroke="#e6e6e6" stroke-width="1" stroke-dasharray="none" data-z-index="1" class="highcharts-grid-line" d="M 10 100.5 L 597 100.5" opacity="1"></path><path fill="none" stroke="#e6e6e6" stroke-width="1" stroke-dasharray="none" data-z-index="1" class="highcharts-grid-line" d="M 10 130.5 L 597 130.5" opacity="1"></path><path fill="none" stroke="#e6e6e6" stroke-width="1" stroke-dasharray="none" data-z-index="1" class="highcharts-grid-line" d="M 10 160.5 L 597 160.5" opacity="1"></path><path fill="none" stroke="#e6e6e6" stroke-width="1" stroke-dasharray="none" data-z-index="1" class="highcharts-grid-line" d="M 10 190.5 L 597 190.5" opacity="1"></path><path fill="none" stroke="#e6e6e6" stroke-width="1" stroke-dasharray="none" data-z-index="1" class="highcharts-grid-line" d="M 10 220.5 L 597 220.5" opacity="1"></path><path fill="none" stroke="#e6e6e6" stroke-width="1" stroke-dasharray="none" data-z-index="1" class="highcharts-grid-line" d="M 10 250.5 L 597 250.5" opacity="1"></path><path fill="none" stroke="#e6e6e6" stroke-width="1" stroke-dasharray="none" data-z-index="1" class="highcharts-grid-line" d="M 10 280.5 L 597 280.5" opacity="1"></path><path fill="none" stroke="#e6e6e6" stroke-width="1" stroke-dasharray="none" data-z-index="1" class="highcharts-grid-line" d="M 10 310.5 L 597 310.5" opacity="1"></path><path fill="none" stroke="#e6e6e6" stroke-width="1" stroke-dasharray="none" data-z-index="1" class="highcharts-grid-line" d="M 10 340.5 L 597 340.5" opacity="1"></path><path fill="none" stroke="#e6e6e6" stroke-width="1" stroke-dasharray="none" data-z-index="1" class="highcharts-grid-line" d="M 10 370.5 L 597 370.5" opacity="1"></path><path fill="none" stroke="#e6e6e6" stroke-width="1" stroke-dasharray="none" data-z-index="1" class="highcharts-grid-line" d="M 10 400.5 L 597 400.5" opacity="1"></path><path fill="none" stroke="#e6e6e6" stroke-width="1" stroke-dasharray="none" data-z-index="1" class="highcharts-grid-line" d="M 10 430.5 L 597 430.5" opacity="1"></path><path fill="none" stroke="#e6e6e6" stroke-width="1" stroke-dasharray="none" data-z-index="1" class="highcharts-grid-line" d="M 10 460.5 L 597 460.5" opacity="1"></path><path fill="none" stroke="#e6e6e6" stroke-width="1" stroke-dasharray="none" data-z-index="1" class="highcharts-grid-line" d="M 10 490.5 L 597 490.5" opacity="1"></path><path fill="none" stroke="#e6e6e6" stroke-width="1" stroke-dasharray="none" data-z-index="1" class="highcharts-grid-line" d="M 10 520.5 L 597 520.5" opacity="1"></path><path fill="none" stroke="#e6e6e6" stroke-width="1" stroke-dasharray="none" data-z-index="1" class="highcharts-grid-line" d="M 10 550.5 L 597 550.5" opacity="1"></path><path fill="none" stroke="#e6e6e6" stroke-width="1" stroke-dasharray="none" data-z-index="1" class="highcharts-grid-line" d="M 10 580.5 L 597 580.5" opacity="1"></path><path fill="none" stroke="#e6e6e6" stroke-width="1" stroke-dasharray="none" data-z-index="1" class="highcharts-grid-line" d="M 10 610.5 L 597 610.5" opacity="1"></path><path fill="none" stroke="#e6e6e6" stroke-width="1" stroke-dasharray="none" data-z-index="1" class="highcharts-grid-line" d="M 10 640.5 L 597 640.5" opacity="1"></path><path fill="none" stroke="#e6e6e6" stroke-width="1" stroke-dasharray="none" data-z-index="1" class="highcharts-grid-line" d="M 10 670.5 L 597 670.5" opacity="1"></path><path fill="none" stroke="#e6e6e6" stroke-width="1" stroke-dasharray="none" data-z-index="1" class="highcharts-grid-line" d="M 10 700.5 L 597 700.5" opacity="1"></path><path fill="none" stroke="#e6e6e6" stroke-width="1" stroke-dasharray="none" data-z-index="1" class="highcharts-grid-line" d="M 10 730.5 L 597 730.5" opacity="1"></path><path fill="none" stroke="#e6e6e6" stroke-width="1" stroke-dasharray="none" data-z-index="1" class="highcharts-grid-line" d="M 10 760.5 L 597 760.5" opacity="1"></path><path fill="none" stroke="#e6e6e6" stroke-width="1" stroke-dasharray="none" data-z-index="1" class="highcharts-grid-line" d="M 10 790.5 L 597 790.5" opacity="1"></path><path fill="none" stroke="#e6e6e6" stroke-width="1" stroke-dasharray="none" data-z-index="1" class="highcharts-grid-line" d="M 10 820.5 L 597 820.5" opacity="1"></path><path fill="none" stroke="#e6e6e6" stroke-width="1" stroke-dasharray="none" data-z-index="1" class="highcharts-grid-line" d="M 10 850.5 L 597 850.5" opacity="1"></path><path fill="none" stroke="#e6e6e6" stroke-width="1" stroke-dasharray="none" data-z-index="1" class="highcharts-grid-line" d="M 10 880.5 L 597 880.5" opacity="1"></path><path fill="none" stroke="#e6e6e6" stroke-width="1" stroke-dasharray="none" data-z-index="1" class="highcharts-grid-line" d="M 10 910.5 L 597 910.5" opacity="1"></path><path fill="none" stroke="#e6e6e6" stroke-width="1" stroke-dasharray="none" data-z-index="1" class="highcharts-grid-line" d="M 10 940.5 L 597 940.5" opacity="1"></path><path fill="none" stroke="#e6e6e6" stroke-width="1" stroke-dasharray="none" data-z-index="1" class="highcharts-grid-line" d="M 10 970.5 L 597 970.5" opacity="1"></path><path fill="none" stroke="#e6e6e6" stroke-width="1" stroke-dasharray="none" data-z-index="1" class="highcharts-grid-line" d="M 10 1000.5 L 597 1000.5" opacity="1"></path><path fill="none" stroke="#e6e6e6" stroke-width="1" stroke-dasharray="none" data-z-index="1" class="highcharts-grid-line" d="M 10 1030.5 L 597 1030.5" opacity="1"></path><path fill="none" stroke="#e6e6e6" stroke-width="1" stroke-dasharray="none" data-z-index="1" class="highcharts-grid-line" d="M 10 10.5 L 597 10.5" opacity="1"></path></g><g class="highcharts-axis highcharts-xaxis" data-z-index="2" aria-hidden="true"><path fill="none" class="highcharts-axis-line" stroke="#333333" stroke-width="0" data-z-index="7" d="M 10 1030 L 597 1030"></path></g><g class="highcharts-axis highcharts-yaxis" data-z-index="2" aria-hidden="true"><path fill="none" class="highcharts-axis-line" stroke="#333333" stroke-width="0" data-z-index="7" d="M 10 10 L 10 1030"></path></g><g class="highcharts-series-group" data-z-index="3" filter="none" clip-path="none" aria-hidden="false"><g class="highcharts-series highcharts-series-0 highcharts-xrange-series highcharts-tracker highcharts-dense-data" data-z-index="0.1" opacity="1" transform="translate(10,10) scale(1 1)" clip-path="url(#highcharts-jng2tj8-2183-)" aria-hidden="false" role="region" tabindex="-1" aria-label="Resources, series 1 of 2 with 34 data points." style="outline: none;"><g class="highcharts-point" tabindex="-1" role="img" aria-label="DNS Lookup, x2: 1.600000023841858, y: 0. Resources." style="outline: none;"><path fill="transparent" d="M 0.5 3 L 0.5 3 A 1.5 1.5 0 0 1 2 4.5 L 2 26.5 A 1.5 1.5 0 0 1 0.5 28 L 0.5 28 A 1.5 1.5 0 0 1 -1 26.5 L -1 4.5 A 1.5 1.5 0 0 1 0.5 3 Z" class="highcharts-point highcharts-partfill-original" stroke="#ffffff" stroke-width="0" opacity="1" filter="none"></path></g><g class="highcharts-point" tabindex="-1" role="img" aria-label="TCP Connect Start, x2: 1.600000023841858, y: 1. Resources." style="outline: none;"><path fill="transparent" d="M 0.5 33 L 0.5 33 A 1.5 1.5 0 0 1 2 34.5 L 2 56.5 A 1.5 1.5 0 0 1 0.5 58 L 0.5 58 A 1.5 1.5 0 0 1 -1 56.5 L -1 34.5 A 1.5 1.5 0 0 1 0.5 33 Z" class="highcharts-point highcharts-partfill-original" stroke="#ffffff" stroke-width="0" opacity="1" filter="none"></path></g><g class="highcharts-point" tabindex="-1" role="img" aria-label="Request Time, x2: 25.900000005960464, y: 2. Resources." style="outline: none;"><path fill="#b2df8a" d="M 0.5 63 L 0.5 63 A 1.5 1.5 0 0 1 2 64.5 L 2 86.5 A 1.5 1.5 0 0 1 0.5 88 L 0.5 88 A 1.5 1.5 0 0 1 -1 86.5 L -1 64.5 A 1.5 1.5 0 0 1 0.5 63 Z" class="highcharts-point highcharts-partfill-original" stroke="#ffffff" stroke-width="0" opacity="1" filter="none"></path></g><g class="highcharts-point" tabindex="-1" role="img" aria-label="Response Time, x2: 26.5, y: 3. Resources." style="outline: none;"><path fill="#b2df8a" d="M 0.5 93 L 0.5 93 A 1.5 1.5 0 0 1 2 94.5 L 2 116.5 A 1.5 1.5 0 0 1 0.5 118 L 0.5 118 A 1.5 1.5 0 0 1 -1 116.5 L -1 94.5 A 1.5 1.5 0 0 1 0.5 93 Z" class="highcharts-point highcharts-partfill-original" stroke="#ffffff" stroke-width="0" opacity="1" filter="none"></path></g><g class="highcharts-point" tabindex="-1" role="img" aria-label="Dom Processing, x2: 110.2000000178814, y: 4. Resources." style="outline: none;"><path fill="#b2df8a" d="M 0.5 123 L 0.5 123 A 1.5 1.5 0 0 1 2 124.5 L 2 146.5 A 1.5 1.5 0 0 1 0.5 148 L 0.5 148 A 1.5 1.5 0 0 1 -1 146.5 L -1 124.5 A 1.5 1.5 0 0 1 0.5 123 Z" class="highcharts-point highcharts-partfill-original" stroke="#ffffff" stroke-width="0" opacity="1" filter="none"></path></g><g class="highcharts-point" tabindex="-1" role="img" aria-label="Dom Load, x2: 112, y: 5. Resources." style="outline: none;"><path fill="#b2df8a" d="M 0.5 153 L 0.5 153 A 1.5 1.5 0 0 1 2 154.5 L 2 176.5 A 1.5 1.5 0 0 1 0.5 178 L 0.5 178 A 1.5 1.5 0 0 1 -1 176.5 L -1 154.5 A 1.5 1.5 0 0 1 0.5 153 Z" class="highcharts-point highcharts-partfill-original" stroke="#ffffff" stroke-width="0" opacity="1" filter="none"></path></g><g class="highcharts-point" tabindex="-1" role="img" aria-label="long-animation-frame, x2: 88, y: 6. Resources." style="outline: none;"><path fill="#b2df8a" d="M 0.5 183 L 0.5 183 A 1.5 1.5 0 0 1 2 184.5 L 2 206.5 A 1.5 1.5 0 0 1 0.5 208 L 0.5 208 A 1.5 1.5 0 0 1 -1 206.5 L -1 184.5 A 1.5 1.5 0 0 1 0.5 183 Z" class="highcharts-point highcharts-partfill-original" stroke="#ffffff" stroke-width="0" opacity="1" filter="none"></path></g><g class="highcharts-point" tabindex="-1" role="img" aria-label="icon03.png, x2: 56.60000002384186, y: 7. Resources." style="outline: none;"><path fill="#71B8E7" d="M 0.5 213 L 0.5 213 A 1.5 1.5 0 0 1 2 214.5 L 2 236.5 A 1.5 1.5 0 0 1 0.5 238 L 0.5 238 A 1.5 1.5 0 0 1 -1 236.5 L -1 214.5 A 1.5 1.5 0 0 1 0.5 213 Z" class="highcharts-point highcharts-partfill-original" stroke="#ffffff" stroke-width="0" opacity="1" filter="none"></path></g><g class="highcharts-point" tabindex="-1" role="img" aria-label="config.js, x2: 72.10000002384186, y: 8. Resources." style="outline: none;"><path fill="#71B8E7" d="M 0.5 243 L 0.5 243 A 1.5 1.5 0 0 1 2 244.5 L 2 266.5 A 1.5 1.5 0 0 1 0.5 268 L 0.5 268 A 1.5 1.5 0 0 1 -1 266.5 L -1 244.5 A 1.5 1.5 0 0 1 0.5 243 Z" class="highcharts-point highcharts-partfill-original" stroke="#ffffff" stroke-width="0" opacity="1" filter="none"></path></g><g class="highcharts-point" tabindex="-1" role="img" aria-label="require.js, x2: 71.5, y: 9. Resources." style="outline: none;"><path fill="#71B8E7" d="M 0.5 273 L 0.5 273 A 1.5 1.5 0 0 1 2 274.5 L 2 296.5 A 1.5 1.5 0 0 1 0.5 298 L 0.5 298 A 1.5 1.5 0 0 1 -1 296.5 L -1 274.5 A 1.5 1.5 0 0 1 0.5 273 Z" class="highcharts-point highcharts-partfill-original" stroke="#ffffff" stroke-width="0" opacity="1" filter="none"></path></g><g class="highcharts-point" tabindex="-1" role="img" aria-label="S6uyw4BMUTPHjx4wXiWtFCc.woff2, x2: 74.40000000596046, y: 10. Resources." style="outline: none;"><path fill="transparent" d="M 0.5 303 L 0.5 303 A 1.5 1.5 0 0 1 2 304.5 L 2 326.5 A 1.5 1.5 0 0 1 0.5 328 L 0.5 328 A 1.5 1.5 0 0 1 -1 326.5 L -1 304.5 A 1.5 1.5 0 0 1 0.5 303 Z" class="highcharts-point highcharts-partfill-original" stroke="#ffffff" stroke-width="0" opacity="1" filter="none"></path></g><g class="highcharts-point" tabindex="-1" role="img" aria-label="S6u9w4BMUTPHh6UVSwiPGQ3q5d0.woff2, x2: 74.5, y: 11. Resources." style="outline: none;"><path fill="transparent" d="M 0.5 333 L 0.5 333 A 1.5 1.5 0 0 1 2 334.5 L 2 356.5 A 1.5 1.5 0 0 1 0.5 358 L 0.5 358 A 1.5 1.5 0 0 1 -1 356.5 L -1 334.5 A 1.5 1.5 0 0 1 0.5 333 Z" class="highcharts-point highcharts-partfill-original" stroke="#ffffff" stroke-width="0" opacity="1" filter="none"></path></g><g class="highcharts-point" tabindex="-1" role="img" aria-label="title_before.png, x2: 77.7000000178814, y: 12. Resources." style="outline: none;"><path fill="#71B8E7" d="M 0.5 363 L 0.5 363 A 1.5 1.5 0 0 1 2 364.5 L 2 386.5 A 1.5 1.5 0 0 1 0.5 388 L 0.5 388 A 1.5 1.5 0 0 1 -1 386.5 L -1 364.5 A 1.5 1.5 0 0 1 0.5 363 Z" class="highcharts-point highcharts-partfill-original" stroke="#ffffff" stroke-width="0" opacity="1" filter="none"></path></g><g class="highcharts-point" tabindex="-1" role="img" aria-label="title_home.png, x2: 78.40000000596046, y: 13. Resources." style="outline: none;"><path fill="#71B8E7" d="M 0.5 393 L 0.5 393 A 1.5 1.5 0 0 1 2 394.5 L 2 416.5 A 1.5 1.5 0 0 1 0.5 418 L 0.5 418 A 1.5 1.5 0 0 1 -1 416.5 L -1 394.5 A 1.5 1.5 0 0 1 0.5 393 Z" class="highcharts-point highcharts-partfill-original" stroke="#ffffff" stroke-width="0" opacity="1" filter="none"></path></g><g class="highcharts-point" tabindex="-1" role="img" aria-label="icons.woff2, x2: 81.30000001192093, y: 14. Resources." style="outline: none;"><path fill="#71B8E7" d="M 0.5 423 L 0.5 423 A 1.5 1.5 0 0 1 2 424.5 L 2 446.5 A 1.5 1.5 0 0 1 0.5 448 L 0.5 448 A 1.5 1.5 0 0 1 -1 446.5 L -1 424.5 A 1.5 1.5 0 0 1 0.5 423 Z" class="highcharts-point highcharts-partfill-original" stroke="#ffffff" stroke-width="0" opacity="1" filter="none"></path></g><g class="highcharts-point" tabindex="-1" role="img" aria-label="outline-icons.woff2, x2: 82.5, y: 15. Resources." style="outline: none;"><path fill="#71B8E7" d="M 0.5 453 L 0.5 453 A 1.5 1.5 0 0 1 2 454.5 L 2 476.5 A 1.5 1.5 0 0 1 0.5 478 L 0.5 478 A 1.5 1.5 0 0 1 -1 476.5 L -1 454.5 A 1.5 1.5 0 0 1 0.5 453 Z" class="highcharts-point highcharts-partfill-original" stroke="#ffffff" stroke-width="0" opacity="1" filter="none"></path></g><g class="highcharts-point" tabindex="-1" role="img" aria-label="brand-icons.woff2, x2: 81.60000002384186, y: 16. Resources." style="outline: none;"><path fill="#71B8E7" d="M 0.5 483 L 0.5 483 A 1.5 1.5 0 0 1 2 484.5 L 2 506.5 A 1.5 1.5 0 0 1 0.5 508 L 0.5 508 A 1.5 1.5 0 0 1 -1 506.5 L -1 484.5 A 1.5 1.5 0 0 1 0.5 483 Z" class="highcharts-point highcharts-partfill-original" stroke="#ffffff" stroke-width="0" opacity="1" filter="none"></path></g><g class="highcharts-point" tabindex="-1" role="img" aria-label="native.js, x2: 133.80000001192093, y: 17. Resources." style="outline: none;"><path fill="#71B8E7" d="M 0.5 513 L 0.5 513 A 1.5 1.5 0 0 1 2 514.5 L 2 536.5 A 1.5 1.5 0 0 1 0.5 538 L 0.5 538 A 1.5 1.5 0 0 1 -1 536.5 L -1 514.5 A 1.5 1.5 0 0 1 0.5 513 Z" class="highcharts-point highcharts-partfill-original" stroke="#ffffff" stroke-width="0" opacity="1" filter="none"></path></g><g class="highcharts-point" tabindex="-1" role="img" aria-label="favicon.ico, x2: 122.30000001192093, y: 18. Resources." style="outline: none;"><path fill="#71B8E7" d="M 0.5 543 L 0.5 543 A 1.5 1.5 0 0 1 2 544.5 L 2 566.5 A 1.5 1.5 0 0 1 0.5 568 L 0.5 568 A 1.5 1.5 0 0 1 -1 566.5 L -1 544.5 A 1.5 1.5 0 0 1 0.5 543 Z" class="highcharts-point highcharts-partfill-original" stroke="#ffffff" stroke-width="0" opacity="1" filter="none"></path></g><g class="highcharts-point" tabindex="-1" role="img" aria-label="first-paint, x2: 124, y: 19. Resources." style="outline: none;"><path fill="transparent" d="M 0.5 573 L 0.5 573 A 1.5 1.5 0 0 1 2 574.5 L 2 596.5 A 1.5 1.5 0 0 1 0.5 598 L 0.5 598 A 1.5 1.5 0 0 1 -1 596.5 L -1 574.5 A 1.5 1.5 0 0 1 0.5 573 Z" class="highcharts-point highcharts-partfill-original" stroke="#ffffff" stroke-width="0" opacity="1" filter="none"></path></g><g class="highcharts-point" tabindex="-1" role="img" aria-label="largest-contentful-paint, x2: 124, y: 20. Resources." style="outline: none;"><path fill="transparent" d="M 0.5 603 L 0.5 603 A 1.5 1.5 0 0 1 2 604.5 L 2 626.5 A 1.5 1.5 0 0 1 0.5 628 L 0.5 628 A 1.5 1.5 0 0 1 -1 626.5 L -1 604.5 A 1.5 1.5 0 0 1 0.5 603 Z" class="highcharts-point highcharts-partfill-original" stroke="#ffffff" stroke-width="0" opacity="1" filter="none"></path></g><g class="highcharts-point" tabindex="-1" role="img" aria-label="first-contentful-paint, x2: 124, y: 21. Resources." style="outline: none;"><path fill="transparent" d="M 0.5 633 L 0.5 633 A 1.5 1.5 0 0 1 2 634.5 L 2 656.5 A 1.5 1.5 0 0 1 0.5 658 L 0.5 658 A 1.5 1.5 0 0 1 -1 656.5 L -1 634.5 A 1.5 1.5 0 0 1 0.5 633 Z" class="highcharts-point highcharts-partfill-original" stroke="#ffffff" stroke-width="0" opacity="1" filter="none"></path></g><g class="highcharts-point" tabindex="-1" role="img" aria-label="jquery.min.js, x2: 155, y: 22. Resources." style="outline: none;"><path fill="#71B8E7" d="M 0.5 663 L 0.5 663 A 1.5 1.5 0 0 1 2 664.5 L 2 686.5 A 1.5 1.5 0 0 1 0.5 688 L 0.5 688 A 1.5 1.5 0 0 1 -1 686.5 L -1 664.5 A 1.5 1.5 0 0 1 0.5 663 Z" class="highcharts-point highcharts-partfill-original" stroke="#ffffff" stroke-width="0" opacity="1" filter="none"></path></g><g class="highcharts-point" tabindex="-1" role="img" aria-label="miaps_property.js, x2: 158.2000000178814, y: 23. Resources." style="outline: none;"><path fill="#71B8E7" d="M 0.5 693 L 0.5 693 A 1.5 1.5 0 0 1 2 694.5 L 2 716.5 A 1.5 1.5 0 0 1 0.5 718 L 0.5 718 A 1.5 1.5 0 0 1 -1 716.5 L -1 694.5 A 1.5 1.5 0 0 1 0.5 693 Z" class="highcharts-point highcharts-partfill-original" stroke="#ffffff" stroke-width="0" opacity="1" filter="none"></path></g><g class="highcharts-point" tabindex="-1" role="img" aria-label="handlebars-4.0.11.js, x2: 170.40000000596046, y: 24. Resources." style="outline: none;"><path fill="#71B8E7" d="M 0.5 723 L 0.5 723 A 1.5 1.5 0 0 1 2 724.5 L 2 746.5 A 1.5 1.5 0 0 1 0.5 748 L 0.5 748 A 1.5 1.5 0 0 1 -1 746.5 L -1 724.5 A 1.5 1.5 0 0 1 0.5 723 Z" class="highcharts-point highcharts-partfill-original" stroke="#ffffff" stroke-width="0" opacity="1" filter="none"></path></g><g class="highcharts-point" tabindex="-1" role="img" aria-label="toastify.min.js, x2: 168, y: 25. Resources." style="outline: none;"><path fill="#71B8E7" d="M 0.5 753 L 0.5 753 A 1.5 1.5 0 0 1 2 754.5 L 2 776.5 A 1.5 1.5 0 0 1 0.5 778 L 0.5 778 A 1.5 1.5 0 0 1 -1 776.5 L -1 754.5 A 1.5 1.5 0 0 1 0.5 753 Z" class="highcharts-point highcharts-partfill-original" stroke="#ffffff" stroke-width="0" opacity="1" filter="none"></path></g><g class="highcharts-point" tabindex="-1" role="img" aria-label="semantic.min.js, x2: 186.2000000178814, y: 26. Resources." style="outline: none;"><path fill="#71B8E7" d="M 0.5 783 L 0.5 783 A 1.5 1.5 0 0 1 2 784.5 L 2 806.5 A 1.5 1.5 0 0 1 0.5 808 L 0.5 808 A 1.5 1.5 0 0 1 -1 806.5 L -1 784.5 A 1.5 1.5 0 0 1 0.5 783 Z" class="highcharts-point highcharts-partfill-original" stroke="#ffffff" stroke-width="0" opacity="1" filter="none"></path></g><g class="highcharts-point" tabindex="-1" role="img" aria-label="miaps_hybrid.js, x2: 207.40000000596046, y: 27. Resources." style="outline: none;"><path fill="#71B8E7" d="M 0.5 813 L 0.5 813 A 1.5 1.5 0 0 1 2 814.5 L 2 836.5 A 1.5 1.5 0 0 1 0.5 838 L 0.5 838 A 1.5 1.5 0 0 1 -1 836.5 L -1 814.5 A 1.5 1.5 0 0 1 0.5 813 Z" class="highcharts-point highcharts-partfill-original" stroke="#ffffff" stroke-width="0" opacity="1" filter="none"></path></g><g class="highcharts-point" tabindex="-1" role="img" aria-label="miaps_notify.js, x2: 225.7000000178814, y: 28. Resources." style="outline: none;"><path fill="#71B8E7" d="M 0.5 843 L 0.5 843 A 1.5 1.5 0 0 1 2 844.5 L 2 866.5 A 1.5 1.5 0 0 1 0.5 868 L 0.5 868 A 1.5 1.5 0 0 1 -1 866.5 L -1 844.5 A 1.5 1.5 0 0 1 0.5 843 Z" class="highcharts-point highcharts-partfill-original" stroke="#ffffff" stroke-width="0" opacity="1" filter="none"></path></g><g class="highcharts-point" tabindex="-1" role="img" aria-label="miaps_page.js, x2: 250.7000000178814, y: 29. Resources." style="outline: none;"><path fill="#71B8E7" d="M 0.5 873 L 0.5 873 A 1.5 1.5 0 0 1 2 874.5 L 2 896.5 A 1.5 1.5 0 0 1 0.5 898 L 0.5 898 A 1.5 1.5 0 0 1 -1 896.5 L -1 874.5 A 1.5 1.5 0 0 1 0.5 873 Z" class="highcharts-point highcharts-partfill-original" stroke="#ffffff" stroke-width="0" opacity="1" filter="none"></path></g><g class="highcharts-point" tabindex="-1" role="img" aria-label="miaps_ui_ex.js, x2: 249.90000000596046, y: 30. Resources." style="outline: none;"><path fill="#71B8E7" d="M 0.5 903 L 0.5 903 A 1.5 1.5 0 0 1 2 904.5 L 2 926.5 A 1.5 1.5 0 0 1 0.5 928 L 0.5 928 A 1.5 1.5 0 0 1 -1 926.5 L -1 904.5 A 1.5 1.5 0 0 1 0.5 903 Z" class="highcharts-point highcharts-partfill-original" stroke="#ffffff" stroke-width="0" opacity="1" filter="none"></path></g><g class="highcharts-point" tabindex="-1" role="img" aria-label="layout-shift, x2: 271.2000000178814, y: 31. Resources." style="outline: none;"><path fill="transparent" d="M 0.5 933 L 0.5 933 A 1.5 1.5 0 0 1 2 934.5 L 2 956.5 A 1.5 1.5 0 0 1 0.5 958 L 0.5 958 A 1.5 1.5 0 0 1 -1 956.5 L -1 934.5 A 1.5 1.5 0 0 1 0.5 933 Z" class="highcharts-point highcharts-partfill-original" stroke="#ffffff" stroke-width="0" opacity="1" filter="none"></path></g><g class="highcharts-point" tabindex="-1" role="img" aria-label="pointerdown, x2: 1,158,336.300000012, y: 32. Resources." style="outline: none;"><path fill="#b2df8a" d="M 11.5 963 L 11.5 963 A 1.5 1.5 0 0 1 13 964.5 L 13 986.5 A 1.5 1.5 0 0 1 11.5 988 L 11.5 988 A 1.5 1.5 0 0 1 10 986.5 L 10 964.5 A 1.5 1.5 0 0 1 11.5 963 Z" class="highcharts-point highcharts-partfill-original" stroke="#ffffff" stroke-width="0" opacity="1" filter="none"></path></g><g class="highcharts-point" tabindex="-1" role="img" aria-label="hidden, x2: 61,279,391.30000001, y: 33. Resources." style="outline: none;"><path fill="transparent" d="M 586.5 993 L 586.5 993 A 1.5 1.5 0 0 1 588 994.5 L 588 1016.5 A 1.5 1.5 0 0 1 586.5 1018 L 586.5 1018 A 1.5 1.5 0 0 1 585 1016.5 L 585 994.5 A 1.5 1.5 0 0 1 586.5 993 Z" class="highcharts-point highcharts-partfill-original" stroke="#ffffff" stroke-width="0" opacity="1" filter="none"></path></g></g><g class="highcharts-markers highcharts-series-0 highcharts-xrange-series" data-z-index="0.1" opacity="1" transform="translate(10,10) scale(1 1)" clip-path="none" aria-hidden="true"></g><g class="highcharts-series highcharts-series-1 highcharts-scatter-series highcharts-color-0 highcharts-tracker" data-z-index="0.1" opacity="1" transform="translate(10,10) scale(1 1)" clip-path="url(#highcharts-jng2tj8-2183-)" aria-hidden="true"></g><g class="highcharts-markers highcharts-series-1 highcharts-scatter-series highcharts-color-0 highcharts-tracker" data-z-index="0.1" opacity="1" transform="translate(10,10) scale(1 1)" clip-path="none" aria-hidden="true"></g></g><text x="304" class="highcharts-title" data-z-index="4" style="font-size: 1.2em;" text-align="center" y="25" text-anchor="middle" transform-origin="10 22" transform="translate(0,0) scale(1 1)" aria-hidden="true"></text><text x="304" class="highcharts-subtitle" data-z-index="4" text-align="center" y="24" text-anchor="middle" transform-origin="10 15" transform="translate(0,0) scale(1 1)" style="font-size: 0.8em; fill: rgb(102, 102, 102);" aria-hidden="true"></text><text x="10" text-anchor="start" class="highcharts-caption" data-z-index="4" style="font-size: 0.8em; fill: rgb(102, 102, 102);" text-align="left" y="1042" transform-origin="10 15" transform="translate(0,0) scale(1 1)" aria-hidden="true"></text><path fill="none" class="highcharts-crosshair highcharts-crosshair-thin" data-z-index="4" stroke="#cccccc" stroke-width="1" d="M 10.5 10 L 10.5 1030" style="pointer-events: none;" visibility="hidden" aria-hidden="true"></path><g class="highcharts-plot-lines-5" data-z-index="5" aria-hidden="true"><path fill="none" class="highcharts-plot-line " stroke="#FF8C00" stroke-width="1" d="M 10.5 10 L 10.5 1030"></path><path fill="none" class="highcharts-plot-line " stroke="#1E90FF" stroke-width="1" d="M 10.5 10 L 10.5 1030"></path><path fill="none" class="highcharts-plot-line " stroke="#DAA520" stroke-width="1" d="M 10.5 10 L 10.5 1030"></path><path fill="none" class="highcharts-plot-line " stroke="#66CC66" stroke-width="1" d="M 10.5 10 L 10.5 1030"></path><path fill="none" class="highcharts-plot-line " stroke="#A178D4" stroke-width="1" d="M 10.5 10 L 10.5 1030"></path><path fill="none" class="highcharts-plot-line " stroke="#FF5733" stroke-width="1" d="M 10.5 10 L 10.5 1030"></path><path fill="none" class="highcharts-plot-line " stroke="#E3C23E" stroke-width="1" d="M 21.5 10 L 21.5 1030"></path></g><text x="15" text-anchor="start" class="highcharts-plot-line-label " data-z-index="5" transform="translate(0,0)" text-align="undefined" y="20" style="font-size: 0.8em; font-weight: bold; fill: rgb(255, 140, 0);" aria-hidden="true">Fetch</text><text x="15" text-anchor="start" class="highcharts-plot-line-label " data-z-index="5" transform="translate(0,0)" text-align="undefined" y="36" style="font-size: 0.8em; font-weight: bold; fill: rgb(30, 144, 255);" aria-hidden="true">TTFB</text><text x="15" text-anchor="start" class="highcharts-plot-line-label " data-z-index="5" transform="translate(0,0)" text-align="undefined" y="52" style="font-size: 0.8em; font-weight: bold; fill: rgb(218, 165, 32);" aria-hidden="true">DOM Content Loaded</text><text x="15" text-anchor="start" class="highcharts-plot-line-label " data-z-index="5" transform="translate(0,0)" text-align="undefined" y="68" style="font-size: 0.8em; font-weight: bold; fill: rgb(102, 204, 102);" aria-hidden="true">Loading Time</text><text x="15" text-anchor="start" class="highcharts-plot-line-label " data-z-index="5" transform="translate(0,0)" text-align="undefined" y="84" style="font-size: 0.8em; font-weight: bold; fill: rgb(161, 120, 212);" aria-hidden="true">FCP</text><text x="15" text-anchor="start" class="highcharts-plot-line-label " data-z-index="5" transform="translate(0,0)" text-align="undefined" y="100" style="font-size: 0.8em; font-weight: bold; fill: rgb(255, 87, 51);" aria-hidden="true">LCP</text><text x="26" text-anchor="start" class="highcharts-plot-line-label " data-z-index="5" transform="translate(0,0)" text-align="undefined" y="116" style="font-size: 0.8em; font-weight: bold; fill: rgb(227, 194, 62);" aria-hidden="true">FID</text><g class="highcharts-axis-labels highcharts-xaxis-labels" data-z-index="7" aria-hidden="true"></g><g class="highcharts-axis-labels highcharts-yaxis-labels" data-z-index="7" aria-hidden="true"></g></svg><div aria-hidden="false" class="highcharts-a11y-proxy-container-after" style="top: 0px; left: 0px; white-space: nowrap; position: absolute;"><div class="highcharts-a11y-proxy-group highcharts-a11y-proxy-group-zoom"></div><div class="highcharts-a11y-proxy-group highcharts-a11y-proxy-group-chartMenu"></div></div></div><div id="highcharts-screen-reader-region-after-25" aria-hidden="false" style="position: relative;"><div aria-hidden="false" style="position: absolute; width: 1px; height: 1px; overflow: hidden; white-space: nowrap; clip: rect(1px, 1px, 1px, 1px); margin-top: -3px; opacity: 0.01;"><div id="highcharts-end-of-chart-marker-25" class="highcharts-exit-anchor" tabindex="0" aria-hidden="false">End of interactive chart.</div></div></div></div>
+    </div>
+</div>
+</div>
+            <!-- Navite화면용 Event Time Line -->
+            <div class="event_time_line_wrap" id="loadingTimePopup__eventTimeLine" style="display: none;"><!--
+    종합 분석 > LoadingTime Scatter > 팝업 > Event Time Line
+    종합 분석 > LoadingTime Line Chart > 팝업 > Event Time Line
+-->
+<style>
+    .user_flow_graphic {
+        display: flex;
+        flex-direction: column;
+        gap: 0.8em;
+        height: 100%;
+        overflow-y: auto;
+        box-sizing: border-box;
+        margin: 0;
+    }
+
+    .flow_popup_graph_wrap {
+        display: flex;
+        align-items: center;
+        gap: 1em;
+    }
+
+    .flow_popup_graph_wrap .log_type {
+        white-space: nowrap;
+        width: 10vw;
+        min-width: 10vw;
+        overflow: auto;
+    }
+
+    .flow_popup_graph_head {
+        position: relative;
+        background-color: #f7f8fb;
+        width: 100%;
+        height: 1.8em;
+    }
+
+    .dark_mode .flow_popup_graph_head {
+        background-color: #353434;
+    }
+
+    .flow_popup_graph_data {
+        position: absolute;
+        padding: 0.7em;
+        height: 1.8em;
+        border-radius: 25px;
+        z-index: 2;
+    }
+
+    .flow_popup_graph_text {
+        position: absolute;
+        margin-left: 0.5%;
+        white-space: nowrap;
+    }
+
+    .user_flow_graphic_chart {
+        height: 100%;
+        width: 100%;
+        grid-template-rows: 22px 65px auto;
+        position: relative;
+        border: none;
+    }
+
+    .user_flow_graphic_chart .user_flow_graphic_time_wrap {
+        display: flex;
+        justify-content: space-between; /* 아이템을 양 끝에 배치 */
+        border-top: 1px solid #eeeeee;
+        border-bottom: 1px solid #eeeeee;
+    }
+
+    .dark_mode .user_flow_graphic_chart .user_flow_graphic_time_wrap {
+        border-bottom: 1px solid var(--black-6);
+        border-top: 1px solid var(--black-6);
+    }
+
+    .user_flow_graphic_chart .user_flow_graphic_time_wrap.top {
+        padding: 1em 3em 1em 12vw;
+        margin-bottom: 1em;
+        margin-top: 1em;
+    }
+
+    .user_flow_graphic_chart .user_flow_graphic_time_wrap.bot {
+        padding: 1em 3em 1em 12vw;
+        margin-top: 2em;
+    }
+
+    .flow_popup_graph_data.httpRequest {
+        background-color: #DFF5EF;
+    }
+
+    .flow_popup_graph_data.native {
+        background-color: #DEF3FA;
+    }
+
+    .flow_popup_graph_data.error {
+        background: url(/images/maxy/icon-mark-error.svg) no-repeat center / 20px;
+    }
+
+    .flow_popup_graph_data.crash {
+        background: url(/images/maxy/icon-mark-crash.svg) no-repeat center /20px;
+    }
+
+    .flow_popup_graph_data.other {
+        background-color: #FFF4D2;
+    }
+
+    .flow_popup_graph_data.ajax {
+        background-color: #EBECFF;
+    }
+
+    .dark_mode .flow_popup_graph_data.other {
+        background-color: #5A533B;
+    }
+
+    .dark_mode .flow_popup_graph_data.httpRequest {
+        background-color: #465853;
+    }
+
+    .dark_mode .flow_popup_graph_data.native {
+        background-color: #3F4F59;
+    }
+
+    .dark_mode .flow_popup_graph_data.crash {
+        background-color: #694D4D;
+    }
+
+    .dark_mode .flow_popup_graph_data.ajax {
+        background-color: #4A4C6F;
+    }
+
+    .dark_mode .flow_popup_graph_data.error {
+        background: url(/images/maxy/dark-icon-mark-error.svg) no-repeat center / 20px;
+    }
+
+    .dark_mode .flow_popup_graph_data.crash {
+        background: url(/images/maxy/dark-icon-mark-crash.svg) no-repeat center / 20px;
+    }
+
+    .flow_popup_graph_data:not(.error):not(.crash)::before {
+        content: '';
+        margin-top: -0.1em;
+        margin-left: -0.9em;
+        display: inline-block;
+        width: 8px;
+        height: 8px;
+        border-radius: 5px;
+    }
+
+    .flow_popup_graph_data:not(.error):not(.crash)::after {
+        position: absolute;
+        right: 0;
+        content: '';
+        margin-top: -0.1em;
+        margin-left: -1em;
+        display: inline-block;
+        width: 8px;
+        height: 8px;
+        border-radius: 5px;
+    }
+
+    .flow_popup_graph_data.ajax::before,
+    .flow_popup_graph_data.ajax::after {
+        background-color: #7277FF;
+    }
+
+    .flow_popup_graph_data.other::before,
+    .flow_popup_graph_data.other::after {
+        background-color: #FFC700;
+    }
+
+    .flow_popup_graph_data.native::before,
+    .flow_popup_graph_data.native::after {
+        background-color: #35B2DA;
+    }
+
+    .flow_popup_graph_data.httpRequest::before,
+    .flow_popup_graph_data.httpRequest::after {
+        background-color: #24BE86;
+    }
+
+    .user_flow_graphic_log_type {
+        display: flex;
+        flex-direction: column;
+        gap: 13px;
+    }
+
+    .user_flow_graphic_log_type > div {
+        white-space: nowrap;
+        overflow-y: auto;
+    }
+
+    .user_flow_graphic_time_wrap .border {
+        border-left: 1px solid #eeeeee;
+        border-right: 1px solid #eeeeee;
+    }
+
+    .dark_mode .user_flow_graphic_time_wrap .border {
+        border-left: 1px solid #353739;
+        border-right: 1px solid #353739;
+    }
+
+    .user_flow_graphic_time_line {
+        width: 1px;
+        top: calc(4em + 22px); /* .user_flow_graphic_time_wrap.top의 간격(padding-top) */
+        height: calc(100% - 4em - 22px); /* .user_flow_graphic_time_wrap.top&.bot의 간격(top:padding-top, bot:padding-bottom) */
+        background-color: var(--logo-purple-1);
+        position: absolute;
+    }
+
+    .user_flow_graphic_time_line_text {
+        bottom: 10px;
+        position: absolute;
+        z-index: 100;
+    }
+
+    .maxy_popup_gray_bg_wrap .waterfall_graph_wrap {
+        height: auto;
+    }
+
+    .dark_mode .maxy_popup_common .waterfall_graph_wrap {
+        border-radius: var(--radius);
+    }
+
+    .graph_title_wrap {
+        display: flex;
+        align-items: center;
+        gap: 0.3vw;
+        font-weight: bold;
+        height: 22px;
+    }
+
+    .graph_title_wrap span {
+        font-weight: 700;
+        font-size: 15px;
+    }
+
+    .graph_title_wrap .icon_resource_time_line {
+        display: inline-block;
+        width: 20px;
+        height: 21px;
+        background-repeat: no-repeat;
+        background-size: 18px;
+        background-image: url(/images/maxy/icon-resource-time-line.svg);
+    }
+
+    .dark_mode .graph_title_wrap .icon_resource_time_line {
+        background-image: url(/images/maxy/dark-icon-resource-time-line.svg);
+    }
+
+    .graph_title_wrap .icon_event_time_line {
+        display: inline-block;
+        width: 20px;
+        height: 21px;
+        background-repeat: no-repeat;
+        background-size: 18px;
+        background-image: url(/images/maxy/icon-event-time-line.svg);
+    }
+
+    .dark_mode .graph_title_wrap .icon_event_time_line {
+        background-image: url(/images/maxy/dark-icon-event-time-line.svg);
+    }
+
+    .waterfall_graph_wrap.no_data::before {
+        top: 60%;
+    }
+
+    .btn_expand_wrap {
+        display: flex;
+        gap: .5em;
+        margin-top: .5em;
+        justify-content: flex-end;
+        align-items: center;
+    }
+
+    .btn_expand_wrap .btn_expand {
+        width: 20px;
+        height: 20px;
+        background-repeat: no-repeat;
+        background-size: 20px;
+    }
+
+    .btn_expand_wrap .btn_expand.icon_expand_top {
+        background-image: url(/images/maxy/icon-expand-top-off.svg);
+    }
+
+    .btn_expand_wrap .btn_expand.icon_expand_top.on {
+        background-image: url(/images/maxy/icon-expand-top-on.svg);
+    }
+
+    .btn_expand_wrap .btn_expand.icon_expand_bottom {
+        background-image: url(/images/maxy/icon-expand-bot-off.svg);
+    }
+
+    .btn_expand_wrap .btn_expand.icon_expand_bottom.on {
+        background-image: url(/images/maxy/icon-expand-bot-on.svg);
+    }
+
+    .btn_expand_wrap .btn_expand.icon_expand_reset {
+        background-image: url(/images/maxy/icon-expand-reset-off.svg);
+    }
+
+    .btn_expand_wrap .btn_expand.icon_expand_reset.on {
+        background-image: url(/images/maxy/icon-expand-reset-on.svg);
+    }
+
+    .dark_mode .btn_expand_wrap .btn_expand.icon_expand_top {
+        background-image: url(/images/maxy/dark-icon-expand-top-off.svg);
+    }
+
+    .dark_mode .btn_expand_wrap .btn_expand.icon_expand_top.on {
+        background-image: url(/images/maxy/dark-icon-expand-top-on.svg);
+    }
+
+    .dark_mode .btn_expand_wrap .btn_expand.icon_expand_bottom {
+        background-image: url(/images/maxy/dark-icon-expand-bot-off.svg);
+    }
+
+    .dark_mode .btn_expand_wrap .btn_expand.icon_expand_bottom.on {
+        background-image: url(/images/maxy/dark-icon-expand-bot-on.svg);
+    }
+
+    .dark_mode .btn_expand_wrap .btn_expand.icon_expand_reset {
+        background-image: url(/images/maxy/dark-icon-expand-reset-off.svg);
+    }
+
+    .dark_mode .btn_expand_wrap .btn_expand.icon_expand_reset.on {
+        background-image: url(/images/maxy/dark-icon-expand-reset-on.svg);
+    }
+
+    .timeline_wrap {
+        display: grid;
+        gap: .5em;
+        height: calc(100% - 38px);
+        grid-template-rows: 45% auto;
+    }
+</style>
+
+<div class="user_flow_graphic_chart icon_info_box">
+    <div class="graph_title_wrap event">
+        <span>Event Time Line</span>
+    </div>
+
+    <div class="user_flow_graphic_time_wrap top">
+        <span class="time1"></span>
+        <span class="border"></span>
+        <span class="border"></span>
+        <span class="border"></span>
+        <span class="border"></span>
+        <span class="time2"></span>
+        <span class="border"></span>
+        <span class="border"></span>
+        <span class="border"></span>
+        <span class="border"></span>
+        <span class="time3"></span>
+        <span class="border"></span>
+        <span class="border"></span>
+        <span class="border"></span>
+        <span class="border"></span>
+        <span class="time4"></span>
+        <span class="border"></span>
+        <span class="border"></span>
+        <span class="border"></span>
+        <span class="border"></span>
+        <span class="time5"></span>
+    </div>
+    <div class="user_flow_graphic enable_scrollbar" id="loadingTimePopup__eventTimeLine__userFlowGraphic"></div>
+
+    <div class="user_flow_graphic_time_line" style="display: none">
+        <span class="user_flow_graphic_time_line_text"></span>
+    </div>
+</div>
+</div>
+        </div>
+    </div>
+</div></div>

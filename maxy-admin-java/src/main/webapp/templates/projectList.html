@@ -1,0 +1,258 @@
+<style>
+
+    .project_list {
+        overflow-y: auto;
+        height: calc(100% - 100px);
+    }
+
+    .project_list .btn {
+        background-color: rgba(255, 255, 255, 0);
+    }
+
+    .project_list .list_item {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        background: #FFFFFF;
+        box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1), inset -4px -4px 4px rgba(0, 0, 0, 0.05);
+        border-radius: var(--radius);
+        width: 100%;
+        height: 102px;
+        padding: 17px 16px 14px 23px;
+        margin-bottom: 16px;
+        color: black;
+    }
+
+    .dark_mode .project_list .list_item {
+        background-color: #2F2F2F;
+    }
+
+    .project_list .list_item.active {
+        background: #00AF6F;
+        color: white;
+    }
+
+    .dark_mode .project_list .list_item.active {
+        background-color: #24F2A7;
+    }
+
+    .project_list .list_item .item_name {
+        font-style: normal;
+        font-weight: 500;
+        font-size: 24px;
+        line-height: 28px;
+        margin-bottom: 8px;
+    }
+
+    .dark_mode .project_list .list_item.active .item_name {
+        color: black;
+    }
+
+    .dark_mode .project_list .list_item .item_name {
+        color: white;
+    }
+
+    .project_list .list_item .item_content {
+        flex-direction: column;
+        justify-content: space-between;
+        display: flex;
+        font-weight: 300;
+        font-size: 13px;
+        line-height: 17px;
+        color: #00AF6F;
+    }
+
+    .project_list .list_item.active .item_content {
+        color: white;
+    }
+
+    .dark_mode .project_list .list_item .item_content {
+        color: #24F2A7;
+    }
+
+    .dark_mode .project_list .list_item.active .item_content {
+        color: black;
+    }
+
+    .project_list .list_item .item_content .app_info {
+        color: #808080;
+        margin-bottom: 5px;
+    }
+
+    .dark_mode .project_list .list_item .item_content .app_info {
+        color: white;
+    }
+
+    .project_list .list_item.active .item_content .app_info {
+        color: rgba(255, 255, 255, 0.7);
+    }
+
+    .dark_mode .project_list .list_item.active .item_content .app_info {
+        color: rgba(0, 0, 0, 0.7);
+    }
+
+    .project_list .list_item .btn_config_light {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: absolute;
+        right: 15px;
+        bottom: 14px;
+        background: #F3F3F3;
+        border-radius: var(--radius);
+        color: #808080;
+        width: 50px;
+        padding: 4px;
+    }
+
+    .project_list .list_item.active .btn_config_light {
+        color: #FFFFFF;
+        background: #03A067;
+    }
+
+    .dark_mode .project_list .list_item .btn_config_light {
+        color: #808080;
+        background: #222222;
+    }
+
+    .dark_mode .project_list .list_item.active .btn_config_light {
+        color: black;
+        background: #29D797;
+    }
+
+    .project_list .list_item .btn_config_light img {
+        content: url("/images/maxy/icon-gear-light-grey.svg");
+        margin-left: 2px;
+    }
+
+    .project_list .list_item.active .btn_config_light img {
+        margin-left: 2px;
+        content: url("/images/maxy/icon-gear-wh.svg");
+    }
+
+    .dark_mode .project_list .list_item .btn_config_light img {
+        content: url("/images/maxy/icon-gear-light-grey.svg");
+    }
+
+    .dark_mode .project_list .list_item.active .btn_config_light img {
+        content: url("/images/maxy/icon-gear-bk.svg");
+    }
+
+    .project_list .list_item .btn_x {
+        position: absolute;
+        top: 13px;
+        right: 16px;
+    }
+
+    .project_list .list_item .btn_x img {
+        content: url("/images/maxy/x-grey.svg");
+        width: 12px;
+        height: 12px;
+    }
+
+    .project_list .list_item.active .btn_x img {
+        content: url("/images/maxy/x-wh.svg");
+    }
+
+    .dark_mode .project_list .list_item.active .btn_x img {
+        content: url("/images/maxy/x-bk.svg");
+    }
+</style>
+<ul class="project_list enable_scrollbar">
+    {{#projectList}}
+    <li
+            class="list_item"
+            id="{{packageNm}}:{{serverType}}:{{analyzeType}}"
+            data-cycle="{{cycle}}"
+            data-time="{{time}}"
+            data-projectNm="{{projectNm}}"
+            data-regDt="{{regDt}}"
+    >
+        <!-- 클릭시 active class 추가 -->
+        <div class="item_name">{{projectNm}}</div>
+        <div class="item_content">
+            <div class="app_info">
+                {{setDnm packageNm}} / {{setServerTp serverType}} / {{setAnalyzeTp analyzeType}}
+            </div>
+            <div class="">{{regDt}}</div>
+        </div>
+        <button class="btn btn_x"><img alt="X" src=""></button>
+        <button class="btn btn_config_light">
+            설정
+            <img src="" alt="setting">
+        </button>
+    </li>
+    {{/projectList}}
+</ul>
+
+<style>
+    .maxy_modal.modify_modal {
+        min-width: 500px !important;
+        left: calc(50vw - 200px) !important;
+    }
+</style>
+<div class="popup_common maxy_modal modify_modal" id="projectConfigPopup">
+    <h4>프로젝트 설정</h4>
+    <div class="input_wrapper">
+        <div class="input_half_wrapper">
+            <div class="input_item">
+                <label class="sub_title" for="projectNm">프로젝트 명</label>
+                <input id="projectNm" type="text">
+            </div>
+            <div class="input_item">
+                <label class="sub_title" for="packageNm">패키지명</label>
+                <select
+                        class="search_group search_item"
+                        id="packageNm">
+                </select>
+            </div>
+            <div class="input_item">
+                <label class="sub_title" for="serverType">서버유형</label>
+                <select
+                        class="search_group search_item"
+                        id="serverType">
+                </select>
+            </div>
+            <div class="input_item">
+                <label class="sub_title" for="analyzeType">분석 유형</label>
+                <select
+                        class="search_group search_item"
+                        id="analyzeType">
+                    <option value="1">Cluster</option>
+                    <!--                    <option value="2">패턴오류</option>-->
+                    <!--                    <option value="3">기타</option>-->
+                </select>
+            </div>
+            <div class="input_item">
+                <label class="sub_title" for="cycle">주기</label>
+                <select
+                        class="search_group search_item"
+                        id="cycle">
+                    <option value="1ml">월말</option>
+                    <option value="1mf">월초</option>
+                    <option value="1ws">일요일</option>
+                    <option value="1wm">월요일</option>
+                    <option value="3d">3일</option>
+                    <option value="1d">1일</option>
+                </select>
+            </div>
+            <div class="input_item">
+                <label class="sub_title" for="time">실행 시간</label>
+                <input id="time"
+                       type="time"
+                       min="00:00"
+                       max="23:59"
+                       value="00:00"
+                >
+            </div>
+        </div>
+    </div>
+    <div class="popup_footer">
+        <div></div>
+        <div class="right_wrapper">
+            <button class="btn_common opposite btn_close_popup">취소</button>
+            <button class="btn_common" id="btnSaveProjectConfig">저장</button>
+        </div>
+    </div>
+</div>

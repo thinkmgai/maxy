@@ -1,0 +1,272 @@
+<style>
+    .version_list {
+        overflow-y: auto;
+        height: calc(100% - 40px);
+    }
+
+    .version_list .btn {
+        background-color: rgba(255, 255, 255, 0);
+    }
+
+    .version_list .list_item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background: #FFFFFF;
+        border: 1px solid #EBEBEB;
+        border-radius: 4px;
+        padding: 18px 26px 18px 29px;
+        margin-bottom: 16px;
+    }
+
+    .dark_mode .version_list .list_item {
+        background-color: black;
+        border: 1px solid #575757;
+    }
+
+    .version_list .btn_wrapper {
+        display: flex;
+        align-items: baseline;
+        margin-left: 100px;
+    }
+
+    .version_list .btn_wrapper .btn {
+        margin-left: 18px;
+    }
+
+    .version_list .btn_wrapper .btn_detail {
+        height: 15px;
+        width: 19px;
+    }
+
+    .version_list .btn_wrapper .btn_config img {
+        width: 17px;
+        height: 17px;
+        content: url("/images/maxy/icon-gear-grey.svg");
+    }
+
+    .dark_mode .version_list .btn_wrapper .btn_config img {
+        content: url("/images/maxy/icon-gear-grey-dk.svg");
+    }
+
+    .version_list .btn_wrapper .btn_detail img {
+        content: url("/images/maxy/icon-detail-open.svg");
+    }
+
+    .dark_mode .version_list .btn_wrapper .btn_detail img {
+        content: url("/images/maxy/icon-detail-open-dk.svg");
+    }
+
+    .version_list .btn_wrapper .btn_active img {
+        content: url("/images/maxy/radio-off-text.svg");
+    }
+
+    .dark_mode .version_list .btn_wrapper .btn_active img {
+        content: url("/images/maxy/radio-off-text-dk.svg");
+    }
+
+    .version_list .btn_wrapper .btn_active.on img {
+        content: url("/images/maxy/radio-on-text.svg");
+    }
+
+    .dark_mode .version_list .btn_wrapper .btn_active.on img {
+        content: url("/images/maxy/radio-on-text-dk.svg");
+    }
+
+    .version_list .version_name {
+        font-style: normal;
+        font-weight: 300;
+        font-size: 18px;
+        line-height: 19px;
+        color: #00AF6F;
+        width: 140px;
+    }
+
+    .dark_mode .version_list .version_name {
+        color: #24F2A7;
+    }
+
+    .version_list .run_type {
+        width: 50px;
+    }
+
+    .dark_mode .version_list .run_type {
+        color: #FFFFFF;
+    }
+
+    .version_list .run_type.err {
+        color: #CB1818;
+    }
+
+    .version_list .run_type.running {
+        color: #186CCB;
+    }
+
+    .version_list .run_time {
+        width: 150px;
+        color: #808080;
+    }
+</style>
+<ul class="version_list enable_scrollbar">
+    {{#versionList}}
+    <li
+            class="list_item"
+            id="{{packageNm}}:{{serverType}}:{{analyzeType}}:{{version}}"
+            data-runningType="{{runningType}}"
+            data-iqrMul="{{iqrMul}}"
+            data-word2Vec="{{word2Vec}}"
+            data-doc2VecMaxEpochs="{{doc2VecMaxEpochs}}"
+            data-numFeatures="{{numFeatures}}"
+            data-window="{{window}}"
+            data-workers="{{workers}}"
+            data-cosinSim="{{cosinSim}}"
+            data-kmRngS="{{kmRngS}}"
+            data-kmRngE="{{kmRngE}}"
+            data-kmInit="{{kmInit}}"
+            data-kmIter="{{kmIter}}"
+            data-pgSupport="{{pgSupport}}"
+            data-pgConfidence="{{pgConfidence}}"
+            data-pgLift="{{pgLift}}"
+            data-pgMaxList="{{pgMaxList}}"
+    >
+        <div class="version_name">{{version}}</div>
+        <div class="run_type {{checkRunningType runningType}}">
+            {{convertRunningType runningType}}
+        </div>
+        <div class="run_time">{{regDt}}</div>
+        <div class="btn_wrapper">
+            <button class="btn btn_detail"><img alt="" src=""></button>
+            <button class="btn btn_config"><img alt="" src=""></button>
+            <button class="btn btn_active {{checkActive active}}"><!-- active 1: on class 추가 -->
+                <img alt="" src="">
+            </button>
+        </div>
+    </li>
+    {{/versionList}}
+</ul>
+
+<style>
+    .maxy_modal.modify_modal#versionConfigPopup {
+        min-width: 800px !important;
+        left: calc(50vw - 350px) !important;
+    }
+
+    .maxy_modal.modify_modal#versionConfigPopup .modal_header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+    }
+
+    .maxy_modal.modify_modal#versionConfigPopup .modal_header .modal_header_right {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        width: 150px;
+    }
+
+    .maxy_modal.modify_modal#versionConfigPopup .modal_header .modal_header_right .btn_common {
+        width: 80px;
+        border: 0;
+        border-radius: var(--radius);
+        background-color: black;
+        height: 32px;
+        color: white;
+        margin-right: -16px;
+        margin-top: -10px;
+    }
+
+    .maxy_modal.modify_modal#versionConfigPopup .input_half_wrapper:nth-child(2) {
+        margin-left: 10px;
+        border-left: 1px solid #D2D2D2;
+    }
+
+    .maxy_modal.modify_modal#versionConfigPopup .sub_title {
+        width: 200px;
+    }
+
+    .maxy_modal.modify_modal#versionConfigPopup input[type="text"] {
+        width: 150px;
+    }
+</style>
+<div class="popup_common maxy_modal modify_modal" id="versionConfigPopup">
+    <div class="modal_header">
+        <h4>버전 별 변수 설정</h4>
+        <div class="modal_header_right">
+            <div>상태:&nbsp;<span id="runningTypeText"></span></div>
+            <button class="btn_common" id="btnRunVersion">실행</button>
+        </div>
+    </div>
+    <div class="input_wrapper">
+        <div class="input_half_wrapper">
+            <div class="input_item" title="IQR * X">
+                <label class="sub_title" for="iqrMul">IQR_MUL</label>
+                <input id="iqrMul" type="text">
+            </div>
+            <div class="input_item" title="1: Word2Vector/mean, 0: Doc2Vector">
+                <label class="sub_title" for="word2Vec">WORD2VEC</label>
+                <input id="word2Vec" type="text">
+            </div>
+            <div class="input_item" title="Doc2Vector Max 에폭">
+                <label class="sub_title" for="doc2VecMaxEpochs">DOC2VEC_MAX_EPOCHS</label>
+                <input id="doc2VecMaxEpochs" type="text">
+            </div>
+            <div class="input_item" title="Vector 크기 시각화를 위해 2 or 3으로 설정">
+                <label class="sub_title" for="numFeatures">NUM_FEATURES</label>
+                <input id="numFeatures" type="text">
+            </div>
+            <div class="input_item" title="CBOW Window Size">
+                <label class="sub_title" for="window">WINDOW</label>
+                <input id="window" type="text">
+            </div>
+            <div class="input_item" title="훈련시 프로세스갯수 -1:모두">
+                <label class="sub_title" for="workers">WORKERS</label>
+                <input id="workers" type="text">
+            </div>
+            <div class="input_item" title="1:Cluster시 코사인유사도로 0:Not">
+                <label class="sub_title" for="cosinSim">COSIN_SIM</label>
+                <input id="cosinSim" type="text">
+            </div>
+        </div>
+        <div class="input_half_wrapper">
+            <div class="input_item" title="Kmeans Start Cluster">
+                <label class="sub_title" for="kmRngS">KM_RNG_S</label>
+                <input id="kmRngS" type="text">
+            </div>
+            <div class="input_item" title="Kmeans End Cluster">
+                <label class="sub_title" for="kmRngE">KM_RNG_E</label>
+                <input id="kmRngE" type="text">
+            </div>
+            <div class="input_item" title="Kmeans n_init">
+                <label class="sub_title" for="kmInit">KM_INIT</label>
+                <input id="kmInit" type="text">
+            </div>
+            <div class="input_item" title="Kmeans 훈련 iterate Count">
+                <label class="sub_title" for="kmIter">KM_ITER</label>
+                <input id="kmIter" type="text">
+            </div>
+            <div class="input_item" title="연관분석 지지도">
+                <label class="sub_title" for="pgSupport">PG_SUPPORT</label>
+                <input id="pgSupport" type="text">
+            </div>
+            <div class="input_item" title="연관분석 신뢰도">
+                <label class="sub_title" for="pgConfidence">PG_CONFIDENCE</label>
+                <input id="pgConfidence" type="text">
+            </div>
+            <div class="input_item" title="연관분석 향상도">
+                <label class="sub_title" for="pgLift">PG_LIFT</label>
+                <input id="pgLift" type="text">
+            </div>
+            <div class="input_item" title="연관분석 결과수">
+                <label class="sub_title" for="pgMaxList">PG_MAX_LIST</label>
+                <input id="pgMaxList" type="text">
+            </div>
+        </div>
+    </div>
+    <div class="popup_footer">
+        <div></div>
+        <div class="right_wrapper">
+            <button class="btn_common opposite btn_close_popup">취소</button>
+            <button class="btn_common" id="btnSaveVersionConfig">저장</button>
+        </div>
+    </div>
+</div>

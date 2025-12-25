@@ -1,0 +1,26 @@
+{
+  "query": {
+    "bool": {
+      "must": [
+        {
+          "term": {
+            "packageNm": #{packageNm}
+          }
+        },
+        {
+          "term": {
+            "serverType": #{serverType}
+          }
+        },
+        {
+          "range": {
+            "logDate": {
+              "gte": #{fromTimestamp},
+              "lte": #{toTimestamp}
+            }
+          }
+        }
+      ]
+    }
+  }
+}

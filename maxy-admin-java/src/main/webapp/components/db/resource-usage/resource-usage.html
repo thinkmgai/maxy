@@ -1,0 +1,42 @@
+<style>
+    #showAllResource {
+        display: none;
+    }
+
+    #maxyComponent__RESOURCE_USAGE .maxy_component_item {
+        height: 30.5vh;
+        min-height: 225px;
+    }
+</style>
+
+<div class="maxy_component_wrap">
+    <div class="maxy_component_header flex_column">
+        <div class="header_title">
+            <h4 id="resourceTitle">{{fmtTitle}}</h4>
+            <img class="ic_question"
+                alt="?"
+            >
+            <div class="maxy_component_btn_wrap" style="margin-left: auto">
+                <button class="maxy_component_btn" id="showAllResource">ALL</button>
+            </div>
+        </div>
+        <div class="header_title space_between">
+            <div class="maxy_component_tab">
+                <span class="btn_tab on" data-tab="cpuRuGroup">
+                    <img class="cpu_img" src="/images/maxy/icon-cpu.svg">
+                    CPU
+                </span>
+                <span class="btn_tab" data-tab="memRuGroup">
+                    <img class="memory_img" src="/images/maxy/icon-memory.svg">
+                    MEM
+                </span>
+            </div>
+        </div>
+    </div>
+    <div class="maxy_component_item_wrap" id="cpuRuGroup">
+        <div class="maxy_component_item" id="ruItem__cpu__{{id}}__chart"></div>
+    </div>
+    <div class="maxy_component_item_wrap hidden" id="memRuGroup">
+        <div class="maxy_component_item" id="ruItem__mem__{{id}}__chart"></div>
+    </div>
+</div>

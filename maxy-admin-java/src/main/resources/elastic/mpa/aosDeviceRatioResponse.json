@@ -1,0 +1,77 @@
+{
+  "aggs": {
+    "2": {
+      "terms": {
+        "field": "deviceModel",
+        "order": {
+          "avg": "desc"
+        },
+        "size": 6
+      },
+      "aggs": {
+        "avg": {
+          "avg": {
+            "field": "intervaltime"
+          }
+        }
+      }
+    }
+  },
+  "size": 0,
+  "query": {
+    "bool": {
+      "filter": [
+        {
+          "bool": {
+            "should": [
+              {
+                "term": {
+                  "logType": "8388612"
+                }
+              },
+              {
+                "term": {
+                  "logType": "524291"
+                }
+              }
+            ],
+            "minimum_should_match": 1
+          }
+        },
+        {
+          "term": {
+            "packageNm": #{packageNm}
+          }
+        },
+        {
+          "term": {
+            "serverType": #{serverType}
+          }
+        },
+        #[isAppVer]
+        {
+          "term": {
+            "appVer": #{appVer}
+          }
+        },
+        #[/isAppVer]
+        {
+          "term": {
+            "osType": "Android"
+          }
+        },
+        {
+          "range": {
+            "logTm": {
+              "gte": #{searchFromDt},
+              "lte": #{searchToDt},
+              "format": "epoch_millis"
+            }
+          }
+        }
+      ],
+      "should": [],
+      "must_not": []
+    }
+  }
+}

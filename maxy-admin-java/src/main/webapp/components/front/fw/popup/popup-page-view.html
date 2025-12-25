@@ -1,0 +1,228 @@
+<style>
+    .content_title_wrap {
+        display: flex;
+        gap: .8em;
+        align-items: center;
+    }
+
+    .maxy_popup_common.page .web_chart_wrap {
+        grid-template-rows: minmax(140px, 16%) minmax(200px, 35%) minmax(250px, 48%);
+    }
+
+    @media screen and (max-width: 1441px) {
+        .maxy_popup_common.page .web_chart_wrap {
+            grid-template-rows: minmax(120px, 15%) minmax(250px, 40%) minmax(216px, 45%);
+        }
+    }
+
+    .maxy_popup_common.ajax .web_chart_wrap {
+        grid-template-rows: minmax(160px, 20%) minmax(70px, 7%) minmax(350px, 73%)
+    }
+
+    .maxy_popup_common.ajax .web_vital_wrap {
+        border: none;
+    }
+
+    .maxy_popup_common .user_info_wrap .content_wrap {
+        height: 100%;
+        display: grid;
+        grid-template-rows: 65% 35%;
+    }
+
+    .maxy_popup_common .user_info_wrap .content_wrap .bot {
+        padding: 1em;
+    }
+
+    .maxy_popup_common .user_info_wrap .content_wrap .bot > div {
+        display: grid;
+        grid-template-columns: 8% auto;
+        align-items: center;
+    }
+
+    .maxy_popup_common .user_info_wrap .content_wrap .key {
+        grid-template-columns: 25px auto;
+        display: grid;
+        color: var(--color-subtitle-light);
+        white-space: nowrap;
+        align-items: center;
+    }
+
+    .maxy_popup_common.page .web_vital_wrap .vital_title,
+    .maxy_popup_common.page .waterfall_graph_title_wrap .waterfall_title {
+        font-size: 13px;
+    }
+
+    .maxy_front_popup_content_wrap .avg_wrap {
+        margin-left: auto;
+    }
+
+    .pv_url_wrap {
+        display: flex;
+        gap: .5em;
+        align-items: center;
+        flex: 1; /* 가능한 공간을 모두 차지 */
+        min-width: 0; /* flex 아이템의 최소 너비를 0으로 설정 */
+        overflow: hidden;
+    }
+
+    .pv_url_wrap .align-center {
+        gap: .3em;
+        flex: 1;
+        min-width: 0;
+        overflow: hidden;
+    }
+
+    .key.grey.url {
+        margin-right: .6em;
+    }
+
+    .long-url {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        flex: 1;
+        min-width: 0;
+        width: 50vw;
+    }
+
+    .title.avg_wrap {
+        flex-shrink: 0; /* 크기가 줄어들지 않도록 고정 */
+    }
+
+    .align-center:last-child {
+        flex-shrink: 0; /* 마지막 align-center 요소도 크기 고정 */
+    }
+
+    .dark_mode .maxy_popup_common.front .core_vital_wrap .btn_yn, .dark_mode .maxy_popup_common.front .performance .btn_yn {
+        color: #101010;
+    }
+</style>
+
+<div class="maxy_popup_common front {{logType}}" id="{{id}}">
+    <div class="maxy_popup_grid_s_wrap">
+        <div class="maxy_popup_title_wrap front">
+            <div class="maxy_popup_title_left">
+                <img alt="" class="icon_graph">
+                <span>Check List / </span>
+                <span>{{type}}</span>
+            </div>
+            <div class="maxy_popup_title_right">
+                <div class="date_time_wrap">
+                    <img class="icon-start-time">
+                    <div id="dateTime">{{period}}</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="maxy_front_popup_content_wrap">
+            <div class="content_title_wrap">
+                <div class="pv_url_wrap">
+                    <img class="icon_url_b">
+                    <div class="align-center">
+                        <span class="key grey url">{{title}}</span>
+                        <div class="long-url">{{searchValue}}</div>
+                    </div>
+                </div>
+
+                <div class="title avg_wrap">
+                    <span class="key grey">Average</span>
+                    <span class="text" id="avg"></span>
+                    <span class="grey">ms</span>
+                </div>
+                <div class="align-center">
+                    <img class="icon_list_count">
+                    <span class="text" id="user"></span>
+                </div>
+
+            </div>
+            <div class="maxy_box core_vital_wrap" id="{{id}}_list"></div>
+        </div>
+    </div>
+
+    <!-- 상세 정보를 표시할 컨테이너 -->
+    <div class="maxy_popup_gray_bg_wrap popup_right_side_wrap">
+        <div class="maxy_popup_title_wrap">
+            <div class="maxy_popup_title_left">
+                <img class="img_profiling" alt="" src="">
+                <span class="bold" id="title">Profiling / </span>
+                <span>Page Loading</span>
+                <span class="status"></span>
+            </div>
+            <div class="maxy_popup_title_right">
+                <img alt="" class="btn_front_page_flow" id="btnPageFlow">
+            </div>
+        </div>
+        <div class="web_chart_wrap">
+            <div class="user_info_wrap maxy_box">
+                <div class="content_wrap">
+                    <div class="top">
+                        <div class="item">
+                            <div class="key">
+                                <img class="icon_info_p">
+                                <span>Browser</span>
+                            </div>
+                            <span class="text" id="browser"></span>
+                        </div>
+                        <div class="item">
+                            <div class="key">
+                                <img class="icon_use_type_p">
+                                <span>Use Type</span>
+                            </div>
+                            <span class="text" id="platform"></span>
+                        </div>
+                        <div class="item">
+                            <div class="key">
+                                <img class="icon_os_type_p">
+                                <span>OS</span>
+                            </div>
+                            <span class="text" id="os"></span>
+                        </div>
+                        <div class="item">
+                            <div class="key">
+                                <img class="icon_device_type_p">
+                                <span>Device</span>
+                            </div>
+                            <span class="text" id="deviceModel"></span>
+                        </div>
+                        <div class="item">
+                            <div class="key">
+                                <img class="icon_location">
+                                <span>Location</span>
+                            </div>
+                            <span class="text" id="timezone"></span>
+                        </div>
+                        <div class="item">
+                            <div class="key">
+                                <img class="icon_user_id_p">
+                                <span>User ID</span>
+                            </div>
+                            <span class="text" id="userId"></span>
+                        </div>
+                        <div class="item">
+                            <div class="key">
+                                <img class="icon_user_ip_p">
+                                <span>User IP</span>
+                            </div>
+                            <span class="text" id="ip"></span>
+                        </div>
+                    </div>
+                    <div class="bot">
+                        <div class="item all">
+                            <div class="key">
+                                <img class="icon_url">
+                                <span>Target URL</span>
+                            </div>
+                            <div class="url enable_scrollbar" id="reqUrl"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="web_vital_wrap maxy_box dv5_wrap" id="{{id}}__{{topChartId}}">
+
+            </div>
+            <div class="web_performance_wrap maxy_box" id="{{id}}__{{botChartId}}">
+
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,344 @@
+<style>
+    .content_title_wrap > .title, .ajax_dv_wrap .sub_title {
+        display: flex;
+        align-items: center;
+    }
+
+    .content_title_wrap > .title > .text, .ajax_dv_wrap .sub_title .text {
+        margin-right: 2px;
+        font-weight: bold;
+    }
+
+    .maxy_popup_gray_bg_wrap .maxy_front_popup_content_wrap {
+        display: grid;
+        height: 100% !important;
+        grid-template-rows: minmax(148px, 17%) minmax(95px, 10%) minmax(350px, 73%);
+        gap: 1em;
+        overflow: hidden;
+    }
+
+    @media screen and (max-height: 816px) {
+        .maxy_popup_gray_bg_wrap .maxy_front_popup_content_wrap {
+            grid-template-rows: minmax(118px, 12%) minmax(80px, 10%) minmax(352px, 78%);
+        }
+    }
+
+    .content_title_wrap {
+        display: flex;
+        gap: .8em;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .maxy_popup_common .user_info_wrap .content_wrap {
+        height: 100%;
+        display: grid;
+        grid-template-rows: 35% auto;
+    }
+
+    .maxy_popup_common .user_info_wrap .content_wrap .bot {
+        padding: 1em;
+    }
+
+    .maxy_popup_common .user_info_wrap .content_wrap .key {
+        grid-template-columns: 25px auto;
+        display: grid;
+        color: var(--color-subtitle-light);
+        white-space: nowrap;
+        align-items: center;
+    }
+
+    .top .text {
+        overflow: auto;
+    }
+
+    .maxy_popup_common .user_info_wrap .content_wrap .bot {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        align-items: center;
+    }
+
+    @media screen and (max-height: 816px) {
+        .maxy_popup_common .user_info_wrap .content_wrap .bot > div {
+            grid-template-columns: 39% auto !important;
+        }
+    }
+
+    .maxy_popup_common .user_info_wrap .content_wrap .bot > div {
+        display: grid;
+        grid-template-columns: 32% auto;
+        align-items: center;
+    }
+
+    .content_wrap .text {
+        overflow: auto;
+    }
+
+    .popup_right_side_wrap .core_vital_wrap {
+        display: flex;
+        gap: 1em;
+    }
+
+    .popup_right_side_wrap .core_vital_wrap > div {
+        grid-template-rows: 30% 70%;
+        display: grid;
+        padding: 1em;
+        background-color: #f7f8fa;
+        width: 100%;
+        border-radius: var(--radius);
+    }
+
+    .popup_right_side_wrap .core_vital_wrap .title {
+        display: flex;
+        color: var(--logo-purple-1);
+        align-items: center;
+    }
+
+    .popup_right_side_wrap .core_vital_wrap .value {
+        font-size: 25px;
+        display: flex;
+        font-weight: 600;
+        align-items: center;
+    }
+
+    .popup_right_side_wrap .history_wrap {
+        display: grid;
+        grid-template-rows: 15px 46px auto;
+        height: 100%;
+        min-height: 0; /* 그리드 아이템이 최소 크기를 가지지 않도록 함 */
+    }
+
+    .popup_right_side_wrap .history_wrap .content_wrap {
+        min-height: 0; /* 그리드 아이템의 최소 높이 제한 해제 */
+    }
+
+    .popup_right_side_wrap .history_wrap .content_wrap .enable_scrollbar {
+        height: 100%;
+    }
+
+    .popup_right_side_wrap .history_wrap .type_tab {
+        border-bottom: none;
+    }
+
+    .popup_right_side_wrap .history_wrap .title {
+        font-weight: bold;
+    }
+
+    .popup_right_side_wrap #performanceList .btn_yn.good {
+        background-color: var(--point-green)
+    }
+
+    .popup_right_side_wrap #performanceList .btn_yn.improve {
+        background-color: var(--point-yellow)
+    }
+
+    .popup_right_side_wrap #performanceList .btn_yn.poor {
+        background-color: var(--point-red)
+    }
+
+    .popup_right_side_wrap #performanceList .btn_yn {
+        width: 85%;
+        color: white;
+        text-align: center;
+    }
+
+    .dark_mode .popup_right_side_wrap #performanceList .btn_yn {
+        color: #101010;
+    }
+
+    .maxy_popup_gray_bg_wrap .maxy_popup_title_left .title {
+        font-weight: bold;
+    }
+
+    .content_wrap.performance,
+    .content_wrap.history {
+        width: 100%;
+        height: 100%;
+    }
+
+    #performance, #history {
+        width: 100%;
+        max-width: 100%;
+        overflow-x: auto;
+    }
+
+    #performanceList,
+    #historyList {
+        border: 1px solid #e3e5e8;
+        box-shadow: none !important;
+        width: 100%;
+        height: 100%;
+        box-sizing: border-box;
+    }
+
+    .location_select {
+        height: 25px;
+    }
+
+    .maxy_popup_gray_bg_wrap.popup_right_side_wrap .user_info_wrap {
+        border-radius: var(--radius);
+        border: 1px solid #e3e5e8;
+        user-select: none;
+    }
+
+    .dark_mode .maxy_popup_gray_bg_wrap.popup_right_side_wrap .user_info_wrap {
+        border: none;
+        background-color: var(--color-block-dark-1);
+    }
+
+    .count_wrap {
+        display: flex;
+        align-items: center;
+        gap: 1em;
+    }
+
+    .count_wrap > .title {
+        display: flex;
+        align-items: center;
+    }
+
+    .dark_mode .date_time_wrap {
+        color: white;
+    }
+</style>
+
+<div class="maxy_popup_common front {{logType}}" id="{{id}}">
+    <div class="maxy_popup_grid_s_wrap">
+        <div class="maxy_popup_title_wrap front">
+            <div class="maxy_popup_title_left">
+                <img alt="" class="icon_graph">
+                <span>Check List / </span>
+                <span>{{type}}</span>
+            </div>
+            <div class="maxy_popup_title_right">
+                <div class="date_time_wrap">
+                    <img class="icon-start-time">
+                    <div id="dateTime">{{period}}</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="maxy_front_popup_content_wrap">
+            <div class="content_title_wrap">
+                <select class="location_select" id="locationSelect"></select>
+                <div class="count_wrap">
+                    <div class="title">
+                        <span class="key grey">Average</span>
+                        <span class="text" id="avg"></span>
+                        <span class="grey">ms</span>
+                    </div>
+                    <div class="title">
+                        <img class="icon_list_count">
+                        <span class="text" id="user"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="maxy_box core_vital_wrap" id="{{id}}_list"></div>
+        </div>
+    </div>
+
+    <!-- 상세 정보를 표시할 컨테이너 - popup-analysis-ajax-api-detail.html이 로드됨 -->
+    <div class="maxy_popup_gray_bg_wrap popup_right_side_wrap">
+        <div class="maxy_popup_title_wrap front">
+            <div class="maxy_popup_title_left">
+                <img alt="" class="icon_user_profiling">
+                <span class="title" id="title">User Profiling</span>
+            </div>
+        </div>
+        <div class="maxy_front_popup_content_wrap">
+            <div class="user_info_wrap">
+                <div class="content_wrap">
+                    <div class="top">
+                        <div class="item">
+                            <div class="key">
+                                <img class="icon_url_b">
+                                <span>Access</span>
+                            </div>
+                            <span class="text" id="parentLogDate"></span>
+                        </div>
+
+                    </div>
+                    <div class="bot">
+                        <div class="item">
+                            <div class="key">
+                                <img class="icon_info_b">
+                                <span>Browser</span>
+                            </div>
+                            <span class="text" id="browser"></span>
+                        </div>
+                        <div class="item">
+                            <div class="key">
+                                <img class="icon_use_type_b">
+                                <span>Use Type</span>
+                            </div>
+                            <span class="text" id="platform"></span>
+                        </div>
+                        <div class="item">
+                            <div class="key">
+                                <img class="icon_os_type_b">
+                                <span>OS</span>
+                            </div>
+                            <span class="text" id="os"></span>
+                        </div>
+                        <div class="item">
+                            <div class="key">
+                                <img class="icon_device_type_b">
+                                <span>Device</span>
+                            </div>
+                            <span class="text" id="deviceModel"></span>
+                        </div>
+                        <div class="item">
+                            <div class="key">
+                                <img class="icon_location_b">
+                                <span>Location</span>
+                            </div>
+                            <span class="text" id="timezone"></span>
+                        </div>
+                        <div class="item">
+                            <div class="key">
+                                <img class="icon_user_id_b">
+                                <span>User ID</span>
+                            </div>
+                            <span class="text" id="userId"></span>
+                        </div>
+                        <div class="item">
+                            <div class="key">
+                                <img class="icon_user_ip_b">
+                                <span>User IP</span>
+                            </div>
+                            <span class="text" id="ip"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="core_vital_wrap">
+                <div class="vital">
+                    <div class="title">Largest Contentful Paint</div>
+                    <div class="value" id="lcp"></div>
+                </div>
+                <div class="vital">
+                    <div class="title">Interaction to Next Paint</div>
+                    <div class="value" id="inp"></div>
+                </div>
+                <div class="vital">
+                    <div class="title">Cumulative Layout Shift</div>
+                    <div class="value" id="cls"></div>
+                </div>
+            </div>
+            <div class="history_wrap">
+                <div class="title">Session History</div>
+
+                <div class="type_tab">
+                    <button class="selected tab" data-type="performance">Performance</button>
+                    <button class="tab" data-type="history">History</button>
+                </div>
+                <div class="content_wrap performance" id="performance">
+                    <div class="enable_scrollbar tabulator-no-hover" id="performanceList"></div>
+                </div>
+                <div class="content_wrap history" id="history">
+                    <div class="enable_scrollbar tabulator-no-hover" id="historyList"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

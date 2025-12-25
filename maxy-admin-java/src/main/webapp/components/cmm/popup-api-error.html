@@ -1,0 +1,144 @@
+<!-- 성능 분석 > API Error > 팝업 -->
+<style>
+    .maxy_popup_title_left .title,
+    .web_chart_wrap .detail_title {
+        font-weight: 700 !important;
+    }
+
+    .maxy_popup_title_left .mg_left {
+        margin-left: 16px;
+    }
+
+    .maxy_popup_common.api_error .maxy_popup_sub_title {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .tippy-box {
+        max-width: 350px;
+        word-wrap: break-word;
+    }
+
+    .tippy-box[data-theme~='maxy-resource-tooltip'] .maxy_tooltip_header {
+        word-break: break-all;
+    }
+
+    .graph_content_w .content_wrap img {
+        width: 15px;
+        height: 15px;
+        margin-top: 2px;
+    }
+
+    .tabulator .tabulator-header .tabulator-col .tabulator-col-content .tabulator-col-title {
+        text-overflow: inherit;
+    }
+
+    .maxy_table_wrap_v2.api_error_list {
+        height: 100% !important;
+    }
+
+    .popup_right_side_wrap {
+        width: 90%;
+        height: calc(100% - 80px);
+        top: 80px;
+        overflow-y: auto; /* 세로 스크롤을 추가하여 내용이 넘칠 경우 스크롤 가능하도록 함 */
+    }
+
+    .api_error_list span.status {
+        font-weight: 500 !important;
+    }
+
+    .api_error_list span.status {
+        height: 18px;
+        line-height: 18px;
+        font-size: 12px;
+        width: auto;
+        padding: 0 1em 0 1em;
+        text-align: center;
+        border-radius: 18px;
+        color: white;
+    }
+
+    .dark_mode .api_error_list span.status {
+        color: #101010;
+    }
+
+    .api_error_list span.status.success,
+    .api_error_list span.status.green {
+        background-color: var(--point-green);
+    }
+
+    .api_error_list span.status.error,
+    .api_error_list span.status.yellow {
+        background-color: var(--point-yellow);
+    }
+
+    .api_error_list span.status.exception {
+        background-color: var(--point-red);
+    }
+
+</style>
+<div class="maxy_popup_common" id="{{id}}__popup">
+
+    <div class="maxy_popup_grid_s_wrap">
+        <div class="maxy_popup_title_wrap">
+            <div class="maxy_popup_title_left">
+                <img alt="" class="img_profiling" src="">
+                <span class="title" id="title">Analysis/ </span>
+                <span class="popup_type">{{popupType}}</span>
+                <span class="popup_count" id="count"></span>
+                <div class="sub_title_wrap cursor_pointer">
+                     <span class="sub_title mg_left" id="pDeviceName">
+                         <i class="icon_device"></i>
+                         <span class="device_name">-</span>
+                    </span>
+                    <span class="sub_title" id="pAppVer">
+                        <i class="icon_app_ver"></i>
+                        <span>-</span>
+                    </span>
+                    <span class="sub_title" id="pOsVer">
+                        <i class="icon_os android"></i>
+                        <span>-</span>
+                    </span>
+                    <div class="sub_title" id="pComType">
+                        <i class="icon_network"></i>
+                        <span id="pComTypeTxt">-</span>
+                    </div>
+                    <div class="sub_title" id="pSimOperator">
+                        <i class="icon_simoperator"></i>
+                        <span>-</span>
+                    </div>
+                    <div class="sub_title" id="pLocation">
+                        <i class="icon_time_zone"></i>
+                        <span id="pTimeZone">-</span>
+                    </div>
+                    <div class="sub_title" id="pLogType">
+                        <i class="icon_log_type webview"></i>
+                        <span id="pLogTypeNm">-</span>
+                    </div>
+                    <div class="sub_title user_id" id="pUserId">
+                        <i class="icon_user"></i>
+                        <span id="pUserIdTxt">-</span>
+                    </div>
+                </div>
+            </div>
+            <div class="maxy_popup_title_right">
+                <img alt="" class="btn_page_flow" id="btnPageFlow">
+            </div>
+        </div>
+        <div class="maxy_popup_sub_title">
+            <div class="sub_title_left">
+                <span class="desc" id="pAliasValue"></span>
+                <span class="url" id="pReqUrl"></span>
+            </div>
+        </div>
+
+        <div class="maxy_table_wrap_v2 api_error_list" id="{{id}}__apiErrorList"></div>
+    </div>
+
+    <div class="maxy_popup_gray_bg_wrap popup_right_side_wrap">
+        <div class="right_detail" id="{{id}}__detail"></div>
+    </div>
+</div>
+
+

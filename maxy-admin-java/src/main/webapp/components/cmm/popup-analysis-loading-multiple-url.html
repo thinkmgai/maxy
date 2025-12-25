@@ -1,0 +1,131 @@
+<!--
+    종합 분석 > LoadingTime Scatter > 팝업
+    종합 분석 > LoadingTime Line Chart > 팝업
+-->
+<style>
+    .maxy_popup_title_left .title {
+        font-weight: 700 !important;
+    }
+
+    .maxy_popup_title_left .mg_left {
+        margin-left: 16px;
+    }
+
+    .maxy_popup_common .maxy_popup_title_wrap .maxy_popup_title_left > span:nth-of-type(2) {
+        overflow: auto;
+        text-overflow: initial;
+    }
+
+    .tippy-box {
+        max-width: 350px;
+        word-wrap: break-word;
+    }
+
+    .tippy-box[data-theme~='maxy-resource-tooltip'] .maxy_tooltip_header {
+        word-break: break-all;
+    }
+
+    .sub_title .icon {
+        width: 10px;
+        height: 12px;
+        display: none;
+    }
+
+    .sub_title .icon.on {
+        display: inline-block;
+    }
+
+    .tabulator .tabulator-header .tabulator-col.tabulator-sortable .tabulator-col-title {
+        padding-right: 0;
+    }
+
+    .popup_right_side_wrap {
+        width: 90%;
+        height: calc(100% - 80px);
+        top: 80px;
+    }
+
+    .event_time_line_wrap {
+        padding: 15px 20px 0 15px !important;
+    }
+
+    #loadingTimePopup__logList,
+    #loadingTimeLinePopup__logList {
+        height: 100% !important;
+    }
+    .sub_title_left .btn_alias {
+        display: none;
+    }
+</style>
+<div class="maxy_popup_common" id="{{id}}__popup">
+
+    <div class="maxy_popup_grid_s_wrap">
+        <div class="maxy_popup_title_wrap">
+            <div class="maxy_popup_title_left">
+                <img class="img_profiling" alt="" src="">
+                <span class="title" id="title">{{popupTitle}}/</span>
+                <span>{{popupType}}</span>
+                <div id="count" class="popup_count"></div>
+                <div class="sub_title_wrap cursor_pointer">
+                    <span class="sub_title mg_left" id="pDeviceName">
+                        <i class="icon_device"></i>
+                        <span class="device_name">-</span>
+                    </span>
+                    <span class="sub_title" id="pAppVer">
+                        <i class="icon_app_ver"></i>
+                        <span>-</span>
+                    </span>
+                    <span class="sub_title" id="pOsVer">
+                        <i class="icon_os android"></i>
+                        <span>-</span>
+                    </span>
+                    <span class="sub_title" id="pComType">
+                        <i class="icon_network_type"></i>
+                        <span id="pComTypeTxt">-</span>
+                    </span>
+                    <span class="sub_title" id="pSimOperator">
+                        <i class="icon_simoperator"></i>
+                        <span id="pSimOperatorNm">-</span>
+                    </span>
+                    <span class="sub_title" id="pLocation">
+                        <i class="icon_time_zone"></i>
+                        <span id="pTimeZone">-</span>
+                    </span>
+                    <span class="sub_title" id="pLogType">
+                        <i class="icon_log_type"></i>
+                        <span id="pLogTypeNm">-</span>
+                    </span>
+                    <span class="sub_title user_id" id="pUserId">
+                        <i class="icon_user"></i>
+                        <span id="pUserIdTxt">-</span>
+                    </span>
+                </div>
+
+            </div>
+
+            <div class="maxy_popup_title_right">
+                <img class="btn_page_flow" id="btnPageFlow" alt="">
+            </div>
+        </div>
+
+        <div class="maxy_popup_sub_title">
+            <div class="sub_title_left">
+                <span class="desc" id="pAliasValue"></span>
+                <span class="url" id="pReqUrl"></span>
+                <button class="btn_alias"></button>
+            </div>
+        </div>
+
+        <div class="maxy_table_wrap_v2" id="{{id}}__logList"></div>
+        <input type="hidden" id="maxIntervalTime">
+    </div>
+
+    <div class="maxy_popup_gray_bg_wrap popup_right_side_wrap">
+        <div class="web_chart_wrap">
+            <div class="web_vital_wrap maxy_box" id="{{id}}__webVitalFull"></div>
+            <div class="web_performance_wrap maxy_box" id="{{id}}__waterfall"></div>
+            <!-- Navite화면용 Event Time Line -->
+            <div class="event_time_line_wrap" id="{{id}}__eventTimeLine"></div>
+        </div>
+    </div>
+</div>

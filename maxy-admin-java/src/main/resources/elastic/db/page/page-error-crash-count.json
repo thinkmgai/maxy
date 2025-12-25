@@ -1,0 +1,64 @@
+{
+  "aggs": {
+    "res": {
+      "terms": {
+        "field": "reqUrl.raw",
+        "order": {
+          "_count": "desc"
+        },
+        "size": 10000
+      },
+      "aggs": {
+        "crashCount": {
+          "sum": {
+            "field": "crashCount"
+          }
+        },
+        "errorCount": {
+          "sum": {
+            "field": "errorCount"
+          }
+        },
+        "logType": {
+          "avg": {
+            "field": "logType"
+          }
+        }
+      }
+    }
+  },
+  "size": 0,
+  "query": {
+    "bool": {
+      "filter": [
+        {
+          "term": {
+            "packageNm": #{packageNm}
+          }
+        },
+        {
+          "term": {
+            "serverType": #{serverType}
+          }
+        },
+        #[isOsType]
+        {
+          "term": {
+            "osType": #{osType}
+      }
+        },
+        #[/isOsType]
+        {
+          "range": {
+            "pageStartTm": {
+              "from": #{fromTimestamp},
+              "include_lower": true,
+              "include_upper": true,
+              "time_zone": "Z"
+            }
+          }
+        }
+      ]
+    }
+  }
+}

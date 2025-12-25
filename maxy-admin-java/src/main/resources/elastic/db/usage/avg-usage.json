@@ -1,0 +1,3 @@
+{
+  "query" : "select avg(cpuUsage) as cpuUsage, avg(memUsage) as memUsage from maxy_app_total_log_* where packageNm = #{packageNm} and serverType = #{serverType} #[isOsType] and osType = #{osType} #[/isOsType] "
+}

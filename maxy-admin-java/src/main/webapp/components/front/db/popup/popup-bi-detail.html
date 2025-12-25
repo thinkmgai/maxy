@@ -1,0 +1,151 @@
+<!--
+    종합 분석 > Basic Information > 팝업 (Log, Error, Crash 제외한 나머지)
+-->
+<style>
+    .maxy_popup_common.bi {
+        display: block !important;
+        top: 40px;
+        right: -1300px;
+        left: auto !important;
+        width: 50%;
+        min-width: 625px;
+        min-height: auto !important;
+        height: calc(100% - 40px);
+        visibility: visible !important;
+        transition: right 0.7s ease;
+        transform: initial !important;
+    }
+
+    /* 좌측 팝업 스타일 추가 */
+    .maxy_popup_common.bi.left-side {
+        right: auto;
+        left: -1300px !important;
+        transition: left 0.8s ease;
+    }
+
+    .maxy_popup_common.bi.show {
+        right: 0;
+    }
+
+    /* 좌측 팝업 표시 애니메이션 */
+    .maxy_popup_common.bi.left-side.show {
+        left: 0 !important;
+    }
+
+    /* 좌측 팝업 숨김 애니메이션 */
+    .maxy_popup_common.bi.left-side.hidden {
+        left: -1300px !important;
+    }
+
+    .maxy_popup_common.bi.show .maxy_popup_grid_s_wrap {
+        display: grid;
+        grid-template-rows: 35px 21px 69% 20px 75px;
+    }
+
+    .maxy_popup_title_left > span:nth-child(3) {
+        color: black !important;
+    }
+
+    .maxy_popup_title_right .date_time_wrap, .maxy_popup_title_right > div > span:nth-child(2) {
+        color: var(--color-subtitle-light);
+    }
+
+    .dark_mode .maxy_popup_title_right > div > span:nth-child(2) {
+        color: var(--black-9);
+    }
+
+    #date {
+        color: var(--black-2);
+    }
+
+    .maxy_popup_common.bi .summary_wrap .content_value {
+        height: 13px !important;
+    }
+
+    .maxy_popup_common.bi .summary_wrap {
+        border-radius: var(--radius);
+        border: 1px solid var(--color-border-out-light);
+        display: grid;
+        justify-items: center;
+    }
+
+    .dark_mode .maxy_popup_common.bi .summary_wrap {
+        border: none;
+    }
+
+    .maxy_popup_common.bi .grid_content_wrap {
+        display: flex;
+        gap: .5em;
+        align-items: center;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .maxy_popup_common.bi .sub_title {
+        display: flex;
+        align-items: center;
+        gap: .5em;
+    }
+
+    .maxy_popup_common.bi .sub_title .icon-selected {
+        width: 16px;
+        height: 16px;
+        background-image: url('/images/maxy/icon-selected.svg');
+        background-repeat: no-repeat;
+        background-size: contain;
+    }
+
+    .maxy_popup_common.bi .sub_title > span {
+        font-size: 14px;
+        font-weight: 700;
+    }
+</style>
+
+<div class="maxy_popup_common bi" id="{{id}}__popUp">
+
+    <div class="maxy_popup_grid_s_wrap">
+        <div class="maxy_popup_title_wrap">
+            <div class="maxy_popup_title_left">
+                <img class="maxy_popup_analysis_icon" alt="">
+                <span>Statistics</span>
+                <span class="title">/ {{getTitle title}}</span>
+            </div>
+            <div class="maxy_popup_title_right">
+                <div class="calendar_wrap">
+                    {{#hif id '!==' 'countMau'}}
+                    <button class="btn_calendar" id=""></button>
+                    <input type="text" id="bi{{id}}Calendar" class="calendar_input">
+                    {{else}}
+                    <span id="date"></span>
+                    {{/hif}}
+                </div>
+            </div>
+        </div>
+
+        <div class="sum_data_wrap">
+            <div class="icon_user"></div>
+            <div class="data_wrap" id="allWrap">
+                {{#each allTitle}}
+                <div class="grid_column_wrap">
+                    <div class="title">{{getTitle title}}</div>
+                    <div class="" data-bitype="{{type}}">-</div>
+                </div>
+                {{/each}}
+            </div>
+        </div>
+
+        <div class="graph_wrap" id="{{id}}GraphWrap"></div>
+        <div class="sub_title">
+            <span class="icon-selected"></span>
+            <span>Selected Value</span>
+        </div>
+        <div class="summary_wrap" id="summaryWrap">
+            {{#each summaryTitle}}
+            <div class="grid_content_wrap">
+                <div class="title">{{getTitle title}}</div>
+                <div class="" data-bitype="{{type}}">-</div>
+            </div>
+            {{/each}}
+        </div>
+    </div>
+</div>

@@ -1,0 +1,75 @@
+
+{
+  "aggs": {
+    "sumCpuUsage": {
+      "sum": {
+        "field": "sumCpuUsage"
+      }
+    },
+    "sumMemUsage": {
+      "sum": {
+        "field": "sumMemUsage"
+      }
+    },
+    "logCount": {
+      "sum": {
+        "field": "logCount"
+      }
+    },
+    "errorCount": {
+      "sum": {
+        "field": "errorCount"
+      }
+    },
+    "crashCount": {
+      "sum": {
+        "field": "crashCount"
+      }
+    },
+    "loadingTime": {
+      "avg": {
+        "field": "loadingTime"
+      }
+    },
+    "responseTime": {
+      "avg": {
+        "field": "responseTime"
+      }
+    }
+  },
+  "size": 0,
+  "query": {
+    "bool": {
+      "filter": [
+        {
+          "term": {
+            "packageNm": #{packageNm}
+          }
+        },
+        {
+          "term": {
+            "serverType": #{serverType}
+          }
+        },
+        {
+          "range": {
+            "pageStartTm": {
+              "from": #{fromTimestamp},
+              "to": #{toTimestamp},
+              "include_lower": true,
+              "include_upper": true,
+              "time_zone": "Z"
+            }
+          }
+        }
+      ],
+      "must_not": [
+        {
+          "term": {
+            "logType": 1048580
+          }
+        }
+      ]
+    }
+  }
+}

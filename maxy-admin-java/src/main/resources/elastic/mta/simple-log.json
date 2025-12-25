@@ -1,0 +1,37 @@
+{
+  "size": "500",
+  "query": {
+    "bool": {
+      "filter": [
+        {
+          "term": {
+            "packageNm": #{packageNm}
+          }
+        },
+        {
+          "term": {
+            "serverType": #{serverType}
+          }
+        },
+        {
+          "range": {
+            #{sort}: {
+              "from": "now/d",
+              "to": "now",
+              "include_lower": true,
+              "include_upper": true,
+              "time_zone": "Z"
+            }
+          }
+        }
+      ]
+    }
+  },
+  "sort": [
+    {
+      #{sort}: {
+        "order": "desc"
+      }
+    }
+  ]
+}

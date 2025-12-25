@@ -1,0 +1,79 @@
+<style>
+    .area_option_box {
+        height: 22px;
+        font-size: 12px;
+    }
+
+    .dark_mode .area_option_box {
+        background-color: #333436;
+        border: none;
+        color: white;
+    }
+
+    .dark_mode .highcharts-map-navigation.highcharts-zoom-in > path:nth-child(2),
+    .dark_mode .highcharts-map-navigation.highcharts-zoom-out > path:nth-child(2) {
+        fill: #222222;
+        stroke: #444444;
+    }
+
+    .area_tooltip::before {
+        content: "";
+        display: inline-block;
+        width: 5px;
+        height: 5px;
+        border-radius: 5px;
+        margin-right: 0.5em;
+    }
+
+    .area_tooltip.dau::before, .area_tooltip.user::before  {
+        background-color:  #0829FF;
+    }
+
+    .area_tooltip.error::before {
+        background-color:  #FFAE00;
+    }
+
+    .area_tooltip.crash::before {
+        background-color: #FF4646;
+    }
+
+    .area_tooltip.dau, .area_tooltip.user {
+        color: #0829FF;
+    }
+
+    .area_tooltip.error {
+        color: #FFAE00;
+    }
+
+    .area_tooltip.crash {
+        color: #FF4646;
+    }
+
+    .dark_mode .highcharts-series.highcharts-series-0.highcharts-map-series.highcharts-color-0.highcharts-tracker path {
+        opacity: 0.5;
+        stroke: #a2a2a2;
+    }
+
+    .dark_mode .highcharts-legend-item.highcharts-undefined-series.highcharts-color-undefined .highcharts-grid.highcharts-coloraxis-grid > path:nth-last-child(1) {
+        stroke: none;
+    }
+</style>
+<div class="maxy_component_wrap" id="{{id}}__chartWrap">
+    <div class="maxy_component_header space_between">
+        <div class="header_title">
+            <h4>{{title}}</h4>
+            <img class="ic_question"
+                 src="/images/maxy/ic-question-grey-blue.svg"
+                 alt="?"
+            >
+        </div>
+        <div>
+            <select class="area_option_box" id="areaOption">
+                <option value="User" data-type="dau">User</option>
+                <option value="Error" data-type="error">Error</option>
+                <option value="Crash" data-type="crash">Crash</option>
+            </select>
+        </div>
+    </div>
+    <div class="maxy_component_item" id="{{id}}__chart"></div>
+</div>

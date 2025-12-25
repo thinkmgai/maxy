@@ -1,0 +1,59 @@
+{
+  "size": 1,
+  "query": {
+    "bool": {
+      "filter": [
+        {
+          "term": {
+            "packageNm": #{packageNm}
+          }
+        },
+        {
+          "term": {
+            "serverType": #{serverType}
+          }
+        },
+        #[isOsType]
+        {
+          "term": {
+            "osType": #{osType}
+          }
+        },
+        #[/isOsType]
+        {
+          "range": {
+            "logTm": {
+              "gte": #{from},
+              "lte": #{to},
+              "time_zone": "Z"
+            }
+          }
+        },
+        {
+          "term": {
+            "deviceId.raw": #{deviceId}
+          }
+        }
+      ]
+    }
+  },
+  "sort": [
+    {
+      "logTm": {
+        "order": "asc"
+      }
+    }
+  ],
+  "_source": [
+    "deviceModel",
+    "osType",
+    "osVer",
+    "appVer",
+    "comSensitivity",
+    "comType",
+    "simOperatorNm",
+    "reqUrl",
+    "timezone",
+    "logType"
+  ]
+}

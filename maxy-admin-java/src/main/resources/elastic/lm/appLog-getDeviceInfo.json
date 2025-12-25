@@ -1,0 +1,41 @@
+{
+  "size" : 1,
+  "query" : {
+    "bool" : {
+      "must" : [
+        {
+          "term": {
+            "logTm": {
+              "value" : #{logTm}
+            }
+          }
+        },
+        {
+          "term": {
+            "deviceId": #{deviceId}
+          }
+        },
+        {
+          "term": {
+            "logType": #{logType}
+          }
+        }
+        #[isMemUsage]
+        ,{
+          "term": {
+            "memUsage": #{memUsage}
+          }
+        }
+        #[/isMemUsage]
+        #[isOsType]
+      ,{
+          "term": {
+            "osType": #{osType}
+      }
+        }
+        #[/isOsType]
+      ]
+    }
+  },
+  "_source" : true
+}

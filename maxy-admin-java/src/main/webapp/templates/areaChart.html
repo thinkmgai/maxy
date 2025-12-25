@@ -1,0 +1,43 @@
+<table class="barchart-table">
+    {{#datas}}
+    <tr>
+        <td class="separator">
+            <div class="title-wrapper">
+                <div class="title-left">
+                    {{leftTitle}}
+                </div>
+                <div class="title-separator">
+                    <div></div>
+                </div>
+                <div class="title-right">
+                    {{rightTitle}}
+                </div>
+            </div>
+        </td>
+        <td class="chart-td">
+            <div class="area-bar-chart">
+                <div
+                    class="bar bar-1"
+                    style="width: {{makePercent leftCnt totalCnt}};"
+                    title="{{leftTitle}}: {{leftCnt}}"
+                >
+                    <div class="bar-text icon">
+                        <span>{{leftTitle}}:&nbsp;</span>
+                        <span>{{leftCnt}}</span>
+                    </div>
+                </div>
+                <div
+                    class="bar bar-2"
+                    style="width: {{makePercent rightCnt totalCnt}};"
+                    title="{{rightTitle}}: {{rightCnt}}"
+                >
+                    <div class="bar-text icon">
+                        <span>{{rightTitle}}:&nbsp;</span>
+                        <span>{{rightCnt}}</span>
+                    </div>
+                </div>
+            </div>
+        </td>
+    </tr>
+    {{/datas}}
+</table>

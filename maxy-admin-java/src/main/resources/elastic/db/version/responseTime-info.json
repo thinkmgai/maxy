@@ -1,0 +1,62 @@
+{
+  "track_total_hits": true,
+  "size": 0,
+  "aggs": {
+    "responseTime": {
+      "avg": {
+        "field": "intervaltime"
+      }
+    }
+  },
+  "query": {
+    "bool": {
+      "filter": [
+        {
+          "term": {
+            "packageNm": #{packageNm}
+          }
+        },
+        {
+          "term": {
+            "serverType": #{serverType}
+          }
+        },
+        {
+          "terms": {
+            "logType": ["524291", "8388612", "8388613", "524292"]
+          }
+        },
+        #[isOsType]
+        {
+          "term": {
+            "osType": #{osType}
+          }
+        },
+        #[/isOsType]
+        #[isAppVer]
+        {
+          "term": {
+            "appVer": #{appVer}
+          }
+        },
+        #[/isAppVer]
+        {
+          "range": {
+            "intervaltime": {
+              "gte": 0
+            }
+          }
+        },
+        {
+          "range": {
+            "logTm": {
+              "gte": #{from},
+              "lte": #{to},
+              "time_zone": "Z"
+            }
+          }
+        }
+      ]
+    }
+  }
+}

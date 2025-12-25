@@ -1,0 +1,62 @@
+{
+  "size": 1000,
+  "query": {
+    "bool": {
+      "filter": [
+        {
+          "term": {
+            "packageNm": #{packageNm}
+          }
+        },
+        {
+          "term": {
+            "serverType": #{serverType}
+          }
+        },
+        #[isOsType]
+        {
+          "term": {
+            "osType": #{osType}
+          }
+        },
+        #[/isOsType]
+        {
+          "range": {
+            "intervaltime": {
+              "gte": 0
+            }
+          }
+        },
+        {
+          "range": {
+            "logTm": {
+              "gte": #{from},
+              "lte": #{to},
+              "time_zone": "Z"
+            }
+          }
+        }
+      ]
+    }
+  },
+  "_source": [
+    "deviceId",
+    "userId",
+    "clientNo",
+    "osType",
+    "osVer",
+    "appVer",
+    "appBuildNum",
+    "deviceModel",
+    "simOperatorNm",
+    "comSensitivity",
+    "comType",
+    "logType",
+    "timezone",
+    "reqUrl",
+    "logTm",
+    "intervaltime",
+    "loginYn",
+    "vipYn"
+  ]
+}

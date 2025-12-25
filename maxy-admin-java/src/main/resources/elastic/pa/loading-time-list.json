@@ -1,0 +1,106 @@
+{
+  "query": {
+    "bool": {
+      "filter": [
+        {
+          "term": {
+            "packageNm": #{packageNm}
+          }
+        },
+        {
+          "term": {
+            "serverType": #{serverType}
+          }
+        },
+        #[isOsType]
+        {
+          "term": {
+            "osType": #{osType}
+          }
+        },
+        #[/isOsType]
+        {
+          "bool": {
+            "should": [
+              {
+                "bool": {
+                  "filter": [
+                    {
+                      "term": {
+                        "logType": {
+                          "value": 131073
+                        }
+                      }
+                    },
+                    {
+                      "term": {
+                        "wtfFlag": {
+                          "value": "Y"
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "bool": {
+                  "filter": [
+                    {
+                      "term": {
+                        "logType": {
+                          "value": 1048592
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            ],
+            "minimum_should_match": "1"
+          }
+        },
+        {
+          "range": {
+            "loadingTime": {
+              "gte": 0
+            }
+          }
+        },
+        {
+          "range": {
+            "pageEndTm": {
+              "gte": #{from},
+              "lte": #{to},
+              "time_zone": "Z"
+            }
+          }
+        }
+      ]
+    }
+  },
+  "_source": [
+    "deviceId",
+    "userId",
+    "clientNo",
+    "osType",
+    "osVer",
+    "appVer",
+    "appBuildNum",
+    "deviceModel",
+    "simOperatorNm",
+    "comType",
+    "logType",
+    "timezone",
+    "reqUrl",
+    "pageStartTm",
+    "pageEndTm",
+    "intervaltime",
+    "avgComSensitivity",
+    "loginYn",
+    "vipYn",
+    "loadingTime",
+    "wtfFlag",
+    "logDate"
+  ],
+  "size": 1000
+}

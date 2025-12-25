@@ -1,0 +1,30 @@
+{{#datas}}
+<div class="page">
+    <div class="page_header border_radius">
+        <img alt="" src="/images/maxy/icon-ua-wt.svg">
+        <span class="alias_value">{{setHeader appPageNm aliasValue}}</span>
+    </div>
+    <div class="page_content">
+        <li>
+            <span class="content_name" data-t="common.text.intervalTime"></span>
+            {{setTime intervaltime}}
+        </li>
+        <li>
+            <span class="content_name" data-t="common.text.eventCount"></span>
+            {{eventCount}}
+        </li>
+        <li>
+            <span class="content_name" data-t="common.text.eventLoadTm"></span>
+            {{setTime eventIntervaltime}}
+        </li>
+        <li>
+            <span class="content_name" data-t="common.text.cpuUsage"></span>
+            {{maxCpuUsage}}%
+        </li>
+        <li>
+            <span class="content_name" data-t="common.text.memoryUsage"></span>
+            {{memory maxMemUsage}}
+        </li>
+    </div>
+</div>
+{{/datas}}

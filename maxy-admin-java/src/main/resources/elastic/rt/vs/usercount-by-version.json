@@ -1,0 +1,55 @@
+{
+  "aggs": {
+    "res": {
+      "terms": {
+        "field": "appVer",
+        "order": {
+          "userCount": "desc"
+        },
+        "size": 5
+      },
+      "aggs": {
+        "userCount": {
+          "cardinality": {
+            "field": "deviceId.raw"
+          }
+        }
+      }
+    }
+  },
+  "size": 0,
+  "query": {
+    "bool": {
+      "filter": [
+        {
+          "term": {
+            "packageNm": #{packageNm}
+          }
+        },
+        {
+          "term": {
+            "serverType": #{serverType}
+          }
+        },
+        #[isAppVer]
+        {
+          "term": {
+            "appVer": #{appVer}
+          }
+        },
+        #[/isAppVer]
+        {
+          "range": {
+            "appStartTm": {
+              "from": #{fromTimestamp},
+              "to": #{toTimestamp},
+              "include_lower": true,
+              "include_upper": true,
+              "time_zone": "Z"
+            }
+          }
+        }
+      ]
+    }
+  }
+}

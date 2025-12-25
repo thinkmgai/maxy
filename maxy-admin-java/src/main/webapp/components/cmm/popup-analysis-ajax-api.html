@@ -1,0 +1,109 @@
+<!-- 성능분석 > AJAX 분석 > API 리스트 상세 팝업 -->
+<style>
+    .maxy_popup_title_left .title {
+        font-weight: 700 !important;
+    }
+
+    .popup_right_side_wrap {
+        width: 90%;
+        height: calc(100% - 80px);
+        top: 80px;
+        overflow-y: auto; /* 세로 스크롤을 추가하여 내용이 넘칠 경우 스크롤 가능하도록 함 */
+    }
+
+
+    #ajaxPageAnalysis__logList {
+        height: 100% !important;
+    }
+
+    #ajaxPageAnalysis__logList span.status {
+        height: 18px;
+        width: 65px;
+        line-height: 18px;
+        font-size: 12px;
+        padding-left: .5em;
+        padding-right: .5em;
+        text-align: center;
+        border-radius: 18px;
+        color: white;
+    }
+
+    .dark_mode #ajaxPageAnalysis__logList span.status {
+        color: #101010;
+    }
+
+    .maxy_popup_common.ajax_api span.status.success {
+        background-color: var(--point-green);
+    }
+
+    .maxy_popup_common.ajax_api span.status.error {
+        background-color: var(--point-yellow);
+    }
+
+    .maxy_popup_common.ajax_api span.status.exception {
+        background-color: var(--point-red);
+    }
+</style>
+
+<div class="maxy_popup_common ajax_api" id="{{id}}__popup">
+    <div class="maxy_popup_grid_s_wrap">
+        <div class="maxy_popup_title_wrap">
+            <div class="maxy_popup_title_left">
+                <img alt="" class="img_profiling" src="">
+                <span class="title" id="title">Profiling/</span>
+                <span class="popup_type">{{popupType}}</span>
+                <span class="popup_count" id="count"></span>
+                <div class="sub_title_wrap cursor_pointer">
+                     <span class="sub_title mg_left" id="pDeviceName">
+                         <i class="icon_device"></i>
+                         <span class="device_name" id="pDeviceId"></span>
+                    </span>
+                    <span class="sub_title" id="pAppVer">
+                        <i class="icon_app_ver"></i>
+                        <span></span>
+                    </span>
+                    <span class="sub_title" id="pOsVer">
+                        <i class="icon_os android"></i>
+                        <span></span>
+                    </span>
+                    <div class="sub_title" id="pComType">
+                        <i class="icon_network_type"></i>
+                        <span id="pComTypeTxt"></span>
+                    </div>
+                    <div class="sub_title" id="pSimOperator">
+                        <i class="icon_simoperator"></i>
+                        <span id="pSimOperatorNm"></span>
+                    </div>
+                    <div class="sub_title" id="pLocation">
+                        <i class="icon_time_zone"></i>
+                        <span id="pTimeZone"></span>
+                    </div>
+                    <div class="sub_title" id="pLogType">
+                        <i class="icon_log_type webview"></i>
+                        <span id="pLogTypeNm"></span>
+                    </div>
+                    <div class="sub_title user_id" id="pUserId">
+                        <i class="icon_user"></i>
+                        <span id="pUserIdTxt"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="maxy_popup_title_right">
+                <img alt="" class="btn_page_flow" id="btnPageFlow">
+            </div>
+        </div>
+        <div class="maxy_popup_sub_title">
+            <div class="sub_title_left">
+                <span class="desc" id="pAliasValue"></span>
+                <span class="url" id="pReqUrl"></span>
+            </div>
+        </div>
+
+        <div class="maxy_table_wrap_v2" id="{{id}}__logList"></div>
+    </div>
+
+    <!-- 상세 정보를 표시할 컨테이너 - popup-analysis-ajax-api-detail.html이 로드됨 -->
+    <div class="maxy_popup_gray_bg_wrap popup_right_side_wrap">
+        <div class="right_detail" id="{{id}}__detail"></div>
+    </div>
+</div>

@@ -1,0 +1,56 @@
+<style>
+    .version_conversion_tooltip_name {
+        line-height: 16px;
+        font-size: 12px;
+        font-weight: 700;
+    }
+
+    .version_conversion_tooltip {
+        line-height: 15px;
+        font-family: "Pretendard", sans-serif;
+        font-size: 11px;
+    }
+
+    #maxyComponent__VERSION_CONVERSION .highcharts-text-outline{
+        font-size: 1em;
+    }
+
+    .dark_mode #maxyComponent__VERSION_CONVERSION .highcharts-text-outline{
+        stroke: black !important;
+    }
+
+    #maxyComponent__VERSION_CONVERSION .highcharts-series > path{
+        stroke: none;
+    }
+</style>
+<div class="maxy_component_wrap">
+    <div class="maxy_component_header space_between">
+        <div class="header_title flex_column">
+            <div class="header_title space_between">
+                <h4 id="analysisTitle">{{fmtTitle}}</h4>
+                <img class="ic_question"
+                     alt="?"
+                >
+            </div>
+            <div class="maxy_component_tab">
+                <span class="btn_tab on" data-tab="versionConversionAndroid">
+                    <img class="android_img" src="/images/maxy/icon-android-light-grey.svg" alt="">
+                    <span>Android</span>
+                </span>
+                <span class="btn_tab" data-tab="versionConversioniOS">
+                    <img class="ios_img" src="/images/maxy/icon-ios-light-grey.svg" alt="">
+                        <span>iOS</span>
+                </span>
+            </div>
+        </div>
+        <div class="maxy_component_btn_wrap">
+            <button class="maxy_component_btn">ALL</button>
+        </div>
+    </div>
+    <div class="maxy_component_item_wrap" id="versionConversionAndroid">
+        <div class="maxy_component_item" id="column_Android__chart"></div>
+    </div>
+    <div class="maxy_component_item_wrap hidden" id="versionConversioniOS">
+        <div class="maxy_component_item" id="column_iOS__chart"></div>
+    </div>
+</div>

@@ -1,0 +1,295 @@
+<style>
+    .maxy_component_item.page_view_equalizer {
+        height: 32.5vh;
+    }
+
+    .page_view_equalizer_wrap {
+        display: flex;
+        gap: 6px;
+        flex-direction: column-reverse;
+    }
+
+    .page_view_equalizer .title {
+        height: 15px;
+        text-align: center;
+        font-size: 12px;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+    }
+
+    .page_view_equalizer .pb_stack_wrap {
+        display: flex;
+        gap: 2px;
+        flex-direction: column-reverse;
+        align-items: center;
+    }
+
+    .page_view_equalizer .stack {
+        min-width: 3.7vw;
+        width: 3.8vw;
+        min-height: 6px;
+        height: 0.8vh;
+        position: relative;
+    }
+
+    .stack.delay-0 { animation-delay: 0s !important; }
+    .stack.delay-1 { animation-delay: 0.2s !important; }
+    .stack.delay-2 { animation-delay: 0.4s !important; }
+    .stack.delay-3 { animation-delay: 0.6s !important; }
+    .stack.delay-4 { animation-delay: 0.8s !important; }
+    .stack.delay-5 { animation-delay: 1s !important; }
+    .stack.delay-6 { animation-delay: 1.2s !important; }
+    .stack.delay-7 { animation-delay: 1.4s !important; }
+    .stack.delay-8 { animation-delay: 1.6s !important; }
+    .stack.delay-9 { animation-delay: 1.8s !important; }
+
+    .page_view_equalizer .webview .stack {
+        animation: webViewColorChange 2s infinite;
+    }
+
+    .dark_mode .page_view_equalizer .webview .stack {
+        animation: darkWebViewColorChange 2s infinite;
+    }
+
+    @keyframes webViewColorChange {
+        0% {
+            background-color: #20517e;
+        }
+        25% {
+            background-color: #29679F;
+        }
+        50% {
+            background-color: #5B9BD5;
+        }
+        100% {
+            background-color: #BCD6EE;
+        }
+    }
+
+    @keyframes darkWebViewColorChange {
+        0% {
+            background-color: rgba(108, 202, 255, 1)
+        }
+        25% {
+            background-color: rgba(108, 202, 255, 0.76)
+        }
+        50% {
+            background-color: rgba(108, 202, 255, 0.52)
+        }
+        100% {
+            background-color: rgba(108, 202, 255, 0.28);
+        }
+    }
+
+    .page_view_equalizer .native .stack {
+        animation: nativeColorChange 2s infinite;
+    }
+
+    .dark_mode .page_view_equalizer .native .stack {
+        animation: darkNativeColorChange 2s infinite;
+    }
+
+    @keyframes darkNativeColorChange {
+        0% {
+            background-color: rgba(114, 119, 255, 1);
+        }
+        25% {
+            background-color: rgba(114, 119, 255, 0.76);
+        }
+        50% {
+            background-color: rgba(114, 119, 255, 0.6);
+        }
+        100% {
+            background-color: rgba(114, 119, 255, 0.36)
+        }
+    }
+
+    @keyframes nativeColorChange {
+        0% {
+            background-color: rgba(114, 119, 255, 0.92);
+        }
+        25% {
+            background-color: rgba(114, 119, 255, 0.76);
+        }
+        50% {
+            background-color: rgba(114, 119, 255, 0.6);
+        }
+        100% {
+            background-color: rgba(114, 119, 255, 0.36)
+        }
+    }
+
+    .pb_stack_wrap .stack .pv_count {
+        font-size: 11px;
+        position: absolute;
+        transform: translateX(-50%);
+        top: -15px;
+        left: 50%;
+    }
+
+    .webview .stack:nth-child(1) {
+        background-color: #20517E;
+    }
+
+    .webview .stack:nth-child(2) {
+        background-color: #29679F;
+    }
+
+    .webview .stack:nth-child(n+3):nth-child(-n+4) {
+        background-color: #5B9BD5;
+    }
+
+    .webview .stack:nth-child(n+5):nth-child(-n+6){
+        background-color: #9BC2E5;
+    }
+
+    .webview .stack:nth-child(n+7):nth-child(-n+8) {
+        background-color: #BCD6EE;
+    }
+
+    .webview .stack:nth-child(n+9):nth-child(-n+10) {
+        background-color: #D7E7F5;
+    }
+
+    .dark_mode .native .stack:nth-child(1) {
+        background-color: rgba(114, 119, 255, 1)
+    }
+
+    .dark_mode .native .stack:nth-child(2) {
+        background-color: rgba(114, 119, 255, 0.92)
+    }
+
+    .dark_mode .native .stack:nth-child(3) {
+        background-color: rgba(114, 119, 255, 0.84)
+    }
+
+    .dark_mode .native .stack:nth-child(4) {
+        background-color: rgba(114, 119, 255, 0.76)
+    }
+
+    .dark_mode .native .stack:nth-child(5) {
+        background-color: rgba(114, 119, 255, 0.68)
+    }
+
+    .dark_mode .native .stack:nth-child(6) {
+        background-color: rgba(114, 119, 255, 0.6)
+    }
+
+    .dark_mode .native .stack:nth-child(7) {
+        background-color: rgba(114, 119, 255, 0.52)
+    }
+
+    .dark_mode .native .stack:nth-child(8) {
+        background-color: rgba(114, 119, 255, 0.44)
+    }
+
+    .dark_mode .native .stack:nth-child(9) {
+        background-color: rgba(114, 119, 255, 0.36)
+    }
+
+    .dark_mode .native .stack:nth-child(10) {
+        background-color: rgba(114, 119, 255, 0.28)
+    }
+
+    /*!* dark mode *!*/
+    .native .stack {
+        background-color: #7277ff;
+    }
+
+    .native .stack:nth-child(2) {
+        background-color: rgba(114, 119, 255, 0.92);
+    }
+
+    .native .stack:nth-child(3) {
+        background-color: rgba(114, 119, 255, 0.84);
+    }
+
+    .native .stack:nth-child(4) {
+        background-color: rgba(114, 119, 255, 0.76);
+    }
+
+    .native .stack:nth-child(5), .dark_mode .native .stack:nth-child(5) {
+        background-color: rgba(114, 119, 255, 0.68);
+    }
+
+    .native .stack:nth-child(6), .dark_mode .native .stack:nth-child(6) {
+        background-color: rgba(114, 119, 255, 0.6);
+    }
+
+    .native .stack:nth-child(7), .dark_mode .native .stack:nth-child(7) {
+        background-color: rgba(114, 119, 255, 0.52);
+    }
+
+    .native .stack:nth-child(8), .dark_mode .native .stack:nth-child(8) {
+        background-color: rgba(114, 119, 255, 0.44);
+    }
+
+    .native .stack:nth-child(9), .dark_mode .native .stack:nth-child(9) {
+        background-color: rgba(114, 119, 255, 0.36);
+    }
+
+    .native .stack:nth-child(10), .dark_mode .native .stack:nth-child(10) {
+        background-color: rgba(114, 119, 255, 0.28);
+    }
+
+    .dark_mode .webview .stack:nth-child(1) {
+        background-color: rgba(108, 202, 255, 1);
+    }
+
+    .dark_mode .webview .stack:nth-child(2) {
+        background-color: rgba(108, 202, 255, 0.92);
+    }
+
+    .dark_mode .webview .stack:nth-child(3) {
+        background-color: rgba(108, 202, 255, 0.84);
+    }
+
+    .dark_mode .webview .stack:nth-child(4) {
+        background-color: rgba(108, 202, 255, 0.76);
+    }
+
+    .dark_mode .webview .stack:nth-child(5) {
+        background-color: rgba(108, 202, 255, 0.68);
+    }
+
+    .dark_mode .webview .stack:nth-child(6) {
+        background-color: rgba(108, 202, 255, 0.6);
+    }
+
+    .dark_mode .webview .stack:nth-child(7) {
+        background-color: rgba(108, 202, 255, 0.52);
+    }
+
+    .dark_mode .webview .stack:nth-child(8) {
+        /*.dark_mode .stack:nth-child(8) {*/
+        background-color: rgba(108, 202, 255, 0.44);
+    }
+
+    .dark_mode .webview .stack:nth-child(9) {
+        /*.dark_mode .stack:nth-child(9) {*/
+        background-color: rgba(108, 202, 255, 0.36);
+    }
+
+    .dark_mode .webview .stack:nth-child(10) {
+        /*.dark_mode .stack:nth-child(10) {*/
+        background-color: rgba(108, 202, 255, 0.28);
+    }
+
+    .btn_page_view_equalizer_all {
+        display: none;
+    }
+</style>
+<div class="maxy_component_wrap">
+    <div class="maxy_component_header space_between">
+        <div class="header_title">
+            <h4>{{fmtTitle}}</h4>
+            <img alt="?"
+                 class="ic_question">
+        </div>
+        <div class="maxy_component_btn_wrap">
+            <button class="maxy_component_btn btn_page_view_equalizer_all" id="{{id}}Btn__all">ALL</button>
+        </div>
+    </div>
+    <div class="maxy_component_item page_view_equalizer no_data" id="{{id}}__chart"></div>
+</div>

@@ -1,0 +1,284 @@
+.version-comparison-widget {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  padding: 5px;
+  box-sizing: border-box;
+  background: linear-gradient(152deg, rgba(244, 249, 255, 0.92) 0%, #ffffff 60%);
+  border-radius: var(--radius);
+  box-shadow: 0 1px 4px rgba(15, 23, 42, 0.08);
+  gap: 8px;
+  position: relative;
+}
+
+.version-comparison-widget__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2px;
+  margin-bottom: 0;
+}
+
+.version-comparison-widget__title {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.version-comparison-widget__title h4 {
+  margin: 0;
+  font-size: 12px;
+  line-height: 21px;
+  font-weight: 500;
+  color: #3d3d3d;
+}
+
+.version-comparison-widget__help {
+  width: 12px;
+  height: 14px;
+}
+
+.version-comparison-widget__actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  color: rgba(71, 85, 105, 0.75);
+}
+
+.version-comparison-widget__timestamp {
+  font-size: 11px;
+  color: rgba(71, 85, 105, 0.75);
+}
+
+.version-comparison-widget__all-btn {
+  width: 30px;
+  height: 18px;
+  background-color: var(--black-8);
+  border: 0;
+  border-radius: 3px;
+  margin-right: 5px;
+  font-size: 9px;
+  color: #3d3d3d;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.version-comparison-widget__all-btn:hover:enabled {
+  background-color: #e6ebf5;
+}
+
+.version-comparison-widget__all-btn:disabled {
+  background: transparent;
+  color: rgba(148, 163, 184, 0.9);
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.version-comparison-widget__body {
+  flex: 1;
+  min-height: 220px;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.78);
+  border-radius: 10px;
+  position: relative;
+  padding: 6px;
+}
+
+.version-comparison-widget__chart {
+  width: 100%;
+  height: 100%;
+  flex: 1;
+  min-height: 0;
+}
+
+.version-comparison-widget__chart:focus,
+.version-comparison-widget__chart :focus {
+  outline: none;
+  box-shadow: none;
+}
+
+.version-comparison-widget__legend {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 6px;
+}
+
+.version-comparison-widget__legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  color: rgba(30, 41, 59, 0.85);
+}
+
+.version-comparison-widget__legend-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.version-comparison-widget__legend-dot--primary {
+  background: rgba(37, 99, 235, 0.7);
+}
+
+.version-comparison-widget__legend-dot--secondary {
+  background: rgba(249, 115, 22, 0.78);
+}
+
+.version-comparison-widget__status {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 12px;
+  width: 100%;
+  font-size: 13px;
+  line-height: 1.4;
+  color: rgba(71, 85, 105, 0.86);
+}
+
+.version-comparison-widget__footer-error {
+  margin-top: 4px;
+  font-size: 12px;
+  color: #dc2626;
+}
+
+.version-comparison-widget__resolving-indicator {
+  position: absolute;
+  bottom: 10px;
+  right: 14px;
+  font-size: 11px;
+  color: rgba(100, 116, 139, 0.85);
+}
+
+.version-comparison-tooltip {
+  background: rgba(15, 23, 42, 0.92);
+  color: #f8fafc;
+  padding: 10px 12px;
+  border-radius: 8px;
+  box-shadow: 0 6px 18px rgba(15, 23, 42, 0.35);
+  min-width: 180px;
+}
+
+.version-comparison-tooltip__title {
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.version-comparison-tooltip__list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.version-comparison-tooltip__item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+}
+
+.version-comparison-tooltip__indicator {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.version-comparison-tooltip__label {
+  flex: 1;
+}
+
+.version-comparison-tooltip__value {
+  font-variant-numeric: tabular-nums;
+}
+
+.version-comparison-tooltip__percent {
+  color: rgba(226, 232, 240, 0.7);
+  font-size: 11px;
+}
+
+.version-comparison-widget--dark {
+  background: #000000;
+  box-shadow: 0 12px 34px rgba(2, 6, 23, 0.5);
+  color: #e2e8f0;
+}
+
+.version-comparison-widget--dark .version-comparison-widget__body {
+  background: #000000;
+}
+
+.version-comparison-widget--dark .version-comparison-widget__title h4 {
+  color: #f8fafc;
+}
+
+.version-comparison-widget--dark .version-comparison-widget__actions,
+.version-comparison-widget--dark .version-comparison-widget__timestamp {
+  color: #e2e8f0;
+}
+
+.version-comparison-widget--dark .version-comparison-widget__status {
+  background: #000000;
+  border-color: rgba(59, 130, 246, 0.26);
+  color: #dbeafe;
+}
+
+.version-comparison-widget--dark .version-comparison-widget__chart {
+  background: #000000;
+  border: 1px solid rgba(59, 130, 246, 0.24);
+  box-shadow: inset 0 1px 1px rgba(2, 6, 23, 0.4);
+}
+
+.version-comparison-widget--dark .version-comparison-widget__legend-item {
+  color: #f1f5f9;
+}
+
+.version-comparison-widget--dark .version-comparison-widget__table thead {
+  background: rgba(30, 41, 59, 0.62);
+  color: #f1f5f9;
+}
+
+.version-comparison-widget--dark .version-comparison-widget__table tbody tr:nth-child(odd) {
+  background: rgba(30, 41, 59, 0.45);
+}
+
+.version-comparison-widget--dark .version-comparison-widget__table td,
+.version-comparison-widget--dark .version-comparison-widget__table th {
+  border-bottom-color: rgba(51, 65, 85, 0.5);
+  color: #cbd5f5;
+}
+
+.version-comparison-widget--dark .version-comparison-widget__all-btn {
+  background-color: #313233;
+  color: #f8fafc;
+}
+
+.version-comparison-widget--dark .version-comparison-widget__all-btn:hover:enabled {
+  background-color: #3f4142;
+  color: #f8fafc;
+}
+
+.version-comparison-widget--dark .version-comparison-widget__resolving-indicator {
+  color: #e2e8f0;
+}
+
+.version-comparison-widget--dark .version-comparison-tooltip {
+  background: rgba(15, 23, 42, 0.94);
+  border-color: rgba(59, 130, 246, 0.3);
+  box-shadow: 0 18px 34px rgba(2, 6, 23, 0.55);
+  color: #f8fafc;
+}
+
+.version-comparison-widget--dark .version-comparison-tooltip__percent {
+  color: rgba(165, 180, 197, 0.9);
+}

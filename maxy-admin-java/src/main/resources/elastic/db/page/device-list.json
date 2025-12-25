@@ -1,0 +1,88 @@
+{
+  "size": 10000,
+  "_source": ["deviceId", "pageStartTm", "pageEndTm"],
+  "query": {
+    "bool": {
+      "filter": [
+        {
+          "term": {
+            "packageNm": #{packageNm}
+          }
+        },
+        {
+          "term": {
+            "serverType": #{serverType}
+          }
+        },
+        #[isOsType]
+        {
+          "term": {
+            "osType": #{osType}
+      }
+        },
+        #[/isOsType]
+        {
+          "term": {
+            "reqUrl.raw": #{reqUrl}
+          }
+        },
+        #[hasType]
+        {
+          "range": {
+            #{type}: {
+              "gt": 0
+            }
+          }
+        },
+        #[/hasType]
+        {
+          "range": {
+            "pageStartTm": {
+              "from": #{from},
+              "include_lower": true,
+              "include_upper": true,
+              "time_zone": "Z"
+            }
+          }
+        }
+      ],
+      #[isTotal]
+      "should": [
+        {
+          "range": {
+            "errorCount": {
+              "gt": 0
+            }
+          }
+        },
+        {
+          "range": {
+            "crashCount": {
+              "gt": 0
+            }
+          }
+        }
+      ],
+      #[/isTotal]
+      "must_not": [
+        {
+          "term": {
+            "logType": 1048580
+          }
+        },
+        {
+          "term": {
+            "reqUrl": ""
+          }
+        }
+      ]
+    }
+  },
+  "sort": [
+    {
+      "pageStartTm": {
+        "order": "desc"
+      }
+    }
+  ]
+}

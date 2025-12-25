@@ -1,0 +1,53 @@
+{
+  "aggs": {
+    "deleteCount": {
+      "date_histogram": {
+        "field": "appStartTm",
+        "interval": "day",
+        "time_zone": "Asia/Seoul",
+        "format": "yyyy-MM-dd",
+        "extended_bounds": {
+          "min": #{searchToDay},
+          "max": #{searchFromDay}
+        }
+      }
+    }
+  },
+  "query": {
+    "bool": {
+      "filter": [
+        {
+          "term": {
+            "appDeleteYn": "Y"
+          }
+        },
+        {
+          "term": {
+            "packageNm": #{packageNm}
+          }
+        },
+        {
+          "term": {
+            "serverType": #{serverType}
+          }
+        },
+        #[isAppVer]
+        {
+          "term": {
+            "appVer": #{appVer}
+          }
+        },
+        #[/isAppVer]
+        {
+          "range": {
+            "appStartTm": {
+              "gte": #{searchToDt},
+              "lte": #{searchFromDt},
+              "format": "epoch_millis"
+            }
+          }
+        }
+      ]
+    }
+  }
+}

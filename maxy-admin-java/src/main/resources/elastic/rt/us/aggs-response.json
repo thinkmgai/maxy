@@ -1,0 +1,66 @@
+{
+  "aggs": {
+    "avg": {
+      "avg": {
+        "field": "intervaltime"
+      }
+    },
+    "max": {
+      "max": {
+        "field": "intervaltime"
+      }
+    },
+    "min": {
+      "min": {
+        "field": "intervaltime"
+      }
+    }
+  },
+  "size": 0,
+  "query": {
+    "bool": {
+      "filter": [
+        {
+          "term": {
+            "packageNm": #{packageNm}
+          }
+        },
+        {
+          "term": {
+            "serverType": #{serverType}
+          }
+        }
+        #[isAppVer]
+        ,{
+          "term": {
+            "appVer": #{appVer}
+          }
+        }
+        #[/isAppVer]
+        ,{
+          "term": {
+            "osType": #{osType}
+          }
+        },
+        {
+          "range": {
+            "logTm": {
+              "from": #{fromTimestamp},
+              "to": #{toTimestamp},
+              "include_lower": true,
+              "include_upper": true,
+              "time_zone": "Z"
+            }
+          }
+        }
+      ],
+      "must_not": [
+        {
+          "term": {
+            "intervaltime": "0"
+          }
+        }
+      ]
+    }
+  }
+}

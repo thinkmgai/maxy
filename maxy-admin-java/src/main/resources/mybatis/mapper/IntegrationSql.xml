@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkm.maxy.mapper.IntegrationMapper">
+
+    <select id="selectUrlFromAppPage" parameterType="IntegrationVO" resultType="IntegrationVO">
+        select req_url
+        from maxy_app_page
+        where package_nm = #{packageNm}
+          and server_type = #{serverType}
+          and req_url = #{reqUrl}
+          and use_yn = 'Y'
+    </select>
+
+    <update id="deleteLandingPageConfig" parameterType="IntegrationVO">
+        delete
+        from maxy_unloaded_page_config
+        where id = #{id}
+    </update>
+
+    <insert id="insertLandingPageConfig" parameterType="IntegrationVO">
+        insert into maxy_unloaded_page_config (package_nm,
+                                               server_type,
+                                               req_url,
+                                               `interval`,
+                                               reg_dt,
+                                               reg_no,
+                                               upd_dt,
+                                               upd_no,
+                                               `type`,
+                                               from_hour,
+                                               from_min,
+                                               to_hour,
+                                               to_min)
+        values (#{packageNm},
+                #{serverType},
+                #{reqUrl},
+                #{interval},
+                #{regDt},
+                #{userNo},
+                #{regDt},
+                #{userNo},
+                #{insertType},
+                #{fromHour},
+                #{fromMin},
+                #{toHour},
+                #{toMin})
+    </insert>
+
+    <select id="selectLandingPageConfig" parameterType="IntegrationVO" resultType="IntegrationVO">
+        select id,
+               package_nm,
+               server_type,
+               req_url,
+               `interval`,
+               reg_dt,
+               reg_no,
+               upd_dt,
+               upd_no,
+               from_hour,
+               from_min,
+               to_hour,
+               to_min,
+               type as insertType
+        from maxy_unloaded_page_config
+        where package_nm = #{packageNm}
+          and server_type = #{serverType}
+          and type = #{insertType}
+        order by req_url, from_hour, from_min
+
+    </select>
+
+    <select id="selectBeforeSettingPageList" parameterType="IntegrationVO" resultType="IntegrationVO">
+        select id,
+               package_nm,
+               server_type,
+               req_url,
+               `interval`,
+               reg_dt,
+               reg_no,
+               upd_dt,
+               upd_no,
+               from_hour,
+               from_min,
+               to_hour,
+               to_min,
+               type as insertType
+        from maxy_unloaded_page_config
+        where package_nm = #{packageNm}
+          and server_type = #{serverType}
+          and req_url = #{reqUrl}
+          and `type` = #{insertType}
+        order by from_hour asc
+    </select>
+
+    <select id="selectIntegrationConfig" parameterType="IntegrationVO" resultType="IntegrationVO">
+        select package_nm,
+               server_type,
+               type,
+               token,
+               url,
+               channel,
+               reg_dt,
+               reg_no,
+               upd_dt,
+               upd_no
+        from maxy_integration_config
+        where type = #{type}
+          and package_nm = #{packageNm}
+          and server_type = #{serverType}
+    </select>
+
+    <insert id="insertIntegrationConfig" parameterType="IntegrationVO">
+        insert into maxy_integration_config (package_nm,
+                                             server_type,
+                                             type,
+                                             token,
+                                             url,
+                                             channel,
+                                             reg_dt,
+                                             reg_no,
+                                             upd_dt,
+                                             upd_no)
+        VALUES (#{packageNm},
+                #{serverType},
+                #{type},
+                #{token},
+                #{url},
+                #{channel},
+                #{regDt},
+                #{userNo},
+                #{regDt},
+                #{userNo})
+    </insert>
+
+    <update id="updateIntegrationConfig" parameterType="IntegrationVO">
+        update maxy_integration_config
+        set token   = #{token}
+          , url     = #{url}
+          , channel = #{channel}
+          , upd_dt  = #{regDt}
+          , upd_no  = #{userNo}
+        where package_nm = #{packageNm}
+          and server_type = #{serverType}
+          and type = #{type}
+    </update>
+</mapper>

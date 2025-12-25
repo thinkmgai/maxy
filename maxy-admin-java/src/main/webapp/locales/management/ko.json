@@ -1,0 +1,507 @@
+{
+  "title": {
+    "sideMenu": "관리 기능",
+    "desc": {
+      "components": "종합 분석 화면에 배치 할 항목을 선택할 수 있습니다.",
+      "frontComponents": "대시보드에 배치된 항목을 조회할 수 있습니다.",
+      "basicInformation": "종합 분석 화면의 상단 [Basic Information]에 배치된 항목의 사용 여부를 설정할 수 있습니다.",
+      "requiredField": "필수 선택 항목",
+      "aliasManagement": "모니터링 앱의 웹 뷰, 네이티브 페이지 관리 및 종합 분석 화면의 우측 하단 Favorites에 배치되는 항목을 설정할 수 있습니다.",
+      "aliasManagementSub": "사용자가 자주 사용하는 페이지 항목을 선택하는 것을 권장합니다.",
+      "logDescription": "MAXY가 수집하는 종류 별 로그를 정의해 드립니다.",
+      "user": "MAXY 사용자를 관리할 수 있습니다.",
+      "userpoint": "사용자 등록 시 ",
+      "initialpassword": " 초기 비밀번호는 [ID 첫 세자리 + 당일의 월일(MMdd) + !@] 입니다. ",
+      "passwordex": "Ex) ID: maxy / PW: max0725!@",
+      "userFlowStatistics": "모니터링 대상 앱의 사용자 행위에 대한 집계 정보를 확인하실 수 있습니다.",
+      "userFlowList": "모니터링 대상 앱의 사용자 목록을 조회하실 수 있습니다.",
+      "deviceList": "에 등록된 전체 장치 현황을 조회할 수 있습니다.",
+      "monitoring": "선택된 디바이스의 등록된 페이지에서 발생한 로그만 표시하는 기능입니다. 로그분석 > 실시간로그조회 에서 Device ID로 조회 시 동작합니다.",
+      "notification": "MAXY 모바일 모니터링의 수신된 알림을 확인하실 수 있습니다.",
+      "notificationSetting": "MAXY 모바일 모니터링의 알림을 설정하실 수 있습니다.",
+      "obfuscation": "난독화 Rule 파일을 앱 빌드 버전별로 관리합니다.",
+      "aibot": "MAXY AI가 분석한 데이터 목록입니다. 데이터 저장은 최대 이전 7일까지 입니다.",
+      "model": "디바이스 모델을 관리합니다.",
+      "sessionReplayBlock1": "Session Replay에서 모니터링하면 안 되는 영역을 차단하는 기능입니다.",
+      "sessionReplayBlock2": "앱별로 모니터링 제외 요소를 등록하여 해당 영역의 DOM과 내용을 모두 세션 녹화에서 제외할 수 있습니다.",
+      "sessionReplayBlock3": "민감 정보가 포함된 UI의 ID 또는 Class를 추가해 차단 규칙을 적용할 수 있습니다."
+    },
+    "userManagement": "등록 / 삭제",
+    "deviceList": "장치 현황",
+    "monitoringSetting": "모니터링 화면 설정",
+    "notificationList": "알림 목록",
+    "notificationSetting": "알림 설정",
+    "flowdetail": "흐름 상세 조회",
+    "model": "디바이스 모델"
+  },
+  "components": {
+    "desc": {
+      "logmeter": "실시간 로그 데이터가 수신되는 형태를 시각적으로 표현합니다.",
+      "responsetimescatter": "Response Time을 장치별 데이터로 관제합니다.",
+      "loadingtimescatter": "Loading Time을 장치별 데이터로 관제합니다.",
+      "pvequalizer": "모니터링 앱의 각 페이지 뷰를 관제합니다.",
+      "devicedistribution": "사용빈도 높은 운영체제 별 디바이스의 Error, Crash를 관제합니다.",
+      "accessibility": "모니터링 앱의 사용자 접근성을 관제합니다.",
+      "resourceusage": "사용빈도가 높은 디바이스의 리소스 사용량을 관제합니다.",
+      "favorites": "관리자가 지정한 주요 페이지 별로 성능을 관제합니다.",
+      "pageview": "모니터링 앱의 각 페이지 별로 Error, Crash를 관제합니다.",
+      "responsetimeline": "Response Time을 Logmeter 기반으로 실시간 관제 합니다.",
+      "loadingtimeline": "Loading Time을 Logmeter 기반으로 실시간 관제 합니다.",
+      "areadistribution": "금일 통계 기반 지역 별 앱 성능 분포를 분석합니다.",
+      "versioncomparison": "전일 통계 기반 OS 기준 각 버전 별로 주요 모니터링 항목을 비교 분석합니다.",
+      "crashesbyversion": "발생된 Crash를 버전 별로 관제합니다.",
+      "versionconversion": "OS, 앱버전 별 사용율을 통계 내어 지표화 합니다.",
+      "marketinginsight": "시작 URL과 도달 URL을 설정하여 사용자의 행동 패턴을 분석합니다.",
+      "frontpageloading": "최근 5분간 Page 성능을 분석합니다.",
+      "frontresponsetime": "최근 5분간 Ajax 성능을 분석합니다.",
+      "fronterror": "최근 5분간 Error Count를 시각화합니다.",
+      "frontregionalanalysis": "금일 통계 기반 지역 별 앱 성능 분포를 분석합니다.",
+      "frontpagerequested": "최근 5분간 Page Count를 시각화합니다.",
+      "frontajaxresponse": "최근 5분간 Ajax Count를 시각화합니다.",
+      "frontlivesessionview": "현재 접속 세션을 실시간으로 시각화합니다."
+    },
+    "setting": {
+      "title": {
+        "logmeter": "Logmeter 설정",
+        "responsetimescatter": "Response Time (S) 설정",
+        "loadingtimescatter": "Loading Time (S) 설정",
+        "pvequalizer": "PV Equalizer 설정",
+        "devicedistribution": "",
+        "accessibility": "",
+        "resourceusage": "",
+        "favorites": "Favorites 설정",
+        "pageview": "Page View 설정",
+        "responsetimeline": "",
+        "loadingtimeline": "",
+        "areadistribution": "",
+        "versioncomparison": "Version Comparison 설정",
+        "crashesbyversion": "",
+        "marketinginsight": "Marketing Insight 설정"
+      },
+      "subtitle": {
+        "logmeter": "Logmeter 설정",
+        "responsetimescatter": "Warning Time",
+        "loadingtimescatter": "Warning Time",
+        "pvequalizer": "PV Equalizer 설정",
+        "devicedistribution": "",
+        "accessibility": "",
+        "resourceusage": "",
+        "favorites": "",
+        "pageview": "",
+        "responsetimeline": "",
+        "loadingtimeline": "",
+        "areadistribution": "",
+        "versioncomparison": "",
+        "crashesbyversion": "",
+        "marketinginsight": "Marketing Insight 설정"
+      },
+      "tip": {
+        "logmeter": "Tip. 컨테이너에 표시되는 하나의 Block에 대한 가중치를 의미합니다.",
+        "responsetimescatter": "Tip. 시간은 최대 $1ms 최소 $2ms 구간 내에서 설정 가능합니다.",
+        "loadingtimescatter": "Tip. 시간은 최대 $1ms 최소 $2ms 구간 내에서 설정 가능합니다.",
+        "pvequalizer": "Tip. 화면에 표시할 수 있는 페이지 뷰의 최대 값은 $1개 입니다.",
+        "devicedistribution": "",
+        "accessibility": "",
+        "resourceusage": "",
+        "favorites": "Tip. 화면에 표시할 수 있는 페이지 수의 최대 값은 $1개 입니다.",
+        "pageview": "Tip. 화면에 표시할 수 있는 페이지 뷰의 최대 값은 $1개 입니다.",
+        "responsetimeline": "",
+        "loadingtimeline": "",
+        "areadistribution": "",
+        "versioncomparison": "",
+        "crashesbyversion": "",
+        "marketinginsight": "Tip. 정확한 분석을 위해, 시작과 도달 URL은 사용자 흐름이 연결되는 페이지여야 합니다."
+      },
+      "prefix": {
+        "logmeter": {
+          "error": "Error 가중치",
+          "crash": "Crash 가중치"
+        },
+        "responsetimescatter": "사용성 저하 구간의 기준을 설정할 수 있습니다.",
+        "loadingtimescatter": "사용성 저하 구간의 기준을 설정할 수 있습니다.",
+        "pvequalizer": "분석할 페이지 뷰 수",
+        "devicedistribution": "",
+        "accessibility": "",
+        "resourceusage": "",
+        "favorites": "분석할 페이지 수",
+        "pageview": "분석할 페이지 뷰 수",
+        "responsetimeline": "",
+        "loadingtimeline": "",
+        "areadistribution": "",
+        "versioncomparison": "",
+        "crashesbyversion": "",
+        "marketinginsight": {
+          "from": "시작",
+          "to": "도달",
+          "title": "Title"
+        }
+      },
+      "postfix": {
+        "logmeter": "개",
+        "responsetimescatter": "ms (1/1,000 sec)",
+        "loadingtimescatter": "ms (1/1,000 sec)",
+        "pvequalizer": "개",
+        "devicedistribution": "",
+        "accessibility": "",
+        "resourceusage": "",
+        "favorites": "개",
+        "pageview": "개",
+        "responsetimeline": "",
+        "loadingtimeline": "",
+        "areadistribution": "",
+        "versioncomparison": "",
+        "crashesbyversion": ""
+      },
+      "desc": {
+        "logmeter": "실시간 로그 데이터가 수신되는 형태를 시각적으로 표현합니다.",
+        "responsetimescatter": "Response Time을 장치별 데이터로 관제합니다.",
+        "loadingtimescatter": "Loading Time을 장치별 데이터로 관제합니다.",
+        "pvequalizer": "모니터링 앱의 각 페이지 뷰를 관제합니다.",
+        "devicedistribution": "사용빈도 높은 운영체제 별 디바이스의 Error, Crash를 관제합니다.",
+        "accessibility": "모니터링 앱의 사용자 접근성을 관제합니다.",
+        "resourceusage": "사용빈도가 높은 디바이스의 리소스 사용량을 관제합니다.",
+        "favorites": "관리자가 지정한 주요 페이지 별로 성능을 관제합니다.",
+        "pageview": "모니터링 앱의 각 페이지 별로 Error, Crash를 관제합니다.",
+        "responsetimeline": "Response Time을 Logmeter 기반으로 실시간 관제 합니다.",
+        "loadingtimeline": "Loading Time을 Logmeter 기반으로 실시간 관제 합니다.",
+        "areadistribution": "금일 통계 기반 지역 별 앱 성능 분포를 분석합니다.",
+        "versioncomparison": "OS 기준 각 버전 별로 주요 모니터링 항목을 비교 분석합니다.",
+        "crashesbyversion": "발생된 Crash를 버전 별로 관제합니다."
+      },
+      "weight": "가중치",
+      "maximum": "보여줄 최대 갯수",
+      "range": "범위"
+    },
+    "msg": {
+      "componentsMax": "최대 8개까지 선택할 수 있습니다.",
+      "requiredInput": "필수 입력 값 입니다.",
+      "requiredWeight": " 가중치는 필수 입력 값 입니다.",
+      "weightMax": " 가중치의 최대값은",
+      "maxValue": "최대값은 ",
+      "comparison.select": "비교 분석할 대상을 선택해 주십시오."
+    }
+  },
+  "bi": {
+    "install": "모니터링 앱의 설치 수 및 전일 대비 비율",
+    "ios": "모니터링 앱의 iOS 점유율",
+    "android": "모니터링 앱의 Android 점유율",
+    "ccu": "1분 당 모니터링 앱을 사용하는 사용자 수",
+    "mau": "월 별 모니터링 앱을 사용하는 사용자 수 및 전일 대비 비율",
+    "dau": "하루동안 모니터링 앱을 사용하는 사용자 수 및 전일 대비 비율",
+    "pv": "사용자가 조회한 모니터링 앱의 페이지 수 및 전일 대비 비율",
+    "revisit": "모니터링 앱을 다시 사용하는 사용자 수(Retention Rate) 및 전일 대비 비율",
+    "sleep": "모니터링 앱의 설치 후 사용하지 않는 사용자 수 및 전일 대비 비율",
+    "login": "모니터링 앱을 설치한 사용자의 금일 로그인 수 및 전일 대비 비율",
+    "stay": "모니터링 앱 사용자의 평균 체류 시간 및 전일 대비 비율",
+    "log": "모니터링 앱의 분석을 위해 수집되는 데이터 로그 수 및 전일 대비 비율",
+    "error": "모니터링 앱의 분석을 위해 수집되는 에러 수 및 전일 대비 비율",
+    "crash": "모니터링 앱의 분석을 위해 수집되는 크래시 수 및 전일 대비 비율"
+  },
+  "alias": {
+    "title": "모니터링 앱의 웹 뷰, 네이티브 페이지 관리 및 종합 분석 화면의 우측 하단 [Favorites]에 배치되는 항목을 설정할 수 있습니다.",
+    "subTitle": "사용자가 자주 사용하는 페이지 항목을 선택하는 것을 권장합니다.",
+    "subTitle2": "신규 페이지는 다음날 적용됩니다.",
+    "text": {
+      "monitoringOn": "모니터링 ON",
+      "monitoringOff": "모니터링 OFF",
+      "noUse": "미사용",
+      "use": "사용",
+      "pageName": "Page 명",
+      "pageDesc": "Page 설명",
+      "pageModify": "Page 정보 수정",
+      "aliasName": "Alias 명",
+      "aliasDesc": "Alias 설명",
+      "aliasModify": "Alias 정보 수정",
+      "aliasReg": "Alias 정보 등록"
+    },
+    "btn": {
+      "csvDownload": "CSV 다운로드",
+      "csvErrorDownload": "에러 CSV 다운로드",
+      "csvUpload": "CSV 업로드",
+      "pageReg": "Page 등록",
+      "pageParameter": "페이지 파라미터 관리",
+      "pageParameterSet": "페이지 파라미터 설정",
+      "noset": "미지정 URL"
+    },
+    "pageParameter": {
+      "info": "요청 URL에서 포함/제외할 문자열을 관리합니다."
+    },
+    "noset": {
+      "info": "금일 모니터링을 통해 수집되고 사용자가 접속하고 있는 미지정 URL 목록입니다."
+    }
+  },
+  "log": {
+    "maxy": {
+      "info": "MAXY 정보 수집 로그"
+    },
+    "webserver": {
+      "start": "모니터링 대상 기기의 Local Webserver의 실행을 시작",
+      "error": "모니터링 대상 기기의 Local Webserver의 동작 중 오류가 발생",
+      "end": "모니터링 대상 기기의 Local Webserver의 실행을 마침"
+    },
+    "webNavigation": {
+      "start": "모바일 웹 페이지 Loading을 시작",
+      "response": "모바일 웹 페이지 Loading을 응답",
+      "end": "모바일 웹 페이지 Loading을 마침",
+      "error": "모바일 웹 페이지 Loading 시 오류가 발생함",
+      "scriptError": "모바일 웹 페이지 Javascript 오류가 발생함",
+      "redirection": "모바일 웹 페이지 Redirection",
+      "resourceDownStart": "모바일 웹 페이지의 리소스 다운로드를 시작",
+      "resourceDownEnd": "모바일 웹 페이지의 리소스 다운로드를 마침",
+      "ssl": "모바일 웹 페이지가 SSL 통신함",
+      "click": "모바일 웹 페이지 내 Click(Point Up) 이벤트",
+      "pageLoad": "모바일 웹 페이지 Lifecycle Load 이벤트",
+      "pageBack": "모바일 웹 페이지 Lifecycle PageShow 이벤트 중 뒤로가기",
+      "pageRefresh": "모바일 웹 페이지 Lifecycle PageShow 이벤트 중 새로고침",
+      "pageForward": "모바일 웹 페이지 Lifecycle PageShow 이벤트",
+      "pageHide": "모바일 웹 페이지 Lifecycle PageHide 이벤트",
+      "pagePushState": "모바일 웹 페이지 History 객체의 PushState 이벤트",
+      "pagePopState": "모바일 웹 페이지 뒤로가기 이벤트가 발생함",
+      "pageUnload": "페이지를 벗어날 때 호출되는 모바일 웹 페이지 Lifecycle Unload 이벤트",
+      "pageHashChange": "대상 모바일 웹 페이지에서 해시(#)만 변경됨",
+      "pageReadyStateChange": "모바일 웹 페이지 Lifecycle ReadyStateChange 이벤트",
+      "pageDOMContentLoaded": "모바일 웹 페이지 Lifecycle DOMContentLoaded 이벤트",
+      "loadingTime": "모바일 웹 페이지가 동작할 준비가 완료될때까지 걸린 시간",
+      "login": "모니터링 대상의 로그인 여부를 체크함",
+      "logout": "모니터링 대상의 로그아웃 여부를 체크함",
+      "bizError": "모바일 웹 페이지 고객 Business 오류 발생",
+      "webVital":  "모바일 웹 페이지 Web Vital Log가 수집됨",
+      "popupInfo": "팝업 호출 시 호출된 팝업 정보 수집",
+      "searchKeyword": "검색키워드 수집",
+      "termsComplete": "약관동의완료 정보 수집",
+      "subscribeComplete": "상품가입완료 정보 수집",
+      "bottomPopupInfo": "Bottom 팝업 호출 시 호출된 팝업 정보 수집"
+    },
+    "resourceDown": {
+      "inf": "MiAPS Hybrid의 Resource Download용 INF 파일을 다운로드함",
+      "start": "MiAPS Hybrid의 Resource Download를 시작함",
+      "end": "MiAPS Hybrid의 Resource Download를 마침",
+      "error": "MiAPS Hybrid의 Resource Download 중 Error가 발생함"
+    },
+    "httpRequest": {
+      "request": "Client¹와 Server 간 Http 요청을 시작함",
+      "response(Legacy)": "Client¹와 Server 간 Http 요청에 대해 응답함",
+      "response": "Client¹와 Server 간 Http 요청에 대해 응답함",
+      "error": "Client¹와 Server 간 Http 요청 중 Error가 발생함",
+      "exception": "Client¹와 Server 간 Http 요청 중 Exception이 발생함"
+    },
+    "nativeAction": {
+      "start": "모니터링 대상의 Native 영역의 요청이 시작됨",
+      "end": "모니터링 대상의 Native 영역에서 요청이 종료됨",
+      "error": "모니터링 대상의 Native 영역에서 Error가 발생함",
+      "appStart": "모니터링 대상의 실행이 시작됨",
+      "appForeground": "모니터링 대상이 Background 상태에서 Foreground로 변경됨",
+      "appBackground": "모니터링 대상이 Foreground 상태에서 Background로 변경됨",
+      "appTerminate": "모니터링 대상이 비정상 종료됨",
+      "deepLink": "Deep Link",
+      "appNotResponse": "ANR",
+      "appPageStart": "Native app page start",
+      "appPageEnd": "Native app page end",
+      "bizError": "Native 고객 Business 오류 발생",
+      "actionClick": "Native app 내 수집이 필요한 Click Event 발생 시 Tagging",
+      "installReferer": "Native app Install referer 수집 로그",
+      "appFirstStart": "Native app 최초실행"
+    },
+    "native": {
+      "crash": "Native 영역에서 크래시가 발생함"
+    },
+    "customTag": {
+      "common": "모니터링 대상의 자동 수집되는 Error를 제외한 일반 지표를 정의함",
+      "error": "모니터링 대상의 자동 수집되는 Error를 제외한 별도 이슈를 정의함",
+      "alarm": "모니터링 대상의 자동 수집되는 Error를 제외한 별도 알림 항목을 정의함"
+    },
+    "ajax": {
+      "submit": "HTML Submit를 동작함",
+      "request": "XMLHttpRequest(Ajax) 객체를 생성함",
+      "send": "XMLHttpRequest(Ajax) 송신을 시작함",
+      "response": "XMLHttpRequest(Ajax) 송신에 따른 응답을 수신함",
+      "error": "XMLHttpRequest(Ajax) 수신 코드 값이 3xx, 4xx, 5xx임",
+      "exception": "XMLHttpRequest(Ajax) 송신 시 Exception이 발생함"
+    },
+    "autoTag": {
+      "start": "Auto Tag 페이지가 시작됨",
+      "end": "Auto Tag 페이지가 종료됨",
+      "action": "Auto Tag 액션이 발생함"
+    }
+  },
+  "user": {
+    "user": "사용자",
+    "administrator": "관리자",
+    "share": "(점유율)",
+    "modify": "정보 수정",
+    "name": "사용자명",
+    "id": "사용자 ID",
+    "register": "사용자 등록",
+    "detail": "사용자 상세",
+    "general": "일반 사용자",
+    "group": "그룹 관리자",
+    "groupName": "그룹명",
+    "permission": "권한",
+    "specifyApp": "앱 별 사용자 목록",
+    "groupModify": "그룹 수정",
+    "currentGroupName": "현재 그룹명",
+    "newGroupName": "변경할 그룹명",
+    "userflowdetail": "사용자 흐름 상세",
+    "moveappname": "이동 앱 명",
+    "movepackagename": "이동 앱 명",
+    "moveservertype": "이동 서버유형",
+    "initialpassword": "초기 비밀번호 - [id 첫 세자리 + 당일의 월일(MMdd) + !@]",
+    "specifiedApp": "지정된 앱",
+    "btn": {
+      "appSelection": "조회 가능 앱 목록",
+      "appModify": "조회 가능 앱 변경",
+      "appAdd": "조회 가능 앱 등록",
+      "specifyApp": "앱 지정",
+      "groupManagement": "그룹 관리",
+      "subGroupAdd": "하위 그룹 추가",
+      "groupAdd": "그룹 추가",
+      "groupDelete": "그룹 삭제",
+      "groupNmModify": "그룹명 수정",
+      "parentGroup": "상위 그룹",
+      "alluserlist": "모든 유저 목록"
+    },
+    "msg": {
+      "userName": "사용자 명은 필수 입력 값 입니다.",
+      "userId": "사용자 ID는 필수 입력 값 입니다.",
+      "userIdValid": "사용자 ID는 4자리 이상 입력해 주세요.",
+      "permissionEmpty": "권한 구분 값을 입력해 주세요.",
+      "emailEmpty": "이메일은 필수 입력 값 입니다.",
+      "groupDelete": "그룹을 삭제하시겠습니까?",
+      "addGroupError": "하위 그룹을 더 이상 추가할 수 없습니다.",
+      "selectGroup": "그룹을 선택해 주십시오.",
+      "duplicationuser": "중복된 사용자가 있습니다.",
+      "accountReset": "계정을 초기화 하시겠습니까?",
+      "accountResetSuccess": "계정이 초기화되었습니다.",
+      "resetdesc": "사용자 정보가 초기화됩니다.",
+      "resetpassword": "초기화 된 비밀번호는 [id 첫 세자리 + 당일의 월일(MMdd) + !@] 입니다.",
+      "unregisteredapp": "해당 그룹 관리자가 관리하는 앱이 아닙니다.",
+      "specialchar": "특수문자는 입력 불가합니다.",
+      "noGrant": "권한이 없습니다.",
+      "nogroup": "그룹 관리에서 그룹을 먼저 생성해 주세요."
+    }
+  },
+  "device": {
+    "text": {
+      "management": "모니터링 기기 관리",
+      "vipYn": "VIP",
+      "webPerformance": "웹 성능 점검",
+      "setting": "모니터링 화면 설정",
+      "logPage": "로깅 대상 페이지 정보",
+      "properties": "등록 정보",
+      "targetPage": "등록 대상 페이지"
+    },
+    "btn": {
+      "all": "전체",
+      "pageName": "페이지 명",
+      "reqUrl": "Requested URL",
+      "logging": "로깅 대상 등록",
+      "monitoringDelete": "모니터링 대상 삭제",
+      "monitoringAdd": "모니터링 대상 직접 등록",
+      "pageAdd": "페이지 등록",
+      "pageDelete": "페이지 삭제",
+      "viewitems": "조회항목"
+    },
+    "msg": {
+      "deviceIdEmpty": "Device ID가 비어있습니다.",
+      "targetIdEmpty": "모니터링 대상에 등록되지 않았습니다. 등록 후 수정할 수 있습니다.",
+      "deviceSelect": "Device를 선택해 주세요.",
+      "userIdEmpty": "User ID가 비어있습니다.",
+      "differentPackage": "등록한 장치는 종합분석에서 해당 앱으로 변경해야 모니터링 기기관리 리스트에 보여집니다.",
+      "pageSelect": "페이지를 선택해 주세요.",
+      "loggingPageSelect": "변경된 데이터가 없습니다.",
+      "loggingTargetDelete": "로깅 대상을 삭제하시겠습니까?"
+    }
+  },
+  "alarm": {
+    "tableColumn": {
+      "item": "항목",
+      "limit": "임계치",
+      "addCondition": "추가 조건",
+      "duration": "지속 시간",
+      "repeat": "알림 반복"
+    },
+    "msg": {
+      "ios": "iOS 수집 불가",
+      "minmaxall": "은(는) 최소 10개, 최대 100개 내외에서 입력해 주십시오",
+      "minmaxcrashalim": "은(는) 최소 1개, 최대 100개 내외에서 입력해 주십시오",
+      "minmaxperformance": "은(는) 최소 500개, 최대 3000개 내외에서 입력해 주십시오",
+      "statusread": "'읽음' 상태로 변경하시겠습니까?",
+      "changestatus": "'읽음' 상태로 변경되었습니다.",
+      "alertPeriodMax": "1일 최대 10회 이상 반복할 경우 서버 및 통신에 부하를 초대할 수 있습니다.",
+      "limitValueRequired": "최대 임계치는 필수 입력값 입니다.",
+      "alarmMsgRequired": "알림 메시지는 필수 입력값 입니다."
+    },
+    "tip": {
+      "error": "최소 10개, 최대 100개 내외에서 입력해 주십시오.",
+      "crash": "최소 1개, 최대 100개 내외에서 입력해 주십시오.",
+      "pct": "최소 10%, 최대 100% 내외에서 입력해 주십시오.",
+      "memory": "최소 10mb, 최대 100mb 내외에서 입력해 주십시오.",
+      "comSensitivity": "Bad, Too Bad 내외에서 선택해 주십시오.",
+      "time": "최소 500ms, 최대 3,000ms 내외에서 입력해 주십시오."
+    },
+    "ex": {
+      "error": "예시) 로그인 페이지에서 발생된 Error가 임계치를 초과하였습니다.",
+      "crash": "예시) 로그인 페이지에서 발생된 Crash가 임계치를 초과하였습니다.",
+      "cpu": "예시) iPhone XS의 CPU 사용량이 70%를 초과하였습니다.",
+      "memory": "예시) iPhone XS의 메모리 사용량이 100mb를 초과하였습니다.",
+      "comSensitivity": "예시) Galaxy S23의 네트워크 감도가 Too Bad로 집계되었습니다.",
+      "loadingTime": "예시) 로그인 화면의 Loading Time이 임계치를 초과하였습니다.",
+      "responseTime": "예시) 로그인 화면의 Response Time이 임계치를 초과하였습니다.",
+      "install": "예시) 전일 대비 앱 설치 비율이 100%를 초과하였습니다.",
+      "login": "예시) 전일 대비 로그인 비율이 100%를 초과하였습니다.",
+      "dau": "예시) 전일 대비 DAU 비율이 100%를 초과하였습니다.",
+      "pv": "예시) 전일 대비 PV 비율이 100%를 초과하였습니다.",
+      "errorRatio": "예시) 전일 대비 Error 발생 비율이 100%를 초과하였습니다.",
+      "crashRatio": "예시) 전일 대비 Crash 발생 비율이 100%를 초과하였습니다."
+    },
+    "type": {
+      "error": "Error",
+      "crash": "Crash",
+      "resource": "자원 사용량",
+      "app": "앱 성능 지표",
+      "usability": "사용성 지표"
+    },
+    "text": {
+      "read": "읽음",
+      "unread": "안읽음"
+    }
+  },
+  "model": {
+    "popup": {
+      "title": "Device Model Info"
+    }
+  },
+  "obfuscation": {
+    "msg": {
+      "paramempty": "매개변수가 비어있습니다.",
+      "fileempty": "파일을 업로드 해주십시오.",
+      "jsonortext": "JSON 또는 텍스트 파일만 업로드할 수 있습니다."
+    }
+  },
+  "aibot": {
+    "popup": {
+      "title": "MAXY AI Bot 설정",
+      "option": "실행주기 (일)",
+      "tip": "Tip. 일 최대 알림 주기는 10회입니다.",
+      "round": "$1회 차",
+      "aiperform": "AI 성능 분석",
+      "aiusability": "AI 사용성 분석"
+    },
+    "text": {
+      "option": "옵션"
+    }
+  },
+  "dsym": {
+    "title": {
+      "desc": "DSYM 파일을 앱 빌드 버전별로 관리합니다.(DSYM 파일을 업로드하여 Crash 발생 시 더 상세한 StackTrace를 제공받으세요.)"
+    },
+    "text": {
+      "dropZone": "DSYM.zip Drag and Drop",
+      "dropZoneDesc1": "DSYM 압축 파일 업로드 시 AppVer, AppBuildNum, UUID 추출하여 자동 등록 됩니다.",
+      "dropZoneDesc2": "압축 파일만 업로드 가능합니다. (지원 형식: ZIP, GZ, GZIP)",
+      "dropZoneDesc3": "파일 크기는 {size} 이하여야 합니다.",
+      "validFile": "압축된 DSYM파일을 업로드 해주세요.",
+      "validDsym": "DSYM파일이 업로드되지 않으면 해당 버전의 심볼리케이션 기능을 이용할 수 없습니다."
+    }
+  }
+}

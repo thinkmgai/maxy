@@ -1,0 +1,42 @@
+{
+  "aggs": {
+    "connectCount": {
+      "cardinality": {
+        "field": "deviceId.raw"
+      }
+    }
+  },
+  "size": 0,
+  "query": {
+    "bool": {
+      "filter": [
+        {
+          "term": {
+            "packageNm": #{packageNm}
+          }
+        },
+        {
+          "term": {
+            "serverType": #{serverType}
+          }
+        },
+        #[isAppVer]
+        {
+          "term": {
+            "appVer": #{appVer}
+          }
+        },
+        #[/isAppVer]
+        {
+          "range": {
+            "logTm": {
+            "gte": #{searchFromDay},
+            "lte": #{searchToDay},
+            "format": "epoch_millis"
+            }
+          }
+        }
+      ]
+    }
+  }
+}

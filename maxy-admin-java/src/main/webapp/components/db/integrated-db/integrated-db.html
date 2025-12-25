@@ -1,0 +1,197 @@
+<style>
+    .dashboard_wrap .component {
+        display: grid;
+        border-radius: var(--radius);
+        padding: 2em;
+        gap: 1.5em;
+        border: 1px solid var(--color-border-out-light);
+    }
+
+    .dark_mode .dashboard_wrap .component {
+        background-color: var(--color-block-dark-1);
+        border: none;
+    }
+
+    .dashboard_wrap .component .component_title {
+        padding-left: .2em;
+        display: flex;
+        align-items: center;
+        font-weight: 600;
+        font-size: 2em;
+        color: var(--black-6);
+    }
+
+    .dark_mode .dashboard_wrap .component .component_title {
+        color: white;
+    }
+
+    .dashboard_wrap .component .component_data {
+        display: grid;
+        grid-template-rows: repeat(2, 1fr);
+        gap: 1em;
+    }
+
+    .dashboard_wrap .component .component_data .dv {
+        display: grid;
+        gap: 2%;
+        grid-template-columns: 60% 38%;
+    }
+
+    .dashboard_wrap .component .component_data .dv > div {
+        border-radius: var(--radius);
+        background-color: #f4f4f4;
+    }
+
+    .dark_mode .dashboard_wrap .component .component_data .dv > div {
+        background-color: #1a1a1a;
+    }
+
+    .component_data .dv .dv_content {
+        display: grid;
+        grid-template-columns: 20% 80%;
+        padding: 2em;
+    }
+
+    .component_data .dv .dv_content > .title {
+        display: flex;
+        gap: .7em;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .component_data .dv .dv_content > .title > .text {
+        font-weight: bold;
+        font-size: 1.5em;
+        color: var(--black-6);
+    }
+
+    .dark_mode .component_data .dv .dv_content > .title > .text {
+        color: white;
+    }
+
+    .component_data .dv .dv_content > .data {
+        position: relative;
+        display: flex;
+        font-size: 5em;
+        align-items: center;
+        font-weight: 100;
+        justify-content: flex-end;
+    }
+
+    .component_data .dv .dv_content > .data.yellow {
+        color: var(--yellow-2);
+    }
+
+    .component_data .dv .dv_content > .data.red {
+        color: var(--point-red);
+    }
+
+    @media screen and (max-width: 1440px) {
+        .component_data .dv .dv_content > .data {
+            font-size: 4em;
+        }
+
+        .dashboard_wrap .component .component_data .dv {
+            grid-template-columns: 53% 45%;
+        }
+    }
+
+    .dashboard_wrap .dv_content .title .icon_db_mau {
+        content: url(/images/maxy/icon-db-mau.svg);
+    }
+
+    .dark_mode .dashboard_wrap .dv_content .title .icon_db_mau {
+        content: url(/images/maxy/dark-icon-db-mau.svg);
+    }
+
+    .dashboard_wrap .dv_content .title .icon_db_error {
+        content: url(/images/maxy/icon-summary-error.svg)
+    }
+
+    .dark_mode .dashboard_wrap .dv_content .title .icon_db_error {
+        content: url(/images/maxy/dark-icon-summary-error.svg)
+    }
+
+    .dashboard_wrap .dv_content .title .icon_db_dau {
+        content: url(/images/maxy/icon-db-dau.svg);
+    }
+
+    .dark_mode .dashboard_wrap .dv_content .title .icon_db_dau {
+        content: url(/images/maxy/dark-icon-db-dau.svg);
+    }
+
+    .dashboard_wrap .dv_content .title .icon_db_crash {
+        content: url(/images/maxy/icon-summary-crash.svg);
+    }
+
+    .dark_mode .dashboard_wrap .dv_content .title .icon_db_crash {
+        content: url(/images/maxy/dark-icon-summary-crash.svg);
+    }
+
+    .component_title > img {
+        height: 16px;
+    }
+
+    .component_data .dv .dv_content > .data .icon-count-up-container {
+        background-image: url(/images/maxy/icon-count-up.svg);
+        background-repeat: no-repeat;
+        background-size: 100%;
+        width: 20px;
+        height: 20px;
+        padding: 0 !important;
+        display: inline-block;
+        position: absolute;
+        top: -10%;
+    }
+</style>
+
+{{#each apps}}
+<div class="component">
+    <div class="component_title"  data-package="{{packageNm}}" data-server-type="{{serverType}}">
+        <span>{{title}}</span>
+    </div>
+    <div class="component_data">
+        <div class="dv">
+            <div class="dv_content">
+                <div class="title">
+                    <img class="{{iconClass1}}" alt="">
+                    <span class="text">{{label1}}</span>
+                </div>
+                <div class="data">
+                    <span data-type="mau">{{value1}}</span>
+                </div>
+            </div>
+            <div class="dv_content">
+                <div class="title">
+                    <img class="{{iconClass2}}" alt="">
+                    <span class="text">{{label2}}</span>
+                </div>
+                <div class="data yellow">
+                    <span data-type="error">{{value2}}</span>
+                </div>
+            </div>
+        </div>
+        <div class="dv">
+            <div class="dv_content">
+                <div class="title">
+                    <img class="{{iconClass3}}" alt="">
+                    <span class="text">{{label3}}</span>
+                </div>
+                <div class="data">
+                    <span data-type="dau">{{value3}}</span>
+                </div>
+            </div>
+            <div class="dv_content">
+                <div class="title">
+                    <img class="{{iconClass4}}" alt="">
+                    <span class="text">{{label4}}</span>
+                </div>
+                <div class="data red">
+                    <span data-type="crash">{{value4}}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{{/each}}

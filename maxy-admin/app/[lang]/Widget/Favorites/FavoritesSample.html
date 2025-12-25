@@ -1,0 +1,204 @@
+<div id="maxyComponent__FAVORITES" class="maxy_box"><style>
+    .maxy_component_wrap > .swiper {
+        height: calc(100% - 20px);
+    }
+
+    .maxy_component_wrap .page_wrap {
+        display: grid;
+        /*grid-template-columns: repeat(3, 1fr);*/
+        grid-gap: 0.7vh;
+        padding: 1px;
+    }
+
+    .maxy_component_wrap .page {
+        width: 100%;
+        background: #FFFFFF;
+        border: 1px solid var(--color-border-in-light);
+        border-radius: 7px;
+        overflow: hidden;
+        cursor: default;
+    }
+
+    .maxy_component_wrap .page .page_contents_row[data-type='error'],
+    .maxy_component_wrap .page .page_contents_row[data-type='crash'] {
+        cursor: pointer;
+    }
+
+    .maxy_component_wrap .page_header {
+        padding-left: 7px;
+        padding-right: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .maxy_component_wrap .page_header.webview, .maxy_component_wrap .page_header {
+        background: #E6F4FD;
+    }
+
+    .maxy_component_wrap .page_header.native {
+        background: #ECEDFF;
+    }
+
+    .maxy_component_wrap .page_header i {
+        width: 27px;
+        height: 28px;
+        scale: 0.7;
+    }
+
+    .maxy_component_wrap .page_header i {
+        background-repeat: no-repeat;
+    }
+
+    .maxy_component_wrap .page_header i.check_webview, .maxy_component_wrap .page_header i.check {
+        background-image: url("/images/maxy/icon-check-blue.svg");
+    }
+
+    .dark_mode .maxy_component_wrap .page_header i.check_webview, .dark_mode .maxy_component_wrap .page_header i.check {
+        background-image: url("/images/maxy/dark-icon-check-blue.svg");
+    }
+
+    .maxy_component_wrap .page_header i.check_native {
+        background-image: url("/images/maxy/icon-check-purple.svg");
+    }
+
+    .dark_mode .maxy_component_wrap .page_header i.check_native {
+        background-image: url("/images/maxy/dark-icon-check-purple.svg");
+    }
+
+    .maxy_component_wrap .page_header .page_header_title {
+        margin-right: 2px;
+        line-height: 28px;
+        font-size: 12px;
+        font-weight: 500;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .maxy_component_wrap .page_header.webview .page_header_count, .maxy_component_wrap .page_header .page_header_count {
+        color: #006AE5;
+        font-size: 11px;
+        font-weight: 500;
+        text-align: right;
+        margin-left: auto;
+    }
+
+    .maxy_component_wrap .page_header.native .page_header_count {
+        color: #7277FF;
+    }
+
+    .maxy_component_wrap .page_header_top {
+        width: 100%;
+        display: grid;
+        grid-template-columns: 0.5fr 2fr 0.1fr;
+        align-items: center;
+    }
+
+    .maxy_component_wrap .page_contents {
+        padding: 1vh;
+        font-size: 11px;
+        height: calc(15vh - 28px);
+        border: 0;
+        background: white;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        gap: 0.4vh;
+    }
+
+    .maxy_component_wrap .page_contents .page_contents_sub {
+        color: #8C8C8C;
+    }
+
+    .maxy_component_wrap .page_contents .page_contents_value {
+        font-weight: 500;
+        font-size: 12px;
+        color: #444444;
+    }
+
+    .maxy_component_wrap .page_contents .page_contents_value.error {
+        color: #FCB500 !important;
+    }
+
+    .maxy_component_wrap .page_contents .page_contents_value.crash {
+        color: #FF6969 !important;
+    }
+
+    .maxy_component_wrap .page_contents_row {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+    }
+
+    .dark_mode .maxy_component_wrap .page_wrap .page.webview, .dark_mode .maxy_component_wrap .page_wrap .page {
+        background-color: #222222;
+        border: 1px solid #00507C;
+    }
+
+    .dark_mode .maxy_component_wrap .page_wrap .page.native {
+        border: 1px solid #474B88;
+    }
+
+    .dark_mode .maxy_component_wrap .page_header {
+        background-color: #275544;
+    }
+
+    .dark_mode .maxy_component_wrap .page_header.webview, .dark_mode .maxy_component_wrap .page_header {
+        background-color: #00507C;
+    }
+
+    .dark_mode .maxy_component_wrap .page_header.native {
+        background: #474B88;
+    }
+
+    .dark_mode .maxy_component_wrap .page_header.native .page_header_count {
+        color: #A5A8FF;
+    }
+
+    .dark_mode .maxy_component_wrap .page_header.webview .page_header_count, .dark_mode .maxy_component_wrap .page_header .page_header_count {
+        color: #34B6FF;
+    }
+
+    .dark_mode .maxy_component_wrap .page_header .page_header_title {
+        color: white;
+    }
+
+    .dark_mode .maxy_component_wrap .page_contents {
+        background: #222222;
+    }
+
+    .dark_mode .maxy_component_wrap .page_contents .page_contents_sub {
+        color: #E2E2E2;
+    }
+
+    .dark_mode .maxy_component_wrap .page_contents .page_contents_value {
+        color: #fff;
+    }
+
+    @media screen and (min-height: 1060px) {
+        .maxy_component_wrap .page_header {
+            height: 3vh;
+        }
+
+        .maxy_component_wrap .page_contents {
+            height: 12vh;
+        }
+    }
+
+    .btn_favorites_all {
+        display: none;
+    }
+</style>
+<div class="maxy_component_wrap">
+    <div class="maxy_component_header space_between">
+        <div class="header_title">
+            <h4>Favorites</h4>
+            <img alt="?" class="ic_question" src="/images/maxy/ic-question-grey-blue.svg">
+        </div>
+        <div class="maxy_component_btn_wrap">
+            <button class="maxy_component_btn btn_favorites_all" id="maxyComponent__FAVORITESBtn__all" style="display: inline-block;">ALL</button>
+        </div>
+    </div>
+    <div class="maxy_component_item" id="maxyComponent__FAVORITES__chart"><div class="swiper swiper-initialized swiper-horizontal swiper-backface-hidden" id="maxyComponent__FAVORITESSwiper"><div class="swiper-wrapper" id="maxyComponent__FAVORITES__SwiperWrapper" aria-live="off" style="transition-duration: 0ms; transform: translate3d(-304px, 0px, 0px); transition-delay: 0ms;"><div class="swiper-slide swiper-slide-prev" role="group" aria-label="1 / 3" style="width: 284px; margin-right: 20px;"><div class="page_wrap" data-idx="1" style="grid-template-columns: repeat(2, 1fr);"><div class="page webview"><div class="page_header webview"><div class="page_header_top"><i class="check_webview"></i><div class="page_header_title">메인 메뉴</div><div class="page_header_count">123K</div></div></div><div class="page_contents"><div class="page_contents_row" data-value="519ms"><div class="page_contents_sub">로딩 시간</div><div class="page_contents_value">519ms</div></div><div class="page_contents_row" data-value="2s"><div class="page_contents_sub">응답 시간</div><div class="page_contents_value">2s</div></div><div class="page_contents_row" data-value="2s"><div class="page_contents_sub">체류 시간</div><div class="page_contents_value">2s</div></div><div class="page_contents_row" data-type="error" data-value="10198"><div class="page_contents_sub"><svg width="10" height="10" fill="#FCB500"><ellipse cx="4" cy="6" rx="3" ry="3"></ellipse></svg>Error</div><div class="page_contents_value error">10,198</div></div><div class="page_contents_row" data-type="crash" data-value="198"><div class="page_contents_sub"><svg width="10" height="10" fill="#FF6969"><ellipse cx="4" cy="6" rx="3" ry="3"></ellipse></svg>Crash</div><div class="page_contents_value crash">198</div></div></div></div><div class="page webview"><div class="page_header webview"><div class="page_header_top"><i class="check_webview"></i><div class="page_header_title">QnA 상세</div><div class="page_header_count">38K</div></div></div><div class="page_contents"><div class="page_contents_row" data-value="511ms"><div class="page_contents_sub">로딩 시간</div><div class="page_contents_value">511ms</div></div><div class="page_contents_row" data-value="1s"><div class="page_contents_sub">응답 시간</div><div class="page_contents_value">1s</div></div><div class="page_contents_row" data-value="7s"><div class="page_contents_sub">체류 시간</div><div class="page_contents_value">7s</div></div><div class="page_contents_row" data-type="error" data-value="1882"><div class="page_contents_sub"><svg width="10" height="10" fill="#FCB500"><ellipse cx="4" cy="6" rx="3" ry="3"></ellipse></svg>Error</div><div class="page_contents_value error">1,882</div></div><div class="page_contents_row" data-type="crash" data-value="0"><div class="page_contents_sub"><svg width="10" height="10" fill="#FF6969"><ellipse cx="4" cy="6" rx="3" ry="3"></ellipse></svg>Crash</div><div class="page_contents_value crash">0</div></div></div></div><div class="page webview"><div class="page_header webview"><div class="page_header_top"><i class="check_webview"></i><div class="page_header_title">장바구니</div><div class="page_header_count">37K</div></div></div><div class="page_contents"><div class="page_contents_row" data-value="518ms"><div class="page_contents_sub">로딩 시간</div><div class="page_contents_value">518ms</div></div><div class="page_contents_row" data-value="649ms"><div class="page_contents_sub">응답 시간</div><div class="page_contents_value">649ms</div></div><div class="page_contents_row" data-value="12s"><div class="page_contents_sub">체류 시간</div><div class="page_contents_value">12s</div></div><div class="page_contents_row" data-type="error" data-value="792"><div class="page_contents_sub"><svg width="10" height="10" fill="#FCB500"><ellipse cx="4" cy="6" rx="3" ry="3"></ellipse></svg>Error</div><div class="page_contents_value error">792</div></div><div class="page_contents_row" data-type="crash" data-value="0"><div class="page_contents_sub"><svg width="10" height="10" fill="#FF6969"><ellipse cx="4" cy="6" rx="3" ry="3"></ellipse></svg>Crash</div><div class="page_contents_value crash">0</div></div></div></div><div class="page webview"><div class="page_header webview"><div class="page_header_top"><i class="check_webview"></i><div class="page_header_title">QnA</div><div class="page_header_count">33K</div></div></div><div class="page_contents"><div class="page_contents_row" data-value="518ms"><div class="page_contents_sub">로딩 시간</div><div class="page_contents_value">518ms</div></div><div class="page_contents_row" data-value="1s"><div class="page_contents_sub">응답 시간</div><div class="page_contents_value">1s</div></div><div class="page_contents_row" data-value="1s"><div class="page_contents_sub">체류 시간</div><div class="page_contents_value">1s</div></div><div class="page_contents_row" data-type="error" data-value="1084"><div class="page_contents_sub"><svg width="10" height="10" fill="#FCB500"><ellipse cx="4" cy="6" rx="3" ry="3"></ellipse></svg>Error</div><div class="page_contents_value error">1,084</div></div><div class="page_contents_row" data-type="crash" data-value="0"><div class="page_contents_sub"><svg width="10" height="10" fill="#FF6969"><ellipse cx="4" cy="6" rx="3" ry="3"></ellipse></svg>Crash</div><div class="page_contents_value crash">0</div></div></div></div></div></div><div class="swiper-slide swiper-slide-active" role="group" aria-label="2 / 3" style="width: 284px; margin-right: 20px;"><div class="page_wrap" data-idx="2" style="grid-template-columns: repeat(2, 1fr);"><div class="page webview"><div class="page_header webview"><div class="page_header_top"><i class="check_webview"></i><div class="page_header_title">공지사항 목록</div><div class="page_header_count">23K</div></div></div><div class="page_contents"><div class="page_contents_row" data-value="523ms"><div class="page_contents_sub">로딩 시간</div><div class="page_contents_value">523ms</div></div><div class="page_contents_row" data-value="1s"><div class="page_contents_sub">응답 시간</div><div class="page_contents_value">1s</div></div><div class="page_contents_row" data-value="2s"><div class="page_contents_sub">체류 시간</div><div class="page_contents_value">2s</div></div><div class="page_contents_row" data-type="error" data-value="819"><div class="page_contents_sub"><svg width="10" height="10" fill="#FCB500"><ellipse cx="4" cy="6" rx="3" ry="3"></ellipse></svg>Error</div><div class="page_contents_value error">819</div></div><div class="page_contents_row" data-type="crash" data-value="0"><div class="page_contents_sub"><svg width="10" height="10" fill="#FF6969"><ellipse cx="4" cy="6" rx="3" ry="3"></ellipse></svg>Crash</div><div class="page_contents_value crash">0</div></div></div></div><div class="page webview"><div class="page_header webview"><div class="page_header_top"><i class="check_webview"></i><div class="page_header_title">공지사항 상세</div><div class="page_header_count">12K</div></div></div><div class="page_contents"><div class="page_contents_row" data-value="515ms"><div class="page_contents_sub">로딩 시간</div><div class="page_contents_value">515ms</div></div><div class="page_contents_row" data-value="509ms"><div class="page_contents_sub">응답 시간</div><div class="page_contents_value">509ms</div></div><div class="page_contents_row" data-value="7s"><div class="page_contents_sub">체류 시간</div><div class="page_contents_value">7s</div></div><div class="page_contents_row" data-type="error" data-value="202"><div class="page_contents_sub"><svg width="10" height="10" fill="#FCB500"><ellipse cx="4" cy="6" rx="3" ry="3"></ellipse></svg>Error</div><div class="page_contents_value error">202</div></div><div class="page_contents_row" data-type="crash" data-value="0"><div class="page_contents_sub"><svg width="10" height="10" fill="#FF6969"><ellipse cx="4" cy="6" rx="3" ry="3"></ellipse></svg>Crash</div><div class="page_contents_value crash">0</div></div></div></div><div class="page webview"><div class="page_header webview"><div class="page_header_top"><i class="check_webview"></i><div class="page_header_title">카드 목록</div><div class="page_header_count">8K</div></div></div><div class="page_contents"><div class="page_contents_row" data-value="519ms"><div class="page_contents_sub">로딩 시간</div><div class="page_contents_value">519ms</div></div><div class="page_contents_row" data-value="974ms"><div class="page_contents_sub">응답 시간</div><div class="page_contents_value">974ms</div></div><div class="page_contents_row" data-value="13s"><div class="page_contents_sub">체류 시간</div><div class="page_contents_value">13s</div></div><div class="page_contents_row" data-type="error" data-value="258"><div class="page_contents_sub"><svg width="10" height="10" fill="#FCB500"><ellipse cx="4" cy="6" rx="3" ry="3"></ellipse></svg>Error</div><div class="page_contents_value error">258</div></div><div class="page_contents_row" data-type="crash" data-value="0"><div class="page_contents_sub"><svg width="10" height="10" fill="#FF6969"><ellipse cx="4" cy="6" rx="3" ry="3"></ellipse></svg>Crash</div><div class="page_contents_value crash">0</div></div></div></div><div class="page webview"><div class="page_header webview"><div class="page_header_top"><i class="check_webview"></i><div class="page_header_title">구매 결제</div><div class="page_header_count">5K</div></div></div><div class="page_contents"><div class="page_contents_row" data-value="519ms"><div class="page_contents_sub">로딩 시간</div><div class="page_contents_value">519ms</div></div><div class="page_contents_row" data-value="510ms"><div class="page_contents_sub">응답 시간</div><div class="page_contents_value">510ms</div></div><div class="page_contents_row" data-value="448ms"><div class="page_contents_sub">체류 시간</div><div class="page_contents_value">448ms</div></div><div class="page_contents_row" data-type="error" data-value="91"><div class="page_contents_sub"><svg width="10" height="10" fill="#FCB500"><ellipse cx="4" cy="6" rx="3" ry="3"></ellipse></svg>Error</div><div class="page_contents_value error">91</div></div><div class="page_contents_row" data-type="crash" data-value="0"><div class="page_contents_sub"><svg width="10" height="10" fill="#FF6969"><ellipse cx="4" cy="6" rx="3" ry="3"></ellipse></svg>Crash</div><div class="page_contents_value crash">0</div></div></div></div></div></div><div class="swiper-slide swiper-slide-next" role="group" aria-label="3 / 3" style="width: 284px; margin-right: 20px;"><div class="page_wrap" data-idx="3" style="grid-template-columns: repeat(2, 1fr);"><div class="page webview"><div class="page_header webview"><div class="page_header_top"><i class="check_webview"></i><div class="page_header_title">강의실 목록</div><div class="page_header_count">3K</div></div></div><div class="page_contents"><div class="page_contents_row" data-value="526ms"><div class="page_contents_sub">로딩 시간</div><div class="page_contents_value">526ms</div></div><div class="page_contents_row" data-value="2s"><div class="page_contents_sub">응답 시간</div><div class="page_contents_value">2s</div></div><div class="page_contents_row" data-value="2s"><div class="page_contents_sub">체류 시간</div><div class="page_contents_value">2s</div></div><div class="page_contents_row" data-type="error" data-value="239"><div class="page_contents_sub"><svg width="10" height="10" fill="#FCB500"><ellipse cx="4" cy="6" rx="3" ry="3"></ellipse></svg>Error</div><div class="page_contents_value error">239</div></div><div class="page_contents_row" data-type="crash" data-value="0"><div class="page_contents_sub"><svg width="10" height="10" fill="#FF6969"><ellipse cx="4" cy="6" rx="3" ry="3"></ellipse></svg>Crash</div><div class="page_contents_value crash">0</div></div></div></div><div class="page webview"><div class="page_header webview"><div class="page_header_top"><i class="check_webview"></i><div class="page_header_title">상품 설명 3</div><div class="page_header_count">400</div></div></div><div class="page_contents"><div class="page_contents_row" data-value="543ms"><div class="page_contents_sub">로딩 시간</div><div class="page_contents_value">543ms</div></div><div class="page_contents_row" data-value="2s"><div class="page_contents_sub">응답 시간</div><div class="page_contents_value">2s</div></div><div class="page_contents_row" data-value="2s"><div class="page_contents_sub">체류 시간</div><div class="page_contents_value">2s</div></div><div class="page_contents_row" data-type="error" data-value="19"><div class="page_contents_sub"><svg width="10" height="10" fill="#FCB500"><ellipse cx="4" cy="6" rx="3" ry="3"></ellipse></svg>Error</div><div class="page_contents_value error">19</div></div><div class="page_contents_row" data-type="crash" data-value="0"><div class="page_contents_sub"><svg width="10" height="10" fill="#FF6969"><ellipse cx="4" cy="6" rx="3" ry="3"></ellipse></svg>Crash</div><div class="page_contents_value crash">0</div></div></div></div><div class="page webview"><div class="page_header webview"><div class="page_header_top"><i class="check_webview"></i><div class="page_header_title">상품 설명 1</div><div class="page_header_count">395</div></div></div><div class="page_contents"><div class="page_contents_row" data-value="496ms"><div class="page_contents_sub">로딩 시간</div><div class="page_contents_value">496ms</div></div><div class="page_contents_row" data-value="2s"><div class="page_contents_sub">응답 시간</div><div class="page_contents_value">2s</div></div><div class="page_contents_row" data-value="2s"><div class="page_contents_sub">체류 시간</div><div class="page_contents_value">2s</div></div><div class="page_contents_row" data-type="error" data-value="22"><div class="page_contents_sub"><svg width="10" height="10" fill="#FCB500"><ellipse cx="4" cy="6" rx="3" ry="3"></ellipse></svg>Error</div><div class="page_contents_value error">22</div></div><div class="page_contents_row" data-type="crash" data-value="0"><div class="page_contents_sub"><svg width="10" height="10" fill="#FF6969"><ellipse cx="4" cy="6" rx="3" ry="3"></ellipse></svg>Crash</div><div class="page_contents_value crash">0</div></div></div></div><div class="page webview"><div class="page_header webview"><div class="page_header_top"><i class="check_webview"></i><div class="page_header_title">상품 설명 2</div><div class="page_header_count">390</div></div></div><div class="page_contents"><div class="page_contents_row" data-value="525ms"><div class="page_contents_sub">로딩 시간</div><div class="page_contents_value">525ms</div></div><div class="page_contents_row" data-value="1s"><div class="page_contents_sub">응답 시간</div><div class="page_contents_value">1s</div></div><div class="page_contents_row" data-value="2s"><div class="page_contents_sub">체류 시간</div><div class="page_contents_value">2s</div></div><div class="page_contents_row" data-type="error" data-value="21"><div class="page_contents_sub"><svg width="10" height="10" fill="#FCB500"><ellipse cx="4" cy="6" rx="3" ry="3"></ellipse></svg>Error</div><div class="page_contents_value error">21</div></div><div class="page_contents_row" data-type="crash" data-value="0"><div class="page_contents_sub"><svg width="10" height="10" fill="#FF6969"><ellipse cx="4" cy="6" rx="3" ry="3"></ellipse></svg>Crash</div><div class="page_contents_value crash">0</div></div></div></div></div></div></div><div class="swiper-pagination swiper-pagination-bullets swiper-pagination-horizontal"><span class="swiper-pagination-bullet"></span><span class="swiper-pagination-bullet swiper-pagination-bullet-active" aria-current="true"></span><span class="swiper-pagination-bullet"></span></div><span class="swiper-notification" aria-live="assertive" aria-atomic="true"></span></div></div>
+</div></div>

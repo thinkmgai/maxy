@@ -1,0 +1,40 @@
+{
+  "query": {
+    "bool": {
+      "filter": [
+        {
+          "term": {
+            "deviceId.raw": #{deviceId}
+          }
+        },
+        {
+          "term": {
+            "packageNm": #{packageNm}
+          }
+        },
+        {
+          "term": {
+            "serverType": #{serverType}
+          }
+        },
+        #[isOsType]
+        {
+          "term": {
+            "osType": #{osType}
+      }
+        },
+        #[/isOsType]
+        {
+          "range": {
+            "logTm": {
+              "from": #{from},
+              "include_lower": true,
+              "include_upper": true,
+              "time_zone": "Z"
+            }
+          }
+        }
+      ]
+    }
+  }
+}

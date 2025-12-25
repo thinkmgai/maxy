@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta
+        content='width=device-width, user-scalable=yes, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0'
+        name='viewport'>
+    <meta charset='utf-8'>
+    <meta content='IE=edge' http-equiv='X-UA-Compatible'>
+    <title>email</title>
+</head>
+<body>
+<!-- 메일 템플릿 -->
+<div
+    style="position:relative;
+    width: 500px;
+    min-height:500px;
+    border:4px solid #DCDCDC;
+    padding:20px 20px 60px;"
+>
+    <img style="height: 24px;" src="${contextUrl}/images/maxy/maxy_BI_WH_mini.svg" alt="">
+    <h4 style="font-size:24px;
+        font-weight: 500;
+        margin-top:5px;
+        font-family:'나눔고딕',NanumGothic,'맑은고딕',Malgun Gothic,'돋움',Dotum,Helvetica,'Apple SD Gothic Neo',Sans-serif,serif;"
+    >
+        Report</h4>
+    <p style="text-align: left;
+       font-size: 13px;
+       color:#3d3d3d;
+       font-family:'나눔고딕',NanumGothic,'맑은고딕',Malgun Gothic,'돋움',Dotum,Helvetica,'Apple SD GothicNeo',Sans-serif,serif;"
+    >
+        안녕하세요.<br>
+        아래와 같이 보고서를 첨부해 드립니다.<br>
+        <br>
+        <strong>조회 기간:</strong> ${dateRange}<br>
+        <strong>App:</strong> ${packageNmText}<br>
+        <strong>OS:</strong> ${osTypeText}<br>
+        <strong>버전:</strong> ${appVerText}
+    </p>
+    <div
+        style="position:absolute;
+        bottom:0;
+        left: 0;
+        right:0;
+        color:#868686;
+        background-color: #dcdcdc;
+        width:100%;
+        height:44px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: '나눔고딕',NanumGothic,'맑은고딕',Malgun Gothic,'돋움',Dotum,Helvetica,'Apple SD Gothic Neo',Sans-serif,serif;"
+    >
+        COPYRIGHT MAXY, ALL RIGHTS RESERVED.
+    </div>
+</div>
+<!--// 메일 템플릿 -->
+</body>
+</html>

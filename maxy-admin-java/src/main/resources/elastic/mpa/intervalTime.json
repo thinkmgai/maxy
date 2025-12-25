@@ -1,0 +1,86 @@
+{
+  "aggs": {
+    "deviceModel": {
+      "terms": {
+        "field": "deviceModel",
+        "order": {
+          "usage": "desc"
+        },
+        "size": 7
+      },
+      "aggs": {
+        "usage": {
+          "avg": {
+            "field": "intervaltime"
+          }
+        },
+        "osType": {
+          "terms": {
+            "field": "osType",
+            "order": {
+              "_term": "desc"
+            },
+            "size": 7
+          }
+        }
+      }
+    },
+    "maxInterval": {
+      "max_bucket": {
+        "buckets_path": "deviceModel>usage"
+      }
+    },
+    "minInterval": {
+      "min_bucket": {
+        "buckets_path": "deviceModel>usage"
+      }
+    },
+    "avgInterval": {
+      "avg_bucket": {
+        "buckets_path": "deviceModel>usage"
+      }
+    }
+  },
+  "size": 0,
+  "query": {
+    "bool": {
+      "filter": [
+        {
+          "term": {
+            "logType": "131075"
+          }
+        },
+        {
+          "term": {
+            "packageNm": #{packageNm}
+          }
+      },
+        {
+          "term": {
+            "serverType": #{serverType}
+          }
+      },
+        #[isAppVer]
+        {
+          "term": {
+            "appVer": #{appVer}
+          }
+      },
+        #[/isAppVer]
+        {
+          "term": {
+            "osType": #{osType}
+          }
+      },
+        {
+          "range": {
+            "logTm": {
+              "gte": #{fromDt},
+              "lte": #{toDt}
+            }
+          }
+        }
+      ]
+    }
+  }
+}

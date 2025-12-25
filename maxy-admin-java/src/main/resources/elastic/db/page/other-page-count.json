@@ -1,0 +1,82 @@
+{
+  "aggs": {
+    "other-filter": {
+      "filters": {
+        "filters": {
+          "other": {
+            "bool": {
+              "filter": [
+                {
+                  "exists": {
+                    "field": "aliasValue"
+                  }
+                }
+              ],
+              "must_not": [
+                {
+                  "term": {
+                    "aliasValue": #{page_0}
+                  }
+                },
+                {
+                  "term": {
+                    "aliasValue": #{page_1}
+                  }
+                },
+                {
+                  "term": {
+                    "aliasValue": #{page_2}
+                  }
+                },
+                {
+                  "term": {
+                    "aliasValue": #{page_3}
+                  }
+                },
+                {
+                  "term": {
+                    "aliasValue": #{page_4}
+                  }
+                }
+              ]
+            }
+          }
+        }
+      }
+    }
+  },
+  "size": 0,
+  "query": {
+    "bool": {
+      "filter": [
+        {
+          "term": {
+            "packageNm": #{packageNm}
+          }
+        },
+        {
+          "term": {
+            "serverType": #{serverType}
+          }
+        },
+        #[isOsType]
+        {
+          "term": {
+            "osType": #{osType}
+      }
+        },
+        #[/isOsType]
+        {
+          "range": {
+            "pageStartTm": {
+              "from": #{fromTimestamp},
+              "include_lower": true,
+              "include_upper": true,
+              "time_zone": "Z"
+            }
+          }
+        }
+      ]
+    }
+  }
+}

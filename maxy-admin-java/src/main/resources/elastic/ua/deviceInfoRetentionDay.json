@@ -1,0 +1,66 @@
+{
+  "size": #{size},
+  "query": {
+    "bool": {
+      "must": [
+        {
+          "bool" : {
+            "must" : [
+              {
+                "term" : {
+                  "packageNm" : {
+                    "value" : #{packageNm}
+                  }
+                }
+              },
+              {
+                "term" : {
+                  "serverType" : {
+                    "value" : #{serverType}
+                  }
+                }
+              }
+            ],
+            "filter": [
+              {
+                "range": {
+                  "appStartTm": {
+                    "gte": #{searchToDay},
+                    "lte": #{searchFromDay},
+                    "format": "date",
+                    "time_zone": "Asia/Seoul"
+                  }
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  },
+  "aggs": {
+    "test2": {
+      "date_histogram": {
+        "min_doc_count": 0,
+        "extended_bounds": {
+          "min": #{searchToDay},
+          "max": #{searchFromDay}
+        },
+        "field": "appStartTm",
+        "interval": "day",
+        "time_zone": "Asia/Seoul",
+        "format": "date",
+        "order": {
+          "_term": "asc"
+        }
+      },
+      "aggs": {
+        "test1": {
+          "terms": {
+            "field": "retentionDay"
+          }
+        }
+      }
+    }
+  }
+}

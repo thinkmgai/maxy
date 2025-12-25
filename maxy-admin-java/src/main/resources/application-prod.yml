@@ -1,0 +1,115 @@
+server:
+  port: 8080
+  servlet:
+    session:
+      tracking-modes: cookie
+  shutdown: graceful
+  error:
+    whitelabel:
+      enabled: false
+    path: /error
+  compression:
+    enabled: true
+    mime-types: text/html,text/plain,text/css,application/javascript,application/json,image/svg+xml
+    min-response-size: 500
+
+security:
+  pass:
+    error-count: 5
+    expire-date: 90
+  session:
+    cookie: true
+    timeout: -1
+  key: thinkmisthebestm
+
+mybatis:
+  check-config-location: true
+  type-aliases-package: com.thinkm.maxy.vo
+  configuration:
+    map-underscore-to-camel-case: true
+
+spring:
+  main:
+    allow-bean-definition-overriding: true
+  mail:
+    properties:
+      mail:
+        debug: true
+      smtp:
+        auth: 5000
+        ssl:
+          enable: true
+        connectiontimeout: 5000
+        starttls:
+          enable: true
+    host: smtp.gmail.com
+    port: 465
+    # if not use -> comment or delete
+    username: maxy.thinkm@gmail.com
+    # if not use -> comment or delete
+    password: bvgp pktg vsso gtek
+
+  datasource:
+    driver-class-name: org.mariadb.jdbc.Driver
+    username: maxy
+    password: maxy!@#
+    url: jdbc:mariadb://maxy.thinkm.co.kr:13306/maxy?useUnicode=true&amp;characterEncoding=utf8&amp;autoReconnect=true
+  redis:
+    host: maxy.thinkm.co.kr
+    port: 16379
+    password: mpas!@#
+    lettuce:
+      pool:
+        enabled: true
+        max-active: 10
+        max-idle: 10
+        min-idle: 2
+        max-wait: -1ms
+    sentinel:
+      use: false
+      master: mymaster
+      nodes: 192.168.10.254:7100,192.168.10.137:7100,192.168.10.137:7101
+  elasticsearch:
+    rest:
+      uris: maxy.thinkm.co.kr:9200
+      username: admin
+      password: maxy123%^%!
+      protocol: https
+      auth: true
+  kafka:
+    host: 192.168.10.9:9092
+
+network:
+  # websocket
+  websocket:
+    ssl: false
+    url: maxy.thinkm.co.kr:18081
+  # context url for mail image, etc..
+  context-url: https://maxy.thinkm.co.kr
+
+  jennifer:
+    url: http://192.168.10.137:7900
+    token: YCgpZ2G0jBp
+
+# In a production environment, This path must be located in `/maxy/**`
+dir:
+  obfuscation: obf
+  tmp: tmp
+
+maxy:
+  # user analysis search userid to uppercase setting.
+  userid-uppercase: false
+  # When querying response time pop-up data, provide range conditions for top and bot values.
+  response-slice-threshold: true
+  # When querying response time pop-up data, histogram interval values. (ms)
+  response-aggs-interval: 10
+  # When querying response time pop-up data, minus hour (h)
+  response-aggs-hour: 72
+  # health check enable
+  health-check: false
+  # user id masking
+  userid-masking: false
+  # logmeter throttle (ms)
+  logmeter-throttle-ms: 10
+  # is production environment
+  production: true

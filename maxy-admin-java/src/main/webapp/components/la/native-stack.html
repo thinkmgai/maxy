@@ -1,0 +1,22 @@
+<ul class="native_stack_table enable_scrollbar">
+  {{#each this}}
+      {{#if threadName}}
+      <li class="trace">
+        <div class="data thread_name" data-type="{{@index}}">Thread Name: {{threadName}}</div>
+            {{#each subLine}}
+                <div class="subline" data-type="{{@../index}}">{{text}}</div>
+            {{/each}}
+
+            {{#each child}}
+                <div class="child" data-type="{{@../index}}">{{text}}</div>
+            {{/each}}
+      </li>
+
+      {{else}}
+      <li>
+        <div class="data">{{this}}</div>
+      </li>
+      {{/if}}
+
+  {{/each}}
+</ul>

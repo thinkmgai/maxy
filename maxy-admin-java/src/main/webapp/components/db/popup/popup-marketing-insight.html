@@ -1,0 +1,473 @@
+<!--
+    종합 분석 > Marketing Insight 팝업
+-->
+
+<style>
+    #marketingInsight__popup .btn_common, #marketingInsight__popup .icon_text {
+        border: 1px solid var(--color-btn-light-2);
+        color: var(--color-btn-light-2);
+        font-weight: 500;
+        padding-left: 2.2em;
+        padding-right: 1.5em;
+        background-position: 11% center;
+        background-repeat: no-repeat;
+        background-size: 13px;
+        background-image: url(/images/maxy/icon-btn-off.svg);
+    }
+
+    #marketingInsight__popup .icon_text {
+        padding-left: 1.5em;
+    }
+
+    .dark_mode #marketingInsight__popup .btn_common.bounce, #marketingInsight__popup .btn_common.bounce,
+    .dark_mode #marketingInsight__popup .icon_text.bounce, #marketingInsight__popup .icon_text.bounce {
+        background-image: url(/images/maxy/icon-btn-red.svg);
+        color: #CA4A4A;
+    }
+
+    .dark_mode #marketingInsight__popup .btn_common.reach, #marketingInsight__popup .btn_common.reach,
+    .dark_mode #marketingInsight__popup .icon_text.reach, #marketingInsight__popup .icon_text.reach {
+        background-image: url(/images/maxy/icon-btn-on.svg);
+        color: var(--logo-purple-1);
+    }
+
+    .dark_mode #marketingInsight__popup .btn_common {
+        background-image: url(/images/maxy/dark-icon-btn-off.svg);
+        color: var(--color-btn-dark-2);
+        background-color: #222222;
+        border: 1px solid var(--black-2);
+    }
+
+    #marketingInsight__popup .icon_text {
+        border: none;
+        background-position: 0.1em center;
+    }
+
+    .marketing_insight.user_flow_wrap {
+        min-height: 280px;
+        border: 1px solid var(--color-border-out-light);
+        border-radius: var(--radius);
+        height: calc(100% - 49vh);
+    }
+
+    .dark_mode .marketing_insight.user_flow_wrap {
+        background-color: var(--dark-background) !important;
+        border: none;
+    }
+
+    .marketing_insight.user_flow_wrap > h4 {
+        font-weight: 700;
+        font-size: 14px;
+        margin-bottom: 1.2em;
+        color: var(--black-2);
+    }
+
+    .dark_mode .marketing_insight.user_flow_wrap > h4 {
+        color: var(--black-7);
+    }
+
+    .marketing_insight.user_flow_wrap .head_wrap {
+        padding: 1.2em 0 0 1.2em;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .marketing_insight.user_flow_wrap .head_wrap .right_side_wrap {
+        padding: 0;
+        display: flex;
+    }
+
+    .marketing_insight.user_flow_wrap .head_wrap .right_side_wrap .summary_title {
+        color: #4b4b4b;
+    }
+
+    .marketing_insight.user_flow_wrap .head_wrap .right_side_wrap .summary_content {
+        font-weight: 500;
+    }
+
+    .marketing_insight.user_flow_wrap .head_wrap .right_side_wrap > div {
+        width: 150px;
+        padding: 0 1em;
+        display: flex;
+        align-items: center;
+        gap: 0.5em;
+    }
+
+    .dark_mode .marketing_insight.user_flow_wrap .head_wrap .right_side_wrap .summary_title {
+        color: #c4c4c4;
+    }
+
+    .marketing_insight.user_flow_wrap .graph_wrap {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 1%;
+        width: auto;
+        margin-top: 0;
+        height: 90%;
+    }
+
+    .marketing_insight.user_flow_wrap .graph_wrap .page_wrap img.pinpoint {
+        position: absolute;
+        top: 2%;
+        width: 2%;
+    }
+
+    .marketing_insight.user_flow_wrap .graph_wrap .page_wrap img.pinpoint.gray {
+        content: url("/images/maxy/user-page-gray-pinpoint.svg");
+    }
+
+    .marketing_insight.user_flow_wrap .graph_wrap .page_wrap img.pinpoint.blue {
+        content: url("/images/maxy/user-page-blue-pinpoint.svg");
+    }
+
+    .marketing_insight.user_flow_wrap .graph_wrap .page_wrap img.pinpoint.red {
+        content: url("/images/maxy/user-page-red-pinpoint.svg");
+    }
+
+    .marketing_insight.user_flow_wrap .graph_wrap img.link.gray {
+        content: url("/images/maxy/user-page-gray-link.svg");
+    }
+
+    .marketing_insight.user_flow_wrap .graph_wrap img.link.blue {
+        content: url("/images/maxy/user-page-blue-link.svg");
+    }
+
+    .marketing_insight.user_flow_wrap .graph_wrap img.link.red {
+        content: url("/images/maxy/user-page-red-link.svg");
+    }
+
+    .small_paging_button_wrap button {
+        min-width: 28px;
+        width: 28px;
+        border-radius: var(--radius);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border: 1px solid var(--color-border-out-light);
+        background: var(--black-9);
+        color: var(--color-grid-paging);
+        padding: 5px 10px;
+        font-size: 13px;
+    }
+
+    .small_paging_button_wrap button:disabled {
+        opacity: .5;
+        cursor: default;
+    }
+
+    .small_paging_button_wrap button > span {
+        line-height: 100%;
+    }
+
+    .dark_mode .small_paging_button_wrap button {
+        border: 1px solid #4D4D4D;
+        background-color: var(--color-block-dark-1) !important;
+        color: var(--black-9);
+    }
+
+    #marketingInsight__popup .btn_graphic_open {
+        position: fixed;
+        width: 21px;
+        height: 70px;
+        right: 0;
+        top: 50%;
+        transform: translate(0, -50%);
+        background-image: url(/images/maxy/button-user-flow-open.svg);
+        background-repeat: no-repeat;
+        background-size: 32px;
+    }
+
+    .dark_mode #marketingInsight__popup .btn_graphic_open {
+        background-image: url(/images/maxy/dark-button-user-flow-open.svg);
+    }
+
+    #marketingInsight__popup .maxy_popup_sub_title_wrap {
+        grid-template-rows: 2fr 1fr;
+    }
+
+    #marketingInsight__popup .maxy_popup_sub_title_wrap > div {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5em;
+    }
+
+    .chart_graphic {
+        height: 100%;
+        border: 1px solid var(--color-border-out-light);
+        border-radius: var(--radius);
+    }
+
+    .dark_mode .chart_graphic {
+        border: none;
+    }
+
+    .chart_graphic_wrap {
+        background-color: white;
+        height: 100%;
+        min-height: 400px;
+        width: 74vw; /* 차트 그래프 너비 */
+        min-width: 1100px;
+        visibility: hidden; /* 기본적으로 숨김 */
+        overflow: hidden;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%) scaleX(0); /* 우측 끝에서 시작 (수평 크기 0) */
+        transform-origin: right center; /* 우측 끝을 기준으로 애니메이션 */
+        transition: transform 0.3s linear; /* 애니메이션 속도 증가 */
+        padding: 20px 30px;
+        display: grid;
+        border-radius: 5px;
+    }
+
+    .maxy_popup_gray_bg_wrap.chart_graphic_wrap .btn_graphic_close {
+        position: fixed;
+        left: 0;
+        top: 50%;
+    }
+
+    #marketingInsight__popup .btn_graphic_close {
+        position: fixed;
+        z-index: 20;
+        width: 21px;
+        height: 70px;
+        top: 41%;
+        transform: translate(0, -50%);
+        background-image: url(/images/maxy/button-user-flow-open.svg);
+        rotate: 180deg;
+        background-repeat: no-repeat;
+        background-size: 32px;
+    }
+
+    .dark_mode #marketingInsight__popup .btn_graphic_close {
+        background-image: url(/images/maxy/dark-button-user-flow-open.svg);
+    }
+
+    .maxy_popup_gray_bg_wrap.chart_graphic_wrap.hidden {
+        visibility: visible; /* 보여지는 상태에서 축소 */
+        transform: translate(-50%, -50%) scaleX(0); /* 수평 크기 0으로 축소 (우측 끝 기준) */
+        transform-origin: right center; /* 우측 끝에서 접히도록 설정 */
+    }
+
+    .chart_graphic_wrap.show {
+        visibility: visible; /* 보이도록 설정 */
+        transform: translate(-50%, -50%) scaleX(1); /* 수평 크기 1로 확장 */
+    }
+
+    /* 차트그래프 안 텍스트의 아웃라인 */
+    #marketingInsight__popup .highcharts-text-outline {
+        font-size: 1em;
+    }
+
+    .dark_mode #marketingInsight__popup .highcharts-text-outline {
+        stroke: black !important;
+    }
+
+    /* 차트 그래프 칸마다 흰색 줄 없앰 */
+    #marketingInsight__popup .highcharts-series > path {
+        stroke: none;
+    }
+
+    #marketingInsight__userFlow .page {
+        width: 200px;
+        height: 150px !important;
+    }
+
+    #marketingInsight__userFlow .page_header {
+        border-bottom-left-radius: 0;
+        border-bottom-right-radius: 0;
+        height: 50px;
+    }
+
+    #marketingInsight__userFlow .page_content li:nth-child(4),
+    #marketingInsight__userFlow .page_content li:nth-child(5)
+    {
+        display: none;
+    }
+
+    #marketingInsight__userFlow .page_content {
+        border-bottom-left-radius: var(--radius);
+        border-bottom-right-radius: var(--radius);
+    }
+
+    #marketingInsight__userFlow .page_wrap_wrap {
+        justify-content: center;
+        padding: 0;
+    }
+
+    #marketingInsight__userFlow .folding_btn {
+        display: none;
+    }
+
+    #marketingInsight__userFlow .right_side_wrap {
+        display: none;
+    }
+
+    #marketingInsight__userFlow .content_title {
+        padding-bottom: 0.5em;
+        padding-top: 0.5em;
+        text-overflow: initial;
+        line-height: normal;
+        word-break: break-all;
+        white-space: normal;
+        overflow: auto;
+        max-height: 100%;
+    }
+
+    .marketing_insight.user_flow_wrap .head_wrap h4 {
+        font-weight: 700;
+    }
+
+    .marketing_title {
+        display: flex;
+        gap: 0.5em;
+        align-items: center;
+    }
+
+    .marketing_insight .marketing_title:first-child img {
+        content: url("/images/maxy/icon-page-location-gray.svg");
+    }
+
+    .marketing_insight .marketing_title:last-child img {
+        content: url("/images/maxy/icon-page-location-blue.svg");
+    }
+
+    #marketingInsight__popup .user_behavior_analysis_wrap {
+        display: flex;
+        height: 100%;
+    }
+
+    #marketingInsight__popup .user_flow_wrap .graph_wrap .user_behavior_analysis_wrap {
+        border-bottom: none !important;
+    }
+</style>
+
+<div class="maxy_popup_common" id="{{id}}__popup">
+    <div class="maxy_popup_grid_s_wrap">
+        <div class="maxy_popup_title_wrap">
+            <div class="maxy_popup_title_left">
+                <img class="img_profiling" alt="">
+                <span class="popup_title">Profiling/</span>
+                <span>Marketing Insight</span>
+                <span id="count" class="popup_count"></span>
+                <div class="sub_title_wrap cursor_pointer">
+                    <div class="sub_title" id="{{id}}_deviceModel">
+                        <i class="icon_device" id="iconDevice"></i>
+                        <span class="device_name" id="deviceModel">-</span>
+                    </div>
+                    <div class="sub_title" id="{{id}}_appVer">
+                        <i class="icon_gear"></i>
+                        <span id="appVer">-</span>
+                    </div>
+                    <div class="sub_title" id="{{id}}_osVer">
+                        <i class="icon_os" id=""></i>
+                        <span id="osVer">-</span>
+                    </div>
+                    <div class="sub_title" id="{{id}}_comType">
+                        <i class="icon_network"></i>
+                        <span id="comType">-</span>
+                    </div>
+                    <div class="sub_title" id="{{id}}_simOperator">
+                        <i class="icon_simoperator"></i>
+                        <span id="simOperatorNm">-</span>
+                    </div>
+                    <div class="sub_title" id="{{id}}_location">
+                        <i class="icon_time_zone"></i>
+                        <span id="timezone">-</span>
+                    </div>
+                    <div class="sub_title" id="{{id}}_logType">
+                        <i class="icon_log_type"></i>
+                        <span id="logType">-</span>
+                    </div>
+                    <div class="sub_title user_id" id="{{id}}_userId">
+                        <i class="icon_user"></i>
+                        <span id="userId">-</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="maxy_popup_title_right">
+                <img class="btn_page_flow" id="btnPageFlow" alt="">
+            </div>
+        </div>
+
+        <div class="summary_dv_wrap">
+            <div>
+                <button class="btn_common" id="reach" data-t="common.text.reachuser"></button>
+                <button class="
+                btn_common" id="bounce" data-t="common.text.bounceuser"></button>
+            </div>
+            <div class="dv_count">
+                <div>
+                    <h4>{{typeTitle}} User:</h4>
+                    <div id="pUser"></div>
+                </div>
+                /
+                <div>
+                    <h4>Lead Time Avg: </h4>
+                    <div id="pLeadTimeAvg"></div>
+                </div>
+                <div class="small_paging_button_wrap">
+                    <button class="btn_prev" id="{{id}}BtnPrev">
+                        <span data-t="common.btn.◀"></span>
+                    </button>
+                    <button class="btn_next" id="{{id}}BtnNext">
+                        <span data-t="common.btn.▶"></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div id="{{id}}__list"></div>
+
+        <div class="marketing_insight user_flow_wrap" id="{{id}}__userFlow">
+            <div class="head_wrap">
+                <h4>User Behavior Flow</h4>
+                <div class="right_side_wrap">
+                    <div>
+                        <img alt="" class="img_time">
+                        <span class="summary_title" data-t="common.text.loadingTime"></span>
+                        <span class="summary_content" data-loading-time>-</span>
+                    </div>
+                    <div>
+                        <img alt="" class="img_time">
+                        <span class="summary_title" data-t="common.text.responseTime"></span>
+                        <span class="summary_content" data-response-time>-</span>
+                    </div>
+                    <div>
+                        <img alt="" class="img_time">
+                        <span class="summary_title" data-t="common.text.stayTime"></span>
+                        <span class="summary_content" data-interval-time>-</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="graph_wrap">
+            </div>
+        </div>
+
+        <button class="btn_graphic_open"></button>
+        <div class="maxy_popup_gray_bg_wrap chart_graphic_wrap">
+            <div class="maxy_popup_sub_title_wrap marketing_insight">
+                <div>
+                    <div class="marketing_title">
+                        <img>
+                        <span id="{{id}}__preUrl"></span>
+                    </div>
+                    <div class="marketing_title">
+                        <img>
+                        <span id="{{id}}__reqUrl"></span>
+                    </div>
+                </div>
+                <div>
+                    <span class="icon_text reach"></span>
+                    <span class="icon_text bounce"></span>
+                </div>
+            </div>
+            <div class="chart_graphic" id="{{id}}__sankeyChart"></div>
+            <button class="btn_graphic_close"></button>
+        </div>
+    </div>
+</div>

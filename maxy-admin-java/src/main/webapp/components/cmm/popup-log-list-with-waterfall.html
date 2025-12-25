@@ -1,0 +1,230 @@
+<!-- 성능 분석 > LoadingTime > 팝업 -->
+<style>
+    .maxy_popup_title_left .title,
+    .web_chart_wrap .detail_title {
+        font-weight: 700 !important;
+    }
+
+    .popup_common.alias_popup {
+        position: fixed !important;
+    }
+
+    .maxy_popup_title_left .mg_left {
+        margin-left: 16px;
+    }
+
+    .tippy-box {
+        max-width: 350px;
+        word-wrap: break-word;
+    }
+
+    .tippy-box[data-theme~='maxy-resource-tooltip'] .maxy_tooltip_header {
+        word-break: break-all;
+    }
+
+    .graph_content_w .content_wrap img {
+        width: 15px;
+        height: 15px;
+        margin-top: 2px;
+    }
+
+    .tabulator .tabulator-header .tabulator-col .tabulator-col-content .tabulator-col-title {
+        text-overflow: inherit;
+    }
+
+    .content_data::-webkit-scrollbar:horizontal {
+        display: none !important;
+    }
+
+    .tabulator-cell[tabulator-field="deviceId"] div {
+        overflow-x: hidden;
+        text-overflow: ellipsis;
+    }
+
+    @media screen and (max-width: 1440px) {
+        #logDetail__popup .sub_title_wrap .sub_title > span {
+            max-width: 5vw;
+        }
+    }
+
+    .popup_right_side_wrap {
+        width: 90%;
+        height: calc(100% - 80px);
+        top: 80px;
+        overflow-y: auto; /* 세로 스크롤을 추가하여 내용이 넘칠 경우 스크롤 가능하도록 함 */
+    }
+
+    #loadingTime__logList, #ajaxPageAnalysis__logList {
+        height: 100% !important;
+    }
+
+    #logDetail__popup .dv4_wrap, #logDetail__popup .detail_title {
+        display: none;
+    }
+
+    #ajaxPageAnalysis__popup .web_chart_wrap {
+        grid-template-rows: 3% 27% 11% 56% !important;
+    }
+
+    #ajaxPageAnalysis__popup .dv4_wrap {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 1%;
+        border: none;
+    }
+
+    #ajaxPageAnalysis__popup .dv_content {
+        border: 1px solid #e3e5e8;
+        border-radius: var(--radius);
+        padding: 1em;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    #ajaxPageAnalysis__popup .detail_title {
+        border: none;
+    }
+
+    #ajaxPageAnalysis__webVitalFull {
+        padding-bottom: 0;
+        padding-top: 0;
+        display: grid;
+        grid-template-rows: repeat(2, 1fr);
+    }
+
+    #ajaxPageAnalysis__webVitalFull .api_detail {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-evenly;
+    }
+
+    #ajaxPageAnalysis__webVitalFull .api_detail:nth-child(1) {
+        border-bottom: 1px solid #e3e5e8;
+    }
+
+    #ajaxPageAnalysis__webVitalFull .api_detail .detail_row {
+        display: grid;
+        grid-template-columns: 7% 91%;
+        gap: 2%;
+    }
+
+    #ajaxPageAnalysis__webVitalFull .api_detail .title,
+    #ajaxPageAnalysis__popup .dv_content .key {
+        color: var(--color-subtitle-light);
+    }
+
+    #ajaxPageAnalysis__webVitalFull .api_detail .dv2_wrap {
+        display: grid;
+        grid-template-columns: 47% 53%;
+    }
+
+    #ajaxPageAnalysis__webVitalFull .api_detail .dv2_wrap .detail_row {
+        grid-template-columns: 17% 81%;
+    }
+
+    .maxy_table_wrap_v2.log_list .btn_yn {
+        width: 100%;
+        font-weight: 500;
+        color: var(--logo-purple-2);
+    }
+
+    .dark_mode .maxy_table_wrap_v2.log_list .btn_yn {
+        color: #101010 !important;
+    }
+
+    .maxy_table_wrap_v2.log_list .btn_yn.good {
+        background-color: var(--point-green);
+        color: white;
+    }
+
+    .maxy_table_wrap_v2.log_list .btn_yn.improve {
+        background-color: var(--point-yellow);
+        color: white;
+    }
+
+    .maxy_table_wrap_v2.log_list .btn_yn.poor {
+        background-color: var(--point-red);
+        color: white;
+    }
+
+    .event_time_line_wrap {
+        padding: 15px 20px 0 15px !important;
+    }
+
+    /* 새로운 클래스 추가: 이벤트 타임라인이 표시될 때 grid 스타일 제거 */
+    .web_chart_wrap.no-grid-display {
+        display: block !important;
+    }
+    .btn_alias {
+        margin-left: 0;
+    }
+</style>
+<div class="maxy_popup_common" id="{{id}}__popup">
+
+    <div class="maxy_popup_grid_s_wrap">
+        <div class="maxy_popup_title_wrap">
+            <div class="maxy_popup_title_left">
+                <img class="img_profiling" alt="" src="">
+                <span class="title" id="title">Profiling</span>
+                <span class="popup_type"></span>
+                <span id="count" class="popup_count"></span>
+                <div class="sub_title_wrap cursor_pointer">
+                     <span class="sub_title mg_left" id="pDeviceName">
+                         <i class="icon_device"></i>
+                         <span class="device_name"></span>
+                    </span>
+                    <span class="sub_title" id="pAppVer">
+                        <i class="icon_app_ver"></i>
+                        <span></span>
+                    </span>
+                    <span class="sub_title" id="pOsVer">
+                        <i class="icon_os android"></i>
+                        <span></span>
+                    </span>
+                    <div class="sub_title" id="pComType">
+                        <i class="icon_network"></i>
+                        <span id="pComTypeTxt"></span>
+                    </div>
+                    <div class="sub_title" id="pSimOperator">
+                        <i class="icon_simoperator"></i>
+                        <span id="pSimOperatorNm"></span>
+                    </div>
+                    <div class="sub_title" id="pLocation">
+                        <i class="icon_time_zone"></i>
+                        <span id="pTimeZone"></span>
+                    </div>
+                    <div class="sub_title" id="pLogType">
+                        <i class="icon_log_type webview"></i>
+                        <span id="pLogTypeNm"></span>
+                    </div>
+                    <div class="sub_title user_id" id="pUserId">
+                        <i class="icon_user"></i>
+                        <span id="pUserIdTxt"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="maxy_popup_title_right">
+                <img class="btn_page_flow" id="btnPageFlow" alt="">
+            </div>
+        </div>
+        <div class="maxy_popup_sub_title">
+            <div class="sub_title_left">
+                <span class="desc" id="pAliasValue"></span>
+                <span class="url" id="pReqUrl"></span>
+                <button class="btn_alias"></button>
+            </div>
+        </div>
+
+        <div class="maxy_table_wrap_v2 log_list" id="{{id}}__logList"></div>
+    </div>
+
+    <div class="maxy_popup_gray_bg_wrap popup_right_side_wrap">
+        <div class="web_chart_wrap">
+            <div class="web_vital_wrap maxy_box" id="{{id}}__webVitalFull"></div>
+            <div class="web_performance_wrap maxy_box" id="{{id}}__waterfall"></div>
+            <!-- Navite화면용 Event Time Line -->
+            <div class="event_time_line_wrap" id="{{id}}__eventTimeLine"></div>
+        </div>
+    </div>
+</div>

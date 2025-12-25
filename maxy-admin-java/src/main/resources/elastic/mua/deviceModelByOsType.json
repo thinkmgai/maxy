@@ -1,0 +1,57 @@
+{
+  "aggs": {
+    "deviceModel": {
+      "terms": {
+        "field": "deviceModel",
+        "order": {
+          "count": "desc"
+        },
+        "size": 5
+      },
+      "aggs": {
+        "count": {
+          "cardinality": {
+            "field": "deviceId.raw"
+          }
+        }
+      }
+    }
+  },
+  "size": 0,
+  "query": {
+    "bool": {
+      "filter": [
+        {
+          "term": {
+            "packageNm": #{packageNm}
+          }
+        }, {
+          "term": {
+            "serverType": #{serverType}
+          }
+        },
+        #[isAppVer]
+        {
+          "term": {
+            "appVer": #{appVer}
+          }
+        },
+        #[/isAppVer]
+        {
+          "range": {
+            "logTm": {
+              "gte": #{searchFromDt},
+              "lte": #{searchToDt},
+              "format": "epoch_millis"
+            }
+          }
+        },
+        {
+          "term": {
+            "osType": #{osType}
+          }
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,35 @@
+<style>
+    select.area_option_box {
+        height: 21px;
+    }
+
+    .dark_mode .highcharts-series.highcharts-series-0.highcharts-map-series.highcharts-color-0.highcharts-tracker path {
+        opacity: 0.5;
+        stroke: #a2a2a2;
+    }
+
+    .dark_mode .highcharts-map-navigation.highcharts-zoom-in > path:nth-child(2),
+    .dark_mode .highcharts-map-navigation.highcharts-zoom-out > path:nth-child(2) {
+        fill: #222222;
+        stroke: #444444;
+    }
+</style>
+<div class="maxy_component_wrap" id="{{id}}__chartWrap">
+    <div class="maxy_component_header space_between" id="{{id}}__header">
+        <div class="header_title">
+            <h4>{{title}}</h4>
+            <img class="ic_question"
+                 alt="?"
+            >
+        </div>
+        <div class="" id="">
+            <select class="area_option_box" id="areaOption">
+                <option value="User" data-type="user">User Distribution</option>
+                <option value="Loading" data-type="loading">Loading Time</option>
+                <option value="Response" data-type="response">Response Time</option>
+            </select>
+        </div>
+
+    </div>
+    <div class="maxy_component_item" id="{{id}}__chart"></div>
+</div>

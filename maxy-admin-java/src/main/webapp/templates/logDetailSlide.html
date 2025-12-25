@@ -1,0 +1,106 @@
+<!--
+    Source Map Guide 슬라이드 팝업 템플릿
+-->
+<style>
+    .log_detail_slide .title {
+        font-weight: 700;
+    }
+
+    .log_detail_slide .right_detail {
+        display: grid;
+        grid-template-rows: auto 1fr;
+        height: 100%;
+        overflow: hidden;
+    }
+
+    .log_detail_slide .source_map_header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        min-height: 50px;
+        box-sizing: border-box;
+    }
+
+    .log_detail_slide .source_map_title {
+        font-size: 16px;
+        font-weight: 600;
+        color: #333;
+    }
+
+    .log_detail_slide .btn_popup_right_side.close {
+        width: 24px;
+        height: 24px;
+        background-image: url('/images/maxy/icon-x.svg');
+        background-repeat: no-repeat;
+        background-size: 16px;
+        background-position: center;
+        border: none;
+        cursor: pointer;
+    }
+
+    .dark_mode .log_detail_slide .btn_popup_right_side.close {
+        background-image: url('/images/maxy/dark-icon-x.svg');
+    }
+
+    .source_map_content_wrap {
+        display: grid;
+        grid-template-rows: 80px 120px 1fr;
+        gap: 15px;
+        height: calc(100% - 40px);
+        overflow-y: auto;
+    }
+
+    .log_detail_slide .log_type_details {
+        border-radius: 8px;
+        border: 1px solid var(--color-border-out-light);
+        padding: 10px 10px 20px;
+    }
+
+    .log_detail_slide .log_type_details:last-child {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 0;
+    }
+
+    .log_detail_slide .textarea_wrap {
+        flex: 1;
+        min-height: 0;
+        height: 100%;
+    }
+
+    .log_detail_slide textarea {
+        width: 100%;
+        height: 100%;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        padding: 10px;
+        font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+        font-size: 13px;
+        line-height: 1.4;
+        resize: vertical;
+        box-sizing: border-box;
+    }
+
+    .log_detail_slide .bold_purple {
+        color: #7277FF;
+        font-weight: 600;
+        font-size: 14px;
+        display: block;
+    }
+
+    .log_detail_slide .stack-trace-container {
+        height: auto;
+    }
+</style>
+
+<div class="maxy_popup_grid_s_wrap log_detail_popup">
+    <div class="maxy_popup_title_wrap">
+        <div class="maxy_popup_title_left">
+            <span class="title">Log Detail</span>
+        </div>
+    </div>
+    <div class="source_map_content_wrap">
+        <!-- log_detail_contents_wrap의 내용이 여기에 동적으로 삽입됩니다 -->
+    </div>
+</div>

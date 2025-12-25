@@ -1,0 +1,66 @@
+{
+  "aggs": {
+    "2": {
+      "date_histogram": {
+        "field": "pageStartTm",
+        "format": "hour_minute_second",
+        "fixed_interval": "30s",
+        "time_zone": "Asia/Seoul",
+        "min_doc_count": 0
+      }
+    }
+  },
+  "size": 0,
+  "stored_fields": [
+    "*"
+  ],
+  "script_fields": {},
+  "_source": {
+    "excludes": []
+  },
+  "query": {
+    "bool": {
+      "must": [
+        {
+          "term" : {
+            "packageNm": {
+              "value": #{packageNm}
+          }
+        }
+      },
+        {
+          "term" : {
+            "serverType": {
+              "value": #{serverType}
+          }
+        }
+      }
+        #[isAppVer]
+        ,{
+          "term" : {
+            "appVer" : {
+              "value" : #{appVer}
+            }
+          }
+        }
+        #[/isAppVer]
+      ],
+      "filter": [
+        {
+          "match_all": {}
+        },
+        {
+          "range": {
+            "pageStartTm": {
+              "from": #{searchToPageFlowTime},
+              "to": #{searchFromPageFlowTime},
+              "format": "epoch_millis"
+            }
+          }
+        }
+      ],
+      "should": [],
+      "must_not": []
+    }
+  }
+}

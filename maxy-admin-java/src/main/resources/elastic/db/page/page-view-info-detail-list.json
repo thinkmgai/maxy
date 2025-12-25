@@ -1,0 +1,57 @@
+{
+  "aggs": {
+    "res": {
+      "date_histogram": {
+        "field": "pageStartTm",
+        "calendar_interval": #{calendarInterval},
+        "time_zone": "Asia/Seoul",
+        "min_doc_count": 0
+      },
+      "aggs": {
+        "viewer": {
+          "cardinality": {
+            "field": "deviceId.raw"
+          }
+        }
+      }
+    }
+  },
+  "size": 0,
+  "query": {
+    "bool": {
+      "filter": [
+        {
+          "term": {
+            "packageNm": #{packageNm}
+          }
+        },
+        {
+          "term": {
+            "serverType": #{serverType}
+          }
+        },
+        #[isOsType]
+        {
+          "term": {
+            "osType": #{osType}
+          }
+        },
+        #[/isOsType]
+        {
+          "term": {
+            "reqUrl.raw": #{reqUrl}
+          }
+        },
+        {
+          "range": {
+            "pageStartTm": {
+              "gte": #{from},
+              "lte": #{to},
+              "time_zone": "Z"
+            }
+          }
+        }
+      ]
+    }
+  }
+}

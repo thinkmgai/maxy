@@ -1,0 +1,125 @@
+<style>
+    .inner_wrap{
+        width: 100%;
+    }
+
+    .inner_wrap > select{
+        width: 100%;
+    }
+
+    #marketinginsight__navbar.right_navbar .navbar_input_wrap {
+        margin-bottom: 0.5em;
+    }
+
+    .right_navbar input[type="text"]:read-only {
+        background-color: #EDEDED;
+    }
+
+    #marketinginsight__navbar .right_navbar_header {
+        justify-content: space-between;
+    }
+
+    .inner_wrap.input {
+        position: relative;
+    }
+
+    .inner_wrap .autocomplete-box {
+        position: absolute;
+        top: 100%;
+        border-radius: var(--radius);
+        border: 1px solid var(--color-border-in-light);
+        background: white;
+        overflow-y: auto;
+        display: none;
+        z-index: 1000;
+
+        /* 텍스트에 맞게 width 조정 */
+        width: auto;
+        /*white-space: nowrap;*/
+        max-width: 1024px;
+    }
+
+    .inner_wrap .autocomplete-box div {
+        padding: 8px;
+        cursor: pointer;
+        text-overflow: inherit;
+    }
+
+    .inner_wrap .autocomplete-box div:hover {
+        background: #f0f0f0;
+    }
+
+    .inner_wrap.input .btn_search {
+        right: 3%;
+        position: absolute;
+        background-image: url(/images/maxy/icon-search-bk.svg);
+        width: 20px;
+        height: 20px;
+        background-size: 20px;
+    }
+
+    .autocomplete-item:hover, .autocomplete-item.active {
+        background-color: #f0f0f0;
+    }
+
+    .navbar_input_wrap .check_img {
+        width: 32px;
+        height: 32px;
+        position: absolute;
+        right: 0;
+    }
+
+    .navbar_input_wrap .check_img.checked {
+        background-image: url("/images/maxy/icon-mark-check.svg");
+        background-repeat: no-repeat;
+        background-position: center;
+    }
+</style>
+<div class="right_navbar" id="{{id}}__navbar">
+    <div class="right_navbar_content">
+        <div class="right_navbar_header">
+            <div style="display: flex;">
+                <h4 data-t="management.components.setting.title.{{id}}"></h4>
+                <img class="ic_question" id="{{id}}__navbar_tooltip">
+            </div>
+            <span>{{displayNm}}</span>
+        </div>
+
+        <div class="navbar_input_wrap">
+            <label class="txt_prefix" data-t="management.components.setting.prefix.{{id}}.from" for="{{id}}__optFromUrl"></label>
+            <div class="inner_wrap input">
+                <input type="text" id="{{id}}__optFromUrl" data-datatype="" autocomplete="off"/>
+                <div class="autocomplete-box" data-type="from"></div>
+                <div class="check_img"></div>
+            </div>
+        </div>
+        <div class="navbar_input_wrap">
+            <label class="txt_prefix" data-t="management.components.setting.prefix.{{id}}.title" for="{{id}}__optFromTitle"></label>
+            <div class="inner_wrap">
+                <input data-type="text" id="{{id}}__optFromTitle" type="text" autocomplete="off">
+            </div>
+        </div>
+
+        <div class="navbar_input_wrap">
+            <label class="txt_prefix" data-t="management.components.setting.prefix.{{id}}.to" for="{{id}}__optToUrl"></label>
+            <div class="inner_wrap input">
+                <input type="text" id="{{id}}__optToUrl" data-datatype="" autocomplete="off"/>
+                <div class="autocomplete-box" data-type="to"></div>
+                <div class="check_img"></div>
+            </div>
+        </div>
+        <div class="navbar_input_wrap">
+            <label class="txt_prefix" data-t="management.components.setting.prefix.{{id}}.title" for="{{id}}__optToTitle"></label>
+            <div class="inner_wrap">
+                <input data-type="text" id="{{id}}__optToTitle" type="text" autocomplete="off">
+            </div>
+        </div>
+
+        <div class="txt_gray txt_tip" data-t="management.components.setting.tip.{{id}} 30"></div>
+    </div>
+
+    <div class="right_navbar_footer">
+        <button class="btn_common opposite btn_component_setting_save"
+                data-t="common.btn.save"></button>
+    </div>
+</div>

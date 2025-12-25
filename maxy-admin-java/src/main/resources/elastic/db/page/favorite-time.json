@@ -1,0 +1,71 @@
+{
+  "size": 9999,
+  "query": {
+    "bool": {
+      #[isTotal]
+      "should": [
+        {"range": {"errorCount": {"gt": 0}}},
+        {"range": {"crashCount": {"gt": 0}}}
+      ],
+      "minimum_should_match": 1,
+      #[/isTotal]
+      "filter": [
+        {
+          "term": {
+            "packageNm": #{packageNm}
+          }
+        },
+        {
+          "term": {
+            "serverType": #{serverType}
+          }
+        }
+        #[isOsType]
+        ,{
+          "term": {
+            "osType": #{osType}
+          }
+        }
+        #[/isOsType]
+        ,{
+          "term": {
+            "reqUrl.raw": #{reqUrl}
+          }
+        },
+        {
+          "range": {
+            "logDate": {
+              "gte": #{fromDt},
+              "lte": #{toDt},
+              "time_zone": "Z"
+            }
+          }
+        }
+      ],
+      "must_not": [
+        #[isError]
+        {
+          "term": {
+            "errorCount": 0
+          }
+        }
+        #[/isError]
+        #[isCrash]
+        {
+          "term": {
+            "crashCount": 0
+          }
+        }
+        #[/isCrash]
+      ]
+    }
+    },
+    "sort": [
+      {
+        "pageStartTm": {
+          "order": "desc"
+      }
+    }
+  ],
+  "_source": ["pageStartTm", "pageEndTm", "deviceId"]
+}

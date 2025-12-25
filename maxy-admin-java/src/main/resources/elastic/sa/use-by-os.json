@@ -1,0 +1,28 @@
+{
+  "query": {
+    "bool": {
+      "filter": [
+        {
+          "term": {
+            "packageNm": #{packageNm}
+          }
+        },
+        {
+          "term": {
+            "serverType": #{serverType}
+          }
+        },
+        {
+          "term": {
+            "osType": #{osType}
+          }
+        },
+        {
+          "term": {
+            "accessDate": #{accessDate}
+          }
+        }
+      ]
+    }
+  }
+}

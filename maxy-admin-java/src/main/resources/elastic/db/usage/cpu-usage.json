@@ -1,0 +1,75 @@
+{
+  "aggs": {
+    "deviceModel": {
+      "terms": {
+        "field": "deviceModel",
+        "order": {
+          "usage": "desc"
+        },
+        "size": 9
+      },
+      "aggs": {
+        "usage": {
+          "avg": {
+            "field": "cpuUsage"
+          }
+        },
+        "osType": {
+          "terms": {
+            "field": "osType",
+            "order": {
+              "usage": "desc"
+            },
+            "size": 9
+          },
+          "aggs": {
+            "usage": {
+              "avg": {
+                "field": "cpuUsage"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "size": 0,
+  "query": {
+    "bool": {
+      "filter": [
+        {
+          "term": {
+            "packageNm": #{packageNm}
+          }
+        },
+        {
+          "term": {
+            "serverType": #{serverType}
+          }
+        },
+        #[isOsType]
+        {
+          "term": {
+            "osType": #{osType}
+      }
+        },
+        #[/isOsType]
+        {
+          "term": {
+            "logYear": #{logYear}
+          }
+        },
+        {
+          "term": {
+            "logMonth": #{logMonth}
+          }
+        },
+        {
+          "term": {
+            "logDate": #{logDate}
+          }
+        }
+      ]
+    }
+  }
+}

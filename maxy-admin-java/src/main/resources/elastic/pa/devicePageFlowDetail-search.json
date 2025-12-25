@@ -1,0 +1,41 @@
+{
+  "size": #{size},
+  "query": {
+    "bool": {
+      "must": [
+        {
+          "term": {
+            "deviceId": #{deviceId}
+          }
+        },
+        {
+          "term": {
+            "parentLogDate": {
+              "value" : #{parentLogDate}
+            }
+          }
+        }
+      ],
+      "filter": [
+      {
+        "term": {
+          "serverType": #{serverType}
+        }
+      },
+      {
+        "term": {
+          "packageNm": #{packageNm}
+        }
+      }]
+    }
+  },
+  "sort" : [
+  {
+    "pageStartTm" : {
+      "order" : "asc",
+      "missing" : "_last",
+      "unmapped_type" : "long"
+    }
+  }
+  ]
+}

@@ -1,0 +1,66 @@
+<style>
+    .popup_input_wrap {
+        display: none;
+    }
+    
+    .setting_popup {
+        position: fixed;
+    }
+</style>
+<div class="popup_common setting_popup" id="{{id}}__popup">
+    <h4 data-t="management.components.setting.title"></h4>
+    <ul class="popup_input_wrap" id="optLogMeterWrap">
+        <li>
+            <label for="optLogmeterTime">Target Time</label>
+            <input id="optLogmeterTime" type="text" value="{{param.optLogmeterTime}}">
+            <span></span>
+            <span class="err_txt" id="optLogmeterTimeErrTxt"></span>
+        </li>
+        <li>
+            <label for="optLogmeterCrashWeight">Crash
+                <span data-t="management.components.setting.weight"></span>
+            </label>
+            <input id="optLogmeterCrashWeight" type="text" value="{{param.optLogmeterCrashWeight}}">
+            <span></span>
+            <span class="err_txt" id="optLogmeterCrashWeightErrTxt"></span>
+        </li>
+        <li>
+            <label for="optLogmeterErrorWeight">Error
+                <span data-t="management.components.setting.weight"></span>
+            </label>
+            <input id="optLogmeterErrorWeight" type="text" value="{{param.optLogmeterErrorWeight}}">
+            <span></span>
+            <span class="err_txt" id="optLogmeterErrorWeightErrTxt"></span>
+        </li>
+        <li>
+            <label for="optLogmeterLogWeight">Log
+                <span data-t="management.components.setting.weight"></span>
+            </label>
+            <input id="optLogmeterLogWeight" type="text" value="{{param.optLogmeterLogWeight}}">
+            <span></span>
+            <span class="err_txt" id="optLogmeterLogWeightErrTxt"></span>
+        </li>
+    </ul>
+
+    <ul class="popup_input_wrap" id="optScatterWrap">
+        <li>
+            <label data-t="management.components.setting.maximum" for="optMaxSize"></label>
+            <input id="optScatterSize" type="text" value="{{param.optScatterSize}}">
+            <span></span>
+            <span class="err_txt" id="optScatterSizeErrTxt"></span>
+        </li>
+    </ul>
+
+    <ul class="popup_input_wrap" id="optOneWrap">
+        <li>
+            <label data-t="management.components.setting.maximum" for="optMaxSize"></label>
+            <input id="optMaxSize" type="text" value="{{param.optMaxsize}}">
+            <span></span>
+            <span class="err_txt" id="optMaxSizeErrTxt"></span>
+        </li>
+    </ul>
+
+    <div class="popup_footer">
+        <button class="btn_common opposite" data-t="common.btn.save" id="btnSave"></button>
+    </div>
+</div>

@@ -1,0 +1,70 @@
+<!--
+    종합 분석 > Version Conversion > All 팝업
+-->
+<style>
+    /* 다크모드 차트 토글버튼 */
+    .dark_mode .type_tab_wrap .type_tab {
+        color: #A7ADBA;
+    }
+
+    /* 차트 토글버튼 눌렀을때 */
+    .type_tab_wrap .type_tab.selected {
+        border-bottom: 2px solid #7277FF;
+        font-weight: bold;
+        color: #7277FF;
+    }
+
+    /* 차트그래프 안 텍스트의 아웃라인 */
+    #versionConversion__popup .highcharts-text-outline{
+        font-size: 1em;
+    }
+
+    /* 테이블리스트에서 항목 기본 텍스트색 */
+    .maxy_popup_common.version_conversion .tabulator-cell.non_color{
+        color: #2F2F2F !important;
+    }
+
+    /* 다크모드 테이블리스트에서 항목 기본 텍스트색 */
+    .dark_mode .maxy_popup_common.version_conversion .tabulator-cell.non_color{
+        color: #FFFFFF !important;
+    }
+
+    /* 차트 그래프 칸마다 흰색 줄 없앰 */
+    #versionConversion__popup .highcharts-series > path{
+        stroke: none;
+    }
+</style>
+
+<div class="maxy_popup_common version_conversion" id="{{id}}__popup">
+    <div class="maxy_popup_grid_s_wrap">
+        <div class="maxy_popup_title_wrap">
+            <div class="maxy_popup_title_left">
+                <img class="maxy_popup_analysis_icon" src="/images/maxy/icon-analysis.svg" alt="">
+                <span id="title" data-t="dashboard.bi.analysis"></span>
+                <span id="listCnt"></span>
+            </div>
+
+            <div class="maxy_popup_title_right">
+                <div class="maxy_component_btn_wrap">
+                    <button class="maxy_component_btn on" id="{{id}}Btn__1w" data-date="WEEK" data-t="dashboard.bi.week"></button>
+                    <button class="maxy_component_btn" id="{{id}}Btn__1m" data-date="MONTH" data-t="dashboard.bi.month"></button>
+                </div>
+            </div>
+        </div>
+
+        <div id="{{id}}__list"></div>
+
+        <div class="chart_wrap flex">
+            <div class="stack_button_wrap">
+                <div class="type_tab_wrap">
+                    <span class="type_tab selected" data-type="{{id}}_AndroidGraphWrap" data-t="">Android</span>
+                    <span class="type_tab" data-type="{{id}}_iOSGraphWrap" data-t="">iOS</span>
+                </div>
+            </div>
+
+            <div class="maxy_box all graph_wrap" id="{{id}}_AndroidGraphWrap"></div>
+            <div class="maxy_box all graph_wrap" style="display: none" id="{{id}}_iOSGraphWrap"></div>
+        </div>
+
+    </div>
+</div>

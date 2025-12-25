@@ -1,0 +1,346 @@
+<!--
+    사용자 분석 > 고객 정보
+-->
+<style>
+    .user_info_popup_wrap .maxy_popup_title_wrap {
+        line-height: 21px;
+        height: 21px;
+        font-size: 13px;
+    }
+
+    .user_info_popup_wrap .maxy_popup_title_left {
+        display: flex;
+        gap: .5em;
+        align-items: center;
+    }
+
+    .user_info_popup_wrap .icon_user {
+        position: relative;
+        width: 26px;
+        content: url(/images/maxy/icon-user-analysis.svg);
+    }
+
+    .dark_mode .user_info_popup_wrap .icon_user {
+        content: url(/images/maxy/dark-icon-user-analysis.svg);
+    }
+    .user_info_popup_wrap .user_data_wrap {
+        display: grid;
+        row-gap: 1.8em;
+        grid-template-rows: 35% 22% auto;
+        height: calc(100% - 33px);
+    }
+
+    .user_data_wrap>div {
+        display: flex;
+        gap: .5em;
+        flex-direction: column;
+    }
+
+    .user_data_wrap .dv3_wrap {
+        display: grid;
+        align-items: center;
+        height: 100%;
+        padding: 1em;
+        border: 1px solid #e3e5e8;
+        border-radius: var(--radius);
+    }
+
+    .dark_mode .user_data_wrap .dv3_wrap {
+        background-color: var(--color-table-row-dark-1);
+        border: none;
+    }
+
+    .user_data_wrap .dv3_wrap .dv3 {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+    }
+
+    .user_data_wrap .dv3_wrap .dv3>div {
+        display: flex;
+        gap: .5em;
+        flex-direction: column;
+    }
+
+    .user_data_wrap .dv3_wrap .dv3>div>span:first-child {
+        color: var(--color-subtitle-light);
+    }
+
+    .user_data_wrap .dv3_wrap .dv3>div>span:last-child {
+        color: var(--logo-purple-1);
+    }
+
+    .dark_mode .user_data_wrap .dv3_wrap .dv3>div>span:last-child {
+        color: #f5f5f5;
+    }
+
+    @media screen and (max-width: 1440px) {
+        .user_info_popup_wrap .maxy_popup_grid_s_wrap {
+            gap: 1.2em;
+        }
+
+        .user_info_popup_wrap .user_data_wrap {
+            row-gap: .6em;
+            grid-template-rows: 35% 26% auto;
+        }
+
+        .user_data_wrap .dv3_wrap {
+            padding: .7em;
+        }
+    }
+
+    .user_info_popup_wrap .maxy_popup_title_left .mg-left-auto {
+        margin-left: auto;
+        display: flex;
+        gap: .3em;
+    }
+
+    .user_info_popup_wrap .title,
+    .user_info_popup_wrap .time {
+        font-weight: 700;
+    }
+
+    .user_data_wrap .dv3_title,
+    .user_info_popup_wrap .gray {
+        color: var(--color-subtitle-light);
+    }
+
+    .dark_mode .user_data_wrap .dv3_title,
+    .dark_mode .user_info_popup_wrap .gray,
+    .dark_mode .user_data_wrap .dv3_wrap .dv3>div>span:first-child {
+        color: #a1a1a1;
+    }
+
+    .user_data_wrap img.icon_basic {
+        content: url(/images/maxy/icon-grid-basic-title.svg);
+    }
+
+    .user_data_wrap img.icon_visit {
+        content: url(/images/maxy/icon-grid-visit-title.svg);
+    }
+
+    .user_data_wrap img.icon_device {
+        content: url(/images/maxy/icon-grid-device-title.svg);
+    }
+
+    .dark_mode .user_data_wrap img.icon_basic {
+        content: url(/images/maxy/dark-icon-grid-basic-title.svg);
+    }
+
+    .dark_mode .user_data_wrap img.icon_visit {
+        content: url(/images/maxy/dark-icon-grid-visit-title.svg);
+    }
+
+    .dark_mode .user_data_wrap img.icon_device {
+        content: url(/images/maxy/dark-icon-grid-device-title.svg);
+    }
+
+    /* phoneNo 및 이메일 요소에 대한 텍스트 잘라내기 */
+    #phoneNo,
+    #email {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 100%;
+        min-width: 0;
+    }
+
+    .user_data_wrap .dv3_wrap .dv3>div {
+        min-width: 0;
+        max-width: 100%;
+    }
+
+    .user_data_wrap .dv3_wrap .dv3>div>span:last-child {
+        min-width: 0;
+        max-width: 100%;
+    }
+
+
+    .user_data_wrap .grid_title_wrap {
+        display: flex;
+        align-items: center;
+        gap: .5em;
+    }
+
+    .icon_question {
+        width: 13px;
+        height: 13px;
+        position: absolute;
+        top: 10px;
+        left: 35px;
+        content: url(/images/maxy/ic-question-grey-blue.svg);
+    }
+
+    .dark_mode .icon_question {
+        content: url(/images/maxy/dark-ic-question.svg);
+    }
+
+    .user_info_popup_wrap .maxy_popup_title_left .left {
+        display: flex;
+        align-items: center;
+        gap: .8em;
+    }
+</style>
+
+<div class="maxy_popup_grid_s_wrap">
+    <div class="maxy_popup_title_wrap">
+        <div class="maxy_popup_title_left">
+            <div class="left">
+                <div class="icon_user"></div>
+                <img class="icon_question">
+                <span class="title" id="deviceSt"></span>
+            </div>
+
+
+            <div class="mg-left-auto">
+                <div class="gray" data-t="common.user.last.accesstime"></div>
+                <div class="time" id="updatedDate"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="user_data_wrap">
+        <div>
+            <div class="grid_title_wrap">
+                <img class="icon_basic">
+                <span class="dv3_title" data-t="common.user.normal"></span>
+            </div>
+
+            <div class="dv3_wrap">
+                <div class="dv3">
+                    <div>
+                        <span data-t="common.user.customer.no"></span>
+                        <span id="clientNo"></span>
+                    </div>
+                    <div>
+                        <span data-t="common.user.device.no"></span>
+                        <span id="deviceId"></span>
+                    </div>
+                    <div>
+                        <span data-t="common.user.location"></span>
+                        <span id="timezone"></span>
+                    </div>
+                </div>
+
+                <div class="dv3">
+                    <div>
+                        <span data-t="common.user.customer.seg"></span>
+                        <span id="clientDiv"></span>
+                    </div>
+                    <div>
+                        <span data-t="common.user.customer.id"></span>
+                        <span id="userId"></span>
+                    </div>
+                    <div>
+                        <span data-t="common.user.customer.name"></span>
+                        <span id="clientNm"></span>
+                    </div>
+                </div>
+
+                <div class="dv3">
+                    <div>
+                        <span data-t="common.text.phoneNumber"></span>
+                        <span id="phoneNo"></span>
+                    </div>
+                    <div>
+                        <span data-t="common.text.email"></span>
+                        <span id="email"></span>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+        <div>
+            <div class="grid_title_wrap">
+                <img class="icon_visit">
+                <span class="dv3_title" data-t="common.user.visit"></span>
+            </div>
+            <div class="dv3_wrap">
+                <div class="dv3">
+                    <div>
+                        <span data-t="common.user.first.visit"></span>
+                        <span id="createdDate"></span>
+                    </div>
+                    <div>
+                        <span data-t="common.user.last.visit"></span>
+                        <span id="lastDate"></span>
+                    </div>
+                    <div>
+                        <span data-t="common.user.total.visit"></span>
+                        <span id="totalVisitCount"></span>
+                    </div>
+                </div>
+
+                <div class="dv3">
+                    <div>
+                        <span data-t="common.user.total.staytime"></span>
+                        <span id="totalStayTime"></span>
+                    </div>
+                    <div>
+                        <span data-t="common.user.avg.staytime"></span>
+                        <span id="avgStayTime"></span>
+                    </div>
+                    <div>
+                        <span data-t="dashboard.bi.reconnect"></span>
+                        <span id="revisitCount"></span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div>
+            <div class="grid_title_wrap">
+                <img class="icon_device">
+                <span class="dv3_title" data-t="common.user.device.information"></span>
+            </div>
+
+            <div class="dv3_wrap">
+                <div class="dv3">
+                    <div>
+                        <span>Device</span>
+                        <span id="deviceModel"></span>
+                    </div>
+                    <div>
+                        <span>Network Type</span>
+                        <span id="comType"></span>
+                    </div>
+                    <div>
+                        <span>Carrier</span>
+                        <span id="simOperatorNm"></span>
+                    </div>
+                </div>
+
+                <div class="dv3">
+                    <div>
+                        <span>Network</span>
+                        <span id="comSensitivity"></span>
+                    </div>
+                    <div>
+                        <span>Page Type</span>
+                        <span id="logType"></span>
+                    </div>
+                    <div>
+                        <span>Web View Ver.</span>
+                        <span id="webviewVer"></span>
+                    </div>
+                </div>
+
+                <div class="dv3">
+                    <div>
+                        <span>OS Version</span>
+                        <span id="osVer"></span>
+                    </div>
+                    <div>
+                        <span>App Build No.</span>
+                        <span id="appBuildNum"></span>
+                    </div>
+                    <div>
+                        <span>App Version</span>
+                        <span id="appVer"></span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

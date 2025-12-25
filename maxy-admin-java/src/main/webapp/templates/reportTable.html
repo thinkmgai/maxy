@@ -1,0 +1,29 @@
+<table class="report_table">
+    <thead>
+    {{#isExist data.header}}
+    <tr>
+        {{#data.header}}
+        <!--suppress HtmlUnknownAttribute -->
+        <th colspan="{{value}}">{{key}}</th>
+        {{/data.header}}
+    </tr>
+    {{/isExist}}
+    </thead>
+    <tbody>
+    {{#isExist data.reports}}
+    {{#each data.reports}}
+    <tr style="display: none">
+        {{#each this}}
+        <td>{{this}}</td>
+        {{/each}}
+    </tr>
+    {{/each}}
+    {{/isExist}}
+    </tbody>
+</table>
+
+{{#isExist data.options.more}}
+<div class="btn_bottom_wrap">
+
+</div>
+{{/isExist}}

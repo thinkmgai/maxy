@@ -1,0 +1,21 @@
+<svg width="146" height="147" viewBox="0 0 146 147" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M5 79H141" stroke="#C7C7C7" stroke-width="10" stroke-linecap="round"/>
+<circle cx="10" cy="141" r="6" fill="#28D6A4"/>
+<circle cx="22" cy="118" r="6" fill="#E0E0E0"/>
+<ellipse cx="21.5" cy="46" rx="13.5" ry="13" fill="#914EF9"/>
+<circle cx="46" cy="121" r="6" fill="#6784D7"/>
+<circle cx="68" cy="98" r="6" fill="#E0E0E0"/>
+<circle cx="81" cy="33" r="6" fill="#914EF9"/>
+<circle cx="58" cy="53" r="6" fill="#E0E0E0"/>
+<ellipse cx="106" cy="84.5" rx="19" ry="18.5" fill="#6784D7"/>
+<circle cx="109.153" cy="91.1525" r="26.4654" transform="rotate(-150 109.153 91.1525)" fill="url(#paint0_angular_5792_19)"/>
+<circle cx="104" cy="24" r="6" fill="#E0E0E0"/>
+<ellipse cx="135" cy="35.5" rx="11" ry="11.5" fill="#CB74D8"/>
+<circle cx="115" cy="6" r="6" fill="#CB74D8"/>
+<defs>
+<radialGradient id="paint0_angular_5792_19" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(109.153 91.1525) rotate(128.929) scale(26.9818)">
+<stop stop-color="#9945FF"/>
+<stop offset="1" stop-color="#26D9A3"/>
+</radialGradient>
+</defs>
+</svg>

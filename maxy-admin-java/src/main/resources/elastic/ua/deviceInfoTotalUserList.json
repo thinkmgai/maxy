@@ -1,0 +1,36 @@
+{
+  "size": "10000",
+  "sort": [
+    {
+      "createdDate": {
+        "order": "asc"
+      }
+    }
+  ],
+  "query": {
+    "bool": {
+      "must": [
+        {
+          "bool" : {
+            "must" : [
+              {
+                "term" : {
+                  "packageNm" : {
+                    "value" : #{packageNm}
+                  }
+                }
+              },
+              {
+                "term" : {
+                  "serverType" : {
+                    "value" : #{serverType}
+                  }
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

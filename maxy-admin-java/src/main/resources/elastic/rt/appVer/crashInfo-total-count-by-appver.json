@@ -1,0 +1,64 @@
+{
+  "aggs": {
+    "logCount": {
+      "date_histogram": {
+        "field": "logTm",
+        "interval": "1d",
+        "time_zone": "Asia/Seoul",
+        "format": "yyyy-MM-dd",
+        "extended_bounds": {
+          "min": #{fromDt},
+          "max": #{toDt}
+        }
+      },
+  "aggs": {
+    "osType": {
+      "terms": {
+        "field": "osType",
+        "size": 10
+        },
+        "aggs": {
+          "appVer": {
+            "terms": {
+              "field": "appVer",
+              "size": 9999
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "size": 0,
+  "query": {
+    "bool": {
+      "must": [
+        {
+          "term": {
+            "packageNm": #{packageNm}
+          }
+        },
+        {
+          "term": {
+            "serverType": #{serverType}
+          }
+        },
+        #[isOsType]
+        {
+        "term": {
+            "osType": #{osType}
+          }
+        },
+        #[/isOsType]
+        {
+          "range": {
+            "logTm": {
+              "gte": #{fromTimestamp},
+              "lte": #{toTimestamp}
+            }
+          }
+        }
+      ]
+    }
+  }
+}

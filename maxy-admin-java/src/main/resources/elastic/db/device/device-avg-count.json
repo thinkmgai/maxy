@@ -1,0 +1,66 @@
+{
+  "size": 0,
+  "aggs": {
+    "datas": {
+      "composite": {
+        "size": 10,
+        "sources": [
+          {
+            "deviceModel": {
+              "terms": {
+                "field": "deviceModel"
+              }
+            }
+          }
+        ]
+      },
+      "aggs": {
+        "documents_per_day": {
+          "date_histogram": {
+            "field": "logTm",
+            "calendar_interval": "day",
+            "format": "yyyy-MM-dd",
+            "time_zone": "Asia/Seoul"
+          },
+          "aggs": {
+            "daily_count": {
+              "value_count": {
+                "field": "_id"
+              }
+            }
+          }
+        },
+        "average_count": {
+          "avg_bucket": {
+            "buckets_path": "documents_per_day>daily_count"
+          }
+        }
+      }
+    }
+  },
+  "query": {
+    "bool": {
+      "minimum_should_match": 1,
+      "should": #{_rawdeviceModel},
+      "filter": [
+        {
+          "term": {
+            "packageNm": #{packageNm}
+          }
+        },
+        {
+          "term": {
+            "serverType": #{serverType}
+          }
+        }
+      ,{
+          "range": {
+            "logTm": {
+              "lte": "now"
+            }
+          }
+        }
+      ]
+    }
+  }
+}

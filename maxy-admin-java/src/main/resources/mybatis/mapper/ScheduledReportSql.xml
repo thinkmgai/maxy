@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkm.maxy.mapper.ScheduledReportMapper">
+
+    <!-- 예약 리포트 수신자 목록 조회 -->
+    <select id="selectScheduledEmail" parameterType="long" resultType="ScheduledMailVO">
+        SELECT
+            seq,
+            user_no,
+            package_nm,
+            server_type,
+            os_type,
+            app_ver,
+            package_nm_text,
+            os_type_text,
+            app_ver_text,
+            to_email_list_str,
+            subject,
+            report_subject,
+            report_type,
+            file_type,
+            send_start_dt,
+            send_end_dt,
+            send_cycle,
+            usage_period,
+            locale,
+            reg_dt,
+            reg_no,
+            upd_dt,
+            upd_no
+        FROM
+            maxy_scheduled_report_recipients
+        WHERE user_no = #{userNo}
+    </select>
+
+    <select id="selectActiveScheduledEmail" parameterType="ScheduledMailVO" resultType="ScheduledMailVO">
+        <![CDATA[
+        SELECT
+            seq,
+            user_no,
+            package_nm,
+            server_type,
+            os_type,
+            app_ver,
+            package_nm_text,
+            os_type_text,
+            app_ver_text,
+            to_email_list_str,
+            subject,
+            report_subject,
+            report_type,
+            file_type,
+            send_start_dt,
+            send_end_dt,
+            send_cycle,
+            usage_period,
+            locale,
+            reg_dt,
+            reg_no,
+            upd_dt,
+            upd_no
+        FROM
+            maxy_scheduled_report_recipients
+        WHERE
+            send_start_dt <= #{today}
+            and send_end_dt >= #{today}
+        ]]>
+    </select>
+
+    <!-- 예약 리포트 수신자 등록 -->
+    <insert id="insertScheduledEmail" parameterType="ScheduledMailVO">
+        INSERT INTO maxy_scheduled_report_recipients (
+        user_no,
+        package_nm,
+        server_type,
+        os_type,
+        app_ver,
+        package_nm_text,
+        os_type_text,
+        app_ver_text,
+        to_email_list_str,
+        subject,
+        report_subject,
+        report_type,
+        send_start_dt,
+        send_end_dt,
+        send_cycle,
+        usage_period,
+        locale,
+        reg_dt,
+        reg_no,
+        upd_dt,
+        upd_no
+        ) VALUES(
+            #{userNo},
+            #{packageNm},
+            #{serverType},
+            #{osType},
+            #{appVer},
+            #{packageNmText},
+            #{osTypeText},
+            #{appVerText},
+            #{toEmailListStr},
+            #{subject},
+            #{reportSubject},
+            #{reportType},
+            #{sendStartDt},
+            #{sendEndDt},
+            #{sendCycle},
+            #{usagePeriod},
+            #{locale},
+            #{regDt},
+            #{userNo},
+            #{regDt},
+            #{userNo}
+        )
+    </insert>
+
+    <!-- 예약 리포트 수신자 수정 -->
+    <update id="updateScheduledEmail" parameterType="ScheduledMailVO">
+        UPDATE maxy_scheduled_report_recipients
+        SET
+            to_email_list_str = #{toEmailListStr},
+            subject = #{subject},
+            report_subject = #{reportSubject},
+            send_start_dt = #{sendStartDt},
+            send_end_dt = #{sendEndDt},
+            send_cycle = #{sendCycle},
+            usage_period = #{usagePeriod},
+            upd_dt = #{updDt}
+        WHERE
+            seq = #{seq}
+    </update>
+
+    <!-- 예약 리포트 수신자 삭제 -->
+    <delete id="deleteScheduledEmail" parameterType="ScheduledMailVO">
+        delete
+        from maxy_scheduled_report_recipients
+        where seq = #{seq}
+    </delete>
+</mapper>

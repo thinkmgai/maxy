@@ -1,0 +1,77 @@
+<style>
+    .page_view_table tr {
+        display: grid !important;
+        grid-template-columns: 10% 30% 10% 10% 10% 10% 10% 10% !important;
+    }
+
+    .report_table .page_nm {
+        max-width: 500px;
+        height: 18px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+</style>
+<table class="report_table page_view_table">
+    <thead>
+    <tr>
+        <th>
+            Page View
+        </th>
+        <th>
+            Page (or URL)
+        </th>
+        <th>
+            Page Type
+        </th>
+        <th>
+            Viewer
+        </th>
+        <th>
+            Stay Time*
+        </th>
+        <th>
+            Rendering Time*
+        </th>
+        <th>
+            Error
+        </th>
+        <th>
+            Crash
+        </th>
+    </tr>
+    </thead>
+    {{#if this}}
+    {{#each this}}
+    <tr>
+        <td>
+            {{comma pageView}}
+        </td>
+        <td>
+            <div class="page_nm">{{pageNm}}</div>
+        </td>
+        <td>
+           type
+        </td>
+        <td>
+            {{comma viewer}}
+        </td>
+        <td>
+            {{convertTime stayTime}}
+        </td>
+        <td>
+            {{convertTime renderingTime}}
+        </td>
+        <td>
+            {{comma error}}
+        </td>
+        <td>
+            {{comma crash}}
+        </td>
+    </tr>
+    {{/each}}
+    {{else}}
+    <tr>
+        <td colspan="12">데이터가 없습니다.</td>
+    </tr>
+    {{/if}}
+</table>

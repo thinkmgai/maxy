@@ -1,0 +1,147 @@
+{{#each this}}
+<div class="user_behavior_analysis_wrap">
+    <div class="folding_btn"></div>
+    <div class="user_info_wrap">
+        <div class="summary_start_time">
+            <img alt="" class="icon-start-time">
+            {{startTm "parentLogDate"}}
+        </div>
+        <div class="sub_title_wrap">
+            <div class="sub_title mg_left" data-device-id="{{deviceInfo 'deviceId'}}" id="deviceId_{{@index}}">
+                <i class="icon_device_small"></i>
+                <span class="device_name" id="deviceModel">{{deviceInfo "deviceModel"}}</span>
+            </div>
+            <div class="sub_title" id="appVer_{{@index}}">
+                <i class="icon_gear"></i>
+                <span>{{deviceInfo "appVer"}}</span>
+            </div>
+            <div class="sub_title" id="osVer_{{@index}}">
+                {{deviceInfo "osVer"}}
+            </div>
+            <div class="sub_title" id="carrier_{{@index}}">
+                <i class="icon_simoperator"></i>
+                <span> {{deviceInfo "simOperatorNm"}}</span>
+            </div>
+            <div class="sub_title" id="timezone_{{@index}}">
+                <i class="icon_time_zone"></i>
+                <span>{{deviceInfo "timezone"}}</span>
+            </div>
+        </div>
+        <div class="right_btn_wrap">
+            <button class="sub_title btn_userflow_group_by" id="btnUserFlowGroupBy__{{@index}}">
+                Group By
+            </button>
+            <button class="sub_title btn_userflow_group_by hidden" id="btnUserFlowGroupBySum__{{@index}}">
+                Sum
+            </button>
+            <button class="sub_title btn_userflow_group_by hidden" id="btnUserFlowGroupByCancel__{{@index}}">
+                Cancel
+            </button>
+        </div>
+    </div>
+
+    <div class="user_flow_summary_wrap">
+        <div>
+            <img alt="" class="img_flow">
+            <span class="summary_title" data-t="common.text.totalFlow"></span>
+            <span class="summary_content">{{this.length}}</span>
+        </div>
+        <div>
+            <img alt="" class="img_time">
+            <span class="summary_title" data-t="common.text.intervalTime"></span>
+            <span class="summary_content">{{total "intervaltime"}}</span>
+        </div>
+        <div>
+            <img alt="" class="img_time">
+            <span class="summary_title" data-t="common.text.avgStayTime"></span>
+            <span class="summary_content">{{avgIntervalTime "intervaltime"}}</span>
+        </div>
+        <div>
+            <img alt="" class="img_error">
+            <span class="summary_title" data-t="common.text.totalError"></span>
+            <span class="summary_error">{{total "errorCount"}}</span>
+        </div>
+        <div>
+            <img alt="" class="img_crash">
+            <span class="summary_title" data-t="common.text.totalCrash"></span>
+            <span class="summary_crash">{{total "crashCount"}}</span>
+        </div>
+
+        <div class="right_sum_wrap hidden" id="groupBySumWrap__{{@index}}">
+            <div>
+                <img alt="" class="img_time">
+                <span class="summary_title" data-t="common.text.loadingTime"></span>
+                <span id="groupByLoadingTime__{{@index}}">-</span>
+            </div>
+            <div>
+                <img alt="" class="img_time">
+                <span class="summary_title" data-t="common.text.responseTime"></span>
+                <span id="groupByResponseTime__{{@index}}">-</span>
+            </div>
+            <div>
+                <img alt="" class="img_time">
+                <span class="summary_title" data-t="common.text.stayTime"></span>
+                <span id="groupByIntervalTime__{{@index}}">-</span>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="page_wrap_wrap" id="pageWrap_{{@index}}">
+        {{#each this}}
+        <div class="page_wrap">
+            <span class="arrow_next"></span>
+            <div class="page"
+                 data-alias-value="{{alias packageNm serverType reqUrl}}"
+                 data-device-id="{{deviceId}}"
+                 data-device-model="{{deviceModel}}"
+                 data-error-count="{{errorCount}}"
+                 data-event-count="{{eventCount}}"
+                 data-event-intervaltime="{{eventIntervaltime}}"
+                 data-intervaltime="{{intervaltime}}"
+                 data-loading-time="{{loadingTime}}"
+                 data-request-count="{{requestCount}}"
+                 data-log-type="{{logType}}"
+                 data-page-end-tm="{{pageEndTm}}"
+                 data-page-start-tm="{{pageStartTm}}"
+                 data-flow-order="{{flowOrder}}"
+                 data-response-time="{{responseTime}}"
+                 data-os-type="{{osType}}"
+                 data-req-url="{{reqUrl}}"
+                 data-doc-id="{{_id}}"
+                 data-mx-page-id="{{mxPageId}}"
+                 id="page{{@../index}}{{@index}}_{{pageStartTm}}">
+
+                <div class="page_header {{point errorCount crashCount}}">
+                    <span class="content_idx {{pageType logType reqUrl}}">{{inc @index}}</span>
+                    <span class="content_title">{{alias packageNm serverType reqUrl}}</span>
+                </div>
+                <ul class="page_content">
+                    <li>
+                        <span class="content_name" data-t="common.text.loadingTime"></span>
+                        <span class="content_data">{{time loadingTime}}</span>
+                    </li>
+                    <li>
+                        <span class="content_name" data-t="common.text.responseTime"></span>
+                        <span class="content_data">{{time responseTime}}</span>
+                    </li>
+                    <li>
+                        <span class="content_name" data-t="common.text.stayTime"></span>
+                        <span class="content_data">{{time intervaltime}}</span>
+                    </li>
+                    <li>
+                        <span class="content_name" data-t="dashboard.bi.error"></span>
+                        <span class="content_data error">{{isEmpty errorCount}}</span>
+                    </li>
+                    <li>
+                        <span class="content_name" data-t="dashboard.bi.crash"></span>
+                        <span class="content_data crash">{{isEmpty crashCount}}</span>
+                    </li>
+
+                </ul>
+            </div>
+        </div>
+        {{/each}}
+    </div>
+</div>
+{{/each}}

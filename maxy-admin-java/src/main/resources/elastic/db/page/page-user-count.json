@@ -1,0 +1,53 @@
+{
+  "aggs": {
+    "res": {
+      "terms": {
+        "field": "reqUrl.raw",
+        "order": {
+          "_count": "desc"
+        }
+      },
+      "aggs": {
+        "userCount": {
+          "cardinality": {
+            "field": "deviceId.raw"
+          }
+        }
+      }
+    }
+  },
+  "size": 0,
+  "query": {
+    "bool": {
+      "filter": [
+        {
+          "term": {
+            "packageNm": #{packageNm}
+          }
+        },
+        {
+          "term": {
+            "serverType": #{serverType}
+          }
+        },
+        #[isOsType]
+        {
+          "term": {
+            "osType": #{osType}
+      }
+        },
+        #[/isOsType]
+        {
+          "range": {
+            "pageStartTm": {
+              "from": #{fromTimestamp},
+              "include_lower": true,
+              "include_upper": true,
+              "time_zone": "Z"
+            }
+          }
+        }
+      ]
+    }
+  }
+}

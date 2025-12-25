@@ -1,0 +1,1191 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkm.maxy.mapper.ReportMapper">
+
+    <select id="getStatusInfo" parameterType="ReportVO" resultType="java.util.Map">
+        select
+            sum(install_cnt) as installCnt,
+            sum(case when os_type = 'Android' then dau_cnt else 0 end) / sum(dau_cnt) * 100 as android,
+            sum(case when os_type = 'iOS' then dau_cnt else 0 end) / sum(dau_cnt) * 100 as ios,
+            sum(dau_cnt) as dauCnt,
+            sum(login_cnt) as loginCnt,
+            sum(sleep_cnt) as sleepCnt,
+            sum(pageview_cnt) as pageviewCnt,
+            sum(revisit_cnt) as revisit,
+            sum(error_cnt) as errorCnt,
+            sum(crash_cnt) as crashCnt
+		from
+		    maxy_report_basic_status mrbs
+		where
+            base_date BETWEEN #{fromDt} AND #{toDt} and
+		    package_nm = #{packageNm} and
+		    server_type = #{serverType}
+            <if test='osType != "A"'>
+                and os_type = #{osType}
+            </if>
+            <if test='appVer != "A"'>
+                and app_ver = #{appVer}
+            </if>
+    </select>
+
+    <select id="getAvgStatusInfo" parameterType="ReportVO" resultType="java.util.Map">
+        select
+        round(sum(install_cnt) / #{diff}) as installCnt,
+        round(sum(dau_cnt) / #{diff}) as dauCnt,
+        round(sum(pageview_cnt) / #{diff}) as pageviewCnt,
+        round(sum(login_cnt) / #{diff}) as loginCnt,
+        round(sum(sleep_cnt) / #{diff}) as sleepCnt,
+        (select sum(a.pct_change) / #{diff}
+        from
+        (SELECT
+        curr.base_date,
+        curr.revisitCnt,
+        prev.revisitCnt AS prev_revisitCnt,
+        CASE
+        WHEN prev.revisitCnt = 0 AND curr.revisitCnt = 0 THEN 0
+        WHEN prev.revisitCnt = 0 AND curr.revisitCnt != 0 THEN 100
+        WHEN prev.revisitCnt IS NULL AND curr.revisitCnt != 0 THEN 100
+        WHEN prev.revisitCnt IS NULL AND curr.revisitCnt = 0 THEN 0
+        ELSE LEAST((curr.revisitCnt / prev.revisitCnt) * 100, 100)
+        END AS pct_change
+        FROM (
+        SELECT
+        base_date,
+        ifnull(SUM(revisit_cnt), 0) AS revisitCnt
+        FROM
+        maxy_report_basic_status
+        WHERE
+        base_date BETWEEN #{fromDt} AND #{toDt} AND
+        package_nm = #{packageNm} AND
+        server_type = #{serverType}
+        <if test='osType != "A"'>
+                                and os_type = #{osType}
+                            </if>
+                            <if test='appVer != "A"'>
+                                and app_ver = #{appVer}
+                            </if>
+                        GROUP BY
+                            base_date
+                    ) curr
+                    LEFT JOIN (
+                        SELECT
+                            base_date,
+                            ifnull(SUM(revisit_cnt), 0) AS revisitCnt
+                        FROM
+                            maxy_report_basic_status
+                        WHERE
+                            package_nm = #{packageNm} AND
+                            server_type = #{serverType}
+                            <if test='osType != "A"'>
+                                and os_type = #{osType}
+                            </if>
+                            <if test='appVer != "A"'>
+                                and app_ver = #{appVer}
+                            </if>
+                        GROUP BY
+                            base_date
+                    ) prev
+                    ON STR_TO_DATE(curr.base_date, '%Y%m%d') = DATE_ADD(STR_TO_DATE(prev.base_date, '%Y%m%d'), INTERVAL 1 DAY)
+                ) a
+            ) as revisit,
+            round((
+                select
+                    sum(a.totalStayTime)
+                from (
+                    select
+                        sum(total_stay_time) / sum(access_cnt) as totalStayTime
+                    from
+                        maxy_report_basic_status mrbs
+                    where
+                        base_date BETWEEN #{fromDt} AND #{toDt} and
+                        package_nm = #{packageNm} and
+                        server_type = #{serverType}
+                        <if test='osType != "A"'>
+                            and os_type = #{osType}
+                        </if>
+                        <if test='appVer != "A"'>
+                            and app_ver = #{appVer}
+                        </if>
+                    group by
+                        base_date
+                ) a
+            ) / #{diff}) as totalStayTime,
+            round(ifnull(sum(error_cnt), 0) / #{diff}) as errorCnt,
+            round(ifnull(sum(crash_cnt), 0) / #{diff}) as crashCnt
+        from
+            maxy_report_basic_status mrbs
+        where
+            base_date BETWEEN #{fromDt} AND #{toDt} and
+            package_nm = #{packageNm} and
+            server_type = #{serverType}
+            <if test='osType != "A"'>
+                and os_type = #{osType}
+            </if>
+            <if test='appVer != "A"'>
+                and app_ver = #{appVer}
+            </if>
+    </select>
+
+    <select id="getAppVerSummary" parameterType="ReportVO" resultType="java.util.Map">
+        select
+            os_type as osType,
+            app_ver as appVer,
+            round(ifnull(sum(dau_cnt), 0) / #{diff}) as dauCnt,
+            round(ifnull(sum(pageview_cnt), 0) / #{diff}) as avgPageviewCnt,
+            (
+                select
+                    sum(a.totalLoadingTime)
+                from (
+                    select
+                        base_date,
+                        os_type,
+                        app_ver,
+                        ifnull(sum(total_rendering_time) / sum(pageview_cnt), 0) as totalLoadingTime
+                    from
+                        maxy_report_basic_status mrbs
+                    where
+                        base_date BETWEEN #{fromDt} AND #{toDt} and
+                        package_nm = #{packageNm} and
+                        server_type = #{serverType} and
+                        app_ver != 'A'
+                        <if test='osType != "A"'>
+                            and os_type = #{osType}
+                        </if>
+                        <if test='appVer != "A"'>
+                            and app_ver = #{appVer}
+                        </if>
+                    group by
+                        base_date, os_type, app_ver
+                ) a
+                where
+                    a.os_type = mrbs.os_type
+                    and a.app_ver = mrbs.app_ver
+            ) / #{diff} as totalLoadingTime,
+            (
+                select
+                    sum(a.totalResponseTime)
+                from (
+                    select
+                        base_date,
+                        os_type,
+                        app_ver,
+                        ifnull(sum(total_response_time) / (select
+                                                            sum(med_responsetime_cnt) as callCnt
+                                                        from
+                                                            maxy_report_app_performance mrap
+                                                        where
+                                                            mrap.base_date BETWEEN #{fromDt} and #{toDt} and
+                                                            mrap.package_nm = #{packageNm} and
+                                                            mrap.server_type = #{serverType}
+                                                            <if test='osType != "A"'>
+                                                                and mrap.os_type = #{osType}
+                                                            </if>
+                                                            <if test='appVer != "A"'>
+                                                                and mrap.app_ver = #{appVer}
+                                                            </if>
+                                                            and mrap.base_date = mrbs.base_date
+                                                            and mrap.os_type = mrbs.os_type
+                                                            and mrap.app_ver = mrbs.app_ver
+                                                        group by
+                                                            os_type,
+                                                            app_ver), 0) as totalResponseTime
+                    from
+                        maxy_report_basic_status mrbs
+                    where
+                        base_date BETWEEN #{fromDt} AND #{toDt} and
+                        package_nm = #{packageNm} and
+                        server_type = #{serverType} and
+                        app_ver != 'A'
+                        <if test='osType != "A"'>
+                            and os_type = #{osType}
+                        </if>
+                        <if test='appVer != "A"'>
+                            and app_ver = #{appVer}
+                        </if>
+                    group by
+                        base_date, os_type, app_ver
+                ) a
+                where
+                    a.os_type = mrbs.os_type
+                    and a.app_ver = mrbs.app_ver
+            ) / #{diff} as totalResponseTime,
+            (
+                select
+                    sum(a.totalCpuUsage)
+                from (
+                    select
+                        base_date,
+                        os_type,
+                        app_ver,
+                        ifnull(sum(total_cpu_usage) / sum(total_log_cnt), 0) as totalCpuUsage
+                    from
+                        maxy_report_basic_status mrbs
+                    where
+                        base_date BETWEEN #{fromDt} AND #{toDt} and
+                        package_nm = #{packageNm} and
+                        server_type = #{serverType} and
+                        app_ver != 'A'
+                        <if test='osType != "A"'>
+                            and os_type = #{osType}
+                        </if>
+                        <if test='appVer != "A"'>
+                            and app_ver = #{appVer}
+                        </if>
+                    group by
+                        base_date, os_type, app_ver
+                ) a
+                where
+                    a.os_type = mrbs.os_type
+                    and a.app_ver = mrbs.app_ver
+            ) / #{diff} as avgCpuUsage,
+            (
+                select
+                    sum(a.totalMemUsage)
+                from (
+                    select
+                        base_date,
+                        os_type,
+                        app_ver,
+                        ifnull(sum(total_mem_usage) / sum(total_log_cnt), 0) as totalMemUsage
+                    from
+                        maxy_report_basic_status mrbs
+                    where
+                        base_date BETWEEN #{fromDt} AND #{toDt} and
+                        package_nm = #{packageNm} and
+                        server_type = #{serverType} and
+                        app_ver != 'A'
+                        <if test='osType != "A"'>
+                            and os_type = #{osType}
+                        </if>
+                        <if test='appVer != "A"'>
+                            and app_ver = #{appVer}
+                        </if>
+                    group by
+                        base_date, os_type, app_ver
+                ) a
+                where
+                    a.os_type = mrbs.os_type
+                    and a.app_ver = mrbs.app_ver
+            ) / #{diff} as avgMemUsage,
+            sum(error_cnt) as errorCnt,
+            sum(crash_cnt) as crashCnt
+        from
+            maxy_report_basic_status mrbs
+        where
+            base_date BETWEEN #{fromDt} AND #{toDt} and
+            package_nm = #{packageNm} and
+            server_type = #{serverType} and
+            app_ver != 'A'
+            <if test='osType != "A"'>
+                and os_type = #{osType}
+            </if>
+            <if test='appVer != "A"'>
+                and app_ver = #{appVer}
+            </if>
+        group by
+            os_type,
+            app_ver
+    </select>
+
+    <select id="getLoadingSummary" parameterType="ReportVO" resultType="java.util.Map">
+        select
+            os_type as osType,
+            app_ver as appVer,
+            max(mrap.max_renderingtime) as maxLoadingTime,
+            sum(mrap.med_renderingtime) / count(1) as medLoadingTime,
+            min(mrap.min_renderingtime) as minLoadingTime
+        from
+            maxy_report_app_performance mrap
+        where
+            mrap.base_date BETWEEN #{fromDt} and #{toDt} and
+            mrap.package_nm = #{packageNm} and
+            mrap.server_type = #{serverType}
+            <if test='osType != "A"'>
+                and mrap.os_type = #{osType}
+            </if>
+            <if test='appVer != "A"'>
+                and mrap.app_ver = #{appVer}
+            </if>
+            and not(mrap.max_renderingtime = 0 and mrap.max_renderingtime_cnt = 0)
+        group by
+            os_type,
+            app_ver
+    </select>
+
+    <select id="getPerformancePageViewCnt" parameterType="ReportVO" resultType="java.util.Map">
+        select
+            os_type as osType,
+            app_ver as appVer,
+            ifnull(sum(pageview_cnt), 0) as pageviewCnt,
+            ifnull(round(ifnull(sum(pageview_cnt), 0) / (
+                select
+                    ifnull(sum(pageview_cnt), 0)
+                from
+                    maxy_report_basic_status mrbs2
+                where
+                    mrbs2.base_date BETWEEN #{fromDt} and #{toDt} and
+                    mrbs2.package_nm = #{packageNm} and
+                    mrbs2.server_type = #{serverType}
+                    <if test='osType != "A"'>
+                        and mrbs2.os_type = #{osType}
+                    </if>
+                    <if test='appVer != "A"'>
+                        and mrbs2.app_ver = #{appVer}
+                    </if>) * 100, 2), 0) as pageviewCntRate
+        from
+            maxy_report_basic_status mrbs
+        where
+            mrbs.base_date BETWEEN #{fromDt} and #{toDt} and
+            mrbs.package_nm = #{packageNm} and
+            mrbs.server_type = #{serverType}
+            <if test='osType != "A"'>
+                and mrbs.os_type = #{osType}
+            </if>
+            <if test='appVer != "A"'>
+                and mrbs.app_ver = #{appVer}
+            </if>
+        group by
+            os_type, app_ver
+    </select>
+
+    <select id="getResponseSummary" parameterType="ReportVO" resultType="java.util.Map">
+        select
+            os_type as osType,
+            app_ver as appVer,
+            max(mrap.max_responsetime) as maxResponseTime,
+            sum(mrap.med_responsetime) / count(1) as medResponseTime,
+            min(mrap.min_responsetime) as minResponseTime
+        from
+            maxy_report_app_performance mrap
+        where
+            mrap.base_date BETWEEN #{fromDt} and #{toDt} and
+            mrap.package_nm = #{packageNm} and
+            mrap.server_type = #{serverType} and
+            mrap.med_responsetime_cnt != 0
+            <if test='osType != "A"'>
+                and mrap.os_type = #{osType}
+            </if>
+            <if test='appVer != "A"'>
+                and mrap.app_ver = #{appVer}
+            </if>
+        group by
+            os_type,
+            app_ver
+    </select>
+
+    <select id="getLoadingTop" parameterType="ReportVO" resultType="java.util.Map">
+        SELECT
+        mrap.os_type as osType,
+        mrap.device_model as deviceModel,
+        sum(mrap.total_user_cnt) as useCnt,
+        (
+            select
+            max(max_renderingtime)
+            from maxy_report_app_performance mrap2
+            where
+                base_date BETWEEN #{fromDt} AND #{toDt} and
+                package_nm = #{packageNm} and
+                server_type = #{serverType}
+                <if test='osType != "A"'>
+                    and os_type = #{osType}
+                </if>
+                <if test='appVer != "A"'>
+                    and app_ver = #{appVer}
+                </if>
+                and not(mrap2.max_renderingtime = 0 and mrap2.max_renderingtime_cnt = 0)
+                and mrap.device_model = mrap2.device_model) as maxLoadingTime,
+        (
+            select
+            round(avg(med_renderingtime))
+            from maxy_report_app_performance mrap2
+            where
+                base_date BETWEEN #{fromDt} AND #{toDt} and
+                package_nm = #{packageNm} and
+                server_type = #{serverType}
+                <if test='osType != "A"'>
+                    and os_type = #{osType}
+                </if>
+                <if test='appVer != "A"'>
+                    and app_ver = #{appVer}
+                </if>
+                and not(mrap2.max_renderingtime = 0 and mrap2.max_renderingtime_cnt = 0)
+                and mrap.device_model = mrap2.device_model) as medLoadingTime,
+        (
+            select
+            min(min_renderingtime)
+            from maxy_report_app_performance mrap2
+            where
+                base_date BETWEEN #{fromDt} AND #{toDt} and
+                package_nm = #{packageNm} and
+                server_type = #{serverType}
+                <if test='osType != "A"'>
+                    and os_type = #{osType}
+                </if>
+                <if test='appVer != "A"'>
+                    and app_ver = #{appVer}
+                </if>
+                and not(mrap2.max_renderingtime = 0 and mrap2.max_renderingtime_cnt = 0)
+                and mrap.device_model = mrap2.device_model) as minLoadingTime,
+        (sum(mrap.total_user_cnt) / totals.sum_total_user_cnt) * 100 AS rate
+        FROM
+        maxy_report_app_performance mrap,
+        (SELECT
+        SUM(total_user_cnt) AS sum_total_user_cnt
+        FROM
+        maxy_report_app_performance
+        WHERE
+        base_date BETWEEN #{fromDt} AND #{toDt} and
+        package_nm = #{packageNm} and
+        server_type = #{serverType}
+        <if test='osType != "A"'>
+            and os_type = #{osType}
+        </if>
+        <if test='appVer != "A"'>
+            and app_ver = #{appVer}
+        </if>
+        ) totals
+        WHERE
+        mrap.base_date BETWEEN #{fromDt} and #{toDt} and
+        package_nm = #{packageNm} and
+        server_type = #{serverType} and
+        mrap.total_user_cnt != 0
+        <if test='osType != "A"'>
+            and os_type = #{osType}
+        </if>
+        <if test='appVer != "A"'>
+            and app_ver = #{appVer}
+        </if>
+        and not(mrap.max_renderingtime = 0 and mrap.max_renderingtime_cnt = 0)
+        group by
+        device_model
+        order by
+        max(mrap.max_renderingtime) desc
+        limit 10
+    </select>
+
+    <select id="getResponseTop" parameterType="ReportVO" resultType="java.util.Map">
+        SELECT
+        mrap.os_type as osType,
+        mrap.device_model as deviceModel,
+        sum(mrap.total_user_cnt) as useCnt,
+        (
+            select
+            max(max_responsetime)
+            from maxy_report_app_performance mrap2
+            where
+                base_date BETWEEN #{fromDt} AND #{toDt} and
+                package_nm = #{packageNm} and
+                server_type = #{serverType}
+                <if test='osType != "A"'>
+                    and os_type = #{osType}
+                </if>
+                <if test='appVer != "A"'>
+                    and app_ver = #{appVer}
+                </if>
+                and mrap2.med_responsetime_cnt != 0
+                and mrap.device_model = mrap2.device_model) as maxResponseTime,
+        (
+            select
+            round(avg(med_responsetime))
+            from maxy_report_app_performance mrap2
+            where
+                base_date BETWEEN #{fromDt} AND #{toDt} and
+                package_nm = #{packageNm} and
+                server_type = #{serverType}
+                <if test='osType != "A"'>
+                    and os_type = #{osType}
+                </if>
+                <if test='appVer != "A"'>
+                    and app_ver = #{appVer}
+                </if>
+                and mrap2.med_responsetime_cnt != 0
+                and mrap.device_model = mrap2.device_model) as medResponseTime,
+        (
+            select
+            min(min_responsetime)
+            from maxy_report_app_performance mrap2
+            where
+                base_date BETWEEN #{fromDt} AND #{toDt} and
+                package_nm = #{packageNm} and
+                server_type = #{serverType}
+                <if test='osType != "A"'>
+                    and os_type = #{osType}
+                </if>
+                <if test='appVer != "A"'>
+                    and app_ver = #{appVer}
+                </if>
+                and mrap2.med_responsetime_cnt != 0
+                and mrap.device_model = mrap2.device_model) as minResponseTime,
+        (sum(mrap.total_user_cnt) / totals.sum_total_user_cnt) * 100 AS rate
+        FROM
+        maxy_report_app_performance mrap,
+        (SELECT
+        SUM(total_user_cnt) AS sum_total_user_cnt
+        FROM
+        maxy_report_app_performance
+        WHERE
+        base_date BETWEEN #{fromDt} AND #{toDt} and
+        package_nm = #{packageNm} and
+        server_type = #{serverType}
+        <if test='osType != "A"'>
+            and os_type = #{osType}
+        </if>
+        <if test='appVer != "A"'>
+            and app_ver = #{appVer}
+        </if>
+        ) totals
+        WHERE
+        mrap.base_date BETWEEN #{fromDt} and #{toDt} and
+        package_nm = #{packageNm} and
+        server_type = #{serverType} and
+        mrap.med_responsetime_cnt != 0 and
+        mrap.total_user_cnt != 0
+        <if test='osType != "A"'>
+            and os_type = #{osType}
+        </if>
+        <if test='appVer != "A"'>
+            and app_ver = #{appVer}
+        </if>
+        group by
+        device_model
+        order by
+        max(mrap.max_responsetime) desc
+        limit 10
+    </select>
+
+    <select id="getPageViewInfoDB" parameterType="ReportVO" resultType="java.util.Map">
+        select
+        sum(pageview_cnt) as pageviewCnt,
+        page_nm as pageNm,
+        req_url as reqUrl,
+        sum(viewer_cnt) as viewerCnt,
+        sum(total_stay_time) / sum(pageview_cnt) as totalStayTime,
+        sum(total_renderingtime) / sum(pageview_cnt) as totalLoadingTime,
+        sum(error_cnt) as errorCnt,
+        sum(crash_cnt) as crashCnt
+        from
+        maxy_report_pageview
+        where
+        base_date BETWEEN #{fromDt} AND #{toDt} and
+        package_nm = #{packageNm} and
+        server_type = #{serverType}
+        <if test='osType != "A"'>
+            and os_type = #{osType}
+        </if>
+        <if test='appVer != "A"'>
+            and app_ver = #{appVer}
+        </if>
+        group by
+        page_nm,
+        req_url
+        order by
+        sum(pageview_cnt) DESC
+        limit 10
+    </select>
+
+    <select id="getErrorInfo" parameterType="ReportVO" resultType="java.util.Map">
+        select sum(error_cnt) as errorCnt,
+        error_msg as errorMsg,
+        log_type_dnm as logTypeDnm,
+        log_type_nm as logTypeNm,
+        sum(error_cnt) / (select sum(error_cnt)
+        from maxy_report_error mre
+        where
+        base_date BETWEEN #{fromDt} AND #{toDt}
+        and package_nm = #{packageNm}
+        and server_type = #{serverType}
+        <if test='osType != "A"'>
+            and os_type = #{osType}
+        </if>
+        <if test='appVer != "A"'>
+            and app_ver = #{appVer}
+        </if>) *
+        100 as rate
+        from maxy_report_error
+        where
+        base_date BETWEEN #{fromDt} AND #{toDt}
+        and package_nm = #{packageNm}
+        and server_type = #{serverType}
+        <if test='osType != "A"'>
+            and os_type = #{osType}
+        </if>
+        <if test='appVer != "A"'>
+            and app_ver = #{appVer}
+        </if>
+        group by error_msg
+        order by sum(error_cnt) desc
+        limit 10
+    </select>
+
+    <select id="getCrashInfo" parameterType="ReportVO" resultType="java.util.Map">
+        select
+        sum(crash_cnt) as crashCnt,
+        crash_nm as crashNm,
+        cause_by as causeBy,
+        sum(crash_cnt) / (select
+                              sum(crash_cnt)
+                          from maxy_report_crash mre
+                          where
+                              base_date BETWEEN #{fromDt} AND #{toDt}
+                            and package_nm = #{packageNm}
+                            and server_type = #{serverType}
+                        <if test='osType != "A"'>
+                            and os_type = #{osType}
+                        </if>
+                        <if test='appVer != "A"'>
+                            and app_ver = #{appVer}
+                        </if>) * 100 as rate
+        from
+        maxy_report_crash
+        where
+        base_date BETWEEN #{fromDt} AND #{toDt} and
+        package_nm = #{packageNm} and
+        server_type = #{serverType}
+        <if test='osType != "A"'>
+            and os_type = #{osType}
+        </if>
+        <if test='appVer != "A"'>
+            and app_ver = #{appVer}
+        </if>
+        group by
+        crash_nm, cause_by
+        order by
+        sum(crash_cnt) desc
+        limit 10
+    </select>
+
+    <select id="getDeviceErrorInfo" parameterType="ReportVO" resultType="java.util.Map">
+    select
+		mre.package_nm
+	,	mre.server_type
+	,	mre.device_model as deviceModel
+	,	mre.os_type as osType
+    ,	sum(total_user_cnt) as userCnt
+    ,	sum(total_user_cnt) /
+    (
+			select sum(a.total_user_cnt) as total_user_cnt
+			from(
+				select total_user_cnt
+				from maxy_report_error
+				where
+                base_date BETWEEN #{fromDt} AND #{toDt}
+				AND package_nm = #{packageNm}
+                AND server_type = #{serverType}
+                <if test='osType != "A"'>AND os_type = #{osType}</if>
+                <if test='appVer != "A"'>AND app_ver = #{appVer}</if>
+				group by
+					package_nm
+				,	server_type
+				,	app_ver
+				,	device_model
+				,	os_type
+				,   base_date
+			) a
+    ) * 100 as userRate
+    ,	sum(total_log_cnt)
+    ,	sum(error_cnt) as errorCnt
+    ,	sum(error_cnt) /
+	(
+			select sum(a.error_cnt) as error_cnt
+			from(
+				select sum(error_cnt) as error_cnt
+				from maxy_report_error
+				where
+                base_date BETWEEN #{fromDt} AND #{toDt}
+				AND package_nm = #{packageNm}
+                AND server_type = #{serverType}
+                <if test='osType != "A"'>AND os_type = #{osType}</if>
+                <if test='appVer != "A"'>AND app_ver = #{appVer}</if>
+				group by
+					package_nm
+				,	server_type
+				,	app_ver
+				,	device_model
+				,	os_type
+				,	base_date
+			) a
+	) * 100 as errorRate
+    from 
+    (
+       select
+            package_nm
+        ,	server_type
+        ,	device_model
+        ,	app_ver
+        ,	os_type
+        ,	total_user_cnt 
+        ,	total_log_cnt
+        ,	sum(error_cnt)as error_cnt
+        from
+            maxy_report_error mre
+        where
+        base_date BETWEEN #{fromDt} AND #{toDt}
+        AND package_nm = #{packageNm}
+        AND server_type = #{serverType}
+        <if test='osType != "A"'>AND os_type = #{osType}</if>
+        <if test='appVer != "A"'>AND app_ver = #{appVer}</if>
+        group by 
+            mre.package_nm
+        ,	mre.server_type
+        ,	mre.app_ver
+        ,	mre.device_model
+        ,	mre.os_type
+        ,   mre.base_date
+    ) mre
+    group by 
+        mre.package_nm
+    ,	mre.server_type
+    ,	mre.device_model
+    ,	mre.os_type
+    order by sum(error_cnt) desc
+    limit 10
+    </select>
+
+    <select id="getDeviceCrashInfo" parameterType="ReportVO" resultType="java.util.Map">
+    select
+		mrc.package_nm
+	,	mrc.server_type
+	,	mrc.device_model as deviceModel
+	,	mrc.os_type as osType
+    ,	sum(total_user_cnt) as userCnt
+    ,	sum(total_user_cnt) /
+    (
+			select sum(a.total_user_cnt) as total_user_cnt
+			from(
+				select total_user_cnt
+				from maxy_report_crash
+				where
+                base_date BETWEEN #{fromDt} AND #{toDt}
+				AND package_nm = #{packageNm}
+                AND server_type = #{serverType}
+                <if test='osType != "A"'>AND os_type = #{osType}</if>
+                <if test='appVer != "A"'>AND app_ver = #{appVer}</if>
+				group by
+					package_nm
+				,	server_type
+				,	app_ver
+				,	device_model
+				,	os_type
+				,   base_date
+			) a
+    ) * 100 as userRate
+    ,	sum(total_log_cnt)
+    ,	sum(crash_cnt) as crashCnt
+    ,	sum(crash_cnt) /
+	(
+			select sum(a.crash_cnt) as crash_cnt
+			from(
+				select sum(crash_cnt) as crash_cnt
+				from maxy_report_crash
+				where
+                base_date BETWEEN #{fromDt} AND #{toDt}
+				AND package_nm = #{packageNm}
+                AND server_type = #{serverType}
+                <if test='osType != "A"'>AND os_type = #{osType}</if>
+                <if test='appVer != "A"'>AND app_ver = #{appVer}</if>
+				group by
+					package_nm
+				,	server_type
+				,	app_ver
+				,	device_model
+				,	os_type
+				,	base_date
+			) a
+	) * 100 as crashRate
+    from 
+    (
+       select
+            package_nm
+        ,	server_type
+        ,	device_model
+        ,	app_ver
+        ,	os_type
+        ,	total_user_cnt 
+        ,	total_log_cnt
+        ,	sum(crash_cnt)as crash_cnt
+        from
+            maxy_report_crash mrc
+        where
+        base_date BETWEEN #{fromDt} AND #{toDt}
+        AND package_nm = #{packageNm}
+        AND server_type = #{serverType}
+        <if test='osType != "A"'>AND os_type = #{osType}</if>
+        <if test='appVer != "A"'>AND app_ver = #{appVer}</if>
+        group by 
+            mrc.package_nm
+        ,	mrc.server_type
+        ,	mrc.app_ver
+        ,	mrc.device_model
+        ,	mrc.os_type
+        ,   mrc.base_date
+    ) mrc
+    group by 
+        mrc.package_nm
+    ,	mrc.server_type
+    ,	mrc.device_model
+    ,	mrc.os_type
+    order by sum(crash_cnt) desc
+    limit 10
+    </select>
+
+    <select id="getErrorCsvData" parameterType="ReportVO" resultType="java.util.Map">
+        select
+        error_cnt as errorCnt,
+        package_nm as packageNm,
+        os_type as osType,
+        app_ver as appVer,
+        log_type as logType,
+        error_msg as errorMsg,
+        reg_dt as regDt
+        from
+        maxy_report_error
+        where
+        base_date BETWEEN #{fromDt} AND #{toDt} and
+        package_nm = #{packageNm} and
+        server_type = #{serverType}
+        <if test='osType != "A"'>
+            and os_type = #{osType}
+        </if>
+        <if test='appVer != "A"'>
+            and app_ver = #{appVer}
+        </if>
+        order BY
+        errorCnt desc
+        limit 50
+    </select>
+
+    <select id="getCrashCsvData" parameterType="ReportVO" resultType="java.util.Map">
+        select
+        crash_cnt as crashCnt,
+        package_nm as packageNm,
+        os_type as osType,
+        app_ver as appVer,
+        crash_nm as crashNm,
+        reg_dt as regDt
+        from
+        maxy_report_crash
+        where
+        base_date BETWEEN #{fromDt} AND #{toDt} and
+        package_nm = #{packageNm} and
+        server_type = #{serverType}
+        <if test='osType != "A"'>
+            and os_type = #{osType}
+        </if>
+        <if test='appVer != "A"'>
+            and app_ver = #{appVer}
+        </if>
+        order BY
+        crashCnt desc
+        limit 50
+    </select>
+
+    <select id="selectPackageList" parameterType="ReportVO" resultType="java.util.Map">
+        select package_nm,
+               display_nm
+        from maxy.maxy_app_package
+    </select>
+
+    <select id="selectDeviceModelList" parameterType="ReportVO" resultType="java.util.Map">
+        select device_model as deviceModel,
+               name_ko as nameKo,
+               name_en as nameEn
+        from maxy.maxy_device_model_info
+    </select>
+
+    <select id="selectPageList" parameterType="ReportVO" resultType="java.util.Map">
+        select app_page_nm as appPageNm,
+               req_url     as reqUrl
+        from maxy.maxy_app_page
+        where package_nm = #{packageNm}
+          and server_type = #{serverType}
+          and use_yn = 'Y'
+          and app_page_nm is not null
+          and app_page_nm != ''
+    </select>
+
+    <select id="selectCallList" parameterType="ReportVO" resultType="java.util.Map">
+        select
+            os_type as osType,
+            app_ver as appVer,
+            sum(med_responsetime_cnt) as callCnt
+        from
+            maxy_report_app_performance mrap
+        where
+            mrap.base_date BETWEEN DATE_FORMAT(#{fromDt}, '%Y%m%d') AND DATE_FORMAT(#{toDt}, '%Y%m%d') and
+            mrap.package_nm = #{packageNm} and
+            mrap.server_type = #{serverType}
+            <if test='osType != "A"'>
+                and mrap.os_type = #{osType}
+            </if>
+            <if test='appVer != "A"'>
+                and mrap.app_ver = #{appVer}
+            </if>
+        group by
+            os_type,
+            app_ver
+    </select>
+
+    <select id="getNetworkErrorInfo" parameterType="ReportVO" resultType="java.util.Map">
+        select sum(error_cnt) as errorCnt,
+        error_msg as errorMsg,
+        log_type_dnm as logTypeDnm,
+        log_type_nm as logType,
+        com_type as comType,
+        sum(error_cnt) / (select sum(error_cnt)
+        from maxy_report_network_error mrne
+        where
+        base_date BETWEEN #{fromDt} AND #{toDt}
+        and package_nm = #{packageNm}
+        and server_type = #{serverType}
+        <if test='osType != "A"'>
+            and os_type = #{osType}
+        </if>
+        <if test='appVer != "A"'>
+            and app_ver = #{appVer}
+        </if>) *
+        100 as rate
+        from maxy_report_network_error
+        where
+        base_date BETWEEN #{fromDt} AND #{toDt}
+        and package_nm = #{packageNm}
+        and server_type = #{serverType}
+        <if test='osType != "A"'>
+            and os_type = #{osType}
+        </if>
+        <if test='appVer != "A"'>
+            and app_ver = #{appVer}
+        </if>
+        group by com_type, error_msg, log_type_dnm, log_type_nm
+        order by sum(error_cnt) desc
+        limit 10
+    </select>
+
+    <select id="getNetworkCrashInfo" parameterType="ReportVO" resultType="java.util.Map">
+        select
+        sum(crash_cnt) as crashCnt,
+        crash_nm as crashNm,
+        cause_by as causeBy,
+        com_type as comType,
+        sum(crash_cnt) / (select
+                              sum(crash_cnt)
+                          from maxy_report_network_crash mrnc
+                          where
+                              base_date BETWEEN #{fromDt} AND #{toDt}
+                            and package_nm = #{packageNm}
+                            and server_type = #{serverType}
+                        <if test='osType != "A"'>
+                            and os_type = #{osType}
+                        </if>
+                        <if test='appVer != "A"'>
+                            and app_ver = #{appVer}
+                        </if>) * 100 as rate
+        from
+        maxy_report_network_crash
+        where
+        base_date BETWEEN #{fromDt} AND #{toDt} and
+        package_nm = #{packageNm} and
+        server_type = #{serverType}
+        <if test='osType != "A"'>
+            and os_type = #{osType}
+        </if>
+        <if test='appVer != "A"'>
+            and app_ver = #{appVer}
+        </if>
+        group by
+        com_type, crash_nm, cause_by
+        order by
+        sum(crash_cnt) desc
+        limit 10
+    </select>
+
+    <select id="selectFrontReportBasicInfo" parameterType="ReportVO" resultType="CamelMap">
+        select base_date,
+               count_user,
+               count_session,
+               count_pv,
+               sum_loading_time,
+               sum_intervaltime,
+               case when count_pv = 0 then 0
+                    else round(sum_loading_time / count_pv, 0)
+                   end as avg_loading_time,
+               case when count_pv = 0 then 0
+                    else round(sum_intervaltime / count_pv, 0)
+                   end as avg_interval_time,
+               count_network
+        from maxy_front_report_basic_info
+        where base_date between #{fromDt} and #{toDt}
+          and package_nm = #{packageNm}
+          and server_type = #{serverType}
+        order by base_date
+    </select>
+
+    <select id="selectFrontReportPageInfoByBrowser" parameterType="ReportVO" resultType="CamelMap">
+        select device_model,
+               sum(count_user)       as count_user,
+               sum(count_pv)         as count_pv,
+               sum(sum_loading_time) as sum_loading_time,
+               case when count_pv = 0 then 0
+                    else round(sum_loading_time / count_pv, 0)
+               end as avg_loading_time
+        from maxy_front_report_device_model
+        where base_date between #{fromDt} and #{toDt}
+          and package_nm = #{packageNm}
+          and server_type = #{serverType}
+        group by package_nm, server_type, device_model
+        order by count_pv desc limit 10
+    </select>
+
+    <select id="selectFrontReportPageInfoByPageError" parameterType="ReportVO" resultType="CamelMap">
+        select req_url,
+               sum(count_error)       as count_error
+        from maxy_front_report_page_url
+        where base_date between #{fromDt} and #{toDt}
+          and package_nm = #{packageNm}
+          and server_type = #{serverType}
+        group by package_nm, server_type, req_url
+        having sum(count_error) > 0
+        order by count_error desc limit 10
+    </select>
+
+    <select id="selectFrontReportPageInfoByErrorMsg" parameterType="ReportVO" resultType="CamelMap">
+        select res_msg,
+               sum(count_error)       as count_error
+        from maxy_front_report_error_msg
+        where base_date between #{fromDt} and #{toDt}
+          and package_nm = #{packageNm}
+          and server_type = #{serverType}
+        group by package_nm, server_type, res_msg
+        order by count_error desc limit 10
+    </select>
+
+    <select id="selectFrontReportPageInfoByLocation" parameterType="ReportVO" resultType="CamelMap">
+        select location_code,
+               sum(count_user)       as count_user,
+               sum(count_pv)         as count_pv,
+               sum(sum_loading_time) as sum_loading_time,
+               case when count_pv = 0 then 0
+                    else round(sum_loading_time / count_pv, 0)
+               end as avg_loading_time
+        from maxy_front_report_location
+        where base_date between #{fromDt} and #{toDt}
+          and package_nm = #{packageNm}
+          and server_type = #{serverType}
+        group by package_nm, server_type, location_code
+        order by count_pv desc limit 10
+    </select>
+
+    <select id="selectFrontReportPageInfoByNetworkErrorMsg" parameterType="ReportVO" resultType="CamelMap">
+        select res_msg,
+               sum(count_error)       as count_error
+        from maxy_front_report_network_error_msg
+        where base_date between #{fromDt} and #{toDt}
+          and package_nm = #{packageNm}
+          and server_type = #{serverType}
+        group by package_nm, server_type, res_msg
+        order by count_error desc limit 10
+    </select>
+
+    <select id="selectFrontReportPageInfoByPageUrl" parameterType="ReportVO" resultType="CamelMap">
+        select req_url,
+               sum(count_pv)         as count_pv,
+               sum(sum_loading_time) as sum_loading_time,
+               case
+                   when sum(count_pv) = 0 then 0
+                   else round(sum(sum_loading_time) / sum(count_pv), 2)
+                   end as avg_loading_time
+        from maxy_front_report_page_url
+        where base_date between #{fromDt} and #{toDt}
+          and package_nm = #{packageNm}
+          and server_type = #{serverType}
+        group by package_nm, server_type, req_url
+        order by count_pv desc limit 10
+    </select>
+
+    <select id="selectFrontReportPageLoadTop10" parameterType="ReportVO" resultType="CamelMap">
+        select req_url,
+               sum(count_pv) as count_pv,
+               case
+                   when sum(count_pv) = 0 then 0
+                   else round(sum(sum_loading_time) / sum(count_pv), 0)
+                   end as avg_loading_time
+        from maxy_front_report_page_url
+        where base_date between #{fromDt} and #{toDt}
+          and package_nm = #{packageNm}
+          and server_type = #{serverType}
+        group by package_nm, server_type, req_url
+        order by count_pv desc limit 10
+    </select>
+
+    <select id="selectFrontReportPageLoadWorst10" parameterType="ReportVO" resultType="CamelMap">
+        select req_url,
+               sum(count_pv) as count_pv,
+               case
+                   when sum(count_pv) = 0 then 0
+                   else round(sum(sum_loading_time) / sum(count_pv), 0)
+                   end       as avg_loading_time
+        from maxy_front_report_page_url
+        where base_date between #{fromDt} and #{toDt}
+          and package_nm = #{packageNm}
+          and server_type = #{serverType}
+        group by package_nm, server_type, req_url
+        order by avg_loading_time desc limit 10
+    </select>
+
+    <select id="selectFrontReportLcpWorst10" parameterType="ReportVO" resultType="CamelMap">
+        select req_url,
+               sum(count_pv) as count_pv,
+               case
+                   when sum(count_pv) = 0 then 0
+                   else round(sum(sum_lcp) / sum(count_pv), 0)
+                   end       as avg_lcp,
+               case
+                   when sum(count_pv) = 0 then 0
+                   else round(sum(sum_loading_time) / sum(count_pv), 0)
+                   end       as avg_loading_time
+        from maxy_front_report_page_url
+        where base_date between #{fromDt} and #{toDt}
+          and package_nm = #{packageNm}
+          and server_type = #{serverType}
+        group by package_nm, server_type, req_url
+        order by avg_lcp desc limit 10
+    </select>
+
+    <select id="selectFrontReportClsWorst10" parameterType="ReportVO" resultType="CamelMap">
+        select req_url,
+               sum(count_pv) as count_pv,
+               case
+                   when sum(count_pv) = 0 then 0
+                   else round(sum(sum_cls) / sum(count_pv), 4)
+                   end       as avg_cls,
+               case
+                   when sum(count_pv) = 0 then 0
+                   else round(sum(sum_loading_time) / sum(count_pv), 0)
+                   end       as avg_loading_time
+        from maxy_front_report_page_url
+        where base_date between #{fromDt} and #{toDt}
+          and package_nm = #{packageNm}
+          and server_type = #{serverType}
+        group by package_nm, server_type, req_url
+        order by avg_cls desc limit 10
+    </select>
+
+    <select id="selectFrontReportInpWorst10" parameterType="ReportVO" resultType="CamelMap">
+        select req_url,
+               sum(count_pv) as count_pv,
+               case
+                   when sum(count_pv) = 0 then 0
+                   else round(sum(sum_inp) / sum(count_pv), 0)
+                   end       as avg_inp,
+               case
+                   when sum(count_pv) = 0 then 0
+                   else round(sum(sum_loading_time) / sum(count_pv), 0)
+                   end       as avg_loading_time
+        from maxy_front_report_page_url
+        where base_date between #{fromDt} and #{toDt}
+          and package_nm = #{packageNm}
+          and server_type = #{serverType}
+        group by package_nm, server_type, req_url
+        order by avg_inp desc limit 10
+    </select>
+</mapper>

@@ -1,0 +1,122 @@
+{
+  "size": #{size},
+  "query": {
+    "bool": {
+      "must": [
+        {
+          "term": {
+            "packageNm": {
+              "value": #{packageNm}
+            }
+          }
+        },
+        {
+          "term": {
+            "serverType": {
+              "value": #{serverType}
+            }
+          }
+        }
+        #[searchDeviceId]
+        ,{
+          "term": {
+            "deviceId.raw": {
+              "value": #{searchValue}
+            }
+          }
+        }
+        #[/searchDeviceId]
+        #[isOsType]
+        ,{
+          "term": {
+            "osType": {
+              "value": #{osType}
+            }
+          }
+        }
+        #[/isOsType]
+        #[isAppVer]
+        ,{
+          "term": {
+            "appVer": #{appVer}
+          }
+        }
+        #[/isAppVer]
+        #[searchUserNm]
+        ,{
+          "term": {
+            "userNm.raw": #{searchValue}
+          }
+        }
+        #[/searchUserNm]
+        #[searchUserId]
+        ,{
+          "term": {
+            "userId.raw": #{searchValue}
+          }
+        }
+        #[/searchUserId]
+        #[searchReqUrl]
+        ,{
+          "wildcard": {
+            "reqUrl.raw": {
+              "value": #{searchValue}
+            }
+          }
+        }
+        #[/searchReqUrl]
+        #[searchPageUrl]
+        ,{
+          "wildcard": {
+            "pageUrl.raw": {
+              "value": #{searchValue}
+            }
+          }
+        }
+        #[/searchPageUrl]
+        ,{
+          "range": {
+            "logTm": {
+              "from": #{fromDt},
+              "to": #{toDt},
+              "include_lower": true,
+              "include_upper": true,
+              "time_zone": "Z"
+            }
+          }
+        }
+      ]
+    }
+  },
+  "_source": [
+              "logTm",
+              "deviceId",
+              "logType",
+              "logTypeNm",
+              "logTypeDnm",
+              "reqUrl",
+              "packageNm",
+              "serverType",
+              "osType",
+              "appVer",
+              "osVer",
+              "deviceModel",
+              "userId",
+              "userNm",
+              "pageUrl"
+  ],
+  "sort": [
+    {
+      "_id": {
+        "order": "desc",
+        "missing": "_last",
+        "unmapped_type": "long"
+      }
+    }
+  ]
+  #[isMoreData]
+  , "search_after": [
+    #{id}
+  ]
+  #[/isMoreData]
+}

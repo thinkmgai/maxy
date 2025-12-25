@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkm.maxy.mapper.ExceptLogMapper">
+
+    <select id="selectExceptLogList" resultType="ExceptLogVO" parameterType="ExceptLogVO">
+        SELECT seq,
+               package_nm,
+               server_type,
+               except_string,
+               upd_dt
+        FROM maxy_except_error_string
+        where use_yn = 'Y'
+          and package_nm = #{packageNm}
+          and server_type = #{serverType}
+    </select>
+
+    <select id="existsExceptLog" resultType="int" parameterType="ExceptLogVO">
+        SELECT count(1)
+        FROM maxy_except_error_string
+        where use_yn = 'Y'
+          and package_nm = #{packageNm}
+          and server_type = #{serverType}
+          and except_string = #{exceptString}
+    </select>
+
+    <select id="countExceptLog" resultType="int" parameterType="ExceptLogVO">
+        SELECT count(1)
+        FROM maxy_except_error_string
+        where use_yn = 'Y'
+          and package_nm = #{packageNm}
+          and server_type = #{serverType}
+    </select>
+
+    <insert id="insertExceptLog" parameterType="ExceptLogVO">
+        INSERT INTO maxy_except_error_string (package_nm,
+                                              server_type,
+                                              except_string,
+                                              use_yn,
+                                              reg_dt,
+                                              reg_no,
+                                              upd_dt,
+                                              upd_no)
+        VALUES (#{packageNm},
+                #{serverType},
+                #{exceptString},
+                'Y',
+                #{regDt},
+                #{userNo},
+                #{regDt},
+                #{userNo})
+    </insert>
+
+    <update id="updateExceptLog" parameterType="ExceptLogVO">
+        update maxy_except_error_string
+        set except_string = #{exceptString}
+          , upd_dt        = #{regDt}
+          , upd_no        = #{userNo}
+        where package_nm = #{packageNm}
+          and server_type = #{serverType}
+          and seq = #{seq}
+    </update>
+
+    <delete id="deleteExceptLog" parameterType="ExceptLogVO">
+        delete
+        from maxy_except_error_string
+        where package_nm = #{packageNm}
+          and server_type = #{serverType}
+          and seq = #{seq}
+    </delete>
+</mapper>

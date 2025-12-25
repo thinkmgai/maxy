@@ -1,0 +1,152 @@
+.accessibility-widget {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  padding: 10px;
+  box-sizing: border-box;
+  gap: 10px;
+  border-radius: var(--radius, 18px);
+  background: linear-gradient(150deg, rgba(240, 247, 255, 0.95) 0%, #ffffff 75%);
+  box-shadow: 0 1px 4px rgba(15, 23, 42, 0.08);
+}
+
+.accessibility-widget--dark {
+  background: linear-gradient(150deg, rgba(30, 41, 59, 0.92) 0%, rgba(15, 23, 42, 0.85) 80%);
+  box-shadow: inset 0 0 0 1px rgba(148, 163, 184, 0.2);
+}
+
+.accessibility-widget__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2px;
+}
+
+.accessibility-widget__title {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.accessibility-widget__title h4 {
+  margin: 0;
+  font-size: 12px;
+  line-height: 21px;
+  font-weight: 500;
+  color: #3d3d3d;
+}
+
+.accessibility-widget--dark .accessibility-widget__title h4 {
+  color: #f8fafc;
+}
+
+.accessibility-widget__help {
+  width: 12px;
+  height: 14px;
+}
+
+.accessibility-widget__actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.accessibility-widget__date-buttons {
+  display: inline-flex;
+  gap: 4px;
+}
+
+.accessibility-widget__date-button {
+  min-width: 48px;
+  font-size: 11px;
+  padding: 4px 10px;
+}
+
+.accessibility-widget__inline-error {
+  font-size: 12px;
+  color: #dc2626;
+  background: rgba(248, 113, 113, 0.12);
+  padding: 6px 10px;
+  border-radius: 8px;
+}
+
+.accessibility-widget__chart {
+  flex: 1;
+  min-height: 0;
+  background: rgba(255, 255, 255, 0.85);
+  border-radius: 14px;
+  padding: 0;
+  display: flex;
+}
+
+.accessibility-widget--dark .accessibility-widget__chart {
+  background: rgba(15, 23, 42, 0.6);
+}
+
+.accessibility-widget__status {
+  width: 100%;
+  height: 100%;
+  min-height: 220px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: rgba(71, 85, 105, 0.86);
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+.accessibility-widget__chart :focus,
+.accessibility-widget__chart:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+.accessibility-widget--dark .accessibility-widget__status {
+  color: rgba(241, 245, 249, 0.85);
+}
+
+.accessibility-widget__tooltip {
+  background: rgba(15, 23, 42, 0.92);
+  color: #f8fafc;
+  padding: 8px 10px;
+  border-radius: 8px;
+  min-width: 160px;
+  box-shadow: 0 6px 18px rgba(15, 23, 42, 0.35);
+}
+
+.accessibility-widget__tooltip-title {
+  font-size: 12px;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.accessibility-widget__tooltip-body {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.accessibility-widget__tooltip-row {
+  display: grid;
+  grid-template-columns: 10px 1fr auto;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+}
+
+.accessibility-widget__tooltip-indicator {
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+}
+
+.accessibility-widget__tooltip-label {
+  opacity: 0.9;
+}
+
+.accessibility-widget__tooltip-value {
+  font-weight: 600;
+  text-align: right;
+}

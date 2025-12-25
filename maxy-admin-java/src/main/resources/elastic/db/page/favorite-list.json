@@ -1,0 +1,105 @@
+{
+  "aggs": {
+    "res": {
+      "terms": {
+        "field": "reqUrl.raw",
+        "order": {
+          "_count": "desc"
+        },
+        "size": #{size}
+      },
+      "aggs": {
+        "sumLogCount": {
+          "sum": {
+            "field": "logCount"
+          }
+        },
+        "sumCpuUsage": {
+          "sum": {
+            "field": "sumCpuUsage"
+          }
+        },
+        "sumMemUsage": {
+          "sum": {
+            "field": "sumMemUsage"
+          }
+        },
+        "loadingTime": {
+          "avg": {
+            "field": "loadingTime"
+          }
+        },
+        "responseTime": {
+          "avg": {
+            "field": "responseTime"
+          }
+        },
+        "intervaltime": {
+          "avg": {
+            "field": "intervaltime"
+          }
+        },
+        "errorCount": {
+          "sum": {
+            "field": "errorCount"
+          }
+        },
+        "crashCount": {
+          "sum": {
+            "field": "crashCount"
+          }
+        },
+        "logType": {
+          "avg": {
+            "field": "logType"
+          }
+        }
+      }
+    }
+  },
+  "size": 0,
+  "query": {
+    "bool": {
+      "filter": [
+        #[isFavorites]
+        {
+          "bool": {
+            "should": [
+              #{_rawReqUrls}
+            ],
+            "minimum_should_match": 1
+          }
+        },
+        #[/isFavorites]
+        {
+          "term": {
+            "packageNm": #{packageNm}
+          }
+        },
+        {
+        "term": {
+            "serverType": #{serverType}
+          }
+        },
+        #[isOsType]
+        {
+          "term": {
+            "osType": #{osType}
+          }
+        },
+        #[/isOsType]
+        {
+          "range": {
+            "pageStartTm": {
+              "from": #{from},
+              "to": #{to},
+              "include_lower": true,
+              "include_upper": true,
+              "time_zone": "Z"
+            }
+          }
+        }
+      ]
+    }
+  }
+}

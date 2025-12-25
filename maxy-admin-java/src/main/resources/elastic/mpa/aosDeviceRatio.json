@@ -1,0 +1,74 @@
+{
+  "aggs": {
+    "deviceRatio": {
+      "terms": {
+        "field": "deviceModel",
+        "order": {
+          "avg": "desc"
+        },
+        "size": 6
+      },
+      "aggs": {
+        "avg": {
+          "avg": {
+            "field": "loadingTime"
+          }
+        }
+      }
+    }
+  },
+  "query": {
+    "bool": {
+      "must": [
+        {
+          "term": {
+            "packageNm": {
+              "value": #{packageNm}
+            }
+          }
+        },
+        {
+          "term": {
+            "serverType": {
+              "value": #{serverType}
+            }
+          }
+        },
+        #[isAppVer]
+        {
+          "term": {
+            "appVer": {
+              "value": #{appVer}
+            }
+          }
+        },
+        #[/isAppVer]
+        {
+          "term": {
+            "osType": {
+              "value": "Android"
+            }
+          }
+        }
+      ],
+      "must_not": [
+        {
+          "term": {
+            "loadingTime": "0"
+          }
+        }
+      ],
+      "filter": [
+        {
+          "range": {
+            "pageStartTm": {
+              "gte": #{searchFromDt},
+              "lte": #{searchToDt},
+              "format": "epoch_millis"
+            }
+          }
+        }
+      ]
+    }
+  }
+}

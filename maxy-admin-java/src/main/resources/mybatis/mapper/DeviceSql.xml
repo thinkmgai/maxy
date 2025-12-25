@@ -1,0 +1,673 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkm.maxy.mapper.DeviceMapper">
+
+    <select id="selectModelList" resultType="ModelVO" parameterType="ModelVO">
+        select seq,
+               device_model,
+               name_ko,
+               name_en,
+               description,
+               reg_dt,
+               reg_no,
+               upd_dt,
+               upd_no
+        from maxy_device_model_info
+        order by upd_dt desc
+    </select>
+
+    <insert id="insertModelInfo" parameterType="ModelVO">
+        insert into maxy_device_model_info (device_model,
+                                            name_ko,
+                                            name_en,
+                                            description,
+                                            reg_dt, reg_no,
+                                            upd_dt, upd_no)
+        values (#{deviceModel}, #{nameKo}, #{nameEn}, #{description}, #{regDt}, #{userNo}, #{regDt}, #{userNo})
+    </insert>
+
+    <update id="updateModelInfo" parameterType="ModelVO">
+        update maxy_device_model_info
+        set device_model = #{deviceModel},
+            name_ko      = #{nameKo},
+            name_en      = #{nameEn},
+            description  = #{description},
+            upd_dt       = #{regDt},
+            upd_no       = #{userNo}
+        where seq = #{seq}
+    </update>
+
+    <delete id="deleteModelInfo" parameterType="ModelVO">
+        <foreach collection="deleteList" item="item" separator=";">
+            delete
+            from maxy_device_model_info
+            where seq = #{item.seq}
+        </foreach>
+    </delete>
+
+    <!-- 장치 현황 페이지 카운트 -->
+    <select id="selectDeviceListCnt" resultType="int" parameterType="DeviceVO">
+        select count(1)
+        from maxy_device md
+        where delete_yn = 'N'
+        and server_type = #{serverType}
+        and package_nm = #{packageNm}
+        <choose>
+            <when test='searchOsType == "ios"'>
+                and os_type = 'iOS'
+            </when>
+            <when test='searchOsType == "android"'>
+                and os_type = 'Android'
+            </when>
+        </choose>
+        <if test='searchValue != null and searchValue != ""'>
+            <choose>
+                <when test='searchTextType == "userId"'>
+                    and user_id = #{searchValue}
+                </when>
+                <when test='searchTextType == "deviceId"'>
+                    and device_id = #{searchValue}
+                </when>
+            </choose>
+        </if>
+        limit #{targetIndex} OFFSET #{offsetIndex}
+    </select>
+
+    <!-- 장치 현황 목록 조회 -->
+    <select id="selectDeviceList" resultType="DeviceVO" parameterType="DeviceVO">
+        select md.device_id,
+        md.user_id,
+        md.model_no,
+        md.os_ver,
+        md.wifi_mac_addr,
+        md.bt_mac_addr,
+        md.active_st,
+        md.delete_yn,
+        md.reg_no,
+        md.reg_dt,
+        md.upd_no,
+        md.upd_dt,
+        md.server_type,
+        md.package_nm,
+        md.os_type,
+        md.push_token,
+        IF(mta.device_id is null, 'N', 'Y') as target_st,
+        mta.user_nm,
+        mta.phone_no,
+        mta.email_addr,
+        mta.target_id,
+        mta.vip_yn,
+        mta.client_nm,
+        mta.web_perf_check_yn,
+        IF(mta.make_type is null, 'NONE', mta.make_type) as make_type,
+        mta.use_yn
+        from maxy_device md FORCE INDEX (idx_device_filter_regdt)
+        left outer join maxy_target_app mta FORCE INDEX (idx_target_join)
+        on md.device_id = mta.device_id
+        and md.package_nm = mta.package_nm
+        and md.server_type = mta.server_type
+        where md.delete_yn = 'N'
+        and md.server_type = #{serverType}
+        and md.package_nm = #{packageNm}
+        <choose>
+            <when test='searchOsType != null and searchOsType.toLowerCase() == "ios"'>
+                and md.os_type = 'iOS'
+            </when>
+            <when test='searchOsType != null and searchOsType.toLowerCase() == "android"'>
+                and md.os_type = 'Android'
+            </when>
+        </choose>
+        <if test='searchValue != null and searchValue != ""'>
+            <choose>
+                <when test='searchTextType == "userId"'>
+                    and md.user_id = #{searchValue}
+                </when>
+                <when test='searchTextType == "deviceId"'>
+                    and md.device_id = #{searchValue}
+                </when>
+            </choose>
+        </if>
+        <if test='searchTargetSt != null and searchTargetSt != ""'>
+            <choose>
+                <when test='searchTargetSt == "Y"'>
+                    and mta.device_id is not null
+                </when>
+                <when test='searchTargetSt == "N"'>
+                    and mta.device_id is null
+                </when>
+            </choose>
+        </if>
+        order by md.reg_dt desc
+        limit #{limit} OFFSET #{offset}
+    </select>
+
+    <!-- 로깅 대상 등록 -->
+    <insert id="insertTargetDevice" parameterType="DeviceVO">
+        insert into maxy_target_app
+        (target_id,
+         package_nm,
+         device_id,
+         phone_no,
+         server_type,
+         logging_interval,
+         logging_bundle_units,
+         use_yn,
+         reg_no,
+         reg_dt,
+         upd_no,
+         upd_dt,
+         os_type,
+         make_type)
+            (select COALESCE((select max(target_id) + 1 from maxy_target_app), 1),
+                    package_nm,
+                    device_id,
+                    phone_no,
+                    server_type,
+                    '60',
+                    '10',
+                    'Y',
+                    #{userNo},
+                    #{regDt},
+                    #{userNo},
+                    #{regDt},
+                    os_type,
+                    #{makeType}
+             from maxy_device
+             where device_id = #{deviceId}
+               and server_type = #{serverType}
+               and package_nm = #{packageNm})
+    </insert>
+
+    <!-- 로깅 대상 등록할 때 중복 체크 -->
+    <select id="selectDeviceByDeviceId" resultType="DeviceVO" parameterType="DeviceVO">
+        select device_id, server_type
+        from maxy_target_app
+        where reg_dt is not null and
+        <foreach collection="deviceList" item="item" open="(" close=")" separator=" or ">
+            (server_type = #{item.serverType}
+            and device_id = #{item.deviceId}
+            and package_nm = #{item.packageNm})
+        </foreach>
+        limit 5
+    </select>
+
+    <select id="selectDateInfoByDeviceId" resultType="DeviceVO" parameterType="DeviceVO">
+        select created_date, updated_date
+        from maxy_device
+        where package_nm = #{packageNm}
+          and server_type = #{serverType}
+          and device_id = #{deviceId}
+        limit 1
+    </select>
+
+    <!-- 로깅 대상 조회 - deviceId -->
+    <select id="selectTargetDeviceByDeviceId" resultType="DeviceVO" parameterType="DeviceVO">
+        select device_id
+             , package_nm
+             , server_type
+             , target_id
+        from maxy_target_app
+        where server_type = #{serverType}
+          and device_id = #{deviceId}
+          and package_nm = #{packageNm}
+        limit 1
+    </select>
+
+    <!-- 디바이스 조회 - deviceId -->
+    <select id="selectOneDevice" resultType="DeviceVO" parameterType="DeviceVO">
+        select device_id
+             , package_nm
+             , server_type
+        from maxy_device
+        where package_nm = #{packageNm}
+          and server_type = #{serverType}
+          and device_id = #{deviceId}
+        limit 1
+    </select>
+
+    <update id="updateDevice" parameterType="DeviceVO">
+        update maxy_device
+        set phone_no   = #{phoneNo},
+            delete_yn  = 'N',
+            os_type    = #{osType},
+            push_token = #{pushToken},
+            upd_no     = #{userNo},
+            upd_dt     = #{regDt}
+        where device_id = #{deviceId}
+          and server_type = #{serverType}
+          and package_nm = #{packageNm}
+    </update>
+
+    <insert id="insertDevice" parameterType="DeviceVO">
+        INSERT INTO maxy_device
+        (device_id,
+         user_id,
+         active_st,
+         delete_yn,
+         reg_no,
+         reg_dt,
+         upd_no,
+         upd_dt,
+         server_type,
+         package_nm,
+         os_type,
+         push_token,
+         updated_date,
+         created_date,
+         pushed_date,
+         bundle_id,
+         device_st)
+        VALUES ( #{deviceId}
+               , #{userId}
+               , 'Y'
+               , 'N'
+               , #{userNo}
+               , #{regDt}
+               , #{userNo}
+               , #{regDt}
+               , #{serverType}
+               , #{packageNm}
+               , #{osType}
+               , #{pushToken}
+               , #{updatedDate}
+               , #{createdDate}
+               , #{pushedDate}
+               , #{packageNm}
+               , 'N')
+    </insert>
+
+
+    <!-- 로깅 대상 목록 페이지 카운트 -->
+    <select id="selectTargetDeviceListCnt" resultType="int" parameterType="DeviceVO">
+        select count(1)
+        from maxy_target_app
+        where package_nm = #{packageNm}
+        and server_type = #{serverType}
+        <choose>
+            <when test='searchOsType == "ios"'>
+                and os_type = 'iOS'
+            </when>
+            <when test='searchOsType == "android"'>
+                and os_type = 'Android'
+            </when>
+        </choose>
+        <choose>
+            <when test='searchMakeType == "MANUAL"'>
+                and make_type = 'MANUAL'
+            </when>
+            <when test='searchMakeType == "AUTO"'>
+                and make_type = 'AUTO'
+            </when>
+        </choose>
+        <if test='searchValue != null and searchValue != ""'>
+            <choose>
+                <when test='searchTextType == "userNm"'>
+                    and user_nm = #{searchValue}
+                </when>
+                <when test='searchTextType == "deviceId"'>
+                    and device_id = #{searchValue}
+                </when>
+            </choose>
+        </if>
+        limit #{targetIndex} OFFSET #{offsetIndex}
+    </select>
+
+    <!-- 로깅 대상 목록 조회 -->
+    <select id="selectTargetDeviceList" resultType="DeviceVO" parameterType="DeviceVO">
+        select mta.target_id,
+        mta.package_nm,
+        mta.device_id,
+        mta.user_no,
+        mta.user_nm,
+        mta.email_addr,
+        mta.phone_no,
+        mta.m_from_dt,
+        mta.m_to_dt,
+        mta.server_type,
+        mta.logging_interval,
+        mta.logging_bundle_units,
+        mta.use_yn,
+        mta.vip_yn,
+        mta.reg_no,
+        mta.reg_dt,
+        mta.upd_no,
+        mta.upd_dt,
+        mta.os_type,
+        mta.push_token,
+        mta.make_type,
+        md.user_id,
+        mta.web_perf_check_yn
+        from maxy_target_app mta
+        inner join maxy_device md
+        on mta.package_nm = md.package_nm
+        and mta.server_type = md.server_type
+        and mta.device_id = md.device_id
+        where mta.package_nm = #{packageNm}
+        and mta.server_type = #{serverType}
+        <choose>
+            <when test='searchOsType == "ios"'>
+                and mta.os_type = 'iOS'
+            </when>
+            <when test='searchOsType == "android"'>
+                and mta.os_type = 'Android'
+            </when>
+        </choose>
+        <choose>
+            <when test='searchMakeType == "MANUAL"'>
+                and mta.make_type = 'MANUAL'
+            </when>
+            <when test='searchMakeType == "AUTO"'>
+                and mta.make_type = 'AUTO'
+            </when>
+        </choose>
+        <if test='searchValue != null and searchValue != ""'>
+            <choose>
+                <when test='searchTextType == "userNm"'>
+                    and mta.user_nm = #{searchValue}
+                </when>
+                <when test='searchTextType == "userId"'>
+                    and md.user_id = #{searchValue}
+                </when>
+                <when test='searchTextType == "deviceId"'>
+                    and mta.device_id = #{searchValue}
+                </when>
+            </choose>
+        </if>
+        order by mta.reg_dt desc
+        limit #{targetIndex} OFFSET #{offsetIndex}
+    </select>
+
+    <!-- 로깅 대상 목록 조회 -->
+    <select id="selectTargetDeviceListForPageMap" resultType="DeviceVO" parameterType="DeviceVO">
+        select mta.target_id,
+        mta.package_nm,
+        mta.device_id,
+        mta.user_no,
+        mta.user_nm,
+        mta.email_addr,
+        mta.phone_no,
+        mta.m_from_dt,
+        mta.m_to_dt,
+        mta.server_type,
+        mta.logging_interval,
+        mta.logging_bundle_units,
+        mta.use_yn,
+        mta.vip_yn,
+        mta.reg_no,
+        mta.reg_dt,
+        mta.upd_no,
+        mta.upd_dt,
+        mta.os_type,
+        mta.push_token,
+        mta.make_type,
+        md.user_id
+        from maxy_target_app mta
+        inner join maxy_device md
+        on mta.package_nm = md.package_nm
+        and mta.server_type = md.server_type
+        and mta.device_id = md.device_id
+        where mta.package_nm = #{packageNm}
+        and mta.server_type = #{serverType}
+        and mta.use_yn = 'Y'
+        <choose>
+            <when test='searchOsType == "ios"'>
+                and mta.os_type = 'iOS'
+            </when>
+            <when test='searchOsType == "android"'>
+                and mta.os_type = 'Android'
+            </when>
+        </choose>
+        <if test='searchValue != null and searchValue != ""'>
+            <choose>
+                <when test='searchTextType == "userNm"'>
+                    and mta.user_nm = #{searchValue}
+                </when>
+                <when test='searchTextType == "userId"'>
+                    and md.user_id = #{searchValue}
+                </when>
+                <when test='searchTextType == "deviceId"'>
+                    and mta.device_id = #{searchValue}
+                </when>
+            </choose>
+        </if>
+        order by reg_dt desc
+        limit #{targetIndex} OFFSET #{offsetIndex}
+    </select>
+
+    <select id="selectTargetDevicePageList" resultType="DevicePageVO" parameterType="DeviceVO">
+        select seq,
+               package_nm,
+               server_type,
+               device_id,
+               page_seq,
+               req_url,
+               app_page_nm,
+               reg_no,
+               reg_dt,
+               upd_no,
+               upd_dt
+        from maxy_target_app_page_map
+        where package_nm = #{packageNm}
+          and server_type = #{serverType}
+          and device_id = #{deviceId}
+        order by seq
+    </select>
+
+    <insert id="insertTargetDevicePage" parameterType="DevicePageVO">
+        <foreach collection="reqUrlList" open="" close="" separator=";" item="item">
+            insert into maxy_target_app_page_map (package_nm,
+            server_type,
+            device_id,
+            page_seq,
+            req_url,
+            app_page_nm,
+            reg_no,
+            reg_dt,
+            upd_no,
+            upd_dt)
+            select #{packageNm},
+            #{serverType},
+            #{deviceId},
+            data_type,
+            req_url,
+            app_page_nm,
+            #{userNo},
+            #{regDt},
+            #{userNo},
+            #{regDt}
+            from maxy_app_page
+            where data_type = '1'
+            and package_nm = #{packageNm}
+            and server_type = #{serverType}
+            and req_url = #{item}
+        </foreach>
+    </insert>
+
+    <delete id="deleteAllTargetDevicePage" parameterType="DevicePageVO">
+        delete
+        from maxy_target_app_page_map
+        where package_nm = #{packageNm}
+          and server_type = #{serverType}
+          and device_id = #{deviceId}
+    </delete>
+
+    <update id="updateTargetDeviceDetail" parameterType="DeviceVO">
+        update maxy_target_app
+        set upd_no        = #{userNo}
+          , upd_dt        = #{regDt}
+          , user_nm       = #{userNm}
+          , email_addr    = #{emailAddr}
+          , phone_no      = #{phoneNo}
+          , use_yn        = #{useYn}
+          , vip_yn        = #{vipYn}
+          , vip_reg_dt    = null
+          , vip_remove_dt = #{regDt}
+          , make_type     = 'MANUAL'
+        where target_id = #{targetId}
+    </update>
+
+    <update id="updateTargetDeviceDetailVip" parameterType="DeviceVO">
+        update maxy_target_app
+        set upd_no            = #{userNo}
+          , upd_dt            = #{regDt}
+          , user_nm           = #{userNm}
+          , email_addr        = #{emailAddr}
+          , phone_no          = #{phoneNo}
+          , use_yn            = #{useYn}
+          , vip_yn            = #{vipYn}
+          , vip_reg_dt        = #{regDt}
+          , vip_remove_dt     = null
+          , make_type         = 'MANUAL'
+        where target_id = #{targetId}
+    </update>
+
+    <insert id="insertRegTargetDevice" parameterType="DeviceVO">
+        insert into maxy_target_app
+        (target_id,
+        package_nm,
+        device_id,
+        push_token,
+        user_nm,
+        user_id,
+        email_addr,
+        phone_no,
+        m_from_dt,
+        m_to_dt,
+        server_type,
+        logging_interval,
+        logging_bundle_units,
+        use_yn,
+        web_perf_check_yn,
+        vip_yn,
+        reg_no,
+        reg_dt,
+        upd_no,
+        upd_dt,
+        os_type,
+        vip_reg_dt,
+        make_type)
+        values ((select max(mta.target_id) + 1 from maxy_target_app mta),
+        #{packageNm},
+        #{deviceId},
+        #{pushToken},
+        #{userNm},
+        #{userId},
+        #{emailAddr},
+        #{phoneNo},
+        #{mFromDt},
+        #{mToDt},
+        #{serverType},
+        60,
+        10,
+        'Y',
+        'Y',
+        #{vipYn},
+        #{userNo},
+        #{regDt},
+        #{userNo},
+        #{regDt},
+        #{osType},
+        #{vipRegDt},
+        #{makeType})
+        <selectKey resultType="long" keyProperty="targetId" order="AFTER">
+            select max(target_id) as targetId from maxy_target_app
+        </selectKey>
+    </insert>
+
+    <delete id="deleteTargetDevice" parameterType="DeviceVO">
+        delete from maxy_target_app
+        where target_id in
+        <foreach collection="targetIdList" item="targetId" open="(" close=")" separator=",">
+            #{targetId}
+        </foreach>
+    </delete>
+
+    <select id="selectTargetDeviceByTargetIds" parameterType="DeviceVO" resultType="DeviceVO">
+        select device_id as deviceId
+        , package_nm as packageNm
+        , server_type as serverType
+        from maxy_target_app
+        where target_id in
+        <foreach collection="targetIdList" item="targetId" open="(" close=")" separator=",">
+            #{targetId}
+        </foreach>
+    </select>
+
+    <select id="selectTargetDeviceByTargetId" parameterType="DeviceVO" resultType="DeviceVO">
+        select mta.target_id,
+               mta.package_nm,
+               mta.device_id,
+               mta.user_no,
+               mta.user_nm,
+               md.user_id,
+               mta.email_addr,
+               mta.phone_no,
+               mta.m_from_dt,
+               mta.m_to_dt,
+               mta.server_type,
+               mta.logging_interval,
+               mta.logging_bundle_units,
+               mta.use_yn,
+               mta.reg_no,
+               mta.reg_dt,
+               mta.upd_no,
+               mta.upd_dt,
+               mta.os_type,
+               mta.vip_yn,
+               mta.push_token,
+               mta.make_type,
+               mta.birth_day,
+               mta.sex,
+               mta.residence,
+               mta.cntry_cd,
+               mta.vip_reg_dt,
+               mta.vip_remove_dt,
+               mta.web_perf_check_yn
+        from maxy_target_app mta
+                 inner join maxy_device md
+                            on mta.package_nm = md.package_nm
+                                and mta.server_type = md.server_type
+                                and mta.device_id = md.device_id
+                                and mta.target_id = #{targetId}
+        limit 1
+    </select>
+
+    <!-- 앱 페이지 목록 조회 -->
+    <select id="selectAppPageList" resultType="PagesVO" parameterType="DevicePageVO">
+        select package_nm,
+        server_type,
+        data_type,
+        req_url,
+        app_page_nm,
+        app_page_desc,
+        use_yn,
+        reg_no,
+        reg_dt,
+        upd_no,
+        upd_dt,
+        server_type
+        from maxy_app_page
+        where use_yn = 'Y'
+        and package_nm = #{packageNm}
+        and server_type = #{serverType}
+        and data_type = '1'
+        <if test='searchPageText != null and searchPageText != ""'>
+            <choose>
+                <when test='searchPopupTextType == "appPageNm"'>
+                    and app_page_nm like concat('%',concat(#{searchPageText},'%'))
+                </when>
+                <when test='searchPopupTextType == "reqUrl"'>
+                    and req_url like concat('%',concat(#{searchPageText},'%'))
+                </when>
+                <otherwise>
+                    and (app_page_nm like concat('%',concat(#{searchPageText},'%')) or req_url like
+                    concat('%',concat(#{searchPageText},'%')) )
+                </otherwise>
+            </choose>
+        </if>
+        order by reg_dt
+        limit 50
+    </select>
+
+</mapper>

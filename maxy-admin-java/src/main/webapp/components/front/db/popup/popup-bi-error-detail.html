@@ -1,0 +1,103 @@
+<!--
+    종합 분석 > Basic Information > 팝업 (Log, Error, Crash 제외한 나머지)
+-->
+<style>
+    .maxy_popup_common.bi {
+        display: block !important;
+        top: 40px;
+        right: -1300px;
+        left: auto !important;
+        width: 50%;
+        min-width: 625px;
+        min-height: auto !important;
+        height: calc(100% - 40px);
+        visibility: visible !important;
+        transition: right 0.7s ease;
+        transform: initial !important;
+    }
+
+    /* 좌측 팝업 스타일 추가 */
+    .maxy_popup_common.bi.left-side {
+        right: auto;
+        left: -1300px !important;
+        transition: left 0.8s ease;
+    }
+
+    .maxy_popup_common.bi.show {
+        right: 0;
+    }
+
+    /* 좌측 팝업 표시 애니메이션 */
+    .maxy_popup_common.bi.left-side.show {
+        left: 0 !important;
+    }
+
+    /* 좌측 팝업 숨김 애니메이션 */
+    .maxy_popup_common.bi.left-side.hidden {
+        left: -1300px !important;
+    }
+
+    .maxy_popup_common.bi.show .maxy_popup_grid_s_wrap {
+        display: grid;
+        grid-template-rows: 35px 21px 28% 45% auto;
+    }
+
+    .maxy_popup_common.bi .log_detail_wrap {
+        height: auto;
+    }
+
+    .maxy_popup_title_left > span:nth-child(3) {
+        color: black !important;
+    }
+
+    .maxy_popup_title_right .date_time_wrap, .maxy_popup_title_right > div > span:nth-child(2) {
+        color: var(--color-subtitle-light);
+    }
+
+    .dark_mode .maxy_popup_title_right > div > span:nth-child(2) {
+        color: var(--black-9);
+    }
+</style>
+
+<div class="maxy_popup_common bi" id="{{id}}__popUp">
+
+    <div class="maxy_popup_grid_s_wrap">
+        <div class="maxy_popup_title_wrap">
+            <div class="maxy_popup_title_left">
+                <img class="maxy_popup_analysis_icon" alt="">
+                <span>Statistics</span>
+                <span class="title">/ {{getTitle title}}</span>
+            </div>
+            <div class="maxy_popup_title_right">
+                <div class="calendar_wrap">
+                    {{#hif id '!==' 'countMau'}}
+                    <button class="btn_calendar" id=""></button>
+                    <input type="text" id="bi{{id}}Calendar" class="calendar_input">
+                    {{else}}
+                    <span id="date"></span>
+                    {{/hif}}
+                </div>
+            </div>
+        </div>
+
+        <div class="sum_data_wrap">
+            <div class="icon_user"></div>
+            <div class="data_wrap" id="allWrap">
+                {{#each allTitle}}
+                <div class="grid_column_wrap">
+                    <div class="title">{{getTitle title}}</div>
+                    <div class="" data-bitype="{{type}}">-</div>
+                </div>
+                {{/each}}
+            </div>
+        </div>
+
+        <div class="graph_wrap" id="{{id}}GraphWrap"></div>
+        <div class="log_list" id="{{id}}LogList"></div>
+        <div class="log_detail_wrap maxy_box" id="{{id}}DetailWrap">
+            <label for="{{id}}Detail">Notice</label>
+            <div class="separator"></div>
+            <textarea class="log_detail_text enable_scrollbar" id="{{id}}Detail" readonly></textarea>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,38 @@
+{
+  "aggs": {
+    "avgMem": {
+      "avg": {
+        "field": "cpuUsage"
+      }
+    }
+  },
+  "size": 0,
+  "query": {
+    "bool": {
+      "must": [
+        {
+          "term": {
+            "packageNm": #{packageNm}
+          }
+        },
+        {
+          "term": {
+            "serverType": #{serverType}
+          }
+        },
+        #[isAppVer]
+        {
+          "term": {
+            "appVer": #{appVer}
+          }
+        },
+        #[/isAppVer]
+        {
+          "term": {
+            "deviceModel": #{deviceModel}
+          }
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,58 @@
+<mapper namespace="resourceusage">
+  <!--
+    Resource Usage (Valkey cache)
+    - 오늘 데이터만 조회
+    - 모델별 일간 합계
+  -->
+  <select id="selectTopModelsHourly">
+    <![CDATA[
+    SELECT
+        package_id AS package_id,
+        server_type AS server_type,
+        os_type AS os_type,
+        device_model AS device_model,
+        uniqExactMerge(uniq_device_count) AS user_count_day
+    FROM maxy_model_hourly
+    WHERE hour_bucket >= toStartOfDay(now())
+      AND hour_bucket < toStartOfDay(addDays(now(), 1))
+    GROUP BY
+        package_id,
+        server_type,
+        os_type,
+        device_model
+    ORDER BY package_id, server_type, os_type, user_count_day DESC, device_model
+    LIMIT 6 BY package_id, server_type, os_type
+    ]]>
+  </select>
+  <select id="selectModelsHourlySeries">
+    <![CDATA[
+    SELECT
+        package_id AS package_id,
+        server_type AS server_type,
+        os_type AS os_type,
+        device_model AS device_model,
+        hour_bucket AS hour_bucket,
+        sumMerge(sum_log_count) AS log_count,
+        if(
+            sumMerge(sum_log_count) = 0,
+            0,
+            intDiv(sumMerge(sum_cpu_usage), sumMerge(sum_log_count))
+        ) AS avg_cpu_usage,
+        if(
+            sumMerge(sum_log_count) = 0,
+            0,
+            intDiv(sumMerge(sum_mem_usage), sumMerge(sum_log_count))
+        ) AS avg_mem_usage
+    FROM maxy_model_hourly
+    WHERE hour_bucket >= toStartOfDay(now())
+      AND hour_bucket < toStartOfDay(addDays(now(), 1))
+    GROUP BY
+        package_id,
+        server_type,
+        os_type,
+        device_model,
+        hour_bucket
+    ORDER BY package_id, server_type, os_type, device_model, hour_bucket
+    ]]>
+  </select>
+</mapper>

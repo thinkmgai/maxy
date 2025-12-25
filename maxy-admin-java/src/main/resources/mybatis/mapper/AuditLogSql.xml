@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkm.maxy.mapper.AuditLogMapper">
+    <select id="selectAuditLogList" parameterType="AuditLog" resultType="AuditLog">
+        select id,
+        issued_at,
+        user_id,
+        session_id,
+        action,
+        method,
+        url,
+        ip,
+        message,
+        parameter,
+        duration
+        from maxy_audit_log
+        <where>
+            <if test="userId != null">
+                user_id = #{userId}
+            </if>
+            <if test="action != null">
+                AND `action` = #{action}
+            </if>
+            <if test="from != null">
+                AND issued_at >= #{from}
+            </if>
+            <if test="to != null">
+                AND issued_at &lt;= #{to}
+            </if>
+        </where>
+        order by issued_at desc
+    </select>
+    <insert id="insertAuditLog" parameterType="AuditLog">
+        insert into maxy_audit_log (issued_at,
+                                    user_id,
+                                    session_id,
+                                    action,
+                                    method,
+                                    url,
+                                    ip,
+                                    message,
+                                    duration)
+        values (#{issuedAt},
+                #{userId},
+                #{sessionId},
+                #{action},
+                #{method},
+                #{url},
+                #{ip},
+                #{message},
+                #{duration});
+    </insert>
+</mapper>

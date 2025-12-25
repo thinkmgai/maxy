@@ -1,0 +1,45 @@
+{
+  "aggs": {
+    "res": {
+      "sum": {
+        "field": "errorCount"
+      }
+    }
+  },
+  "track_total_hits": true,
+  "size": 0,
+  "query": {
+    "bool": {
+      "must": [
+        {
+          "term": {
+            "packageNm": #{packageNm}
+          }
+        },
+        {
+          "term": {
+            "serverType": #{serverType}
+          }
+        },
+        #[isOsType]
+        {
+          "term": {
+            "osType": #{osType}
+          }
+        },
+        #[/isOsType]
+        {
+          "range": {
+            "pageStartTm": {
+              "from": #{yesterdayFrom},
+              "to": #{yesterdayTo},
+              "include_lower": true,
+              "include_upper": true,
+              "time_zone": "Z"
+            }
+          }
+        }
+      ]
+    }
+  }
+}

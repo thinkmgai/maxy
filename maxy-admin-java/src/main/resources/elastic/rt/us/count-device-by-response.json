@@ -1,0 +1,72 @@
+{
+  "aggs": {
+    "2": {
+      "terms": {
+        "field": "deviceModel",
+        "order": {
+          "avg": "desc"
+        },
+        "size": 10
+      },
+      "aggs": {
+        "avg": {
+          "avg": {
+            "field": "intervaltime"
+          }
+        }
+      }
+    }
+  },
+  "size": 0,
+  "query": {
+    "bool": {
+      "filter": [
+        {
+          "bool": {
+            "should": [
+              {
+                "term": {
+                  "logType": "8388612"
+                }
+              },
+              {
+                "term": {
+                  "logType": "524291"
+                }
+              }
+            ],
+            "minimum_should_match": 1
+          }
+        },
+        {
+          "term": {
+            "packageNm": #{packageNm}
+          }
+        },
+        {
+          "term": {
+            "serverType": #{serverType}
+          }
+        },
+        #[isAppVer]
+        {
+          "term": {
+            "appVer": #{appVer}
+          }
+        },
+        #[/isAppVer]
+        {
+          "range": {
+            "logTm": {
+              "gte": #{fromTimestamp},
+              "lte": #{toTimestamp},
+              "include_lower": true,
+              "include_upper": true,
+              "time_zone": "Z"
+            }
+          }
+        }
+      ]
+    }
+  }
+}

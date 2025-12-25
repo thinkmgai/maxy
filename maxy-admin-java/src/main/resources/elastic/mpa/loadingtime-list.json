@@ -1,0 +1,116 @@
+{
+  "size": 0,
+  "aggs": {
+    "res": {
+      "composite": {
+        "sources": [
+          {
+            "reqUrl": {
+              "terms": {
+                "field": "reqUrl.raw"
+              }
+            }
+          },
+          {
+            "deviceModel": {
+              "terms": {
+                "field": "deviceModel"
+              }
+            }
+          }
+        ],
+        #[after_key]
+        "after": {
+          #{after_key}
+        },
+        #[/after_key]
+        "size": #{size}
+      },
+      "aggs": {
+        "max": {
+          "max": {
+            "field": "loadingTime"
+          }
+        },
+        "min": {
+          "min": {
+            "field": "loadingTime"
+          }
+        },
+        "med": {
+          "percentiles": {
+            "field": "loadingTime",
+            "percents": 50
+          }
+        }
+      }
+    }
+  },
+  "query": {
+    "bool": {
+      "filter": [
+        {
+          "term": {
+            "packageNm": #{packageNm}
+          }
+        },
+        {
+          "term": {
+            "serverType": #{serverType}
+          }
+        },
+        #[isOsType]
+        {
+          "term": {
+            "osType": #{osType}
+          }
+        },
+        #[/isOsType]
+        #[isAppVer]
+        {
+          "term": {
+            "appVer": #{appVer}
+          }
+        },
+        #[/isAppVer]
+        #[isDeviceModel]
+        {
+          "term": {
+            "deviceModel": #{deviceModel}
+          }
+        },
+        #[/isDeviceModel]
+        #[searchDeviceId]
+        {
+          "term": {
+            "deviceId.raw": #{searchValue}
+          }
+        },
+        #[/searchDeviceId]
+        #[searchUserId]
+        {
+          "term": {
+            "userId.raw": #{searchValue}
+          }
+        },
+        #[/searchUserId]
+        #[searchUserNm]
+        {
+          "term": {
+            "userNm.raw": #{searchValue}
+          }
+        },
+        #[/searchUserNm]
+        {
+          "range": {
+            "pageEndTm": {
+              "gte": #{from},
+              "lte": #{to},
+              "time_zone": "Z"
+            }
+          }
+        }
+      ]
+    }
+  }
+}

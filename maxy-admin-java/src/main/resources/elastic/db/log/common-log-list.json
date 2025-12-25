@@ -1,0 +1,81 @@
+{
+  "size": 1000,
+  "query": {
+    "bool": {
+      "filter": [
+        {
+          "term": {
+            "packageNm": #{packageNm}
+          }
+        },
+        {
+          "term": {
+            "serverType": #{serverType}
+          }
+        },
+        #[isOsType]
+        {
+          "term": {
+            "osType": #{osType}
+          }
+        },
+        #[/isOsType]
+
+        #[isAppVer]
+        {
+          "term": {
+            "appVer": #{appVer}
+          }
+        },
+        #[/isAppVer]
+
+        #[isDeviceModel]
+        {
+          "term": {
+            "deviceModel": #{deviceModel}
+          }
+        },
+        #[/isDeviceModel]
+
+        #[isDeviceId]
+        {
+          "term": {
+            "deviceId": #{deviceId}
+          }
+        },
+        #[/isDeviceId]
+        {
+          "range": {
+            "logTm": {
+              "from": #{from},
+
+              #[isTo]
+              "to": #{to},
+              #[/isTo]
+
+              "include_lower": true,
+              "include_upper": true,
+              "time_zone": "Z"
+            }
+          }
+        }
+      ]
+    }
+  },
+  "sort": [
+    {
+      "logTm": {
+        "order": "desc"
+      }
+    }
+  ]
+  #[isCrash]
+  ,
+  "_source": {
+    "exclude": [
+      "content",
+      "contents"
+    ]
+  }
+  #[/isCrash]
+}

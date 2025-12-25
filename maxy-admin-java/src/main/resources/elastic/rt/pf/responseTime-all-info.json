@@ -1,0 +1,62 @@
+{
+  "aggs": {
+    "Date": {
+      "date_histogram": {
+        "field": "logDate",
+        "interval": "1d",
+        "time_zone": "Asia/Seoul"
+      },
+      "aggs": {
+        "osType": {
+          "terms": {
+            "field": "osType",
+            "size": 10
+          },
+          "aggs": {
+            "max(time)": {
+              "max": {
+                "field": "responseTime"
+              }
+            },
+            "med(time)": {
+              "percentiles": {
+                "field": "responseTime",
+                "percents": [50]
+              }
+            },
+            "min(time)": {
+              "min": {
+                "field": "responseTime"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "size": 0,
+  "query": {
+    "bool": {
+      "must": [
+        {
+          "term": {
+            "packageNm": #{packageNm}
+          }
+        },
+        {
+          "term": {
+            "serverType": #{serverType}
+          }
+        },
+        {
+          "range": {
+            "logDate": {
+              "gte": #{fromTimestamp},
+              "lte": #{toTimestamp}
+            }
+          }
+        }
+      ]
+    }
+  }
+}

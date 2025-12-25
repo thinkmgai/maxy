@@ -1,0 +1,88 @@
+{
+  "aggs": {
+    "deviceRatio": {
+      "terms": {
+        "field": "deviceModel",
+        "size": 9999
+      },
+      "aggs": {
+        "avg": {
+          "avg": {
+            "field": "intervaltime"
+          }
+        }
+      }
+    }
+  },
+  "query": {
+    "bool": {
+      "filter": [
+        {
+          "term": {
+            "packageNm": {
+              "value": #{packageNm}
+            }
+          }
+        },
+        {
+          "term": {
+            "serverType": {
+              "value": #{serverType}
+            }
+          }
+        },
+        {
+          "term": {
+            "osType": {
+              "value": #{osType}
+            }
+          }
+        },
+        #[isAppVer]
+        {
+          "term": {
+            "appVer": #{appVer}
+          }
+        },
+        #[/isAppVer]
+        #[searchDeviceId]
+        {
+          "term": {
+            "deviceId.raw": #{searchValue}
+          }
+        },
+        #[/searchDeviceId]
+        #[searchUserNm]
+        {
+          "term": {
+            "userNm.raw": #{searchValue}
+          }
+        },
+        #[/searchUserNm]
+        #[searchUserId]
+        {
+          "term": {
+            "userId.raw": #{searchValue}
+          }
+        },
+        #[/searchUserId]
+        {
+          "range": {
+            "logTm": {
+              "gte": #{from},
+              "lte": #{to},
+              "time_zone": "Z"
+            }
+          }
+        },
+        {
+          "range": {
+            "intervaltime": {
+              "gte": 0
+            }
+          }
+        }
+      ]
+    }
+  }
+}

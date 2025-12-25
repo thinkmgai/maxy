@@ -1,0 +1,88 @@
+{
+  "aggs": {
+    "deviceModel": {
+      "terms": {
+        "field": "deviceModel",
+        "order": {
+          "usage": "desc"
+        },
+        "size": 7
+      },
+      "aggs": {
+        "usage": {
+          "avg": {
+            "field": "cpuUsage"
+          }
+        },
+        "osType": {
+          "terms": {
+            "field": "osType",
+            "order": {
+              "_term": "desc"
+            },
+            "size": 7
+          }
+        }
+      }
+    },
+    "maxCpu": {
+      "max_bucket": {
+        "buckets_path": "deviceModel>usage"
+      }
+    },
+    "minCpu": {
+      "min_bucket": {
+        "buckets_path": "deviceModel>usage"
+      }
+    },
+    "avgCpu": {
+      "avg_bucket": {
+        "buckets_path": "deviceModel>usage"
+      }
+    }
+  },
+  "size": 0,
+  "query": {
+    "bool": {
+      "filter": [
+        {
+          "term": {
+            "packageNm": #{packageNm}
+          }
+      },
+        {
+          "term": {
+            "serverType": #{serverType}
+          }
+      },
+      #[isAppVer]
+        {
+          "term": {
+            "appVer": #{appVer}
+          }
+      },
+      #[/isAppVer]
+      #[isDeviceModel]
+        {
+          "term": {
+            "deviceModel": #{deviceModel}
+          }
+        },
+      #[/isDeviceModel]
+        {
+          "term": {
+            "osType": #{osType}
+          }
+      },
+        {
+          "range": {
+            "logTm": {
+              "gte": #{searchFromTime},
+              "lte": #{searchToTime}
+            }
+          }
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "query": {
+    "bool": {
+      "filter": [
+        {
+          "match_all": {}
+        },
+        {
+          "term": {
+            "packageNm": #{packageNm}
+          }
+        },
+        {
+          "term": {
+            "serverType": #{serverType}
+          }
+        },
+        {
+          "term": {
+            "vipYn": #{vipYn}
+          }
+        },
+        {
+          "range" : {
+            "logDate" : {
+              "from" : #{searchFromDt},
+              "to" : #{searchToDt},
+              "include_lower" : true,
+              "include_upper" : true,
+              "boost" : 1.0
+            }
+          }
+        }
+      ]
+    }
+  }
+}

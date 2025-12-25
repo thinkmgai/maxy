@@ -1,0 +1,38 @@
+{
+  "size": 9999,
+  "query": {
+    "bool": {
+      "filter": [
+        {
+          "term": {
+            "packageNm": #{packageNm}
+          }
+        },
+        {
+          "term": {
+            "serverType": #{serverType}
+          }
+        },
+        {
+          "term": {
+            "deviceId.raw": #{deviceId}
+          }
+        },
+        {
+          "range": {
+            "logTm": {
+              "from": #{from},
+              "to": #{to},
+              "include_lower": true,
+              "include_upper": true,
+              "time_zone": "Z"
+            }
+          }
+        }
+      ]
+    }
+  },
+  "sort" : [
+    { "logTm" : {"order" : "asc"}}
+  ]
+}

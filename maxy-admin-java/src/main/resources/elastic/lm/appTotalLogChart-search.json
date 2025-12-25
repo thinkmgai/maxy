@@ -1,0 +1,74 @@
+{
+  "aggs": {
+    "2": {
+      "date_histogram": {
+        "field": "logTm",
+        "format": "hour_minute_second",
+        "fixed_interval": "30s",
+        "time_zone": "Asia/Seoul",
+        "min_doc_count": 0
+      }
+    }
+  },
+  "size": 0,
+  "stored_fields": [
+    "*"
+  ],
+  "script_fields": {},
+  "docvalue_fields": [
+    {
+      "field": "logTm",
+      "format": "date_time"
+    },
+    {
+      "field": "regDt",
+      "format": "date_time"
+    }
+  ],
+  "_source": {
+    "excludes": []
+  },
+  "query": {
+    "bool": {
+      "must": [
+        {
+          "term" : {
+            "packageNm": {
+              "value": #{packageNm}
+            }
+          }
+        },
+        {
+          "term" : {
+            "serverType": {
+              "value": #{serverType}
+            }
+          }
+        },
+        {
+          "term" : {
+            "appVer" : {
+              "value" : #{appVer}
+            }
+          }
+        }
+      ],
+      "filter": [
+        {
+          "match_all": {}
+        },
+        {
+          "range": {
+            "logTm": {
+              "from": #{searchToTotalTime},
+              "to": #{searchFromTotalTime},
+              "format": "epoch_millis"
+            }
+          }
+        }
+      ],
+      "should": [],
+      "must_not": []
+    }
+  }
+}

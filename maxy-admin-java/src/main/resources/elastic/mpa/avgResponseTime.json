@@ -1,0 +1,53 @@
+{
+  "aggs": {
+    "avgMem": {
+      "avg": {
+        "field": "intervaltime"
+      }
+    }
+  },
+  "size": 0,
+  "query": {
+    "bool": {
+      "must": [
+        {
+          "term": {
+            "packageNm": #{packageNm}
+        }
+      },
+        {
+          "term": {
+            "serverType": #{serverType}
+        }
+      },
+        {
+          "range": {
+            "logTm": {
+              "gte": #{searchFromDt},
+              "lte": #{searchToDt}
+            }
+          }
+        }
+        #[isOsType]
+        ,{
+          "term": {
+            "osType": #{osType}
+          }
+        }
+        #[/isOsType]
+      ],
+      "should": [
+        {
+          "term": {
+            "logType" : "524291"
+          }
+        },
+        {
+          "term": {
+            "logType": "8388612"
+          }
+        }
+      ]
+    }
+  }
+}

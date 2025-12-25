@@ -1,0 +1,41 @@
+<div class="gm_config_item_wrap">
+    {{#each this}}
+    {{#if (isShowItem key)}}
+    <div class="gm_config_item" {{#hif hidden '===' 'true'}}style="display:none"{{/hif}}>
+        <div class="config_contents_wrap_wrap">
+            <div>
+                <div class="config_name_wrap">
+                    <span class="circle"></span>{{desc}}
+                </div>
+            </div>
+
+            <div class="config_contents_wrap">
+                <div class="config_input_wrap toggle_wrap">
+                    {{#hif type '===' 'toggle'}}
+                        <input type="checkbox" class="toggle" id="deleteYn"  name="deleteYn" value="{{val}}"
+                                {{isChecked key val}} {{isRadioDisabled menuId upMenuId}}>
+                        <label for="deleteYn"></label>
+                    {{/hif}}
+
+                    {{#hif type '===' 'radio'}}
+                        <div class="reg_role_option_wrap">
+                            <input type="radio" name="menuRole" id="menuRoleGeneral" value="0013" {{isRadioChecked val "0013"}}>
+                            <label for="menuRoleGeneral" data-t="system.menu.generalUser"></label>
+                            <input type="radio" name="menuRole" id="menuRoleGroup" value="0012" {{isRadioChecked val "0012"}}>
+                            <label for="menuRoleGroup" data-t="system.menu.groupManager"></label>
+                            <input type="radio" name="menuRole" id="menuRoleAdmin" value="0011" {{isRadioChecked val "0011"}}>
+                            <label for="menuRoleAdmin" data-t="system.menu.superManager"></label>
+                        </div>
+                    {{/hif}}
+
+                    {{#hif type '===' 'input'}}
+                        <input type="text" class="config_input" id="{{key}}" value="{{val}}"  {{#hif readonly '===' 'true'}}readonly="true"{{/hif}}>
+                        <label for="{{key}}"></label>
+                    {{/hif}}
+                </div>
+            </div>
+        </div>
+    </div>
+    {{/if}}
+    {{/each}}
+</div>

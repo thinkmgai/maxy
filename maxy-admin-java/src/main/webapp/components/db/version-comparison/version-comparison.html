@@ -1,0 +1,33 @@
+<style>
+    .dark_mode .highcharts-grid.highcharts-yaxis-grid.highcharts-radial-axis-grid > path:nth-child(2) ,
+    .dark_mode .highcharts-grid.highcharts-yaxis-grid.highcharts-radial-axis-grid > path:nth-child(3),
+    .dark_mode .highcharts-grid.highcharts-xaxis-grid.highcharts-radial-axis-grid > path {
+        stroke: #4a4a4a;
+    }
+
+    #maxyComponent__VERSION_COMPARISON .maxy_component_item {
+        height: 32vh;
+    }
+
+    #maxyComponent__VERSION_COMPARISON .maxy_component_btn_wrap {
+        margin-left: auto;
+    }
+
+    #showAllVersion {
+        display: none;
+    }
+</style>
+<div class="maxy_component_wrap">
+    <div class="maxy_component_header flex_column">
+        <div class="header_title">
+            <h4 id="resourceTitle">{{fmtTitle}}</h4>
+            <img class="ic_question"
+                 alt="?"
+            >
+            <div class="maxy_component_btn_wrap">
+                <button class="maxy_component_btn" id="showAllVersion">ALL</button>
+            </div>
+        </div>
+    </div>
+    <div class="maxy_component_item" id="{{id}}__chart"></div>
+</div>

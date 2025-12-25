@@ -1,0 +1,46 @@
+{
+  "aggs": {
+    "avgCPU": {
+      "avg": {
+        "field": "cpuUsage"
+      }
+    },
+    "avgMEM": {
+      "avg": {
+        "field": "memUsage"
+      }
+    }
+  },
+  "query": {
+    "bool": {
+      "must": [
+        {
+          "term": {
+            "packageNm": #{packageNm}
+          }
+        },
+        {
+          "term": {
+            "serverType": #{serverType}
+          }
+        },
+        {
+          "term": {
+            "osType": #{os}
+          }
+        },
+        {
+          "range": {
+            "logTm": {
+              "from": #{fromTimestamp},
+              "to": #{to},
+              "include_lower": true,
+              "include_upper": true,
+              "time_zone": "Z"
+            }
+          }
+        }
+      ]
+    }
+  }
+}

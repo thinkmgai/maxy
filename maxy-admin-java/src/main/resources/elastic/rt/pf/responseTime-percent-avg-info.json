@@ -1,0 +1,53 @@
+{
+  "aggs": {
+    "time": {
+      "avg": {
+        "field": "responseTime"
+      }
+    }
+  },
+  "size": 0,
+  "query": {
+    "bool": {
+      "must": [
+        {
+          "term": {
+            "packageNm": #{packageNm}
+          }
+        },
+        {
+          "term": {
+            "serverType": #{serverType}
+          }
+        },
+        {
+          "term": {
+            "osType": #{timeOsType}
+          }
+        },
+        #[isDeviceModel]
+        {
+          "term": {
+            "deviceModel": #{deviceModel}
+          }
+        },
+        #[/isDeviceModel]
+        {
+          "range": {
+            "logDate": {
+              "gte": #{fromTimestamp},
+              "lte": #{toTimestamp}
+            }
+          }
+        },
+        {
+          "range": {
+            "responseTime" : {
+              "gte": #{time}
+            }
+          }
+        }
+      ]
+    }
+  }
+}

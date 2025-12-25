@@ -1,0 +1,85 @@
+{
+  "aggs": {
+    "cpuAvg": {
+      "avg": {
+        "field": "cpuUsage"
+      }
+    },
+    "memAvg": {
+      "avg": {
+        "field": "memUsage"
+      }
+    },
+    "cpuMax": {
+      "max": {
+        "field": "cpuUsage"
+      }
+    },
+    "memMax": {
+      "max": {
+        "field": "memUsage"
+      }
+    },
+    "cpuMin": {
+      "min": {
+        "field": "cpuUsage"
+      }
+    },
+    "memMin": {
+      "min": {
+        "field": "memUsage"
+      }
+    }
+  },
+  "size": 0,
+  "query": {
+    "bool": {
+      "filter": [
+        {
+          "term": {
+            "packageNm": #{packageNm}
+          }
+        },
+        {
+          "term": {
+            "serverType": #{serverType}
+          }
+        }
+        #[isAppVer]
+        ,{
+          "term": {
+            "appVer": #{appVer}
+          }
+        }
+        #[/isAppVer]
+        ,{
+          "term": {
+            "osType": #{osType}
+          }
+        },
+        {
+          "range": {
+            "logTm": {
+              "from": #{fromYearTimestamp},
+              "to": #{toYearTimestamp},
+              "include_lower": true,
+              "include_upper": true,
+              "time_zone": "Z"
+            }
+          }
+        }
+      ],
+      "must_not": [
+        {
+          "term": {
+            "cpuUsage": "0"
+          }
+        },{
+          "term": {
+            "memUsage": "0"
+          }
+        }
+      ]
+    }
+  }
+}

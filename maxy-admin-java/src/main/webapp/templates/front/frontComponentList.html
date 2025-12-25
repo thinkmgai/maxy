@@ -1,0 +1,156 @@
+<style>
+    .gm_grid_top .gm_grid_title {
+        display: flex;
+        align-items: flex-start;
+        gap: 5px;
+    }
+
+    .gm_grid_top .icon_wrap {
+        height: 24px;
+    }
+
+    .gm_grid_title > span {
+        font-weight: 700;
+        font-size: 14px;
+        line-height: 19px;
+        margin-left: 3px;
+        cursor: default;
+    }
+
+    .gm_grid_title input[type="checkbox"] + label {
+        -ms-user-select: none;
+        -webkit-user-select: none;
+        user-select: none;
+        display: inline;
+        width: 27px;
+        background-size: 26px;
+        background-position: center;
+        background-image: url(/images/maxy/toggle-off.svg);
+        margin-left: auto;
+    }
+
+    .gm_grid_title input[type="checkbox"]:checked + label {
+        background-image: url(/images/maxy/toggle-on.svg);
+    }
+
+    .gm_grid_wrap .gm_grid_center {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        position: relative;
+    }
+
+    .gm_grid_wrap .gm_grid_bottom {
+        display: flex;
+        align-items: flex-end;
+    }
+
+    .gm_grid_center img {
+        /*content: ""; !* 가상 요소에 내용을 비움 (필수 요소) *!*/
+        /*position: absolute; !* 절대적인 위치를 가짐 *!*/
+        /*top: 0;*/
+        /*left: 0;*/
+        /*width: 100%;*/
+        /*height: 100%;*/
+    }
+
+    .gm_grid_center .tooltip {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        -webkit-transition: background-color 2s ease-out;
+        -moz-transition: background-color 2s ease-out;
+        -o-transition: background-color 2s ease-out;
+        transition: background-color 2s ease-out;
+        padding: 20px;
+        display: flex;
+        align-items: center;
+        justify-items: center;
+        color: white;
+        font-weight: 700;
+        line-height: 18px;
+        word-break: keep-all;
+    }
+
+    .gm_remark_wrap {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .gm_remark_wrap > div:not(.optional) {
+        padding: 6px 10px 6px 10px;
+        border-radius: 5px;
+        height: 30px;
+        display: flex;
+        align-items: center;
+        font-size: 12px;
+        cursor: default;
+    }
+
+    .gm_remark_wrap .optional {
+        margin-left: auto;
+    }
+
+    .gm_remark_wrap .chart_type {
+        color: #838383;
+        background-color: #F7F8FA;
+    }
+
+    .gm_remark_wrap .chart_analysis {
+        background-color: #E5F8F1;
+        color: #00AF70;
+    }
+
+    .gm_remark_wrap .chart_monitor {
+        background-color: #FFF8E1;
+        color: #E78A00;
+    }
+
+    .gm_remark_wrap .chart_setting {
+        width: 20px;
+        content: url(/images/maxy/icon-setting.svg);
+        cursor: pointer;
+    }
+
+    .gm_preview img {
+        transition: all 0.3s ease-in-out;
+        padding: 28px;
+        width: 190px;
+        height: 190px;
+        cursor: pointer;
+    }
+
+    .gm_preview img:hover {
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1),
+        0 3px 3px rgba(0, 0, 0, 0.1);
+        transform: scale(1.05); /* 살짝 확대 효과 */
+        border-radius: 10px; /* 둥근 모서리 추가 */
+    }
+</style>
+{{#componentList}}
+<div class="gm_grid sortable" id="{{toCamelCase name}}" data-seq="{{seq}}" data-order="{{order}}"
+     data-checked="{{isChecked seq}}" data-name="{{key}}" {{optionFormat this}}>
+    <div class="gm_grid_top" data-desc="{{desc}}">
+        <div class="gm_grid_title">
+            <span>{{getName key}}</span>
+            <img class="ic_question">
+        </div>
+    </div>
+    <div class="gm_grid_center {{nameFormat key}}_img gm_preview">
+        <img src="/images/maxy/{{nameFormat key}}.svg" alt="{{key}}" data-type="{{toCamelCase name}}">
+    </div>
+    <div class="gm_grid_bottom">
+        <div class="gm_remark_wrap">
+            <div class="chart_type">{{chartTypeFormat chartType}}</div>
+            {{typeFormat type}}
+        </div>
+    </div>
+</div>
+{{/componentList}}

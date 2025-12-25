@@ -1,0 +1,189 @@
+{
+  "aggs": {
+    "flowOrder": {
+      "terms": {
+        "field": "flowOrder",
+        "order": {
+          "_key": "asc"
+        },
+        "size" : #{size}
+      },
+      "aggs": {
+        "reqUrl": {
+          "terms": {
+            "field": "reqUrl.raw",
+            "order": {
+              "_key": "asc"
+            },
+            "size": #{size}
+          },
+          "aggs": {
+            "packageDisplayNm": {
+              "terms": {
+                "field": "packageDisplayNm.raw",
+                "order": {
+                  "_key": "asc"
+                },
+                "size": #{size}
+              },
+              "aggs": {
+                "childUrl": {
+                  "terms": {
+                    "field": "childUrl.raw",
+                    "order": {
+                      "_key": "asc"
+                    },
+                    "size": #{size}
+                  },
+                  "aggs": {
+                    "pageNm": {
+                      "terms": {
+                        "field": "pageNm.raw",
+                        "order": {
+                          "_key": "asc"
+                        },
+                        "size": #{size}
+                      },
+                      "aggs": {
+                        "childPageNm": {
+                          "terms": {
+                            "field": "childPageNm.raw",
+                            "order": {
+                              "_key": "asc"
+                            },
+                            "size": #{size}
+                          },
+                          "aggs": {
+                            "crashCount": {
+                              "sum": {
+                                "field": "crashCount"
+                              }
+                            },
+                            "errorCount": {
+                              "sum": {
+                                "field": "errorCount"
+                              }
+                            },
+                            "maxIntervaltime": {
+                              "max": {
+                                "field": "maxIntervaltime"
+                              }
+                            },
+                            "minIntervaltime": {
+                              "min": {
+                                "field": "minIntervaltime"
+                              }
+                            },
+                            "nodeEndCrashCount": {
+                              "sum": {
+                                "field": "nodeEndCrashCount"
+                              }
+                            },
+                            "nodeEndErrorCount": {
+                              "sum": {
+                                "field": "nodeEndErrorCount"
+                              }
+                            },
+                            "nodeEndReqCount": {
+                              "sum": {
+                                "field": "nodeEndReqCount"
+                              }
+                            },
+                            "nodeEndMaxIntervaltime": {
+                              "max": {
+                                "field": "nodeEndMaxIntervaltime"
+                              }
+                            },
+                            "nodeEndMinIntervaltime": {
+                              "min": {
+                                "field": "nodeEndMinIntervaltime"
+                              }
+                            },
+                            "reqCount": {
+                              "sum": {
+                                "field": "reqCount"
+                              }
+                            },
+                            "sumIntervaltime": {
+                              "sum": {
+                                "field": "sumIntervaltime"
+                              }
+                            },
+                            "nodeEndSumIntervaltime": {
+                              "sum": {
+                                "field": "nodeEndSumIntervaltime"
+                              }
+                            },
+                            "avgLoadingTime": {
+                               "avg": {
+                                  "field": "sumLoadingTime"
+                                }
+                            },
+                            "avgResponseTime": {
+                              "avg": {
+                                  "field": "sumResponseTime"
+                              }
+                            },
+                            "avgCpuUsage": {
+                              "avg": {
+                                  "field": "avg_cpu_usage"
+                              }
+                            },
+                            "avgMemUsage": {
+                              "avg": {
+                                  "field": "avg_mem_usage"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "size": 0,
+  "stored_fields": [
+    "*"
+  ],
+  "query": {
+    "bool": {
+      "must": [],
+      "filter": [
+        {
+          "match_all": {}
+        },
+        {
+          "term": {
+            "packageNm": #{packageNm}
+          }
+        },
+        {
+          "term": {
+            "serverType": #{serverType}
+          }
+        },
+        {
+          "term": {
+            "vipYn": #{vipYn}
+          }
+        },
+        {
+          "range" : {
+            "logDate" : {
+              "from" : #{searchFromDt},
+              "to" : #{searchToDt},
+              "include_lower" : true,
+              "include_upper" : true
+            }
+          }
+        }
+      ]
+    }
+  }
+}

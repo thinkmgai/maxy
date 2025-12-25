@@ -1,0 +1,41 @@
+{
+  "query": {
+    "bool": {
+      "filter": [
+        {
+          "term": {
+            "packageNm": #{packageNm}
+          }
+        },
+        {
+          "term": {
+            "serverType": #{serverType}
+          }
+        },
+        #[isAppVer]
+        {
+          "term": {
+            "appVer": #{appVer}
+          }
+        },
+        #[/isAppVer]
+        {
+          "range": {
+            "logType": {
+              "gte": 131072,
+              "lt": 196608
+            }
+          }
+        },
+        {
+          "range": {
+            "logTm": {
+              "gte": #{searchFromDay},
+              "lte": #{searchToDay}
+            }
+          }
+        }
+      ]
+    }
+  }
+}

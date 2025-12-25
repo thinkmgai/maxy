@@ -1,0 +1,65 @@
+<!--
+    종합 분석 > LoadingTime Scatter > 팝업 > Waterfall
+    종합 분석 > LoadingTime Line Chart > 팝업 > Waterfall
+    성능 분석 > LoadingTime > 팝업 > Waterfall
+-->
+
+<style>
+    .waterfall_graph_title_wrap {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .highcharts-tooltip-container {
+        transform: scale(1, 1) !important;
+    }
+
+    .yaxis_header > span {
+        display: flex;
+        align-items: flex-end;
+    }
+</style>
+
+<div class="waterfall_graph_title_wrap">
+    <span class="waterfall_title ft-13">Water Fall</span>
+    <div class="sub_title_right">
+        <span id="tabRequestsCount" class="request_count"></span>
+        <span id="allRequestCount" class="request_count"></span>
+        <span id="requestsText">Requests</span>
+    </div>
+</div>
+
+<div class="waterfall_graph_data_wrap">
+    <div class="graph_title">
+        <button id="btnAll" class="selected" data-type="all">All</button>
+        <button data-type="xhr">Fetch/XHR</button>
+        <button data-type="reformNavigation">Doc</button>
+        <button data-type="css">CSS</button>
+        <button data-type="script">JS</button>
+        <button data-type="link">LINK</button>
+        <button data-type="font">Font</button>
+        <button data-type="img">IMG</button>
+        <button data-type="media">Media</button>
+        <button data-type="manifest">Manifest</button>
+        <button data-type="ws">WS</button>
+        <button data-type="other">Other</button>
+        <button data-type="action">Action</button>
+        <button data-type="error">Errors</button>
+        <button data-type="resource">Resource</button>
+        <button data-type="longtask">Long Tasks</button>
+    </div>
+
+    <div class="waterfall_time" id="{{id}}__time"></div>
+    <div class="yaxis_header">
+        <span>NAME</span>
+        <span>SIZE</span>
+        <span>CODE</span>
+        <span>DURATION</span>
+    </div>
+
+    <div class="waterfall_chart enable_scrollbar">
+        <div class="waterfall_yaxis_list" id="waterfallYaxisList"></div>
+        <div id="{{id}}__waterfall"></div>
+    </div>
+</div>

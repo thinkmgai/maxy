@@ -1,0 +1,46 @@
+{
+  "query": {
+    "bool": {
+      "filter": [
+        {
+          "term": {
+            "deviceId.raw": #{deviceId}
+          }
+        },
+        {
+          "term": {
+            "packageNm": #{packageNm}
+          }
+        },
+        {
+          "term": {
+            "serverType": #{serverType}
+          }
+        },
+        #[isOsType]
+        {
+          "term": {
+            "osType": #{osType}
+          }
+        },
+        #[/isOsType]
+        {
+          "range": {
+            "pageEndTm": {
+              "gte": #{from},
+              "time_zone": "Z"
+            }
+          }
+        },
+        {
+          "range": {
+            "pageStartTm": {
+              "lte": #{to},
+              "time_zone": "Z"
+            }
+          }
+        }
+      ]
+    }
+  }
+}

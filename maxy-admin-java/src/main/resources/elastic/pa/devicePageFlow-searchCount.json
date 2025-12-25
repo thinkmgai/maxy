@@ -1,0 +1,85 @@
+{
+  "query": {
+    "bool": {
+      "must": [
+#[searchUserId]
+        {
+          "term": {
+            "userId": #{searchValue}
+          }
+        }
+#[/searchUserId]
+#[searchUserNm]
+        ,{
+          "term": {
+            "userNm": #{searchValue}
+          }
+        }
+#[/searchUserNm]
+      ],
+      "filter": [
+      {
+        "term": {
+          "startPageYn": "Y"
+        }
+      },
+      {
+        "term": {
+          "serverType": #{serverType}
+        }
+      },
+      {
+        "term": {
+          "packageNm": #{packageNm}
+        }
+      },
+#[searchDeviceId]
+      {
+      "term": {
+        "deviceId": #{searchValue}
+        }
+      },
+#[/searchDeviceId]
+#[searchVipYn]
+      {
+        "term": {
+          "vipYn": #{vipYn}
+        }
+      },
+#[/searchVipYn]
+#[isOsType]
+    {
+      "term": {
+        "osType": #{osType}
+      }
+    },
+#[/isOsType]
+#[searchErrorCount]
+      {
+        "range": {
+          "errorCount": {
+            "gt": "0"
+          }
+        }
+      },
+#[/searchErrorCount]
+#[searchCrashCount]
+      {
+        "range": {
+          "crashCount": {
+            "gt": "0"
+          }
+        }
+      },
+#[/searchCrashCount]
+      {
+        "range": {
+          "parentLogDate": {
+            "gte": #{fromDt},
+            "lte": #{toDt}
+          }
+        }
+      }]
+    }
+  }
+}

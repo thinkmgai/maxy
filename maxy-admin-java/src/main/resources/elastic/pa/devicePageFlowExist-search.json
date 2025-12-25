@@ -1,0 +1,127 @@
+{
+  "size": #{size},
+  "query": {
+    "bool": {
+      "must": [
+#[searchUserId]
+        {
+          "term": {
+            "userId": #{searchValue}
+          }
+        }
+#[/searchUserId]
+#[searchUserNm]
+        ,{
+          "term": {
+            "userNm": #{searchValue}
+          }
+        }
+#[/searchUserNm]
+      ],
+      "filter": [
+      {
+        "term": {
+          "startPageYn": "Y"
+        }
+      },
+      {
+        "term": {
+          "serverType": #{serverType}
+        }
+      },
+      {
+        "term": {
+          "packageNm": #{packageNm}
+        }
+      },
+      #[isAppVer]
+      {
+         "term" : {
+           "appVer": #{appVer}
+          }
+      },
+      #[/isAppVer]
+      #[isOsType]
+      {
+        "term": {
+          "osType": #{osType}
+        }
+      },
+      #[/isOsType]
+#[searchDeviceId]
+      {
+      "term": {
+        "deviceId": #{searchValue}
+        }
+      },
+#[/searchDeviceId]
+#[searchVipYn]
+      {
+        "term": {
+          "vipYn": #{vipYn}
+        }
+      },
+#[/searchVipYn]
+#[searchOsType]
+    {
+      "term": {
+        "osType": #{osType}
+      }
+    },
+#[/searchOsType]
+#[searchErrorCount]
+      {
+        "range": {
+          "errorCount": {
+            "gt": "0"
+          }
+        }
+      },
+#[/searchErrorCount]
+#[searchCrashCount]
+      {
+        "range": {
+          "crashCount": {
+            "gt": "0"
+          }
+        }
+      },
+#[/searchCrashCount]
+#[isDeviceModel]
+      {
+        "term" : {
+          "deviceModel" : #{deviceModel}
+        }
+      },
+#[/isDeviceModel]
+      {
+        "range": {
+          "pageStartTm": {
+            "lte": #{logTm}
+          }
+        }
+      },
+      {
+        "range": {
+          "pageEndTm": {
+            "gte": #{logTm}
+          }
+        }
+      }]
+    }
+  },
+  "sort" : [
+    {
+      "_id" : {
+        "order" : "asc",
+        "missing" : "_last",
+        "unmapped_type" : "long"
+      }
+    }
+  ]
+  #[isMoreData]
+  , "search_after":[
+    #{id}
+  ]
+  #[/isMoreData]
+}

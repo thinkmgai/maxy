@@ -1,0 +1,33 @@
+{
+  "aggs": {
+    "avgMem": {
+      "avg": {
+        "field": "memUsage"
+      }
+    }
+  },
+  "size": 0,
+  "query": {
+    "bool": {
+      "must": [
+        {
+          "term": {
+            "packageNm": #{packageNm}
+      }
+      },
+        {
+          "term": {
+            "serverType": #{serverType}
+      }
+        }
+        #[isOsType]
+      ,{
+          "term": {
+            "osType": #{osType}
+      }
+        }
+        #[/isOsType]
+      ]
+    }
+  }
+}

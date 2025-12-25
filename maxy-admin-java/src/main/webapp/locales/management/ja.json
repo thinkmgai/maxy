@@ -1,0 +1,509 @@
+{
+  "title": {
+    "sideMenu": "管理機能",
+    "desc": {
+      "components": "総合分析画面に配置する項目を選択できます。",
+      "frontComponents": "ダッシュボードに配置された項目を閲覧できます。",
+      "basicInformation": "総合分析画面の上部に配置される項目の「基本情報」の有無を設定できます",
+      "requiredField": "必須の選択",
+      "aliasManagement": "モニタリングアプリのウェブビュー、ネイティブページ管理及び総合分析画面の右下のお気に入りに配置される項目の設定ができます。",
+      "aliasManagementSub": "ユーザーがよく利用するページ項目を選択することをお勧めします。",
+      "logDescription": "MAXYが収集する種類別のログを定義いたします。",
+      "user": "MAXYユーザーの管理ができます。",
+      "userpoint": "ユーザー登録時",
+      "initialpassword": "初期パスワードは[IDの最初の3桁+現在の月日(MMdd)+!@]です。",
+      "passwordex": "Ex) ID: maxy / PW: max0725!@",
+      "userFlowStatistics": "モニタリング対象アプリのユーザー行為に関する集計情報が確認できます。",
+      "userFlowList": "監視対象アプリのユーザー一覧を確認できます。",
+      "deviceList": "に登録された全体のデバイスの状況を照会するとこができます。",
+      "monitoring": "この機能は、選択したデバイスの登録ページで発生したログのみを表示します。ログ分析 > リアルタイムログ検索でデバイス ID で検索すると機能します。",
+      "notification": "MAXYモバイルモニタリングから受信した通知を確認することができます。",
+      "notificationSetting": "MAXYモバイルモニタリングの通知を設定することができます。",
+      "obfuscation": "アプリのビルド バージョンごとに難読化ルール ファイルを管理します。",
+      "aibot": "MAXY AIが分析したデータの一覧です。データは最大7日間保存されます。",
+      "model": "デバイスモデルを管理します。",
+      "sessionReplayBlock1": "Session Replayでモニタリングしてはいけない領域を遮断する機能です。",
+      "sessionReplayBlock2": "アプリごとにモニタリング除外要素を登録し、該当領域のDOMと内容をすべてセッション録画から除外することができます。",
+      "sessionReplayBlock3": "敏感な情報が含まれたUIのIDまたはClassを追加して遮断ルールを適用することができます。"
+    },
+    "userManagement": "登録・削除",
+    "deviceList": "デバイスの状況",
+    "monitoringSetting": "モニタリング画面設定",
+    "notificationList": "通知リスト",
+    "notificationSetting": "通知設定",
+    "flowdetail": "フロー詳細照会",
+    "model": "デバイスモデル"
+  },
+  "components": {
+    "desc": {
+      "logmeter": "リアルタイムログデータの受信形態を視覚的に表現します。",
+      "responsetimescatter": "デバイス固有のデータを使用して応答時間を監視します",
+      "loadingtimescatter": "デバイス固有のデータを使用してロード時間を監視します。",
+      "pvequalizer": "監視アプリの各ページビューを監視します。",
+      "devicedistribution": "使用頻度の高いOSによるデバイスのエラーやクラッシュを監視します。",
+      "accessibility": "監視アプリのユーザー アクセシビリティを監視します。",
+      "resourceusage": "使用頻度の高いデバイスのリソース使用量を監視します。",
+      "favorites": "管理者が指定した各主要ページのパフォーマンスを監視します。",
+      "pageview": "監視アプリの各ページのエラーとクラッシュを監視します。",
+      "responsetimeline": "応答時間をヒットマップに基づいてリアルタイムで制御します。",
+      "loadingtimeline": "Loading Time を Logmeter ベースでリアルタイム制御します。",
+      "areadistribution": "今日の統計に基づいて、地域別のアプリのパフォーマンス分布を分析します。",
+      "versioncomparison": "今日の統計に基づいて、各 OS バージョンの主要な監視項目を比較および分析します。",
+      "crashesbyversion": "発生したクラッシュをバージョン別に管理します。",
+      "versionconversion": "OS別・アプリバージョン別の利用率を表示します。",
+      "marketinginsight": "開始URLと到達URLを設定し、ユーザー行動パターンを分析します。",
+      "frontpageloading": "直近5分間のページパフォーマンスを分析します。",
+      "frontresponsetime": "直近5分間のAjaxパフォーマンスを分析します。",
+      "fronterror": "直近5分間のエラー件数を可視化します。",
+      "frontregionalanalysis": "本日の統計に基づき、地域別のアプリパフォーマンス分布を分析します。",
+      "frontpagerequested": "直近5分間のページリクエスト件数を可視化します。",
+      "frontajaxresponse": "直近5分間のAjaxリクエスト件数を可視化します。",
+      "frontlivesessionview": "現在の接続セッションをリアルタイムで可視化します。"
+    },
+    "setting": {
+      "title": {
+        "logmeter": "Logmeter 設定",
+        "responsetimescatter": "Response Time (S) 設定",
+        "loadingtimescatter": "Loading Time (S) 設定",
+        "pvequalizer": "PV Equalizer 設定",
+        "devicedistribution": "",
+        "accessibility": "",
+        "resourceusage": "",
+        "favorites": "Favorites 設定",
+        "pageview": "Page View 設定",
+        "responsetimeline": "",
+        "loadingtimeline": "",
+        "areadistribution": "",
+        "versioncomparison": "バージョン比較 設定",
+        "crashesbyversion": ""
+      },
+      "subtitle": {
+        "logmeter": "Logmeter 設定",
+        "responsetimescatter": "警告時間",
+        "loadingtimescatter": "警告時間",
+        "pvequalizer": "PV Equalizer 設定",
+        "devicedistribution": "",
+        "accessibility": "",
+        "resourceusage": "",
+        "favorites": "",
+        "pageview": "",
+        "responsetimeline": "",
+        "loadingtimeline": "",
+        "areadistribution": "",
+        "versioncomparison": "",
+        "crashesbyversion": ""
+      },
+      "tip": {
+        "logmeter": "Tip: コンテナに表示されるブロック1つの重みを意味します。",
+        "responsetimescatter": "Tip: 時間は最大$1ms、最小$2msの範囲で設定できます。",
+        "loadingtimescatter": "Tip: 時間は最大$1ms、最小$2msの範囲で設定できます。",
+        "pvequalizer": "Tip: 画面に表示できるページビューの最大数は$1件です。",
+        "devicedistribution": "",
+        "accessibility": "",
+        "resourceusage": "",
+        "favorites": "Tip: 画面に表示できるページ数の最大値は$1件です。",
+        "pageview": "Tip: 画面に表示できるページビューの最大数は$1件です。",
+        "responsetimeline": "",
+        "loadingtimeline": "",
+        "areadistribution": "",
+        "versioncomparison": "",
+        "crashesbyversion": "",
+        "marketinginsight": "Tip: 正確な分析のために、[Start URL] と [Reach URLs] は、ユーザ フローがリンクされているページである必要があります。"
+      },
+      "prefix": {
+        "logmeter": {
+          "error": "エラー重み",
+          "crash": "クラッシュ重み"
+        },
+        "responsetimescatter": "ユーザビリティ低下区間の基準を設定できます。",
+        "loadingtimescatter": "ユーザビリティ低下区間の基準を設定できます。",
+        "pvequalizer": "分析するページビュー数",
+        "devicedistribution": "",
+        "accessibility": "",
+        "resourceusage": "",
+        "favorites": "分析するページ数",
+        "pageview": "分析するページビュー数",
+        "responsetimeline": "",
+        "loadingtimeline": "",
+        "areadistribution": "",
+        "versioncomparison": "",
+        "crashesbyversion": ""
+      },
+      "postfix": {
+        "logmeter": "件",
+        "responsetimescatter": "ms (1/1,000秒)",
+        "loadingtimescatter": "ms (1/1,000秒)",
+        "pvequalizer": "件",
+        "devicedistribution": "",
+        "accessibility": "",
+        "resourceusage": "",
+        "favorites": "件",
+        "pageview": "件",
+        "responsetimeline": "",
+        "loadingtimeline": "",
+        "areadistribution": "",
+        "versioncomparison": "",
+        "crashesbyversion": ""
+      },
+      "desc": {
+        "logmeter": "リアルタイムログデータの受信形態を視覚的に表現します。",
+        "responsetimescatter": "デバイスごとにResponse Timeデータを監視します。",
+        "loadingtimescatter": "デバイスごとにLoading Timeデータを監視します。",
+        "pvequalizer": "モニタリングアプリの各ページビューを監視します。",
+        "devicedistribution": "使用頻度の高いOSごとのデバイスのエラーやクラッシュを監視します。",
+        "accessibility": "モニタリングアプリのユーザーアクセス性を監視します。",
+        "resourceusage": "使用頻度の高いデバイスのリソース使用量を監視します。",
+        "favorites": "管理者が指定した主要ページごとのパフォーマンスを監視します。",
+        "pageview": "モニタリングアプリの各ページごとにエラーやクラッシュを監視します。",
+        "responsetimeline": "Logmeterに基づいてResponse Timeをリアルタイムで監視します。",
+        "loadingtimeline": "Logmeterに基づいてLoading Timeをリアルタイムで監視します。",
+        "areadistribution": "前日の統計データに基づき、地域別のアプリパフォーマンス分布を分析します。",
+        "versioncomparison": "OS別に各バージョンごと主要な監視項目を比較分析します。",
+        "crashesbyversion": "発生したクラッシュをバージョンごとに監視します。"
+      },
+      "weight": "重み",
+      "maximum": "表示する最大数",
+      "range": "範囲"
+    },
+    "msg": {
+      "componentsMax": "最大8つまで選択できます。",
+      "requiredInput": "必須入力値です",
+      "requiredWeight": "重みは必須入力値です。",
+      "weightMax": "重みの最大値は",
+      "maxValue": "最大値は",
+      "comparison.select": "比較分析の対象を選択してください。"
+    }
+  },
+  "bi": {
+    "install": "月別モニタリングアプリを使用するユーザー数及び前日比率",
+    "ios": "モニタリングアプリのiOSのシェア",
+    "android": "モニタリングアプリのAndroidシェア",
+    "ccu": "監視アプリを1分あたりに使用しているユーザー数",
+    "mau": "月別モニタリングアプリを使用するユーザー数及び前日比率",
+    "dau": "1日モニタリングアプリを使用するユーザー数及び前日比率",
+    "pv": "ユーザーが照会したモニタリングアプリのページ数及び前日比率",
+    "revisit": "モニタリングアプリを再利用するユーザー数(Retention Rate)及び前日比率",
+    "sleep": "モニタリングアプリのインストール後、使用しないユーザー数及び前日比率",
+    "login": "モニタリングアプリをインストールしたユーザーの本日のログイン数及び前日比率",
+    "stay": "モニタリングアプリユーザーの平均滞在時間及び前日比率",
+    "log": "モニタリングアプリの分析のため収集されるデータのログ数及び前日比率",
+    "error": "モニタリングアプリの分析のため収集されるエラー数及び前日比率",
+    "crash": "モニタリングアプリの分析のため収集されるクラッシュ数及び前日比率"
+  },
+  "alias": {
+    "title": "モニタリングアプリのウェブビュー、ネイティブページ管理及び総合分析画面の右下のお気に入りに配置される項目の設定ができます。",
+    "subTitle": "ユーザーがよく利用するページ項目を選択することをお勧めします。",
+    "subTitle2": "新規ページは翌日に適用されます。",
+    "text": {
+      "monitoringOn": "モニタリングON",
+      "monitoringOff": "モニタリングOFF",
+      "noUse": "未使用",
+      "use": "使用",
+      "pageName": "ページ名",
+      "pageDesc": "ページの説明",
+      "pageModify": "ページ情報編集",
+      "aliasName": "エイリアス名",
+      "aliasDesc": "エイリアス説明",
+      "aliasModify": "エイリアス情報を編集する",
+      "aliasReg": "エイリアスの情報登録"
+    },
+    "btn": {
+      "csvDownload": "CSVダウンロード",
+      "csvErrorDownload": "エラーcsvダウンロード",
+      "csvUpload": "CSVアップロード",
+      "pageReg": "ページ登録",
+      "pageParameter": "ページパラメータ管理",
+      "pageParameterSet": "ページパラメータ選択",
+      "noset": "指定されていない URL"
+    },
+    "pageParameter": {
+      "info": "リクエストURLから含める/除外する文字列を管理します。"
+    },
+    "noset": {
+      "info": "今日の監視を通じて収集され、ユーザーが接続している未指定URLのリストです。"
+    }
+  },
+  "log": {
+    "maxy": {
+      "info": "MAXY情報収集ログ"
+    },
+    "webserver": {
+      "start": "モニタリング対象デバイスのLocal Webserverの実行を開始",
+      "error": "モニタリング対象デバイスのLocal Webserverの動作中にエラーが発生",
+      "end": "モニタリング対象デバイスのLocal Webserverの実行が完了"
+    },
+    "webNavigation": {
+      "start": "モバイルウェブページのLoadingを開始",
+      "response": "モバイルウェブページのLoadingを応答",
+      "end": "モバイルウェブページのLoadingを完了",
+      "error": "モバイルウェブページのLoading時にエラーが発生",
+      "scriptError": "モバイルウェブページのJavascriptエラーが発生",
+      "redirection": "モバイルウェブページRedirection",
+      "resourceDownStart": "モバイルウェブページのリソースダウンロードを開始",
+      "resourceDownEnd": "モバイルウェブページのリソースダウンロードを完了",
+      "ssl": "モバイルウェブページがSSL通信",
+      "click": "モバイルウェブページ内のClick(Point Up)イベント",
+      "pageLoad": "モバイルウェブページ Lifecycle Load イベント",
+      "pageBack": "モバイルウェブページのLifecycle PageShowのイベント中に戻る",
+      "pageRefresh": "モバイルウェブページのLifecycle PageShowのイベント中に更新",
+      "pageForward": "モバイルウェブページ Lifecycle PageShow イベント",
+      "pageHide": "モバイルウェブページ Lifecycle PageHide イベント",
+      "pagePushState": "モバイルウェブページHistoryオブジェクトのPushStateイベント",
+      "pagePopState": "モバイルウェブページの戻るイベントが発生",
+      "pageUnload": "ページを離れる時に呼び出されるモバイルウェブページLifecycle Unloadイベント",
+      "pageHashChange": "対象のモバイルウェブページでハッシュ(#)のみ変更",
+      "pageReadyStateChange": "モバイルウェブページLifecycle Ready State Changeイベント",
+      "pageDOMContentLoaded": "モバイルウェブページLifecycle DOMContentLoadedイベント",
+      "loadingTime": "モバイル Web ページが動作可能になるまでにかかる時間。",
+      "login": "モニタリング対象ログイン可否をチェック",
+      "logout": "モニタリング対象ログアウト可否をチェック",
+      "bizError": "モバイル Web ページの顧客ビジネス エラーが発生しました。",
+      "webVital": "モバイルWebページWeb Vital Logが収集されました",
+      "popupInfo": "ポップアップが呼び出されたときにポップアップ情報を収集する",
+      "searchKeyword": "検索キーワード集",
+      "termsComplete": "利用規約への同意完了に関する情報の収集",
+      "subscribeComplete": "製品サブスクリプション完了情報を収集する",
+      "bottomPopupInfo": "下部ポップアップが呼び出されたときにポップアップ情報を収集する"
+    },
+    "resourceDown": {
+      "inf": "MiAPS Hybridのリソースダウンロード用INFファイルをダウンロード",
+      "start": "MiAPS Hybridのリソースダウンロードを開始",
+      "end": "MiAPS Hybridのリソースダウンロードを完了",
+      "error": "MiAPS Hybridのリソースダウンロード中にエラーが発生"
+    },
+    "httpRequest": {
+      "request": "Client¹とServer間のHttpリクエストを開始",
+      "response(Legacy)": "Client¹とServer間のHttpリクエストに応答",
+      "response": "Client¹とServer間のHttpリクエストに応答",
+      "error": "Client¹とServer間のHttpリクエスト中エラーが発生",
+      "exception": "クライアントとサーバー間のHTTPリクエスト中に例外が発生しました"
+    },
+    "nativeAction": {
+      "start": "モニタリング対象のNative領域のリクエストが開始",
+      "end": "モニタリング対象のNative領域からリクエストが終了",
+      "error": "モニタリング対象のNative領域からエラーが発生",
+      "appStart": "モニタリング対象の実行が開始",
+      "appForeground": "モニタリング対象がBackground状態からForegroundに変更",
+      "appBackground": "モニタリング対象がForeground状態からBackgroundに変更",
+      "appTerminate": "モニタリング対象が非正常に終了",
+      "deepLink": "ディープリンク",
+      "appNotResponse": "ANR",
+      "appPageStart": "ネイティブアプリページの開始",
+      "appPageEnd": "ネイティブアプリページ終了",
+      "bizError": "Native Customer Business エラーが発生しました",
+      "actionClick": "Native app マイコレクションが必要な Click Event 発生時 Tagging",
+      "installReferer": "Native app Install referer 収集ログ",
+      "appFirstStart": "Native app 初回実行"
+    },
+    "native": {
+      "crash": "Native領域でクラッシュが発生"
+    },
+    "customTag": {
+      "common": "モニタリング対象の自動収集されるエラーを除いた一般指標を定義",
+      "error": "モニタリング対象の自動収集されるエラーを除いた別途のイシューを定義",
+      "alarm": "モニタリング対象の自動収集されるエラーを除いた別途の通知項目を定義"
+    },
+    "ajax": {
+      "submit": "HTML Submitを動作",
+      "request": "XMLHttpRequest(Ajax)オブジェクトを作成",
+      "send": "XMLHttpRequest(Ajax)の送信を開始",
+      "response": "XMLHttpRequest(Ajax)送信による応答を受信",
+      "error": "XMLHttpRequest (Ajax) 受信コードが 3xx、4xx、5xxです",
+      "exception": "XMLHttpRequest（Ajax）の送信中に例外が発生しました"
+    },
+    "autoTag": {
+      "start": "Auto Tag ページが始まる",
+      "end": "Auto Tag ページが終了しました",
+      "action": "Auto Tag アクションが発生"
+    }
+  },
+  "user": {
+    "user": "ユーザー",
+    "administrator": "管理者",
+    "share": "(シェア)",
+    "modify": "ページ情報編集",
+    "name": "ユーザー名",
+    "id": "ユーザーID",
+    "register": "ユーザー登録",
+    "detail": "ユーザー詳細",
+    "general": "一般ユーザー",
+    "group": "グループ管理者",
+    "groupName": "グループ名",
+    "permission": "権限",
+    "specifyApp": "アプリ別ユーザーリスト",
+    "groupModify": "グループの変更",
+    "currentGroupName": "現在のグループ名",
+    "newGroupName": "新しいグループ名",
+    "userflowdetail": "ユーザーフローの詳細",
+    "moveappname": "移動するアプリ名",
+    "movepackagename": "移動するアプリ名",
+    "moveservertype": "移動するサーバータイプ名",
+    "initialpassword": "初期パスワードは[IDの最初の3桁+現在の月日(MMdd)+!@]です。",
+    "specifiedApp": "指定されたアプリ",
+    "btn": {
+      "appSelection": "閲覧可能なアプリのリスト",
+      "appModify": "照会可能アプリ変更",
+      "appAdd": "閲覧可能なアプリを登録する",
+      "specifyApp": "アプリの指定",
+      "groupManagement": "グループ管理",
+      "subGroupAdd": "サブグループを追加",
+      "groupAdd": "グループを追加",
+      "groupDelete": "グループを削除する",
+      "groupNmModify": "グループ名を変更する",
+      "parentGroup": "親グループ",
+      "alluserlist": "全ユーザーのリスト"
+    },
+    "msg": {
+      "userName": "ユーザー名は必須フィールドです。",
+      "userId": "ユーザーIDは必須フィールドです。",
+      "userIdValid": "ユーザーIDは4文字以上で入力してください。",
+      "permissionEmpty": "権限を区別する値を入力してください。",
+      "emailEmpty": "電子メールは必須フィールドです。",
+      "groupDelete": "グループを削除しますか?",
+      "addGroupError": "これ以上サブグループを追加することはできません。",
+      "selectGroup": "グループを選択してください。",
+      "duplicationuser": "重複したユーザーがいます。",
+      "accountReset": "アカウントを初期化しますか？",
+      "accountResetSuccess": "アカウントが初期化されました。",
+      "resetdesc": "ユーザー情報が初期化されます。",
+      "resetpassword": "初期化されたパスワードは[IDの最初の3桁+現在の月日(MMdd)+!@]です。",
+      "unregisteredapp": "このアプリはグループ管理者によって管理されていません。",
+      "specialchar": "特殊文字は入力できません。",
+      "noGrant": "権限がありません。",
+      "nogroup": "グループ管理でグループを最初に作成してください。"
+    }
+  },
+  "device": {
+    "text": {
+      "management": "モニタリングデバイス管理",
+      "vipYn": "VIP有無",
+      "webPerformance": "ウェブ性能点検",
+      "setting": "モニタリング画面設定",
+      "logPage": "ロギング対象ページ情報",
+      "properties": "登録情報",
+      "targetPage": "登録対象ページ"
+    },
+    "btn": {
+      "all": "全体",
+      "pageName": "ページ名",
+      "reqUrl": "呼び出しURL",
+      "logging": "ロギング対象登録",
+      "monitoringDelete": "モニタリング対象削除",
+      "monitoringAdd": "モニタリング対象直接登録",
+      "pageAdd": "ページ登録",
+      "pageDelete": "ページ削除",
+      "viewitems": "照会項目"
+    },
+    "msg": {
+      "deviceIdEmpty": "デバイスIDが空です。",
+      "targetIdEmpty": "監視対象として登録されていません。登録後に変更することができます。",
+      "deviceSelect": "デバイスを選択してください。",
+      "userIdEmpty": "ユーザーIDが空です。",
+      "differentPackage": "登録した機器を監視機器管理一覧に表示するには、対応するアプリに変更する必要があります",
+      "pageSelect": "ページを選択してください。",
+      "loggingPageSelect": "変更されたデータはありません。",
+      "loggingTargetDelete": "ロギング先を削除してもよろしいですか?"
+    }
+  },
+  "alarm": {
+    "title": {
+      "error": "収集エラーしきい値 (障害発生件数)",
+      "crash": "収集クラッシュしきい値 (クラッシュ発生件数)",
+      "cpu": "CPU使用量 (%)",
+      "memory": "メモリー使用量 (%)",
+      "network": "ネットワーク(感度)",
+      "loadingTime": "Loading Timeしきい値 (ms)",
+      "responseTime": "Response Timeしきい値 (ms)",
+      "install": "アプリインストールの前日比率 (%)",
+      "login": "ログインの前日比率 (%)",
+      "dau": "DAUの前日比率 (%)",
+      "pv": "PVの前日比率 (%)",
+      "errorPct": "エラーの前日比率 (%)",
+      "crashPct": "クラッシュの前日比率 (%)",
+      "duplicate": "重複許容"
+    },
+    "msg": {
+      "ios": "iOSデータ収集は利用できません",
+      "minmaxall": "は最小10個、最大100個内外で入力してください",
+      "minmaxcrashalim": "は最小1個、最大100個内外で入力してください",
+      "minmaxperformance": "は最小500個、最大3000個内外で入力してください",
+      "statusread": "「読み取り」状態に変更しますか？",
+      "changestatus": "「読み取り」状態に変更されました。",
+      "alertPeriodMax": "1日に10回以上繰り返すと、サーバーおよび通信に負荷がかかる可能性があります。",
+      "limitValueRequired": "最大しきい値は必須入力項目です。",
+      "alarmMsgRequired": "通知メッセージは必須入力です。"
+    },
+    "tip": {
+      "error": "最小 10、最大 100 を入力してください。",
+      "crash": "最小値は 1、最大値は 100 まで入力してください。",
+      "pct": "最小 10%、最大 100% を入力してください。",
+      "memory": "最小 10mb、最大 100mb を入力してください。",
+      "comSensitivity": "「悪い」と「あまりにも悪い」のどちらかを選択してください。",
+      "time": "最小500ms、最大3000ms以内で入力してください。"
+    },
+    "ex": {
+      "error": "例）ログインページで発生したエラーがしきい値を超過しました。",
+      "crash": "例）ログインページで発生したクラッシュがしきい値を超えました。",
+      "cpu": "例)iPhone XSのCPU使用量が70%を超えました。",
+      "memory": "例)iPhone XSのメモリー使用量が100mbを超えました。",
+      "comSensitivity": "例)Galaxy S23のネットワーク感度がToo Badと集計されました。",
+      "loadingTime": "例）ログイン画面のLoading Timeがしきい値を超えました。",
+      "responseTime": "例）ログイン画面のResponse Timeがしきい値を超えました。",
+      "install": "例）前日比アプリインストールの比率が100%を超えました。",
+      "login": "例）前日比ログインの比率が100%を超えました。",
+      "dau": "例）前日比DAUの比率が100%を超えました。",
+      "pv": "例）前日比PVの比率が100%を超えました。",
+      "errorRatio": "例）前日比エラーrの発生比率が100%を超えました。",
+      "crashRatio": "例）前日比クラッシュの発生比率が100%を超えました。"
+    },
+    "type": {
+      "error": "エラー",
+      "crash": "クラッシュ",
+      "resource": "リソースの使用状況",
+      "app": "アプリ性能指標",
+      "usability": "使用性指標"
+    },
+    "text": {
+      "read": "既読",
+      "unread": "未読"
+    }
+  },
+  "model": {
+    "popup": {
+      "title": "デバイスモデル情報"
+    }
+  },
+  "obfuscation": {
+    "msg": {
+      "paramempty": "パラメータが空です。",
+      "fileempty": "ファイルをアップロードしてください。",
+      "jsonortext": "JSONまたはテキストファイルのみアップロードできます。"
+    }
+  },
+  "aibot": {
+    "popup": {
+      "title": "MAXY AIボットの設定",
+      "tip": "ヒント。 1 日あたりの最大通知サイクルは 10 回です",
+      "option": "実行サイクル (日)",
+      "round": "$1回目",
+      "aiperform": "AIパフォーマンス分析",
+      "aiusability": "AIによるユーザビリティ分析"
+    },
+    "text": {
+      "option": "オプション"
+    }
+  },
+  "dsym": {
+    "title": {
+      "desc": "DSYMファイルをアプリビルドバージョン別に管理してください。(クラッシュ時により詳細なStackTraceを取得するには、DSYMファイルをアップロードしてください。)"
+    },
+    "text": {
+      "dropZone": "DSYM.zip ドラッグ&ドロップ",
+      "dropZoneDesc1": "DSYM圧縮ファイルをアップロードすると、AppVer、AppBuildNum、UUIDを抽出して自動的に登録されます。",
+      "dropZoneDesc2": "圧縮ファイルのみアップロード可能です。（サポート形式: ZIP, GZ, GZIP）",
+      "dropZoneDesc3": "ファイルのサイズは{size}以下である必要があります。",
+      "validFile": "圧縮されたDSYMファイルのアップロードをお願いします。",
+      "validDsym": "DSYMファイルがアップロードされないと、該当バージョンのシンボリケーション機能を利用できません。"
+    }
+  }
+}

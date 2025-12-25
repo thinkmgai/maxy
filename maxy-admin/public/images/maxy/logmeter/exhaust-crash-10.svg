@@ -1,0 +1,28 @@
+<svg width="260" height="56" viewBox="0 0 260 56" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="exhaust10_flame" x1="54" y1="28" x2="192" y2="28" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#FFDFDE" stop-opacity="0.54"/>
+      <stop offset="0.32" stop-color="#FF9D9A" stop-opacity="0.32"/>
+      <stop offset="0.64" stop-color="#FB7975" stop-opacity="0.16"/>
+      <stop offset="0.9" stop-color="#E26864" stop-opacity="0.06"/>
+      <stop offset="1" stop-color="#D2625E" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="exhaust10_smoke" x1="144" y1="28" x2="252" y2="28" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#DEC8C7" stop-opacity="0.34"/>
+      <stop offset="0.3" stop-color="#D4D7D4" stop-opacity="0.38"/>
+      <stop offset="0.64" stop-color="#E5C7C6" stop-opacity="0.46"/>
+      <stop offset="1" stop-color="#D5BAB9" stop-opacity="0.3"/>
+    </linearGradient>
+    <radialGradient id="exhaust10_core" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse"
+      gradientTransform="translate(96 28) scale(50 9.2)">
+      <stop offset="0" stop-color="#FFE3E2" stop-opacity="0.6"/>
+      <stop offset="1" stop-color="#FF8E8A" stop-opacity="0.04"/>
+    </radialGradient>
+  </defs>
+  <path d="M16 28C46 13.4 110 10.4 166 13C196 14.4 228 21.2 252 31.6C208 43.4 148 52 90 52.6C44 53 24 42.6 16 28Z"
+        fill="url(#exhaust10_smoke)"/>
+  <path d="M32 28C60 21 94 20 128 21.4C156 22.6 186 26.6 216 33.4C170 39.6 122 41.2 84 41.6C52 41.8 36 36.6 32 28Z"
+        fill="url(#exhaust10_flame)"/>
+  <path d="M52 28C62 24.4 84 24.4 104 25.2C114 26 136 27.6 170 31.6C130 34 96 34.2 74 34.4C56 34.4 52 32 52 28Z"
+        fill="url(#exhaust10_core)"/>
+</svg>

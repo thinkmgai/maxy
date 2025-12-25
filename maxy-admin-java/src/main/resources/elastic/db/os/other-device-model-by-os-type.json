@@ -1,0 +1,91 @@
+{
+  "aggs": {
+    "other-filter": {
+      "aggs": {
+        "count": {
+          "cardinality": {
+            "field": "deviceId.raw"
+          }
+        }
+      },
+      "filters": {
+        "filters": {
+          "other": {
+            "bool": {
+              "filter": [
+                {
+                  "exists": {
+                    "field": "deviceModel"
+                  }
+                }
+              ],
+              "must_not": [
+                {
+                  "term": {
+                    "deviceModel": #{device_0}
+                  }
+                },
+                {
+                  "term": {
+                    "deviceModel": #{device_1}
+                  }
+                },
+                {
+                  "term": {
+                    "deviceModel": #{device_2}
+                  }
+                },
+                {
+                  "term": {
+                    "deviceModel": #{device_3}
+                  }
+                },
+                {
+                  "term": {
+                    "deviceModel": #{device_4}
+                  }
+                }
+              ]
+            }
+          }
+        }
+      }
+    }
+  },
+  "size": 0,
+  "query": {
+    "bool": {
+      "filter": [
+        {
+          "term": {
+            "packageNm": #{packageNm}
+          }
+        }, {
+          "term": {
+            "serverType": #{serverType}
+          }
+        },
+        {
+          "term": {
+            "logYear": #{logYear}
+          }
+        },
+        {
+          "term": {
+            "logMonth": #{logMonth}
+          }
+        },
+        {
+          "term": {
+            "logDate": #{logDate}
+          }
+        },
+        {
+          "term": {
+            "osType": #{osType}
+          }
+        }
+      ]
+    }
+  }
+}

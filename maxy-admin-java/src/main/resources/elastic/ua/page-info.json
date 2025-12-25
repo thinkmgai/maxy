@@ -1,0 +1,41 @@
+{
+  "_source": "parentLogDate",
+  "size": 1,
+  "query": {
+    "bool": {
+      "filter": [
+        {
+          "term": {
+            #{searchType}: #{searchValue}
+          }
+        },
+        {
+          "term": {
+            "packageNm": #{packageNm}
+          }
+        },
+        {
+          "term": {
+            "serverType": #{serverType}
+          }
+        },
+        {
+          "range": {
+            "pageEndTm": {
+              "gte": #{from},
+              "time_zone": "Z"
+            }
+          }
+        },
+        {
+          "range": {
+            "pageStartTm": {
+              "lte": #{to},
+              "time_zone": "Z"
+            }
+          }
+        }
+      ]
+    }
+  }
+}

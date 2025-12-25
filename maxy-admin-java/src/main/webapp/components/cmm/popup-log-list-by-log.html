@@ -1,0 +1,31 @@
+<!--
+    실시간 로그 조회 > 상단 Error / Crash / PV 팝업
+-->
+<style>
+    .maxy_popup_common .maxy_popup_title_left span:nth-child(2) {
+        overflow: initial !important;
+    }
+</style>
+
+<div class="maxy_popup_common" id="{{id}}__popup">
+
+    <div class="maxy_popup_grid_s_wrap">
+        <div class="maxy_popup_title_wrap">
+            <div class="maxy_popup_title_left">
+                <img class="maxy_popup_analysis_icon" alt="">
+                <span id="analysis" class="popup_title">Analysis/ </span>
+                <span>{{fmtTitle}}</span>
+                <span id="count" class="popup_count"></span>
+            </div>
+        </div>
+
+        <div class="maxy_popup_table_wrap logmeter_popup" id="{{id}}__logList"></div>
+        <div class="maxy_popup_gray_bg_wrap" id="{{id}}__logDetail">
+            <div class="url_txt_wrap" style="height: 100%;">
+                <div class="textarea_wrap" id="logDetail">
+                    <textarea class="enable_scrollbar" id="pLogDetail" readonly></textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

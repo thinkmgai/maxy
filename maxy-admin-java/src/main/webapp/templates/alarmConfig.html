@@ -1,0 +1,147 @@
+<style>
+
+    .gm_config_item {
+        width: 100%;
+        display: grid;
+        align-items: center;
+        border: 1px solid #E3E5E8;
+        border-radius: var(--radius);;
+    }
+
+    .config_contents_wrap .config_input_wrap {
+        grid-template-columns: 4fr 1fr 1fr;
+        gap: 25px;
+    }
+
+    .config_contents_wrap .config_input_wrap label {
+        font-weight: 300;
+        font-size: 16px;
+        margin-right: 8px;
+    }
+
+    .gm_config_group .type_text {
+        font-size: 18px;
+        color: #5C656A;
+        padding-bottom: 16px;
+        margin-bottom: 16px;
+        border-bottom: 1px solid var(--logo-purple-1);
+    }
+
+    .config_input_wrap .config_text_wrap {
+        display: grid;
+        gap: 8px;
+    }
+
+    .config_text_wrap .config_example {
+        color: var(--color-subtitle-light);
+        line-height: 17px;
+        word-break: keep-all;
+    }
+
+    .config_contents_wrap_wrap {
+        display: grid;
+        grid-template-columns: 40% 60%;
+        align-items: center;
+        padding: 18px;
+        border-bottom:  1px solid #e3e5e8;
+        height: 90px;
+    }
+
+    .config_contents_wrap_wrap:last-child {
+        border-bottom: none;
+    }
+
+    .config_contents_wrap_wrap .config_contents_grid {
+        display: grid;
+        gap: 10px;
+    }
+
+    .config_contents_grid .duplication_check_wrap {
+        display: flex;
+        align-items: center;
+        padding-left: 16px;
+    }
+
+    .config_contents_grid .duplication_check_wrap span {
+        font-size: 12px;
+        margin-right: 10px;
+    }
+
+    .duplication_check_wrap input[type="radio"] + label {
+        background-image: url(/images/maxy/check-off-blue.svg);
+        background-size: 14px;
+        height: 14px;
+    }
+
+    .duplication_check_wrap input[type="radio"]:checked + label {
+        background-image: url(/images/maxy/check-on-blue.svg);
+    }
+
+    .duplication_check_wrap .duplication_check_title {
+        height: 14px;
+        margin-right: 10px;
+        font-size: 12px;
+        color: #009FF9;
+    }
+</style>
+
+{{#each this}}
+<div class="gm_config_item_wrap">
+    {{#each this}}
+        {{#if @first}}
+            <p class="border_bottom_purple_wrap">{{typeText}}</p>
+        {{/if}}
+    {{/each}}
+
+    <div class="gm_config_item">
+        {{#each this}}
+        <div class="config_contents_wrap_wrap">
+            <div class="config_contents_grid">
+                <div class="config_name_wrap">
+                    <span class="circle"></span>
+                    {{desc}}
+                    <span class="note">{{note}}</span>
+                </div>
+                <div class="duplication_check_wrap">
+                    <div class="duplication_check_title" data-t="management.notification.title.duplicate">{{setLang "lang"}}</div>
+                    <input type="radio" name="{{duplText}}" id="duplicationY__{{type}}" value="Y" {{isRadioChecked duplYn "Y"}}>
+                    <label for="duplicationY__{{type}}">
+                        <span>Yes</span>
+                    </label>
+                    <input type="radio" name="{{duplText}}" id="duplicationN__{{type}}" value="N" {{isRadioChecked duplYn "N"}}>
+                    <label for="duplicationN__{{type}}">
+                        <span>No</span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="config_contents_wrap">
+                <div class="config_input_wrap">
+                    <div class="config_text_wrap">
+                        <div class="config_tip">{{tipText}}</div>
+                        <div class="config_example">{{exampleText}}</div>
+                    </div>
+
+                    <!-- active 1: on class 추가 -->
+                    <button class="btn btn_active btn_use {{#isUse}}on{{/isUse}}" id="{{useText}}">
+                        <img alt="" src="">
+                    </button>
+                    {{#if optionYn}}
+                        <select id="network" class="config_input">
+                            <option value="20">Too Bad</option>
+                            <option value="40">Bad</option>
+                            <option value="60">Normal</option>
+                            <option value="80">Good</option>
+                            <option value="100">Very Good</option>
+                        </select>
+                    {{else}}
+                    <input id="{{type}}" type="text" value="{{std}}" class="config_input">
+                    {{/if}}
+                </div>
+            </div>
+        </div>
+
+        {{/each}}
+    </div>
+</div>
+{{/each}}

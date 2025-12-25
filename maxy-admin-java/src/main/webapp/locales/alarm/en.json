@@ -1,0 +1,12 @@
+{
+  "standard": "standard",
+  "occurrence": "occurrence",
+  "case": "case",
+  "mem": "Memory usage has exceeded the threshold.",
+  "cpu": "CPU usage has exceeded the threshold.",
+  "com": "Network sensitivity has exceeded the threshold.",
+  "err": "Collection error exceeded threshold.",
+  "lod": "Loading time exceeded threshold.",
+  "crs": "Collection crash exceeded threshold.",
+  "res": "Response time exceeded threshold."
+}

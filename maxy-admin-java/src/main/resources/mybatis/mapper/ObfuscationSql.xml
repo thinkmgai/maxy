@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkm.maxy.mapper.ObfuscationMapper">
+
+    <select id="countObfuscationRuleInfoList" resultType="int" parameterType="ObfuscationVO">
+        select count(1)
+        from maxy_deobfuscation_rule
+        where package_nm = #{packageNm}
+          and server_type = #{serverType}
+          and os_type = #{osTypeVal}
+          and app_ver = #{appVer}
+          and app_build_num = #{appBuildNum}
+    </select>
+
+    <select id="selectObfuscationRuleList" resultType="ObfuscationVO" parameterType="ObfuscationVO">
+        select package_nm
+        , server_type
+        , os_type
+        , app_ver
+        , app_build_num
+        , obf_type
+        , type
+        , if(strcmp(type, 'FILE'), '', obf_full_text) as obf_full_text
+        , reg_dt
+        from maxy_deobfuscation_rule
+        where package_nm = #{packageNm}
+        and server_type = #{serverType}
+        <if test='osType != "A"'>
+            and os_type = #{osType}
+        </if>
+        group by package_nm
+        , server_type
+        , os_type
+        , app_ver
+        , app_build_num
+        , reg_dt
+        order by reg_dt desc
+    </select>
+
+    <select id="selectAllObfuscationRuleInfoList" resultType="ObfuscationVO">
+        select package_nm
+             , server_type
+             , os_type
+             , app_ver
+             , app_build_num
+             , obf_type
+             , type
+             , if(strcmp(type, 'FILE'), '', obf_full_text) as obf_full_text
+             , reg_dt
+        from maxy_deobfuscation_rule
+        group by package_nm
+               , server_type
+               , os_type
+               , app_ver
+               , app_build_num
+               , reg_dt
+        order by reg_dt desc
+    </select>
+
+    <select id="selectAllObfuscationRuleList" resultType="ObfuscationVO">
+        select package_nm
+             , server_type
+             , os_type
+             , app_ver
+             , app_build_num
+             , obf_type
+             , type
+             , original_string
+             , obfuscation_string
+             , reg_dt
+        from maxy_deobfuscation_rule
+        where type != 'FILE'
+          and original_string is not null
+          and original_string != ''
+          and obfuscation_string is not null
+          and obfuscation_string != ''
+        order by reg_dt desc
+    </select>
+
+    <insert id="insertObfuscationRuleInfoWithFullText" parameterType="ObfuscationVO">
+        insert into maxy_deobfuscation_rule
+        ( package_nm
+        , server_type
+        , os_type
+        , app_ver
+        , app_build_num
+        , type
+        , obf_type
+        , obf_full_text
+        , reg_id
+        , reg_dt
+        , upd_id
+        , upd_dt)
+        VALUES ( #{packageNm}
+               , #{serverType}
+               , #{osTypeVal}
+               , #{appVer}
+               , #{appBuildNum}
+               , #{type}
+               , #{obfType}
+               , #{obfFullText}
+               , #{userNo}
+               , #{regDt}
+               , #{userNo}
+               , #{regDt})
+    </insert>
+
+    <insert id="insertObfuscationRuleInfo" parameterType="ObfuscationVO">
+        replace into maxy_deobfuscation_rule (
+        package_nm
+        , server_type
+        , os_type
+        , app_ver
+        , app_build_num
+        , type
+        , obf_type
+        , original_string
+        , obfuscation_string
+        , reg_id
+        , reg_dt
+        , upd_id
+        , upd_dt)
+        VALUES
+        <foreach item="item" index="index" collection="insertList" separator=",">
+            (#{packageNm}
+            , #{serverType}
+            , #{osTypeVal}
+            , #{appVer}
+            , #{appBuildNum}
+            , #{item.type}
+            , #{obfType}
+            , #{item.originalString}
+            , #{item.obfuscationString}
+            , #{userNo}
+            , #{regDt}
+            , #{userNo}
+            , #{regDt})
+        </foreach>
+    </insert>
+
+    <delete id="deleteObfuscationRuleInfo" parameterType="ObfuscationVO">
+        delete
+        from maxy_deobfuscation_rule
+        where package_nm = #{packageNm}
+          and server_type = #{serverType}
+          and os_type = #{osType}
+          and app_ver = #{appVer}
+          and app_build_num = #{appBuildNum}
+    </delete>
+</mapper>

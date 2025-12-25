@@ -1,0 +1,348 @@
+<style>
+    #searchPopup.search_popup_wrap {
+        position: absolute;
+        width: 400px;
+        top: 50px;
+        right: 50px;
+        margin: 0 auto;
+        border-radius: var(--radius);
+        background-color: var(--black-9);
+        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.25);
+        display: none;
+        z-index: 18;
+    }
+
+    /* 기본 설정은 logTypeWrap 이 없음 */
+    #searchPopup.search_popup_wrap .log_type_wrap {
+        display: none;
+    }
+
+    /* logTypeWrap 이 on 이 되면 해당 wrap 이 show */
+    #searchPopup.search_popup_wrap.log_type_on .log_type_wrap {
+        display: block;
+        height: calc(90vh - 60px);
+        font-size: 12px;
+    }
+
+    /* logTypeWrap 이 on 이 되면 popup 높이가 90vh 로 변경 */
+    #searchPopup.search_popup_wrap.log_type_on {
+        width: 90%;
+        height: 90vh;
+        position: absolute;
+        left: 90px;
+    }
+
+    .dark_mode #searchPopup.search_popup_wrap.log_type_on {
+        background: #272829;
+    }
+
+    #searchPopup.search_popup_wrap > .header {
+        height: 60px;
+        width: 100%;
+        padding: 20px 25px;
+        display: flex;
+        gap: 1em;
+        border-bottom: 1px solid #DCDCDC;
+        align-items: center;
+    }
+
+    .dark_mode #searchPopup.search_popup_wrap > .header {
+        border-bottom: 1px solid #3F4142;
+    }
+
+    #searchPopup.search_popup_wrap > .header .icon_search{
+        content: url('../../images/maxy/icon-search-header.svg')
+    }
+
+    .dark_mode #searchPopup.search_popup_wrap > .header .icon_search{
+        content: url('../../images/maxy/icon-search-header-bk.svg')
+    }
+
+    #searchPopup.search_popup_wrap > .header h3 {
+        color: #000;
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: normal;
+    }
+
+    .dark_mode #searchPopup.search_popup_wrap > .header h3 {
+        color: #FFFFFF;
+    }
+
+    #searchPopup .search_contents_wrap {
+        display: flex;
+    }
+
+    #searchPopup .log_type_on .search_contents_wrap {
+        height: calc(90vh - 60px);
+    }
+
+    #searchPopup.search_popup_wrap.log_type_on .search_contents_wrap .log_type_wrap > .header .icon_sub_search {
+        content: url('/images/maxy/icon-log-type.svg');
+    }
+
+    .dark_mode #searchPopup.search_popup_wrap.log_type_on .search_contents_wrap .log_type_wrap > .header .icon_sub_search {
+        content: url('/images/maxy/icon-log-type-bk.svg');
+    }
+
+    #searchPopup .search_contents_wrap .log_type_wrap {
+        width: 100%;
+        height: 100%;
+        background-color: #F7F8FA;
+        padding: 20px 25px;
+        overflow-y: scroll;
+        border-bottom-left-radius: var(--radius);
+    }
+
+    .dark_mode #searchPopup .search_contents_wrap .log_type_wrap {
+        background: #333333;
+    }
+
+    #searchPopup .search_contents_wrap .log_type_wrap > .header {
+        display: flex;
+        gap: 1em;
+        margin-bottom: 26px;
+    }
+
+    #searchPopup .search_contents_wrap .log_type_wrap > .header h5 {
+        color: #404040;
+        font-size: 14px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: normal;
+    }
+
+    .dark_mode #searchPopup .search_contents_wrap .log_type_wrap > .header h5 {
+        color: #FFFFFF;
+        font-size: 14px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: normal;
+    }
+
+    #searchPopup.search_popup_wrap .log_type_group_wrap {
+        display: flex;
+        gap: 1.5em;
+        flex-direction: column;
+    }
+
+    #searchPopup.search_popup_wrap .log_type_group_wrap .log_type_group_text {
+        color: #4D83A1;
+        font-size: 14px;
+        font-style: normal;
+        font-weight: 500;
+        line-height: normal;
+        width: 358px;
+        border-bottom: 1px solid #E3E5E8;
+        padding-bottom: 4px;
+        margin-bottom: 11px;
+        padding-left: 4px;
+    }
+
+    .dark_mode #searchPopup.search_popup_wrap .log_type_group_wrap > label {
+        color: #FFFFFF;
+    }
+
+    #searchPopup.search_popup_wrap .log_type_wrap .log_type_detail_wrap {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+        row-gap: .8em;
+        column-gap: 1.3em;
+    }
+
+    #searchPopup .search_contents_wrap .log_type_wrap .log_type_block {
+        height: 40px;
+        flex-shrink: 0;
+        border-radius: var(--radius);
+        border: 1px solid #E3E3E3;
+        background: #FFF;
+        padding: 0 14px;
+        cursor: pointer;
+        line-height: 16px;
+    }
+
+    .dark_mode #searchPopup .search_contents_wrap .log_type_wrap .log_type_block {
+        background: #272829;
+        border: 1px solid #3F4142;
+    }
+
+    #searchPopup .search_contents_wrap .log_type_wrap .log_type_check {
+        user-select: none;
+        background: url("../../images/maxy/check-off-t.svg") left transparent no-repeat;
+        background-size: 14px 14px;
+        height: 40px;
+        border-radius: 3px;
+        padding-left: 1.7em;
+    }
+
+    #searchPopup .search_contents_wrap .log_type_wrap .log_type_t_check {
+        user-select: none;
+        background: url(../../images/maxy/icon-check-circle-off.svg) left transparent no-repeat;
+        width: 20em;
+        height: 20px;
+        color: #4D83A1;
+        padding-left: 2em;
+        font-size: 14px;
+        font-weight: 500;
+        margin-bottom: 11px;
+        padding-bottom: 0.5em;
+        text-decoration: underline #E3E5E8 1px;
+        text-underline-offset: 0.5em;
+    }
+
+    .dark_mode #searchPopup .search_contents_wrap .log_type_wrap .log_type_t_check {
+        text-decoration: underline #4C5154 1px;
+        color: white;
+        background: url("../../images/maxy/icon-check-circle-off-bk.svg") left transparent no-repeat;
+        background-size: 20px 20px;
+    }
+
+    #searchPopup .search_contents_wrap .log_type_wrap .log_type_check.on {
+        background: url("../../images/maxy/check-on-t.svg") left transparent no-repeat;
+        background-size: 14px;
+    }
+
+    .dark_mode #searchPopup .search_contents_wrap .log_type_wrap .log_type_check {
+        background: url("../../images/maxy/check-off-t-bk.svg") left transparent no-repeat;
+        background-size: 14px 14px;
+        color: white;
+    }
+
+    .dark_mode #searchPopup .search_contents_wrap .log_type_wrap .log_type_check.on {
+        background: url("../../images/maxy/check-on-t-bk.svg") left transparent no-repeat;
+    }
+
+    #searchPopup .search_contents_wrap .log_type_wrap .log_type_t_check.on {
+        background: url("../../images/maxy/icon-check-circle-on.svg") left transparent no-repeat;
+        background-size: 20px 20px;
+        height: 20px;
+        border-radius: 20px;
+    }
+
+    .dark_mode #searchPopup .search_contents_wrap .log_type_wrap .log_type_t_check.on {
+        background: url("../../images/maxy/icon-check-circle-on-bk.svg") left transparent no-repeat;
+        background-size: 20px 20px;
+    }
+
+    /* 검색 조건 */
+    #searchPopup .search_contents_wrap .search_contents {
+        position: relative;
+        width: 400px;
+        border-bottom-right-radius: var(--radius);
+    }
+
+    #searchPopup .search_contents_wrap .search_contents .search_content {
+        padding: 25px 27px;
+    }
+
+    #searchPopup .search_contents_wrap .search_contents .search_date_content {
+        padding: 25px 27px;
+        display: flex;
+        flex-direction: column;
+        gap: 1.5em;
+        border-bottom: 1px solid #dcdcdc;
+    }
+
+    .dark_mode  #searchPopup .search_contents_wrap .search_contents .search_date_content {
+        border-bottom: 1px solid #3a3b3c;
+    }
+
+    #searchPopup .search_contents_wrap .search_contents .search_appInfo_content {
+        padding: 25px 27px;
+        border-bottom: 1px solid #dcdcdc;
+    }
+
+    .dark_mode #searchPopup .search_contents_wrap .search_contents .search_appInfo_content {
+        border-bottom: 1px solid #3a3b3c;
+    }
+
+    #searchPopup .search_contents_wrap .search_contents .search_filter_content, #searchPopup .search_contents_wrap .search_contents .search_os_ver_content {
+        padding: 2.5em;
+    }
+
+    #searchPopup .search_contents_wrap .search_popup_btn_wrap {
+        display: flex;
+        justify-content: end;
+        gap: 1em;
+        padding-right: 2em;
+        position: absolute;
+        right: 0;
+        bottom: 5%;
+    }
+
+    #searchPopup.log_type_on .search_popup_btn_wrap {
+        bottom: 2em;
+    }
+
+    #searchPopup .btn_common {
+        background-color: var(--color-btn-light-1);
+        height: var(--box-height);
+        color: white;
+        border: 1px solid var(--color-btn-light-1);
+        border-radius: 5px;
+        padding: 0.625em 1.7em 0.625em 1.7em;
+    }
+
+    #searchPopup .search_contents .search_keyword {
+        display: flex;
+        gap: 1.2em;
+    }
+
+    #searchPopup .search_contents .search_keyword input[type="text"] {
+        width: 100%;
+        border: none;
+        border-bottom: 1px solid var(--color-border-in-light);
+    }
+
+    .log_type_on #searchToDtWrap .time_box:nth-last-child(1) {
+        width: 110px;
+    }
+
+    .dark_mode #searchPopup .search_contents .search_keyword input[type="text"] {
+        background: #272829;
+        color: #FFFFFF;
+        border-bottom: 1px solid #3F4142;
+    }
+
+    .dark_mode input[type="text"]:read-only, input[type="time"]:read-only, .dark_mode select:disabled {
+        background-color: #272829;
+        border: 1px solid #3F4142;
+        color: #FFFFFF;
+    }
+
+    .dark_mode .time_box input {
+        background: #272829;
+        border: 1px solid #3F4142;
+        color: #FFFFFF;
+    }
+
+    .log_type_group_wrap .log_type_div .log_type_nm {
+        display: flex;
+        gap: 1em;
+    }
+</style>
+<!-- `log_type_on` on/off 가능 -->
+<div class="search_popup_wrap" id="searchPopup">
+    <div class="header">
+        <img class="icon_search" alt=""/>
+        <h3>조회</h3>
+    </div>
+    <div class="search_contents_wrap">
+        <div class="log_type_wrap enable_scrollbar"></div>
+        <div class="search_contents">
+            <div class="search_date_content">
+            </div>
+            <!-- divider -->
+            <div class="search_appInfo_content">
+            </div>
+            <!-- divider -->
+            <div class="search_filter_content">
+            </div>
+            <div class="search_os_ver_content" style="display: none;">
+            </div>
+            <div class="search_popup_btn_wrap">
+            </div>
+        </div>
+    </div>
+</div>

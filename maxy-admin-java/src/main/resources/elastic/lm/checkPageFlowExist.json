@@ -1,0 +1,53 @@
+{
+  "size" : #{size},
+  "query" : {
+    "bool" : {
+      "must" : [
+        {
+          "bool" : {
+            "must" : [
+              {
+                "term" : {
+                  "packageNm" : {
+                    "value" : #{packageNm}
+                  }
+                }
+              },
+              {
+                "term" : {
+                  "serverType" : {
+                    "value" : #{serverType}
+                  }
+                }
+              },
+              {
+                "term":{
+                  "deviceId.raw" : {
+                    "value" : #{deviceId}
+                  }
+                }
+              }
+            ],
+            "adjust_pure_negative" : true
+          }
+        },
+        {
+          "range" : {
+            "pageStartTm" : {
+              "lte" : #{logTm}
+            }
+          }
+        },
+        {
+          "range" : {
+            "pageEndTm" : {
+              "gte" : #{logTm}
+            }
+          }
+        }
+      ],
+      "adjust_pure_negative" : true
+    }
+  },
+  "_source" : true
+}

@@ -1,0 +1,97 @@
+{
+  "size": #{size},
+  "query": {
+    "bool": {
+      "filter": [
+        {
+          "range": {
+            "pageStartTm": {
+            "gte" : #{from},
+            "lte" : #{to},
+            "time_zone": "Z"
+            }
+          }
+        },
+        {
+          "term": {
+            "packageNm" : #{packageNm}
+          }
+        },
+        {
+          "term": {
+            "serverType": #{serverType}
+          }
+        },
+        {
+          "term": {
+            "deviceModel": #{deviceModel}
+          }
+        },
+        {
+          "term": {
+            "reqUrl.raw": #{reqUrl}
+          }
+        }
+      #[isOsType]
+      ,{
+        "term" : {
+          "osType": #{osType}
+        }
+      }
+      #[/isOsType]
+      #[isDeviceId]
+      ,{
+        "term": {
+          "deviceId.raw" : {
+            "value" : #{searchValue}
+          }
+        }
+      }
+      #[/isDeviceId]
+      #[isUserNm]
+      ,{
+        "term": {
+          "userNm": #{searchValue}
+        }
+      }
+      #[/isUserNm]
+      #[isUserId]
+      ,{
+        "term": {
+          "userId": #{searchValue}
+        }
+      }
+      #[/isUserId]
+      #[isVipYn]
+      ,{
+        "term": {
+          "vipYn": #{vipYn}
+        }
+      }
+      #[/isVipYn]
+      ]
+    }
+  },
+  "sort" : [
+    {
+      "pageStartTm" : {
+        "order" : "asc",
+        "missing" : "_last",
+        "unmapped_type" : "long"
+      }
+    },
+    {
+      "deviceId.raw" : {
+      "order" : "asc",
+      "missing": "_last",
+      "unmapped_type" : "keyword"
+      }
+    }
+  ]
+  #[isMoreData]
+  , "search_after":[
+  #{lastLogTm},
+  #{lastDeviceId}
+  ]
+  #[/isMoreData]
+}

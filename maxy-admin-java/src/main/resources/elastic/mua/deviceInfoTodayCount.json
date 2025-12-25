@@ -1,0 +1,56 @@
+{
+  "aggs": {
+    "date": {
+      "date_histogram": {
+        "field": "logTm",
+        "interval": "day",
+        "format": "yyyy-MM-dd",
+        "time_zone": "Asia/Seoul",
+        "extended_bounds": {
+          "min": #{searchToDay},
+          "max": #{searchFromDay}
+        }
+      },
+      "aggs": {
+        "connectCount": {
+          "cardinality": {
+            "field": "deviceId.raw"
+          }
+        }
+      }
+    }
+  },
+  "size": 0,
+  "query": {
+    "bool": {
+      "filter": [
+        {
+          "term": {
+            "packageNm": #{packageNm}
+          }
+        },
+        {
+          "term": {
+            "serverType": #{serverType}
+          }
+        },
+        #[isAppVer]
+        {
+          "term": {
+            "appVer": #{appVer}
+          }
+        },
+        #[/isAppVer]
+        {
+          "range": {
+            "logTm": {
+              "gte": #{searchToDt},
+              "lte": #{searchFromDt},
+              "format": "epoch_millis"
+            }
+          }
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,655 @@
+<!-- 
+    성능분석 > AJAX 분석 > API 리스트 상세 팝업 > 상세 내용
+
+    이 파일은 API 상세 정보를 표시하는 HTML 템플릿입니다.
+    popup-analysis-ajax-api.html 파일에서 분리되어 독립적으로 관리됩니다.
+    popup-analysis-ajax-api-detail.js 파일에서 로드하여 사용합니다.
+
+    주요 구성 요소:
+    1. API 기본 정보 (API URL, PAGE URL 등)
+    2. 디바이스 정보 (Web View Ver, App Build No, Storage/Memory/Battery/CPU Usage 등)
+    3. 응답 차트 (Response Chart)
+    4. 시간 정보 (경과 시간, 시작 시간, 종료 시간 등)
+    5. 타임라인 차트 (경과 시간, 요청 대기 시간, 다운로드 시간)
+    6. Jennifer Soft 연동 차트
+-->
+<style>
+    /* 상세 내용 관련 스타일 */
+    .api_detail_wrap {
+        display: grid;
+        gap: 1%;
+        height: 100%; /* 부모 컨테이너의 높이를 채우도록 설정 */
+        grid-template-rows: 25px 40% 65px auto;
+    }
+
+    .api_detail_wrap .detail_title,
+    .chart_wrap .bold {
+        font-weight: 700 !important;
+    }
+
+    .api_detail_wrap .detail_title .detail_title_text {
+        margin-right: 0.5em;
+    }
+
+    .api_detail_wrap span.status {
+        font-weight: 500 !important;
+    }
+
+    .api_detail_wrap span.status {
+        font-size: 12px;
+        width: auto;
+        padding: 0.2em 0.5em 0.2em 0.5em;
+        text-align: center;
+        border-radius: 18px;
+        color: white;
+    }
+
+    .dark_mode .api_detail_wrap span.status {
+        color: #101010;
+    }
+
+    .api_detail_wrap span.status.success {
+        background-color: var(--point-green);
+    }
+
+    .api_detail_wrap span.status.error {
+        background-color: var(--point-yellow);
+    }
+
+    .api_detail_wrap span.status.exception {
+        background-color: var(--point-red);
+    }
+
+    @media screen and (max-height: 816px) {
+        .api_detail_wrap .api_detail .detail_row #apiUrl,
+        .api_detail_wrap .api_detail .detail_row #pageUrl {
+            max-height: 1.2em !important;
+        }
+
+        .jennifer_alarm_wrap {
+            margin-top: 0 !important;
+        }
+
+        /* 작은 화면에서도 고정된 높이를 유지하기 위해 grid-template-rows 설정 제거 */
+        .api_detail_wrap {
+            grid-template-rows: 3% 40% 10% auto !important;
+        }
+
+        .api_detail_wrap .user_info_wrap {
+            grid-template-rows: 30% 42% auto !important;
+        }
+
+        .api_detail_wrap .box .api_detail .detail_row {
+            grid-template-columns: 12% 88% !important;
+        }
+
+        .api_detail_wrap .box .api_detail .dv2_wrap .detail_row {
+            grid-template-columns: auto 77% !important;
+        }
+    }
+
+    .dv5_wrap {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 1%;
+        border: none;
+    }
+
+    .dv_content {
+        border: 1px solid #e3e5e8;
+        border-radius: var(--radius);
+        padding: .7em;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-around;
+    }
+
+    .dark_mode .api_detail_wrap .box,
+    .dark_mode .dv_content,
+    .dark_mode .api_detail_wrap .chart_wrap {
+        border: none;
+        background-color: var(--color-block-dark-1);
+    }
+
+    .detail_title {
+        display: flex;
+        gap: .5em;
+        border: none;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    /* Percentile Gauge Bar Styles */
+    .percentile_gauge_container {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        gap: 0.5em;
+        min-width: 180px;
+    }
+
+    .percentile_gauge_wrap {
+        position: relative;
+        width: 150px;
+        height: 16px;
+        background-color: #FFFFFF;
+        border-radius: 10px;
+        overflow: hidden;
+    }
+
+    .percentile_gauge_wrap.green {
+        border: 1px solid var(--point-green);
+    }
+
+    .percentile_gauge_wrap.yellow {
+        border: 1px solid var(--point-yellow);
+    }
+
+    .percentile_gauge_wrap.red {
+        border: 1px solid var(--point-red);
+    }
+
+    .dark_mode .percentile_gauge_wrap {
+        background-color: #333;
+        border-color: #555;
+    }
+
+    .percentile_gauge_fill {
+        height: 100%;
+        border-radius: 10px;
+        transition: width 0.3s ease;
+        position: relative;
+    }
+
+    .percentile_gauge_fill.green {
+        background: var(--point-green);
+    }
+
+    .percentile_gauge_fill.yellow {
+        background: var(--point-yellow);
+    }
+
+    .percentile_gauge_fill.red {
+        background: var(--point-red);
+    }
+
+    .percentile_gauge_marker {
+        position: absolute;
+        top: -2px;
+        bottom: -2px;
+        width: 2px;
+        border-left: 2px dotted rgba(0, 0, 0, 0.35);
+        background: repeating-linear-gradient(
+            to bottom,
+            #666 0px,
+            #666 3px,
+            transparent 3px,
+            transparent 6px
+        );
+        z-index: 2;
+    }
+
+    .dark_mode .percentile_gauge_marker {
+        background: repeating-linear-gradient(
+            to bottom,
+            #ccc 0px,
+            #ccc 3px,
+            transparent 3px,
+            transparent 6px
+        );
+    }
+
+    .percentile_gauge_marker.top5 {
+        left: 5%;
+    }
+
+    .percentile_gauge_marker.top95 {
+        left: 95%;
+    }
+
+    .percentile_gauge_label {
+        font-size: 12px;
+        white-space: nowrap;
+    }
+
+    .percentile_gauge_label.green {
+        color: var(--point-green);
+    }
+
+    .percentile_gauge_label.yellow {
+        color: var(--point-yellow);
+    }
+
+    .percentile_gauge_label.red{
+        color: var(--point-red);
+    }
+
+    .api_detail_wrap .box {
+        /*display: grid;
+        grid-template-columns: 55% 45%;*/
+        border-radius: var(--radius);
+        padding: 0 1em 0 1em;
+        border: 1px #e3e5e8 solid;
+    }
+
+    .api_detail_wrap .box .api_detail {
+        gap: 1em;
+        display: flex;
+        flex-direction: column;
+        padding: 1em 0 1em 0;
+        justify-content: space-evenly;
+    }
+
+    .api_detail_wrap .box .api_detail:nth-child(1),
+    .api_detail_wrap .box .api_detail:nth-child(2) {
+        border-bottom: 1px solid #e3e5e8;
+    }
+
+    .dark_mode .api_detail_wrap .box .api_detail:nth-child(1),
+    .dark_mode .api_detail_wrap .box .api_detail:nth-child(2) {
+        border-bottom: 1px solid #3d3d3d;
+    }
+
+    .api_detail_wrap .box .api_detail .detail_row {
+        grid-template-columns: 10% 90%;
+        display: grid;
+        word-break: break-all;
+        align-items: center;
+    }
+
+    .api_detail_wrap .box .api_detail .title,
+    .dv_content .key {
+        color: var(--color-subtitle-light);
+        white-space: nowrap;
+        width: fit-content;
+    }
+
+    .api_detail_wrap .box .api_detail .dv2_wrap {
+        display: grid;
+        grid-template-columns: 53% 47%;
+    }
+
+    .api_detail_wrap .box .api_detail .dv2_wrap .detail_row {
+        grid-template-columns: auto 81%;
+    }
+
+    .api_detail_wrap .box .api_detail .detail_row #apiUrl,
+    .api_detail_wrap .box .api_detail .detail_row #pageUrl {
+        overflow-y: auto;
+        max-height: 3em;
+        line-height: normal;
+    }
+
+    .api_detail_wrap .box .api_detail .detail_row #resMsg {
+        overflow-y: auto;
+        max-height: 2em;
+        line-height: normal;
+    }
+
+    .api_detail_wrap .chart_wrap {
+        height: 100%;
+        overflow-y: auto;
+        padding: .6em 1em .6em 1em;
+        display: flex;
+        border-radius: var(--radius);
+        flex-direction: column;
+        border: 1px solid #e3e5e8;
+    }
+
+    .api_detail_wrap .xrange_chart_wrap {
+        display: grid;
+        grid-template-columns: 21% 79%;
+    }
+
+    .jennifer_chart_wrap {
+        height: calc(100% - 13px);
+        overflow-y: auto;
+    }
+
+    .xrange_chart_wrap .yaxis_list .yaxis {
+        align-items: center;
+        grid-template-columns: 5% 52% 43% !important;
+    }
+
+    .txid_wrap {
+        margin-top: 10px;
+        height: 20px;
+        line-height: 30px;
+        display: flex;
+        gap: 2%;
+    }
+
+    .xrange_chart_wrap .yaxis_list .name, .txid_wrap .name {
+        color: var(--color-subtitle-light);
+    }
+
+    .dark_mode .xrange_chart_wrap .yaxis_list .yaxis:first-child {
+        border-top: 1px solid var(--black-6) !important;
+    }
+
+    .dark_mode .xrange_chart_wrap .yaxis_list .yaxis {
+        border-bottom: 1px solid var(--black-6) !important;
+    }
+
+    .chart_toggle_btn {
+        padding: .5em .7em .5em .7em;
+        border: none;
+        background-color: #4f46e5;
+        color: white;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 13px;
+    }
+
+    .jennifer_chart_container {
+        position: relative;
+        max-height: 0;
+        opacity: 0;
+        transform: translateY(-30px);
+        transition: max-height 0.3s ease-out, opacity 0.3s ease-out, transform 0.3s ease-out;
+    }
+
+    .jennifer_chart_container.collapse {
+        max-height: 0;
+        opacity: 0;
+        transform: translateY(30px); /* 아래에서 위로 접히는 효과를 위해 변경 */
+        overflow: hidden;
+        pointer-events: none;
+    }
+
+    .jennifer_chart_container.expand {
+        max-height: 300px;
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    .jennifer_alarm_wrap {
+        margin-top: 2em;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        visibility: visible;
+        opacity: 1;
+        transition: visibility 0s, opacity 0.3s ease-out;
+    }
+
+    .jennifer_alarm_wrap.hidden {
+        visibility: hidden;
+        opacity: 0;
+    }
+
+    .jennifer_alarm_wrap .txt {
+        display: flex;
+        height: 14px;
+        line-height: 14px;
+        margin-top: 1em;
+        font-size: 14px;
+        color: #FFC700;
+        width: 100%;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .chart_wrap .btn_jennifer {
+        width: 14em;
+        margin-top: 1.5em;
+        border-radius: 20px;
+        border: 1px solid var(--logo-purple-1);
+        color: var(--logo-purple-1);
+        padding: .7em;
+    }
+
+    .chart_wrap .btn_jennifer.close {
+        background-image: url(/images/maxy/icon-x-p.svg);
+        background-size: 15px;
+        background-repeat: no-repeat;
+        background-position: 12% center;
+        display: block;
+        margin: 0 auto .2em auto;
+        padding: .7em 3.5em .7em 3.5em;
+        width: auto;
+    }
+
+    .detail_row .font_purple {
+        color: var(--logo-purple-1);
+    }
+
+    .dark_mode .detail_row .font_purple {
+        color: #fff;
+    }
+
+    .xrange_chart_wrap .yaxis .circle {
+        width: 10px;
+        height: 10px;
+        display: flex;
+        border-radius: 11px;
+        align-items: center;
+    }
+
+    .xrange_chart_wrap .yaxis .circle.blue {
+        background-color: #4285F499;
+    }
+
+    .xrange_chart_wrap .yaxis .circle.yellow {
+        background-color: #FBBC0599;
+    }
+
+    .xrange_chart_wrap .yaxis .circle.green {
+        background-color: #34A85399;
+    }
+
+    .xrange_chart_wrap .yaxis .circle.purple {
+        background-color: #9587ff99;
+    }
+
+    .xrange_chart_wrap .yaxis .circle.lightgreen {
+        background-color: #4FCFA099;
+    }
+
+    .xrange_chart_wrap .yaxis .circle.mustard {
+        background-color: #FFD74A99;
+    }
+
+    .xrange_chart_wrap .yaxis .circle.lightpurple {
+        background-color: #DFDCFF99;
+    }
+
+    .api_detail_wrap .user_info_wrap {
+        display: grid;
+        height: 100%; /* 부모 컨테이너의 높이를 채우도록 설정 */
+    }
+
+    .detail_title > .title {
+        display: flex;
+        align-items: center;
+    }
+</style>
+
+<div class="api_detail_wrap" id="{{id}}">
+    <div class="detail_title">
+        <div class="title">
+            <span class="detail_title_text">Analysis</span>
+            <span class="status" id="statusTxt"></span>
+        </div>
+        <div class="percentile_gauge_container" id="percentileGaugeContainer" style="display: none;">
+            <span class="percentile_gauge_label" id="percentileGaugeLabel">0%</span>
+            <div class="percentile_gauge_wrap">
+                <div class="percentile_gauge_fill" id="percentileGaugeFill"></div>
+                <div class="percentile_gauge_marker top5"></div>
+                <div class="percentile_gauge_marker top95"></div>
+            </div>
+        </div>
+    </div>
+    <div class="box" id="{{id}}__box">
+        <div class="user_info_wrap">
+            <div class="api_detail">
+                <div class="detail_row">
+                    <span class="title">API URL</span>
+                    <div class="font_purple enable_scrollbar" id="apiUrl"></div>
+                </div>
+
+                <div class="detail_row">
+                    <span class="title">PAGE URL</span>
+                    <div class="font_purple enable_scrollbar" id="pageUrl"></div>
+                </div>
+            </div>
+            <div class="api_detail">
+                <div class="dv2_wrap">
+                    <div class="detail_row">
+                        <span class="title">Web View Ver</span>
+                        <div class="font_purple" id="webViewVer"></div>
+                    </div>
+
+                    <div class="detail_row">
+                        <span class="title">App Build No</span>
+                        <div class="font_purple" id="appBuildNum"></div>
+                    </div>
+                </div>
+
+                <div class="dv2_wrap">
+                    <div class="detail_row">
+                        <span class="title">Storage Usage</span>
+                        <div class="font_purple" id="storageUsage"></div>
+                    </div>
+
+                    <div class="detail_row">
+                        <span class="title">Memory Usage</span>
+                        <div class="font_purple" id="memoryUsage"></div>
+                    </div>
+                </div>
+
+                <div class="dv2_wrap">
+                    <div class="detail_row">
+                        <span class="title">Battery Usage</span>
+                        <div class="percentage_wrap">
+                            <div class="mini_progress_wrap" data-bgcolor="#7277FF" id="pBatteryUsage"></div>
+                        </div>
+                    </div>
+
+                    <div class="detail_row">
+                        <span class="title">CPU Usage</span>
+                        <div class="percentage_wrap">
+                            <div class="mini_progress_wrap" data-bgcolor="#7277FF" id="pCpuUsage"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="api_detail">
+                <div class="dv2_wrap">
+                    <div class="detail_row">
+                        <span class="title">Device ID</span>
+                        <div class="font_purple" id="deviceId"></div>
+                    </div>
+
+                    <div class="detail_row">
+                        <span class="title">Network Type</span>
+                        <div class="font_purple" id="errorType"></div>
+                    </div>
+                </div>
+
+                <div class="dv2_wrap">
+                    <div class="detail_row">
+                        <span class="title"></span>
+                        <div class="font_purple" id="userId"></div>
+                    </div>
+
+                    <div class="detail_row">
+                        <span class="title">Res Msg</span>
+                        <div class="font_purple enable_scrollbar" id="resMsg"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="dv5_wrap">
+        <div class="dv_content">
+            <div class="key" data-t="common.text.elapsedTime"></div>
+            <div class="value" id="intervalTime"></div>
+        </div>
+        <div class="dv_content">
+            <div class="key" data-t="common.text.startTime"></div>
+            <div class="value" id="startTime"></div>
+        </div>
+        <div class="dv_content">
+            <div class="key" data-t="common.text.endTime"></div>
+            <div class="value" id="endTime"></div>
+        </div>
+        <div class="dv_content">
+            <div class="key" data-t="common.text.requestText"></div>
+            <div class="value" id="requestSize"></div>
+        </div>
+        <div class="dv_content">
+            <div class="key" data-t="common.text.responseText"></div>
+            <div class="value" id="responseSize"></div>
+        </div>
+    </div>
+    <div class="chart_wrap enable_scrollbar">
+        <div class="xrange_chart_wrap" id="{{id}}__timeChartWrap">
+            <div class="yaxis_list">
+                <div class="yaxis">
+                    <span class="circle blue"></span>
+                    <div class="name" data-t="common.text.elapsedTime"></div>
+                    <div class="duration" id="duration"></div>
+                </div>
+                <div class="yaxis">
+                    <span class="circle yellow"></span>
+                    <div class="name" data-t="common.text.reqWaitingTime"></div>
+                    <div class="duration"></div>
+                </div>
+                <div class="yaxis">
+                    <span class="circle green"></span>
+                    <div class="name" data-t="common.text.downloadTime"></div>
+                    <div class="duration"></div>
+                </div>
+            </div>
+            <div id="{{id}}__timeChart"></div>
+        </div>
+
+        <!-- Jennifer Soft 연동 , Jennifer soft 데이터 있을 때만 보여주기 -->
+        <div class="jennifer_alarm_wrap">
+            <div class="txt">
+                <span class="mk_error"></span>
+                <span data-t="common.text.jenniferConnect"></span>
+            </div>
+            <button class="btn_jennifer" data-t="common.text.jenniferAdd" id="btnJnfOpen"></button>
+        </div>
+
+
+        <div class="jennifer_chart_container collapse" id="{{id}}__jenniferChartWrap">
+            <div class="bold">Profiling with Jennifer</div>
+            <div class="jennifer_chart_wrap enable_scrollbar">
+                <div class="txid_wrap">
+                    <div class="name">TXID</div>
+                    <div id="txid"></div>
+                </div>
+                <div class="xrange_chart_wrap">
+                    <div class="yaxis_list">
+                        <div class="yaxis">
+                            <span class="circle purple"></span>
+                            <div class="name">WAS</div>
+                            <div class="duration" id=""></div>
+                        </div>
+                        <div class="yaxis">
+                            <span class="circle lightgreen"></span>
+                            <div class="name">Network</div>
+                            <div class="duration"></div>
+                        </div>
+                        <div class="yaxis">
+                            <span class="circle mustard"></span>
+                            <div class="name">SQL/SQL Fetch</div>
+                            <div class="duration"></div>
+                        </div>
+                        <div class="yaxis">
+                            <span class="circle lightpurple"></span>
+                            <div class="name">External</div>
+                            <div class="duration"></div>
+                        </div>
+                    </div>
+                    <div id="{{id}}__jenniferChart"></div>
+                </div>
+                <button class="btn_jennifer close" data-t="common.text.jenniferClose" id="btnJnfClose"></button>
+            </div>
+        </div>
+    </div>
+</div>

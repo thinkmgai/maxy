@@ -1,0 +1,269 @@
+.device-distribution-widget {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  padding: 12px 14px 12px;
+  box-sizing: border-box;
+  border-radius: 14px;
+  background: #ffffff;
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08);
+  gap: 8px;
+  position: relative;
+  overflow: hidden;
+}
+
+.device-distribution-widget--dark {
+  background: #0c152a;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.35);
+}
+
+.device-distribution-widget__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.device-distribution-widget__title {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.device-distribution-widget h4 {
+  margin: 0;
+  font-size: 12px;
+  line-height: 21px;
+  font-weight: 500;
+  color: #3d3d3d;
+}
+
+.device-distribution-widget--dark h4 {
+  color: #e2e8f0;
+}
+
+.device-distribution-widget__help {
+  width: 12px;
+  height: 14px;
+}
+
+.device-distribution-widget__actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 12px;
+  margin: 2px 0 6px;
+}
+
+.device-distribution-widget__tab-row {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.device-distribution-widget__tab {
+  border: none;
+  background: transparent;
+  color: #9ca3af;
+  font-size: 12px;
+  padding: 4px 4px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: color 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border-bottom: none;
+}
+
+.device-distribution-widget__tab--active {
+  color: #009ff9;
+  font-weight: 600;
+}
+
+.device-distribution-widget__tab:not(.device-distribution-widget__tab--active):hover {
+  color: #6b7280;
+}
+
+.device-distribution-widget--dark .device-distribution-widget__tab--active {
+  color: #60a5fa;
+  border-color: #60a5fa;
+}
+
+.device-distribution-widget--dark .device-distribution-widget__tab:not(.device-distribution-widget__tab--active):hover {
+  color: #d1d5db;
+}
+
+.device-distribution-widget__metric-icon {
+  width: 14px;
+  height: 14px;
+  display: inline-block;
+}
+
+.device-distribution-widget__all-btn {
+  width: 30px;
+  height: 18px;
+  border: 0;
+  background: var(--black-8, rgba(0, 0, 0, 0.08));
+  color: #3d3d3d;
+  font-size: 9px;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+.device-distribution-widget__all-btn:hover:enabled {
+  background: #e6ebf5;
+}
+
+.device-distribution-widget__all-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.device-distribution-widget__chart {
+  flex: 1;
+  min-height: 220px;
+  height: 100%;
+  background: #ffffff;
+  border-radius: 14px;
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  position: relative;
+  padding: 4px 2px;
+}
+
+.device-distribution-widget--dark .device-distribution-widget__chart {
+  background: rgba(255, 255, 255, 0.04);
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+.device-distribution-widget__status {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #475569;
+  font-size: 13px;
+}
+
+.device-distribution-widget--dark .device-distribution-widget__status {
+  color: #cbd5e1;
+}
+
+.device-distribution-tooltip {
+  position: relative;
+  background: #ffffff;
+  color: #0f172a;
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid rgba(148, 163, 184, 0.35);
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.14);
+  min-width: 200px;
+}
+
+.device-distribution-tooltip::after {
+  content: "";
+  position: absolute;
+  left: 18px;
+  bottom: -6px;
+  width: 10px;
+  height: 10px;
+  background: #ffffff;
+  border-right: 1px solid rgba(148, 163, 184, 0.35);
+  border-bottom: 1px solid rgba(148, 163, 184, 0.35);
+  transform: rotate(45deg);
+}
+
+.device-distribution-tooltip__title {
+  font-weight: 700;
+  margin-bottom: 6px;
+  font-size: 12px;
+  color: #0f172a;
+}
+
+.device-distribution-tooltip__title span {
+  font-weight: 500;
+  color: #64748b;
+}
+
+.device-distribution-tooltip__row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  padding: 2px 0;
+  color: #475569;
+}
+
+.device-distribution-tooltip__row strong {
+  color: #1d4ed8;
+  font-weight: 600;
+}
+
+/* Device Distribution uses legacy maxy_component_* layout from common.css. */
+#maxyComponent__DEVICE_DISTRIBUTION .maxy_component_wrap {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+#maxyComponent__DEVICE_DISTRIBUTION .maxy_component_header {
+  flex: 0 0 auto;
+}
+
+#maxyComponent__DEVICE_DISTRIBUTION .maxy_component_item {
+  height: 100%;
+  min-height: 0;
+  position: relative;
+}
+
+#maxyComponent__DEVICE_DISTRIBUTION .maxy_component_item_wrap {
+  position: relative;
+  flex: 1 1 auto;
+  width: 100%;
+  min-height: 0;
+  height: 100%;
+}
+
+#maxyComponent__DEVICE_DISTRIBUTION .maxy_component_item_wrap.hidden {
+  display: none;
+}
+
+#maxyComponent__DEVICE_DISTRIBUTION .device-distribution__status {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 12px;
+  font-size: 13px;
+  line-height: 1.4;
+  color: rgba(71, 85, 105, 0.86);
+}
+
+#maxyComponent__DEVICE_DISTRIBUTION .recharts-legend-item-text {
+  color: #475569 !important;
+}
+
+#maxyComponent__DEVICE_DISTRIBUTION .recharts-wrapper,
+#maxyComponent__DEVICE_DISTRIBUTION .recharts-surface {
+  outline: none;
+}
+
+#maxyComponent__DEVICE_DISTRIBUTION .recharts-wrapper:focus,
+#maxyComponent__DEVICE_DISTRIBUTION .recharts-wrapper:focus-visible,
+#maxyComponent__DEVICE_DISTRIBUTION .recharts-surface:focus,
+#maxyComponent__DEVICE_DISTRIBUTION .recharts-surface:focus-visible {
+  outline: none;
+  box-shadow: none;
+}
+
+body.dark_mode #maxyComponent__DEVICE_DISTRIBUTION .device-distribution__status {
+  color: rgba(226, 232, 240, 0.86);
+}
+
+body.dark_mode #maxyComponent__DEVICE_DISTRIBUTION .recharts-legend-item-text {
+  color: #e2e8f0 !important;
+}

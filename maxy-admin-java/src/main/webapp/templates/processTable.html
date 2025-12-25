@@ -1,0 +1,39 @@
+<style>
+    .process_table {
+        width: 100%;
+        border: 1px solid #d2d2d2;
+    }
+
+    .process_table th {
+        text-align: left;
+        border-bottom: 1px solid #D2D2D2;
+    }
+
+    .process_table td,
+    .process_table th {
+        padding: 5px;
+    }
+</style>
+<table class="process_table enable_scrollbar">
+    <thead>
+    <tr>
+        <!-- 클릭시 active class 추가 -->
+        <th>UID</th>
+        <th>SYS TIME</th>
+        <th>TIME</th>
+        <th>CMD</th>
+        <th></th>
+    </tr>
+    </thead>
+    {{#processList}}
+    <tr id="{{id}}" class="list_item">
+        <td>{{uid}}</td>
+        <td>{{sysTime}}</td>
+        <td>{{time}}</td>
+        <td>{{cmd}}</td>
+        <td>
+            <button class="btn_kill">KILL</button>
+        </td>
+    </tr>
+    {{/processList}}
+</table>

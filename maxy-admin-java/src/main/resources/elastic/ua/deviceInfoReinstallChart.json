@@ -1,0 +1,77 @@
+{
+  "size": 0,
+  "query": {
+    "bool": {
+      "must": [
+        {
+          "bool" : {
+            "must" : [
+              {
+                "term" : {
+                  "packageNm" : {
+                    "value" : #{packageNm}
+                  }
+                }
+              },
+              {
+                "term" : {
+                  "serverType" : {
+                    "value" : #{serverType}
+                  }
+                }
+              },
+              {
+                "term" : {
+                  "activeSt" : {
+                    "value" : "Y"
+                  }
+                }
+              },
+              {
+                "bool": {
+                  "must_not" : [
+                    {
+                      "term": {
+                        "reinstalledDate": {
+                          "value" : "0"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  },
+  "aggs" : {
+    "createdDates": {
+      "date_histogram": {
+        "field": "reinstalledDate",
+        "interval": "day",
+        "min_doc_count": 0,
+        "format": "yyyy-MM-dd",
+        "time_zone": "Asia/Seoul"
+      },
+      "aggs": {
+        "data": {
+          "terms": {
+            "field": "createdDate"
+          }
+        },
+        "sumCount": {
+          "sum_bucket": {
+            "buckets_path": "data>_count"
+          }
+        },
+        "total": {
+          "cumulative_sum": {
+            "buckets_path": "sumCount"
+          }
+        }
+      }
+    }
+  }
+}

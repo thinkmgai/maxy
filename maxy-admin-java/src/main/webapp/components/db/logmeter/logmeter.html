@@ -1,0 +1,372 @@
+<!--suppress CssUnusedSymbol -->
+<style>
+    .logmeter {
+        height: 100%;
+        position: relative;
+        padding: 10px;
+        display: flex;
+        flex-direction: column;
+        gap: 2%;
+        justify-content: flex-end;
+        z-index: 5;
+    }
+
+    .logmeter .ht_header {
+        display: grid;
+        grid-template-columns: 3.2vw auto;
+        min-height: 15px;
+        justify-content: space-between;
+    }
+
+    .logmeter .ht_header .ht_counter_wrap {
+        display: flex;
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .logmeter .ht_header .ht_counter_wrap .ht_counter {
+        min-width: 1.5vw; /* 최소 너비 제거 */
+        flex: 0 1 auto; /* 필요한 만큼만 공간 차지 */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        max-width: calc(50% - 4px); /* 최대 너비 제한 */
+    }
+
+    .logmeter .ht_inner_wrap {
+        display: grid;
+        grid-template-columns: 3.2vw auto;
+        gap: 2%;
+        height: calc(100% - 21px);
+    }
+
+    .ht_inner_wrap .ht_stack_wrap {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        align-items: center;
+        height: 34vh; /* .ht_right_wrap과 동일한 높이 설정 */
+        min-height: 260px; /* .ht_right_wrap과 동일한 최소 높이 설정 */
+    }
+
+    .logmeter .ht_left_wrap {
+        display: flex;
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .logmeter .ht_right_wrap {
+        width: 100%;
+        height: 34vh;
+        min-height: 260px;
+        margin-left: -1px;
+        overflow: hidden;
+    }
+
+    .logmeter .ht_right_wrap canvas {
+        width: 100%;
+        height: 100%;
+    }
+
+    .logmeter .ht_stack_wrap .ht_stack {
+        width: 100%;
+        max-width: 1.5vw;
+        display: flex;
+        flex-direction: column-reverse;
+        padding: 0;
+        background: #FAFAFA;
+        border-radius: 1px;
+        cursor: pointer;
+        height: 100%; /* 추가: 부모 컨테이너의 전체 높이를 사용 */
+    }
+
+    @keyframes moveLeft {
+        0% { transform: translateX(0); }
+        100% { transform: translateX(-1400px); }
+    }
+
+    .logmeter .ht_rt_wrap {
+        display: flex;
+        flex-direction: column-reverse;
+        min-height: 100%;
+        /*width: 200%;*/
+        position: relative;
+        overflow: hidden;
+    }
+
+    .logmeter .ht_rt_wrap .ht_row:nth-child(2) {
+        border-bottom: 1px solid #C4C4C4;
+    }
+
+    .logmeter .ht_row {
+        display: flex;
+    }
+
+    .logmeter .ht_row.blink {
+        border-left: 10px solid var(--green-0);
+    }
+
+    .logmeter .ht_col {
+        display: inline-block;
+        margin: 2px 0 0;
+        min-width: 1.45vw;
+        height: calc((100% - 7px) / 20);
+        border-radius: 2px;
+    }
+
+    .logmeter .ht_col.hidden {
+        display: none !important;
+    }
+
+    .logmeter .ht_type_text {
+        background: white;
+        text-align: center;
+        margin-top: 8px;
+        display: inline-block;
+        width: 100%;
+        /*line-height: 19px;*/
+        font-size: 0.8em;
+        font-weight: 300;
+    }
+
+    .logmeter .ht_rt_x_wrap {
+        display: flex;
+        justify-content: space-between;
+        height: 19px;
+        line-height: 19px;
+        margin-top: 8px;
+    }
+
+    .logmeter .ht_header .ht_rt_x {
+        margin-right: 10px;
+        font-size: 0.8em;
+    }
+
+    .logmeter .ht_col.log {
+        background-color: rgba(151, 201, 255, 0.6);
+    }
+
+    .ht_rt_wrap .bullet {
+        position: absolute;
+        animation: moveLeft 2.5s linear;
+    }
+
+    .ht_rt_wrap .bullet.log > rect {
+        fill: #7CB9FF;
+    }
+
+    .ht_rt_wrap .bullet.error > rect {
+        fill: rgba(255, 220, 46) !important;
+    }
+
+    .ht_rt_wrap .bullet.crash > rect {
+        fill: var(--point-red) !important;
+    }
+
+    .ht_rt_wrap .bullet.crash {
+        fill: var(--point-red) !important;
+        opacity: 1;
+    }
+
+    .logmeter .ht_col.error,
+    .logmeter .ht_col.error__d0 {
+        background-color: var(--point-yellow) !important;
+    }
+
+    .logmeter .ht_col.error__d1 {
+        background-color: #d4ad2b !important;
+    }
+
+    .logmeter .ht_col.error__d2 {
+        background-color: #8c721b !important;
+    }
+
+    .logmeter .ht_col.error__d3 {
+        background-color: #46380b !important;
+    }
+
+    .logmeter .ht_col.crash,
+    .logmeter .ht_col.crash__d0 {
+        background-color: var(--point-red) !important;
+    }
+
+    .logmeter .ht_col.crash__d1 {
+        background-color: #c24d4d !important;
+    }
+
+    .dark_mode .logmeter .ht_stack_wrap .ht_stack {
+        background: #303030;
+    }
+
+    .dark_mode .logmeter .ht_type_text {
+        background: var(--color-block-dark-1);
+        color: white;
+    }
+
+    .dark_mode .logmeter .ht_rt_x {
+        color: white
+    }
+
+    .dark_mode .logmeter .ht_rt_wrap .ht_row:nth-child(2) {
+        border-bottom: 1px solid #4a4a4a;
+    }
+
+    .ht_stack.bullet {
+        animation-delay: 0s;
+        animation-duration: 1s;
+        animation-timing-function: ease-in-out;
+    }
+
+    .ht_stack .blink {
+        animation-fill-mode: backwards;
+        animation-name: blink, move;
+        animation-delay: 0s, 0s;
+        animation-duration: 1s, 0.3s;
+        animation-timing-function: ease-in, ease-in-out;
+    }
+
+    .ht_left_wrap.blur {
+        animation-fill-mode: backwards;
+        animation-name: glow;
+        animation-delay: 0s;
+        animation-duration: 1s;
+        animation-timing-function: ease-in, ease-in-out;
+    }
+
+    /* line + move */
+    .logmeter.crash_line,
+    .ht_stack.crash_line {
+        animation-fill-mode: backwards;
+        animation-name: glow_crash;
+        animation-delay: 0s;
+        animation-duration: 1s;
+        animation-timing-function: ease-in-out;
+    }
+
+    .logmeter.error_line,
+    .ht_stack.error_line {
+        animation-fill-mode: backwards;
+        animation-name: glow_error;
+        animation-delay: 0s;
+        animation-duration: 1s;
+        animation-timing-function: ease-in-out;
+    }
+
+    .ht_stack .move {
+        transform: translateX(100%);
+        animation-fill-mode: forwards;
+        animation-name: move;
+        animation-delay: 0s;
+        animation-duration: 0.3s;
+        animation-timing-function: ease-in-out;
+    }
+
+    @keyframes move {
+        0% {
+            transform: translateX(100%);
+        }
+        25% {
+            transform: translateX(90%);
+        }
+        50% {
+            transform: translateX(65%);
+        }
+        75% {
+            transform: translateX(-10%);
+        }
+        100% {
+            transform: translateX(0%);
+        }
+    }
+
+    @keyframes blink {
+        0% {
+            opacity: 0;
+        }
+        25% {
+            opacity: 0.3;
+        }
+        50% {
+            opacity: 0.1;
+        }
+        75% {
+            opacity: 0.7;
+        }
+        87% {
+            opacity: 0.2;
+        }
+        100% {
+            opacity: 1;
+        }
+    }
+
+    @keyframes glow_crash {
+        from {
+            box-shadow: 0 0 10px var(--point-red),
+            0 0 15px var(--point-red),
+            0 0 20px var(--point-red),
+            0 0 20px var(--point-red);
+        }
+        to {
+            box-shadow: none;
+        }
+    }
+
+    @keyframes glow_error {
+        from {
+            box-shadow: 0 0 10px var(--point-yellow),
+            0 0 15px var(--point-yellow),
+            0 0 20px var(--point-yellow),
+            0 0 20px var(--point-yellow);
+        }
+        to {
+            box-shadow: none;
+        }
+    }
+
+    .logmeter .ht_counter.very_good {
+        background: url(/images/maxy/feeldex-very-good.svg) no-repeat center 0 /15px;
+    }
+
+    .logmeter .ht_counter.good {
+        background: url(/images/maxy/feeldex-good.svg) no-repeat center 0 /15px;
+    }
+
+    .logmeter .ht_counter.normal {
+        background: url(/images/maxy/feeldex-normal.svg) no-repeat center 0 /15px;
+    }
+
+    .logmeter .ht_counter.bad {
+        background: url(/images/maxy/feeldex-bad.svg) no-repeat center 0 /16px;
+    }
+
+    .logmeter .ht_counter.very_bad {
+        background: url(/images/maxy/feeldex-very-bad.svg) no-repeat center 0 /15px;
+    }
+
+
+</style>
+<div class="logmeter">
+    <div class="ht_header">
+        <div class="ht_counter_wrap">
+            <div class="ht_counter" id="hc__error"></div>
+            <div class="ht_counter" id="hc__crash"></div>
+        </div>
+    </div>
+
+    <div class="ht_inner_wrap">
+        <div class="ht_left_wrap">
+            <div class="ht_stack_wrap">
+                <div class="ht_error_wrap ht_stack" data-type="error"></div>
+            </div>
+            <div class="ht_stack_wrap">
+                <div class="ht_crash_wrap ht_stack" data-type="crash"></div>
+            </div>
+        </div>
+        <div class="ht_right_wrap" id="htRightWrap">
+<!--            <canvas id="ecWrap"></canvas>-->
+            <canvas id="logWrap"></canvas>
+<!--            <div class="ht_rt_wrap"></div>-->
+        </div>
+    </div>
+</div>

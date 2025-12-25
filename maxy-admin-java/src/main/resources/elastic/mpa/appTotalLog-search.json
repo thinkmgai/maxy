@@ -1,0 +1,129 @@
+{
+  "size" : #{size},
+  "query" : {
+    "bool" : {
+      "must" : [
+        {
+          "bool" : {
+            "must" : [
+              {
+                "term" : {
+                  "packageNm" : {
+                    "value" : #{packageNm}
+                  }
+                }
+              },
+              {
+                "term" : {
+                  "serverType" : {
+                    "value" : #{serverType}
+                  }
+                }
+              },
+              {
+                "bool": {
+                  "should": [
+                  {
+                    "term": {
+                      "logType": 524291
+
+                    }
+                  },
+                {
+                  "term": {
+                    "logType": 8388611
+
+                }
+              },
+              {
+                  "term": {
+                    "logType": 8388612
+                      }
+                    }
+                  ]
+                }
+              }
+    #[isDeviceModel]
+            ,{
+               "term" : {
+                  "deviceModel" : #{deviceModel}
+                }
+              }
+    #[/isDeviceModel]
+    #[isOsType]
+            ,{
+              "term" : {
+                  "osType" : #{osType}
+              }
+            }
+    #[/isOsType]
+    #[isDeviceId]
+            ,{
+              "term" : {
+                  "deviceId" : #{searchValue}
+                }
+              }
+    #[/isDeviceId]
+    #[isUserId]
+            ,{
+               "term" : {
+                  "userId" : #{searchValue}
+              }
+            }
+    #[/isUserId]
+    #[isUserNm]
+            ,{
+              "term" : {
+                "userNm" : #{searchValue}
+              }
+            }
+    #[/isUserNm]
+    #[isVipYn]
+            ,{
+                "term" : {
+                  "vipYn": #{vipYn}
+                }
+              }
+    #[/isVipYn]
+            ],
+            "adjust_pure_negative" : true
+          }
+        },
+        {
+          "range" : {
+            "logTm" : {
+              "from" : #{searchFromDt},
+              "to" : #{searchToDt},
+              "include_lower" : true,
+              "include_upper" : true,
+              "time_zone" : "Z"
+            }
+          }
+        }
+      ],
+      "adjust_pure_negative" : true
+    }
+  },
+  "sort" : [
+    {
+      "logTm" : {
+        "order" : "desc",
+        "missing" : "_last",
+        "unmapped_type" : "date"
+      }
+    },
+    {
+      "deviceId.raw" : {
+        "order" : "asc",
+        "missing" : "_last",
+        "unmapped_type" : "keyword"
+      }
+    }
+  ]
+  #[isMoreData]
+  , "search_after":[
+  #{lastLogTm},
+  #{lastDeviceId}
+  ]
+  #[/isMoreData]
+}

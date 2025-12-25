@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkm.maxy.mapper.StoreAnalysisMapper">
+
+    <select id="selectWordCloudInfo" parameterType="StoreVO" resultType="String">
+        select content
+        from maxy.maxy_store_review_wordcloud
+        where package_nm = #{packageNm}
+          and os_type = #{osType}
+        order by reg_date desc
+        limit 1
+    </select>
+
+    <!-- iOS 리뷰 목록 총 갯수 -->
+    <select id="countIosReviewList" parameterType="StoreVO" resultType="int"><![CDATA[
+        select count(1)
+        from maxy.maxy_store_review_ios
+        where package_id = #{packageNm}
+        ]]>
+    </select>
+
+    <!-- 안드로이드 리뷰 목록 총 갯수 -->
+    <select id="countAosReviewList" parameterType="StoreVO" resultType="int"><![CDATA[
+        select count(1)
+        from maxy.maxy_store_review_android
+        where package_id = #{packageNm}
+        ]]>
+    </select>
+
+    <select id="selectIosRatingCnt" parameterType="StoreVO" resultType="java.util.Map"><![CDATA[
+        select count(1) ratingCnt, rating
+        from maxy.maxy_store_review_ios
+        where package_id = #{packageNm}
+        group by rating
+        ]]>
+    </select>
+
+    <select id="selectAosRatingCnt" parameterType="StoreVO" resultType="java.util.Map"><![CDATA[
+        select count(1) ratingCnt, rating
+        from maxy.maxy_store_review_android
+        where package_id = #{packageNm}
+        group by rating
+        ]]>
+    </select>
+
+    <select id="selectIosAvgRate" parameterType="StoreVO" resultType="Integer"><![CDATA[
+        select COALESCE(AVG(rating), 0) avgRating
+        from maxy.maxy_store_review_ios
+        where package_id = #{packageNm}
+        ]]>
+    </select>
+
+    <select id="selectAosAvgRate" parameterType="StoreVO" resultType="Integer"><![CDATA[
+        select COALESCE(AVG(rating), 0) avgRating
+        from maxy.maxy_store_review_android
+        where package_id = #{packageNm}
+        ]]>
+    </select>
+
+    <select id="selectIosMonthRate" parameterType="StoreVO" resultType="java.util.Map">
+        SELECT DATE_FORMAT(reg_dt, '%Y-%m') AS month,
+               AVG(rating)                  AS count
+        FROM maxy.maxy_store_review_ios
+        GROUP BY DATE_FORMAT(reg_dt, '%Y-%m')
+        ORDER BY Month;
+    </select>
+
+    <select id="selectIosMonthUser" parameterType="StoreVO" resultType="java.util.Map">
+        SELECT DATE_FORMAT(reg_dt, '%Y-%m') AS month,
+               count(1)                     AS count
+        FROM maxy.maxy_store_review_ios
+        GROUP BY DATE_FORMAT(reg_dt, '%Y-%m')
+        ORDER BY Month;
+    </select>
+
+    <select id="selectAosMonthRate" parameterType="StoreVO" resultType="java.util.Map">
+        SELECT DATE_FORMAT(reg_dt, '%Y-%m') AS month,
+               AVG(rating)                  AS count
+        FROM maxy.maxy_store_review_android
+        GROUP BY DATE_FORMAT(reg_dt, '%Y-%m')
+        ORDER BY Month;
+    </select>
+
+    <select id="selectAosMonthUser" parameterType="StoreVO" resultType="java.util.Map">
+        SELECT DATE_FORMAT(reg_dt, '%Y-%m') AS month,
+               count(1)                     AS count
+        FROM maxy.maxy_store_review_android
+        GROUP BY DATE_FORMAT(reg_dt, '%Y-%m')
+        ORDER BY Month;
+    </select>
+
+    <!-- 안드로이드 리뷰 목록 조회 -->
+    <select id="selectAosReviewList"
+            parameterType="StoreVO"
+            resultType="StoreVO"
+    >
+        select id,
+               package_id,
+               name,
+               language,
+               updated_date,
+               updated_date_ts,
+               rating,
+               version,
+               version_code,
+               title,
+               content,
+               reply_content,
+               reply_updated_date,
+               reply_updated_date_ts
+        from maxy_store_review_android
+        where package_id = #{packageNm}
+        order by updated_date desc
+        limit #{pageSize} offset #{firstIndex}
+    </select>
+    <!-- iOS 리뷰 목록 조회 -->
+    <select id="selectIosReviewList"
+            parameterType="StoreVO"
+            resultType="StoreVO"
+    >
+        select id,
+               package_id,
+               name,
+               language,
+               updated_date,
+               rating,
+               version,
+               title,
+               content
+        from maxy_store_review_ios
+        where package_id = #{packageNm}
+        order by updated_date desc
+        limit #{pageSize} offset #{firstIndex}
+    </select>
+
+    <select id="selectChartData" parameterType="StoreVO" resultType="java.util.Map">
+        select id,
+               os_type,
+               user_rating
+        from maxy_store_app_info msai
+        where package_id = #{packageNm}
+          and os_type = #{osType}
+        group by id;
+    </select>
+
+    <!-- ios 앱정보 조회 -->
+    <select id="selectIosAppInfo" parameterType="StoreVO" resultType="java.util.Map">
+        select date,
+               type,
+               sum(units) as units
+        from maxy.maxy_store_sales_ios
+        where package_id = #{packageNm}
+            and date = #{accessDate}
+        group by date,type
+        order by date desc;
+    </select>
+
+    <!-- 안드로이드 앱정보 조회 -->
+    <select id="selectAosAppInfo" parameterType="StoreVO" resultType="java.util.Map">
+        select date,
+               user_install,
+               user_uninstall,
+               update_events,
+               (CAST(install_events AS SIGNED) - CAST(user_install AS SIGNED)) as reinstall,
+               active_device_installs
+        from maxy_store_sales_overview_android
+        where package_id = #{packageNm}
+          and date = #{accessDate};
+    </select>
+</mapper>

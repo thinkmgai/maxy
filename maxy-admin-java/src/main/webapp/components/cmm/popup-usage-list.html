@@ -1,0 +1,94 @@
+<!--
+    종합 분석 > Device Distribution > All 팝업
+    종합 분석 > Resource Usage > All 팝업
+-->
+<style>
+    .maxy_popup_common .maxy_popup_title_wrap .maxy_popup_title_right {
+        min-width: auto;
+    }
+
+    .maxy_popup_common .tabulator-table {
+        background: none !important;
+    }
+
+    .dark_mode .tabulator .tabulator-tableholder .tabulator-table {
+        background: none !important;
+    }
+
+    .dark_mode .tabulator-row .tabulator-cell {
+        color: inherit;
+    }
+
+    .resource_one {
+        color: #009FF9 !important;
+    }
+
+    .resource_two {
+        color: #7277ff !important;
+    }
+
+    .resource_three {
+        color: #35da9e !important;
+    }
+
+    .resource_four {
+        color: var(--point-yellow) !important;
+    }
+
+    .resource_five {
+        color: #ff6969 !important;
+    }
+
+    .resource_six {
+        color: #00b39c !important;
+    }
+
+    .analysis_two {
+        color: #544FC5 !important;
+    }
+
+    .dark_mode .analysis_two {
+        color: #7277FF !important;
+    }
+
+    .analysis_one {
+        color: #2CAFFE !important;
+    }
+
+    .dark_mode .tabulator-row {
+        color: #c4c4c4;
+    }
+</style>
+
+<div class="maxy_popup_common" id="{{id}}__popup">
+    <div class="maxy_popup_grid_s_wrap">
+        <div class="maxy_popup_title_wrap">
+            <div class="maxy_popup_title_left">
+                <img class="maxy_popup_analysis_icon" alt="">
+                <span id="title" data-t="dashboard.bi.analysis"></span>
+                <span id="listCnt"></span>
+            </div>
+
+            <div class="maxy_popup_title_right">
+                <div class="maxy_component_btn_wrap">
+                    <button class="maxy_component_btn on" id="{{id}}Btn__1d" data-date="DAY"
+                            data-t="dashboard.bi.day"></button>
+                    <button class="maxy_component_btn" id="{{id}}Btn__1w" data-date="WEEK"
+                            data-t="dashboard.bi.week"></button>
+                    <button class="maxy_component_btn" id="{{id}}Btn__1m" data-date="MONTH"
+                            data-t="dashboard.bi.month"></button>
+                </div>
+            </div>
+        </div>
+
+        <div id="usageList"></div>
+        <div class="maxy_box all" id="{{id}}Chart"></div>
+
+        <input type="hidden" id="avgMem">
+
+        <input type="hidden" id="lastLogTm" value=""/>
+        <input type="hidden" id="lastLogType" value=""/>
+        <input type="hidden" id="lastDeviceId" value=""/>
+    </div>
+
+</div>

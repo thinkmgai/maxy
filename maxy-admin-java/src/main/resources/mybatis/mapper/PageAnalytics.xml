@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkm.maxy.mapper.PageAnalyticsMapper">
+
+    <select id="selectPageFlowSummaryList" parameterType="PageSummaryVO" resultType="PageSummaryVO"><![CDATA[
+        select flow.flow_order - #{flowOrder} + 1                   as flowOrder
+             , flow.req_url                                         as reqUrl
+             , flow.parent_req_url                                  as parentUrl
+             , flow.child_req_url                                   as childUrl
+             , count(1)                                             as reqCount
+             , sum(flow.intervaltime)                               as sumIntervaltime
+             , min(flow.intervaltime)                               as minIntervaltime
+             , max(flow.intervaltime)                               as maxIntervaltime
+             , sum(flow.response_time)                              as sumResponseTime
+             , min(flow.response_time)                              as minResponseTime
+             , max(flow.response_time)                              as maxResponseTime
+             , sum(flow.loading_time)                               as sumLoadingTime
+             , min(flow.loading_time)                               as minLoadingTime
+             , max(flow.loading_time)                               as maxLoadingTime
+             , flow.package_nm                                      as packageNm
+             , flow.server_type                                     as serverType
+             , flow.vip_yn                                          as vipYn
+             , sum(flow.error_count)                                as errorCount
+             , sum(flow.crash_count)                                as crashCount
+             , ROUND(sum(flow.sum_cpu_usage) / sum(flow.log_count)) as avgCpuUsage
+             , ROUND(sum(flow.sum_mem_usage) / sum(flow.log_count)) as avgMemUsage
+        from (select a.flow_order
+                   , a.req_url
+                   , a.package_nm
+                   , a.server_type
+                   , a.intervaltime
+                   , a.loading_time
+                   , a.response_time
+                   , a.sum_cpu_usage
+                   , a.sum_mem_usage
+                   , a.log_count
+                   , a.vip_yn
+                   , IF(flow_order > 1, (select req_url
+                                         from maxy_device_page_flow
+                                         where device_id = a.device_id
+                                           and package_nm = a.package_nm
+                                           and server_type = a.server_type
+                                           and parent_log_date = a.parent_log_date
+                                           and flow_order = a.flow_order - 1), null) as parent_req_url
+                   , IF(flow_order > 0, (select req_url
+                                         from maxy_device_page_flow
+                                         where device_id = a.device_id
+                                           and package_nm = a.package_nm
+                                           and server_type = a.server_type
+                                           and parent_log_date = a.parent_log_date
+                                           and flow_order = a.flow_order + 1), null) as child_req_url
+                   , error_count
+                   , crash_count
+              from maxy_device_page_flow a
+              where package_nm = #{packageNm}
+                and server_type = #{serverType}
+                and flow_order >= #{flowOrder}
+                and vip_yn = #{vipYn}
+                and (device_id, package_nm, server_type, parent_log_date, vip_yn)
+                  in (select device_id
+                           , package_nm
+                           , server_type
+                           , parent_log_date
+                           , vip_yn
+                      from maxy_device_page_flow
+                      where package_nm = #{packageNm}
+                        and server_type = #{serverType}
+                        and date_format(parent_log_date, '%Y%m%d') between #{fromDt} and #{toDt}
+                        and flow_order = #{flowOrder}
+                        and vip_yn = #{vipYn}
+                        and req_url = #{reqUrl})) flow
+        group by flow.flow_order, flow.req_url, flow.parent_req_url, flow.child_req_url, flow.package_nm,
+                 flow.server_type
+        having (flow.flow_order = 1 and flow.parent_req_url is null)
+            or (flow.flow_order > 1 and flow.parent_req_url is not null)
+        order by flow.flow_order
+        ]]>
+    </select>
+
+    <select id="selectLandingPageList" parameterType="PageSummaryVO" resultType="PageSummaryVO">
+        select
+               package_nm,
+               req_url,
+               app_page_nm,
+               app_page_desc,
+               use_yn,
+               reg_no,
+               reg_dt,
+               upd_no,
+               upd_dt,
+               server_type,
+               data_type,
+               web_perf_check_yn,
+               monitoring_yn,
+               landing_yn
+        from maxy_app_page
+        where package_nm = #{packageNm}
+          and server_type = #{serverType}
+          and landing_yn = 'Y'
+    </select>
+</mapper>

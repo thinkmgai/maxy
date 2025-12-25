@@ -1,0 +1,85 @@
+<!--
+    사용자 분석 > 고객 조회
+-->
+<style>
+
+    .maxy_popup_common {
+        height: 30vh;
+    }
+
+    .popup_title {
+        font-size: 1.2em;
+        font-weight: 700;
+    }
+
+    .maxy_popup_gray_bg_wrap {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 8px;
+        height: 50px;
+        background-color: #F7F8FA;
+        width: calc(100% + 60px);
+        margin-left: -30px;
+        padding: 0 30px;
+    }
+
+    .maxy_popup_gray_bg_wrap > select {
+        flex: 0 0 150px;
+        text-align: center;
+    }
+
+    .maxy_popup_gray_bg_wrap > input {
+        flex: 1;
+        min-width: 200px;
+        padding: 8px 12px;
+    }
+
+    .maxy_popup_gray_bg_wrap > button {
+        flex: 0 0 auto;
+        min-width: 100px;
+        white-space: nowrap;
+    }
+
+    .maxy_popup_table_wrap {
+        flex: 1;
+        overflow: auto;
+    }
+
+    .maxy_popup_btn_wrap {
+        display: flex;
+        justify-content: flex-end;
+    }
+
+    .maxy_popup_btn_wrap > button {
+        min-width: 100px;
+    }
+</style>
+
+<div class="maxy_popup_common" id="{{id}}__popup">
+    <div class="maxy_popup_grid_s_wrap">
+        <div class="maxy_popup_title_wrap">
+            <div class="maxy_popup_title_left">
+                <span class="popup_title">검색조건</span>
+            </div>
+        </div>
+
+        <div class="maxy_popup_gray_bg_wrap">
+            <select class="search_key" id="{{id}}__searchKey">
+                <option data-t="common.tableColumn.deviceId" value="deviceId"></option>
+                <option data-t="common.text.userId" value="userId"></option>
+            </select>
+            <input autocomplete="off" class="search_value" id="{{id}}__searchValue" type="text"/>
+            <button class="btn_common" id="{{id}}__btnSearch">
+                <span data-t="common.btn.search"></span>
+                <img alt="" class="img_search_p">
+            </button>
+        </div>
+
+        <div class="maxy_popup_table_wrap" id="{{id}}__searchList"></div>
+
+        <div class="maxy_popup_btn_wrap">
+            <button class="btn_common opposite" id="{{id}}__btnOk" data-t="common.btn.lookup"></button>
+        </div>
+    </div>
+</div>

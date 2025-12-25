@@ -1,0 +1,51 @@
+{
+  "query": {
+    "bool": {
+      "must": [
+        {
+          "bool" : {
+            "must" : [
+              {
+                "term" : {
+                  "packageNm" : {
+                    "value" : #{packageNm}
+                  }
+                }
+              },
+              {
+                "term" : {
+                  "serverType" : {
+                    "value" : #{serverType}
+                  }
+                }
+              },
+              {
+                "term" : {
+                  "activeSt" : {
+                    "value" : "Y"
+                  }
+                }
+              },
+              {
+                "bool": {
+                  "must" : [
+                    {
+                      "terms": {
+                        "deviceSt": ["N", "R"]
+                      }
+                    },
+                    {
+                      "term" : {
+                        "reinstalledDate": 0
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

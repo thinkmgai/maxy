@@ -1,0 +1,45 @@
+{
+  "query": {
+    "bool": {
+      "filter": [
+        {
+          "term": {
+            #{searchType}: #{searchValue}
+          }
+        },
+        {
+          "term": {
+            "packageNm": #{packageNm}
+          }
+        },
+        {
+          "term": {
+            "serverType": #{serverType}
+          }
+        },
+        {
+          "range": {
+            "parentLogDate": {
+              "gte": #{from},
+              "lte": #{to},
+              "time_zone": "Z"
+            }
+          }
+        }
+      ]
+    }
+  },
+  "size": 10000,
+  "sort": [
+    {
+      "parentLogDate": {
+        "order": "desc"
+      }
+    },
+    {
+      "pageStartTm": {
+        "order": "asc"
+      }
+    }
+  ]
+}

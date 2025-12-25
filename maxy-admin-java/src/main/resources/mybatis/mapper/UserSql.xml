@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkm.maxy.mapper.UserMapper">
+
+    <!-- 유저 아이디로 유저 정보 조회 -->
+    <select id="selectUserInfoByUserId" parameterType="UserVO" resultType="UserVO">
+        SELECT us.user_no,
+               us.user_id,
+               us.user_pw,
+               us.pass_cnt,
+               us.user_nm,
+               us.email_addr,
+               us.phone_no,
+               us.expired_date,
+               us.admin_yn,
+               us.delete_yn,
+               us.reg_no,
+               us.reg_dt,
+               us.upd_no,
+               us.upd_dt,
+               us.role_gbn,
+               gr.grp_id    AS grp_id,
+               gr.grp_nm    AS grp_nm,
+               gr.up_grp_id AS up_grp_id,
+               gr.order_seq AS order_seq,
+               gr.grp_level AS grp_level,
+               gr.delete_yn AS grp_delete_yn,
+               me.admin_yn  AS grp_admin_yn,
+               us.otp_secret,
+               us.otp_enabled,
+               us.otp_attempts
+        FROM maxy_user us
+                 LEFT OUTER JOIN maxy_user_group_member me ON (us.user_no = me.user_no)
+                 LEFT OUTER JOIN maxy_user_group gr ON (me.grp_id = gr.grp_id)
+        where us.user_id = #{userId}
+        limit 1
+    </select>
+
+    <!-- 유저 아이디로 유저 정보 조회 -->
+    <select id="selectUserInfoByUserIdAndEmail" parameterType="UserVO" resultType="UserVO">
+        SELECT us.user_no,
+               us.user_id,
+               us.user_pw,
+               us.pass_cnt,
+               us.user_nm,
+               us.email_addr,
+               us.phone_no,
+               us.expired_date,
+               us.admin_yn,
+               us.delete_yn,
+               us.reg_no,
+               us.reg_dt,
+               us.upd_no,
+               us.upd_dt,
+               us.role_gbn,
+               gr.grp_id    AS grp_id,
+               gr.grp_nm    AS grp_nm,
+               gr.up_grp_id AS up_grp_id,
+               gr.order_seq AS order_seq,
+               gr.grp_level AS grp_level,
+               gr.delete_yn AS grp_delete_yn,
+               me.admin_yn  AS grp_admin_yn
+        FROM maxy_user us
+                 LEFT OUTER JOIN maxy_user_group_member me ON (us.user_no = me.user_no)
+                 LEFT OUTER JOIN maxy_user_group gr ON (me.grp_id = gr.grp_id)
+        where us.user_id = #{userId}
+          and us.email_addr = #{emailAddr}
+        limit 1
+    </select>
+
+    <!-- 유저 고유 번호로 유저 정보 조회 -->
+    <select id="selectUserInfoByUserNo" parameterType="UserVO" resultType="UserVO">
+        SELECT us.user_no,
+               us.user_id,
+               us.user_pw,
+               us.pass_cnt,
+               us.user_nm,
+               us.email_addr,
+               us.phone_no,
+               us.expired_date,
+               us.admin_yn,
+               us.delete_yn,
+               us.reg_no,
+               us.reg_dt,
+               us.upd_no,
+               us.upd_dt,
+               us.role_gbn,
+               us.otp_attempts,
+               gr.grp_id    AS grp_id,
+               gr.grp_nm    AS grp_nm,
+               gr.up_grp_id AS up_grp_id,
+               gr.order_seq AS order_seq,
+               gr.grp_level AS grp_level,
+               gr.delete_yn AS grp_delete_yn,
+               me.admin_yn  AS grp_admin_yn
+        FROM maxy_user us
+                 LEFT OUTER JOIN maxy_user_group_member me ON (us.user_no = me.user_no)
+                 LEFT OUTER JOIN maxy_user_group gr ON (me.grp_id = gr.grp_id)
+        where us.user_no = #{userNo}
+          and us.delete_yn = 'N'
+    </select>
+
+    <!-- 유저 고유 번호로 조회가능 앱 정보 조회 -->
+    <select id="selectAppInfoListByUserNo" parameterType="UserVO" resultType="UserAppVO">
+        select mapu.package_nm
+             , map.display_nm
+             , mapu.server_type
+             , mav.os_type
+             , mav.app_ver
+             , map.order
+             , map.app_type
+        from maxy_app_package_user mapu
+                 left join maxy_app_package map
+                           on mapu.package_nm = map.package_nm
+                               and mapu.server_type = map.server_type
+                               and map.app_type = #{appType}
+                 left outer join maxy_app_ver mav
+                                 on map.package_nm = mav.package_nm
+                                     and map.server_type = mav.server_type
+                                     and mav.use_yn = 'Y'
+        where mapu.user_no = #{userNo}
+          and mapu.use_yn = 'Y'
+          and mav.use_yn = 'Y'
+          and map.use_yn = 'Y'
+        order by map.order, mav.app_ver
+    </select>
+
+    <!-- 비밀번호 실패 카운트 ++ -->
+    <update id="updateUserPwCntPlus" parameterType="UserVO">
+        update maxy_user
+        set upd_dt   = #{regDt}
+          , upd_no   = 0
+          , pass_cnt = #{passCnt}
+        where user_no = #{userNo}
+    </update>
+
+    <!-- 비밀번호 실패 초기화 -->
+    <update id="updateUserPwCntZero" parameterType="UserVO">
+        update maxy_user
+        set upd_dt   = #{regDt}
+          , upd_no   = #{userNo}
+          , pass_cnt = 0
+        where user_no = #{userNo}
+    </update>
+
+    <!-- 유저 고유 번호로 유저 정보 수정 -->
+    <update id="updateUserInfoByUserNo" parameterType="UserVO">
+        update maxy_user
+        set upd_dt = #{regDt}
+        , upd_no =
+        <choose>
+            <when test='updNo != null'>
+                #{updNo}
+            </when>
+            <otherwise>
+                #{userNo}
+            </otherwise>
+        </choose>
+        <if test='emailAddr != null and emailAddr != ""'>
+            , email_addr = #{emailAddr}
+        </if>
+        <if test='userNewPw != null and userNewPw != ""'>
+            , expired_date = #{expiredDate}
+            , user_pw = #{userNewPw}
+            , pass_cnt = 0
+        </if>
+        where user_no = #{userNo}
+        and delete_yn = 'N'
+    </update>
+
+    <update id="initAdminPassCnt">
+        update maxy_user
+        set upd_dt       = to_char(sysdate(), 'YYYYMMDDHH24MISS')
+          , upd_no       = 999
+          , pass_cnt     = 0
+          , expired_date = '99991231'
+        where user_id = 'admin'
+    </update>
+
+    <update id="initAdminPass">
+        update maxy_user
+        set upd_dt       = to_char(sysdate(), 'YYYYMMDDHH24MISS')
+          , upd_no       = 999
+          , user_pw      = '13616b8a1f431722d15d576c347306766b3fdcd37c66c111dcd5e5fdc639c0a3'
+          , pass_cnt     = 0
+          , expired_date = '99991231'
+        where user_id = 'admin'
+    </update>
+
+    <update id="initOtpInfo" parameterType="UserVO">
+        update maxy_user
+        set otp_secret   = #{otpSecret}
+          , otp_attempts = 0
+          , otp_enabled  = true
+          , otp_date     = #{otpDate}
+        where user_no = #{userNo}
+          and delete_yn = 'N'
+    </update>
+
+    <update id="increaseOtpAttempts" parameterType="UserVO">
+        update maxy_user
+        set otp_attempts = otp_attempts + 1
+        where user_no = #{userNo}
+          and delete_yn = 'N'
+    </update>
+
+    <select id="selectOtpAttempts" parameterType="UserVO" resultType="int">
+        select otp_attempts
+        from maxy_user
+        where user_no = #{userNo}
+          and delete_yn = 'N'
+    </select>
+
+    <update id="resetOtpAttempts" parameterType="UserVO">
+        update maxy_user
+        set otp_attempts = 0
+        where user_no = #{userNo}
+          and delete_yn = 'N'
+    </update>
+
+    <update id="disableOtpInfo" parameterType="UserVO">
+        update maxy_user
+        set otp_secret  = null
+          , otp_enabled = false
+        where user_no = #{userNo}
+          and delete_yn = 'N'
+    </update>
+
+    <select id="selectOtpInfoByUserNo" parameterType="UserVO" resultType="UserVO">
+        select otp_secret,
+               otp_enabled,
+               otp_attempts
+        from maxy_user
+        where user_no = #{userNo}
+          and delete_yn = 'N'
+    </select>
+</mapper>

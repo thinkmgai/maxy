@@ -1,0 +1,40 @@
+<ul>
+    {{#reviewList}}
+    <li id="{{id}}">
+        <span class="user_pic"></span>
+        <div>
+            <span class="user_nm">{{setName name}}</span>
+            <span class="review_dt">{{tsToDttm updatedDateTs updatedDate}}</span>
+            <div class="star_box">
+                {{setStar rating}}
+            </div>
+            <div class="review_text review_title">{{title}}</div>
+            <div class="review_text">{{content}}</div>
+            <!-- Android 의 경우 리뷰 박스가 있음 -->
+            {{#if (isNeedReplyBox replyContent)}}
+            {{#if (isEmptyReply replyContent)}}
+            <div class="reply_box">
+                <div class="reply_header">
+                    <strong>관리자</strong>
+                    <span>{{tsToDttm replyUpdatedDateTs}}</span>
+                </div>
+                <div class="reply_content">
+                    {{replyContent}}
+                </div>
+            </div>
+            {{/if}}
+            <label>
+                <input data-id="{{id}}"
+                       type="text"
+                       placeholder="Reply to this review"
+                       class="reply"/>
+            </label>
+            <div class="reply_btn_wrap">
+                <button id="btnReplySave" data-id="{{id}}" class="btn_common">저장</button>
+                <button id="btnReplyCancel" data-id="{{id}}" class="btn_common opposite">취소</button>
+            </div>
+            {{/if}}
+        </div>
+    </li>
+    {{/reviewList}}
+</ul>

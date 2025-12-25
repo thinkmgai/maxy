@@ -1,0 +1,174 @@
+<style>
+    .maxy_popup_common.aibot .swiper {
+        position: relative;
+    }
+
+    .maxy_popup_common.aibot {
+        min-height: auto;
+        background-color: #DEDEDE;
+        padding: 50px;
+        z-index: 70;
+        left: 50% !important; /* 화면의 가운데 */
+        transform: translateX(-50%) !important; /* X축으로만 가운데 정렬 */
+    }
+
+    .dark_mode .maxy_popup_common.aibot {
+        background-color: var(--color-table-row-dark-1);
+    }
+
+    .maxy_popup_common.aibot .swiper {
+        width: 100%;
+        height: 100%;
+    }
+
+    .aibot_data_wrap {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        height: 100%;
+        border-radius: 5px;
+    }
+
+    .aibot_data {
+        text-overflow: ellipsis;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        gap: 2em;
+        align-items: center;
+        color: #494954;
+        font-weight: bold;
+        max-height: 100%;
+    }
+
+    .dark_mode .aibot_data {
+        color: white;
+    }
+
+    .aibot_data .highlight {
+        color: #009ff9;
+        word-break: break-all;
+    }
+
+    .dark_mode .aibot_data .highlight {
+        text-shadow:  2px 2px 4px rgba(0, 0, 0, 0.7);
+    }
+
+    .aibot_data .top {
+        font-size: 4em;
+        line-height: normal;
+        text-align: center;
+        width: 100%;
+        max-height: 50vh;
+        text-overflow: ellipsis;
+    }
+
+    .maxy_popup_common.aibot.show {
+        display: block;
+        top: calc(100% - 83vh);
+        visibility: visible;
+        animation: linear slide_down_expand_from_top 0.8s forwards;
+    }
+
+    .maxy_popup_common.aibot.hidden {
+        top: calc(100% - 83vh);
+        padding: 0;
+        animation: linear slide_up_expand_from_bottom 0.8s forwards; /* 아래로 숨겨지는 애니메이션 */
+    }
+
+    @keyframes slide_down_expand_from_top {
+        0% {
+            opacity: 0;
+            height: 0; /* 초기 높이 */
+        }
+        40% {
+            opacity: 0.3;
+            height: 35vh; /* 중간 높이 */
+        }
+        70% {
+            opacity: 0.5;
+            height: 55vh; /* 더 큰 높이 */
+        }
+        100% {
+            opacity: 0.7; /* 최종 opacity */
+            height: 70vh; /* 최종 높이 */
+        }
+    }
+
+    /* 팝업 숨기는 애니메이션 */
+    @keyframes slide_up_expand_from_bottom {
+        0% {
+            opacity: 0.7;
+            height: 94vh; /* 초기 높이 */
+        }
+        40% {
+            opacity: 0.5;
+            height: 55vh; /* 중간 높이 */
+        }
+        70% {
+            opacity: 0.3;
+            height: 35vh; /* 더 작은 높이 */
+        }
+        100% {
+            opacity: 0; /* 최종 opacity */
+            height: 0; /* 최종 높이 */
+        }
+    }
+
+    .maxy_popup_common.aibot {
+        display: block;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.8s ease, visibility 0.8s ease;
+    }
+
+    .maxy_popup_common.aibot .skip_btn_wrap {
+        z-index: 20;
+        position: fixed;
+        right: 3%;
+        top: 5%;
+    }
+
+    .maxy_popup_common.aibot .swiper_page_wrap {
+        position: fixed;
+        right: 4%;
+        bottom: 5%;
+    }
+
+    .maxy_popup_common.aibot button {
+        border-radius: 20px;
+        padding: 0.5em 1em 0.5em 1em;
+        border: 1px solid #494954;
+    }
+
+    .dark_mode .maxy_popup_common.aibot button {
+        color: white;
+        border: 1px solid white;
+    }
+
+    .aibot_data .highlight {
+        color: #009ff9;
+        word-break: break-all;
+    }
+</style>
+
+<div class="maxy_popup_common aibot" id="{{id}}__popup">
+
+    <div class="skip_btn_wrap">
+        <button id="btnSkip">Skip</button>
+    </div>
+    <div class="swiper_page_wrap">
+        <span id="pageNo"></span> /
+        <span id="allPage"></span>
+    </div>
+    <div class="aibot_swiper_wrapper">
+
+        <div id="aibotSwiper" class="swiper">
+            <div class="swiper-wrapper">
+
+            </div>
+            <div class="swiper-pagination"></div>
+        </div>
+    </div>
+</div>

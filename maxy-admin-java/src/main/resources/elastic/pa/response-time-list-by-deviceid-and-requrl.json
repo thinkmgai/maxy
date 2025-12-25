@@ -1,0 +1,51 @@
+{
+  "size": 1,
+  "_source": ["comType", "comSensitivity", "simOperatorNm", "cpuUsage", "memUsage"],
+  "query": {
+    "bool": {
+      "filter": [
+        {
+          "term": {
+            "packageNm": #{packageNm}
+          }
+        },
+        {
+          "term": {
+            "serverType": #{serverType}
+          }
+        },
+        {
+          "term": {
+            "appVer": #{appVer}
+          }
+        },
+        {
+          "term": {
+            "deviceId.raw": #{deviceId}
+          }
+        },
+        {
+          "term": {
+            "reqUrl.raw": #{reqUrl}
+          }
+        },
+        {
+          "term": {
+            "logType": "131075"
+          }
+        },
+        {
+          "range": {
+            "logTm": {
+              "from": #{from},
+              "to": #{to},
+              "include_lower": true,
+              "include_upper": true,
+              "time_zone": "Z"
+            }
+          }
+        }
+      ]
+    }
+  }
+}

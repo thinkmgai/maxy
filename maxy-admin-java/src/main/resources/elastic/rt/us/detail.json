@@ -1,0 +1,77 @@
+{
+  "aggs": {
+    "res": {
+      "terms": {
+        "field": "aliasValue",
+        "size": 10
+        #[isSortBy]
+        ,"order": {
+          #{sortBy}: #{sort}
+        }
+        #[/isSortBy]
+      },
+      "aggs": {
+        "intervaltime": {
+          "avg": {
+            "field": "intervaltime"
+          }
+        },
+        "loadingTime": {
+          "avg": {
+            "field": "loadingTime"
+          }
+        },
+        "responseTime": {
+          "avg": {
+            "field": "responseTime"
+          }
+        },
+        "errorCount": {
+          "sum": {
+            "field": "errorCount"
+          }
+        },
+        "crashCount": {
+          "sum": {
+            "field": "crashCount"
+          }
+        }
+      }
+    }
+  },
+  "size": 0,
+  "query": {
+    "bool": {
+      "filter": [
+        {
+          "term": {
+            "packageNm": #{packageNm}
+      }
+      },
+        {
+          "term": {
+            "serverType": #{serverType}
+      }
+        },
+        #[isAppVer]
+        {
+          "term": {
+            "appVer": #{appVer}
+      }
+        },
+        #[/isAppVer]
+        {
+          "range": {
+            "pageStartTm": {
+              "from": #{fromTimestamp},
+        "to": #{toTimestamp},
+        "include_lower": true,
+        "include_upper": true,
+        "time_zone": "Z"
+            }
+          }
+        }
+      ]
+    }
+  }
+}

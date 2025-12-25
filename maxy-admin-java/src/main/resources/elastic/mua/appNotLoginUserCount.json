@@ -1,0 +1,39 @@
+{
+  "query": {
+    "bool": {
+      "filter": [
+        {
+          "term": {
+            "packageNm": #{packageNm}
+          }
+        },
+        {
+          "term": {
+            "serverType": #{serverType}
+          }
+        },
+        #[isAppVer]
+        {
+          "term": {
+            "appVer": #{appVer}
+          }
+        },
+        #[/isAppVer]
+        {
+          "range": {
+            "appStartTm": {
+            "gte": #{searchFromDt},
+            "lte": #{searchToDt},
+            "format": "epoch_millis"
+            }
+          }
+        },
+        {
+          "term": {
+            "loginYn": "N"
+          }
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,7 @@
+
+{{#appUserServerList}}
+<li data-package-nm="{{packageNm}}" data-server-type="{{getServerType serverType}}">
+    <span class="menu_nm">{{getDisplayNm packageNm serverType}} ({{getServerNm serverType}})</span>
+    <span class="additional">({{userCount}})</span>
+</li>
+{{/appUserServerList}}

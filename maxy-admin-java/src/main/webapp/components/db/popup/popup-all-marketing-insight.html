@@ -1,0 +1,157 @@
+<!--
+    종합 분석 > Marketing Insight > All 팝업
+-->
+<style>
+    #allMarketingInsight__popup .btn_graphic_open {
+        position: fixed;
+        width: 21px;
+        height: 70px;
+        right: 0;
+        top: 56%;
+        transform: translate(0, -50%);
+        background-image: url(/images/maxy/button-user-flow-open.svg);
+        background-repeat: no-repeat;
+        background-size: 32px;
+    }
+
+    .dark_mode #allMarketingInsight__popup .btn_graphic_open {
+        background-image: url(/images/maxy/dark-button-user-flow-open.svg);
+    }
+
+    .chart_graphic {
+        border: 1px solid var(--color-border-out-light);
+        border-radius: var(--radius);
+        height: 40vh;
+    }
+
+    .dark_mode .chart_graphic {
+        border: none;
+    }
+
+    .chart_graphic_wrap {
+        background-color: white;
+        height: calc(100% - 130px);
+        min-height: 400px;
+        width: 74vw; /* 차트 그래프 너비 */
+        min-width: 1100px;
+        visibility: hidden; /* 기본적으로 숨김 */
+        overflow: hidden;
+        position: fixed;
+        top: 56%;
+        left: 50%;
+        transform: translate(-50%, -50%) scaleX(0); /* 우측 끝에서 시작 (수평 크기 0) */
+        transform-origin: right center; /* 우측 끝을 기준으로 애니메이션 */
+        transition: transform 0.3s linear; /* 애니메이션 속도 증가 */
+        padding: 0 30px;
+        display: flex;
+        justify-content: center;
+    }
+
+    @media screen and (max-height: 815px) {
+        .chart_graphic_wrap {
+            top: 57%;
+        }
+    }
+
+    .maxy_popup_gray_bg_wrap.chart_graphic_wrap .btn_graphic_close {
+        position: fixed;
+        left: 0;
+        top: 50%;
+    }
+
+    .dark_mode #allMarketingInsight__popup .btn_graphic_open {
+        background-image: url(/images/maxy/dark-button-user-flow-open.svg);
+    }
+
+    #allMarketingInsight__popup .btn_graphic_close {
+        position: fixed;
+        z-index: 20;
+        width: 21px;
+        height: 70px;
+        top: 41%;
+        transform: translate(0, -50%);
+        background-image: url(/images/maxy/button-user-flow-open.svg);
+        rotate: 180deg;
+        background-repeat: no-repeat;
+        background-size: 32px;
+    }
+
+    .dark_mode #allMarketingInsight__popup .btn_graphic_close {
+        background-image: url(/images/maxy/dark-button-user-flow-open.svg);
+    }
+
+    .maxy_popup_gray_bg_wrap.chart_graphic_wrap.hidden {
+        visibility: visible; /* 보여지는 상태에서 축소 */
+        transform: translate(-50%, -50%) scaleX(0); /* 수평 크기 0으로 축소 (우측 끝 기준) */
+        transform-origin: right center; /* 우측 끝에서 접히도록 설정 */
+    }
+
+    .chart_graphic_wrap.show {
+        visibility: visible; /* 보이도록 설정 */
+        transform: translate(-50%, -50%) scaleX(1); /* 수평 크기 1로 확장 */
+    }
+
+    /* 다크모드 차트 토글버튼 */
+    .dark_mode .type_tab_wrap .type_tab {
+        color: #A7ADBA;
+    }
+
+    /* 차트 토글버튼 눌렀을때 */
+    .type_tab_wrap .type_tab.selected {
+        border-bottom: 2px solid #7277FF;
+        font-weight: bold;
+        color: #7277FF;
+    }
+
+    /* 차트그래프 안 텍스트의 아웃라인 */
+    #allMarketingInsight__popup .highcharts-text-outline {
+        font-size: 1em;
+    }
+
+    .dark_mode #allMarketingInsight__popup .highcharts-text-outline {
+        stroke: black !important;
+    }
+
+    /* 차트 그래프 칸마다 흰색 줄 없앰 */
+    #allMarketingInsight__popup .highcharts-series > path {
+        stroke: none;
+    }
+
+    .dark_mode #allMarketingInsight__popup .highcharts-title {
+        fill: #c4c4c4 !important;
+    }
+</style>
+
+<div class="maxy_popup_common" id="{{id}}__popup">
+    <div class="maxy_popup_grid_s_wrap">
+        <div class="maxy_popup_title_wrap">
+            <div class="maxy_popup_title_left">
+                <img class="maxy_popup_analysis_icon" src="/images/maxy/icon-analysis.svg" alt="">
+                <span id="title" data-t="dashboard.bi.analysis"></span>
+                <span id="listCnt"></span>
+            </div>
+
+            <div class="maxy_popup_title_right">
+                <div class="maxy_component_btn_wrap">
+                    <button class="maxy_component_btn on" id="{{id}}Btn__1w" data-date="WEEK"
+                            data-t="dashboard.bi.week"></button>
+                    <button class="maxy_component_btn" id="{{id}}Btn__1m" data-date="MONTH"
+                            data-t="dashboard.bi.month"></button>
+                </div>
+            </div>
+        </div>
+
+        <div class="maxy_popup_sub_title_wrap marketing_insight">
+            <span id="{{id}}__preUrl"></span>
+            <span id="{{id}}__reqUrl"></span>
+        </div>
+
+        <!--<button class="btn_graphic_open"></button>-->
+        <div id="{{id}}__list"></div>
+        <div class="chart_graphic" id="{{id}}__chart"></div>
+        <!--<div class="maxy_popup_gray_bg_wrap chart_graphic_wrap">
+            <div class="chart_graphic" id="{{id}}__chart"></div>
+            <button class="btn_graphic_close"></button>
+        </div>-->
+    </div>
+</div>

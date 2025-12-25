@@ -1,0 +1,105 @@
+<style>
+    .url_search_popup {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 800px;
+        background: white;
+        border-radius: var(--radius);
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+        z-index: 10001;
+        display: none;
+    }
+
+    .url_search_popup .popup_header {
+        padding: 20px 25px 15px;
+        border-bottom: 1px solid #e3e5e8;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .url_search_popup .popup_header h4 {
+        margin: 0;
+        font-size: 16px;
+        font-weight: 700;
+        color: #333;
+    }
+
+    .url_search_popup .popup_close {
+        background: none;
+        border: none;
+        font-size: 20px;
+        cursor: pointer;
+        color: #666;
+        padding: 0;
+        width: 24px;
+        height: 24px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .url_search_popup .popup_close:hover {
+        color: #333;
+    }
+
+    .url_search_popup .popup_content {
+        padding: 25px;
+    }
+
+    .url_search_popup .search_form {
+        margin-bottom: 20px;
+    }
+
+    .url_search_popup .search_input_wrap {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 15px;
+    }
+
+    .url_search_popup .search_input {
+        flex: 1;
+        padding: 10px 12px;
+        border: 1px solid #ddd;
+        border-radius: var(--radius);
+        font-size: 14px;
+    }
+
+    .url_search_popup .search_btn {
+        padding: 0 20px;
+        background: var(--color-btn-light-1);
+        color: white;
+        border: none;
+        border-radius: var(--radius);
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: 500;
+    }
+
+    .url_search_popup .tabulator .tabulator-col-resize-handle {
+        width: 8px;
+    }
+</style>
+
+<div class="url_search_popup" id="{{id}}">
+    <div class="popup_header">
+        <h4>URL 검색</h4>
+        <button type="button" class="popup_close">×</button>
+    </div>
+    <div class="popup_content">
+        <div class="search_form">
+            <div class="search_input_wrap">
+                <select class="search_type">
+                    <option value="reqUrl" data-t="common.text.requestedUrl">Requested URL</option>
+                    <option value="appPageNm" data-t="common.tableColumn.pageName">Page Name</option>
+                </select>
+                <input type="text" class="search_input" placeholder="{{searchPlaceholder}}">
+                <button type="button" class="search_btn">검색</button>
+            </div>
+        </div>
+        <div id="searchUrlTable"></div>
+    </div>
+</div>
+<div class="search_url_dimmed" data-content="dimmed" style="display: none;"></div>

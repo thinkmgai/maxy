@@ -1,0 +1,76 @@
+{
+  "aggs": {
+    "count": {
+      "terms": {
+        "field": "deviceModel",
+        "size": 9999
+      },
+      "aggs": {
+        "osType": {
+          "terms": {
+            "field": "osType"
+          },
+          "aggs": {
+            "userCount": {
+              "cardinality": {
+                "field": "deviceId.raw"
+              }
+            },
+            "order_by_userCount": {
+              "bucket_sort": {
+                "sort": [
+                  {"userCount.value": {"order": "desc"}}
+                ]
+              }
+            },
+            "avgCPU": {
+              "avg": {
+                "field": "cpuUsage"
+              }
+            },
+            "avgMEM": {
+              "avg": {
+                "field": "memUsage"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "size": 0,
+  "query": {
+    "bool": {
+      "must": [
+        {
+          "term": {
+            "packageNm": #{packageNm}
+          }
+        },
+        {
+          "term": {
+            "serverType": #{serverType}
+          }
+        },
+        #[isOsType]
+        {
+          "term": {
+            "osType": #{osType}
+          }
+        },
+        #[/isOsType]
+        {
+          "range": {
+            "logTm": {
+              "from": #{from},
+              "to": #{to},
+              "include_lower": true,
+              "include_upper": true,
+              "time_zone": "Z"
+            }
+          }
+        }
+      ]
+    }
+  }
+}

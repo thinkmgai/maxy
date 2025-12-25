@@ -1,0 +1,33 @@
+<style>
+    .program_table {
+        width: 100%;
+        border: 1px solid #d2d2d2;
+    }
+
+    .program_table th {
+        text-align: left;
+        border-bottom: 1px solid #D2D2D2;
+    }
+
+    .program_table td,
+    .program_table th {
+        padding: 5px;
+    }
+</style>
+<table class="program_table enable_scrollbar">
+    <thead>
+    <tr>
+        <!-- 클릭시 active class 추가 -->
+        <th>Name</th>
+        <th>Type</th>
+        <th></th>
+    </tr>
+    </thead>
+    {{#programList}}
+    <tr id="{{batchId}}" class="list_item">
+        <td>{{batchNm}}</td>
+        <td>{{convertType batchType}}</td>
+        <td><button class="btn_run">RUN</button></td>
+    </tr>
+    {{/programList}}
+</table>

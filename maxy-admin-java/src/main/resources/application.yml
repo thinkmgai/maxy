@@ -1,0 +1,168 @@
+server:
+  port: 8080
+  servlet:
+    session:
+      tracking-modes: cookie
+  shutdown: graceful
+  error:
+    whitelabel:
+      enabled: false
+    path: /error
+  compression:
+    enabled: true
+    mime-types: text/html,text/plain,text/css,application/javascript,application/json,image/svg+xml
+    min-response-size: 500
+  forward-headers-strategy: framework
+  tomcat:
+    remoteip:
+      remote-ip-header: x-forwarded-for
+      protocol-header: x-forwarded-proto
+  file:
+    max-size: ${MAX_FILE_SIZE}
+
+security:
+  pass:
+    error-count: 5
+    expire-date: 90
+  session:
+    cookie: true
+    timeout: -1
+  key: ${KEY_128}
+  key-256: ${KEY_256}
+  otp:
+    enabled: ${OTP_ENABLED}
+    max-attempts: ${OTP_MAX_ATTEMPTS}
+  ip-allowlist: ${IP_ALLOWLIST}
+  audit:
+    enabled: true
+
+mybatis:
+  check-config-location: true
+  type-aliases-package: com.thinkm.maxy.vo
+  configuration:
+    map-underscore-to-camel-case: true
+springdoc:
+  default-consumes-media-type: application/json
+  default-produces-media-type: application/json
+  api-docs:
+    # production environment -> false
+    enabled: true
+    groups:
+      enabled: true
+  swagger-ui:
+    operations-sorter: method
+    tags-sorter: alpha
+    path: /swagger
+    disable-swagger-default-url: true
+    display-query-params-without-oauth2: true
+    doc-expansion: none
+  paths-to-match:
+    - /**
+spring:
+  main:
+    allow-bean-definition-overriding: true
+  mail:
+    properties:
+      mail:
+        debug: true
+      smtp:
+        auth: 5000
+        ssl:
+          enable: true
+        connectiontimeout: 5000
+        starttls:
+          enable: true
+    host: ${EMAIL_HOST}
+    port: ${EMAIL_PORT}
+    # if not use -> comment or delete
+    username: ${EMAIL_USERNAME}
+    # if not use -> comment or delete
+    password: ${EMAIL_PASSWORD}
+
+  datasource:
+    driver-class-name: org.mariadb.jdbc.Driver
+    url: jdbc:mariadb://${DATASOURCE_URL}:13306/maxy?useUnicode=true&amp;characterEncoding=utf8&amp;autoReconnect=true
+    username: ${DATASOURCE_USERNAME}
+    password: ${DATASOURCE_PASSWORD}
+    hikari:
+      # if fail -> still alive
+      initialization-fail-timeout: 0
+  redis:
+    host: ${REDIS_HOST}
+    port: ${REDIS_PORT}
+    password: ${REDIS_PASS}
+    lettuce:
+      pool:
+        enabled: true
+        max-active: 10
+        max-idle: 10
+        min-idle: 2
+        max-wait: -1ms
+    sentinel:
+      use: false
+      master: mymaster
+      nodes: # 192.168.10.254:7100,192.168.10.170:7100,192.168.10.170:7101
+  elasticsearch:
+    rest:
+      uris: ${ELASTIC_SERVERS}
+      username: ${ELASTIC_USERNAME}
+      password: ${ELASTIC_PASSWORD}
+      protocol: https
+      auth: true
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+
+network:
+  # context url for mail image, etc..
+  context-url: ${CONTEXT_URL}
+  # websocket
+  websocket:
+    ssl: ${WEBSOCKET_SSL}
+    url: ${WEBSOCKET_SERVER_EXTERNAL}
+  # pulse server
+  pulse:
+    url: ${PULSE_SERVER}
+  # batch server
+  batch:
+    url: ${BATCH_SERVER}
+  # integrate to jennifer
+  jennifer:
+    url: ${JENNIFER_URL}
+    token: ${JENNIFER_TOKEN}
+  # file db server
+  filedb:
+    url: ${FILEDB_SERVER}
+
+# In a production environment, This path must be located in `/maxy/**`
+dir:
+  obfuscation: obf
+  tmp: tmp
+
+maxy:
+  # enable maxy mode (maxy: only use maxy, front: only use front, all: use both),
+  mode: ${MAXY_MODE}
+  # user analysis search userid to uppercase setting.
+  userid-uppercase: false
+  # When querying response time pop-up data, provide range conditions for top and bot values.
+  response-slice-threshold: true
+  # When querying response time pop-up data, histogram interval values. (ms)
+  response-aggs-interval: 10
+  # When querying response time pop-up data, minus hour (h)
+  response-aggs-hour: 72
+  # health check enable
+  health-check: false
+  # user id masking
+  userid-masking: ${USERID_MASKING}
+  # logmeter throttle (ms)
+  logmeter-throttle-ms: 10
+  # is production environment
+  production: ${PRODUCTION_ENV}
+  # integration dashboard
+  integration-dashboard: true
+  # optional search fields (optional fields in consumer)
+  optional-search-fields: ${OPTIONAL_SEARCH_FIELDS}
+  # Use Client Info Search
+  search-client-info: true
+  sourcemap:
+    base-dir: ${SOURCEMAP_BASE_DIR}

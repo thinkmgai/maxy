@@ -1,0 +1,115 @@
+{
+  "aggs": {
+    "reqUrl": {
+      "terms": {
+        "field": "reqUrl.raw",
+        "order": {
+          "_count": "desc"
+        },
+        "size": 9999
+      },
+      "aggs": {
+        "deviceModel": {
+          "terms": {
+            "field": "deviceModel",
+            "order": {
+              "_count": "desc"
+            },
+            "size": 9999
+          },
+          "aggs": {
+            "max": {
+              "max": {
+                "field": "loadingTime"
+              }
+            },
+            "med": {
+              "percentiles": {
+                "field": "loadingTime",
+                "percents": [
+                  50
+                ]
+              }
+            },
+            "min": {
+              "min": {
+                "field": "loadingTime"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "size": 0,
+  "query": {
+    "bool": {
+      "must": [
+        {
+          "range": {
+            "pageStartTm": {
+              "gte" : #{searchFromDt},
+        "lte" : #{searchToDt}
+      }
+        }
+        }
+        #[isDeviceModel]
+      ,{
+          "term": {
+            "deviceModel": #{deviceModel}
+      }
+        }
+        #[/isDeviceModel]
+        #[isDeviceId]
+      ,{
+          "term": {
+            "deviceId.raw" : {
+              "value" : #{searchValue}
+      }
+        }
+        }
+        #[/isDeviceId]
+        #[isUserNm]
+      ,{
+          "term": {
+            "userNm": #{searchValue}
+      }
+        }
+        #[/isUserNm]
+        #[isUserId]
+      ,{
+          "term": {
+            "userId": #{searchValue}
+      }
+        }
+        #[/isUserId]
+        #[isVipYn]
+      ,{
+          "term": {
+            "vipYn": #{vipYn}
+      }
+        }
+        #[/isVipYn]
+      ],
+      "filter": [
+        {
+          "term": {
+            "serverType": #{serverType}
+      }
+      },
+        {
+          "term": {
+            "packageNm": #{packageNm}
+      }
+        }
+        #[isOsType]
+      ,{
+          "term": {
+            "osType": #{osType}
+      }
+        }
+        #[/isOsType]
+      ]
+    }
+  }
+}

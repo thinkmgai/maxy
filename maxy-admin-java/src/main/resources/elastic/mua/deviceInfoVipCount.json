@@ -1,0 +1,67 @@
+{
+  "query": {
+    "bool": {
+      "must": [
+        {
+          "bool" : {
+            "must" : [
+              {
+                "term" : {
+                  "packageNm" : {
+                    "value" : #{packageNm}
+                  }
+                }
+              },
+              {
+                "term" : {
+                  "serverType" : {
+                    "value" : #{serverType}
+                  }
+                }
+              },
+              #[isAppVer]
+              {
+                "term" : {
+                  "appVer" : {
+                    "value" : #{appVer}
+                  }
+                }
+              },
+              #[/isAppVer]
+              {
+                "term" : {
+                  "activeSt" : {
+                    "value" : "Y"
+                  }
+                }
+              },
+              {
+                "term" : {
+                  "vipYn" : {
+                    "value" : "Y"
+                  }
+                }
+              },
+              {
+                "bool": {
+                  "must" : [
+                    {
+                      "terms": {
+                        "deviceSt": ["N", "R"]
+                      }
+                    },
+                    {
+                      "term" : {
+                        "reinstalledDate": 0
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

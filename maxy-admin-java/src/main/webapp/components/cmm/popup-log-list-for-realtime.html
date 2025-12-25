@@ -1,0 +1,240 @@
+<!--
+    로그 분석 > 실시간 로그조회 > 팝업
+-->
+<style>
+    .maxy_popup_common .maxy_popup_title_left span:nth-child(2) {
+        overflow: initial !important;
+    }
+
+    .textarea_wrap.icon_info_box.hidden {
+        display: none;
+    }
+
+    /* #디버깅 가이드 */
+    .img_debug_off {
+        width: 26px;
+        margin: 8px;
+        display: none;
+    }
+
+    .icon_info_box.flex_wrap {
+        display: flex;
+    }
+
+    .popup_right_side_wrap {
+        width: 90%;
+        height: calc(100% - 60px);
+        top: 60px;
+    }
+
+    .log_type_detail_header .img_icon_wide_point_btn {
+        height: 24px;
+    }
+</style>
+
+<div class="maxy_popup_common" id="{{id}}__popup">
+
+    <div class="maxy_popup_grid_s_wrap">
+        <div class="maxy_popup_title_wrap">
+            <div class="maxy_popup_title_left">
+                <img alt="" class="maxy_popup_analysis_icon">
+                <span class="popup_title" id="analysis">Analysis/</span>
+                <span id="{{id}}popupType">{{popupType}}/</span>
+                <span id="{{id}}fmtTitle">{{fmtTitle}}</span>
+                <span id="count"></span>
+                <button class="btn_alias" style="display: none"></button>
+            </div>
+        </div>
+
+        <div class="maxy_popup_table_wrap logmeter_popup" id="{{id}}__logList"></div>
+        <div class="maxy_popup_gray_bg_wrap" id="{{id}}__logDetail">
+            <div class="grid_wrap">
+                <div class="icon_info_box dv2">
+                    <div class="dv2_left_wrap">
+                        <div class="icon_head">
+                            <i class="icon-device-purple"></i>
+                            <div>
+                                <span class="txt device_info" id="pDeviceModel"></span>
+                                <img alt="" class="btn_page_flow" id="btnPageFlow">
+                            </div>
+                        </div>
+
+                        <div class="icon_detail">
+                            <div class="detail_dv_wrap">
+                                <div>
+                                    <p data-t="common.text.networkType"></p>
+                                    <div class="bg_gray_wrap">
+                                        <i class="icon_network_type"></i>
+                                        <span class="txt" id="pComType">-</span>
+                                    </div>
+
+                                </div>
+                                <div>
+                                    <p data-t="common.text.carrier"></p>
+                                    <div class="bg_gray_wrap">
+                                        <i class="icon_simoperator"></i>
+                                        <span class="txt" id="pSimOperatorNm">-</span>
+                                    </div>
+                                </div>
+                                <div>
+                                    <p id="networkIp">Network</p>
+                                    <div class="network_status_wrap">
+                                        <span class="network_status"></span>
+                                        <span class="txt" id="pComSensitivity">-</span>
+                                    </div>
+                                </div>
+                                <div>
+                                    <p data-t="common.text.location"></p>
+                                    <div class="bg_gray_wrap">
+                                        <i class="icon_time_zone"></i>
+                                        <span class="txt" id="pLocation">-</span>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <div class="detail_dv_wrap">
+                                <div>
+                                    <p data-t="common.tableColumn.pageType"></p>
+                                    <div class="bg_gray_wrap">
+                                        <i class="icon_log_type"></i>
+                                        <span class="txt" id="pPageType">-</span>
+                                    </div>
+                                </div>
+                                <div>
+                                    <p data-t="common.text.webviewVersion"></p>
+                                    <span class="txt purple" id="pWebviewVer">-</span>
+                                </div>
+                                <div>
+                                    <p data-t="common.tableColumn.osVer"></p>
+                                    <div class="bg_gray_wrap" id="pOsVerWrap">
+                                        <img alt="" class="icon ic_sm_ios">
+                                        <img alt="" class="icon ic_sm_android on">
+                                        <span class="txt" id="pOsVer">-</span>
+                                    </div>
+
+                                </div>
+                                <div>
+                                    <p data-t="common.text.appBuildNum"></p>
+                                    <span class="txt purple" id="pAppBuildNum">-</span>
+                                </div>
+                                <div>
+                                    <p data-t="common.tableColumn.appVer"></p>
+                                    <div class="bg_gray_wrap">
+                                        <i class="icon_gear"></i>
+                                        <span class="txt" id="pAppVer">-</span>
+                                    </div>
+
+                                </div>
+                                <div>
+                                    <p data-t="common.text.userId"></p>
+                                    <span class="txt purple" id="pUserId">-</span>
+                                </div>
+                            </div>
+
+                            <div class="detail_dv_wrap">
+                                <div>
+                                    <p data-t="common.text.storageUsage"></p>
+                                    <span class="txt purple" id="pStorageUsage">-</span>
+                                </div>
+                                <div>
+                                    <p data-t="common.tableColumn.memoryusage"></p>
+                                    <span class="txt purple" id="pMemUsage">-</span>
+                                </div>
+                                <div>
+                                    <p data-t="common.text.batUsage"></p>
+                                    <div class="percentage_wrap">
+                                        <div class="mini_progress_wrap" data-bgcolor="#7277FF" id="pBatteryUsage"></div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <p data-t="common.tableColumn.cpuUsage"></p>
+                                    <div class="percentage_wrap">
+                                        <div class="mini_progress_wrap" data-bgcolor="#7277FF" id="pCpuUsage"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grd_dv2_wrap">
+                    <div class="textarea_wrap icon_info_box flex_wrap"> <!-- flex_wrap #디버깅 가이드 -->
+                        <textarea class="enable_scrollbar" id="pReqUrl" readonly></textarea>
+                        <button>
+                            <img alt="" class="img_debug_off gray"> <!-- #디버깅 가이드-->
+                        </button>
+                    </div>
+
+                    <div class="icon_info_box" id="logDetail">
+                        <div class="textarea_wrap log_res_msg_wrap">
+                            <textarea class="enable_scrollbar" id="pResMsg" readonly></textarea>
+                        </div>
+                        <div class="popup_log_type_detail_wrap">
+                            <div class="log_type_detail_header">
+                                <!--  category  -->
+                                <div class="category_wrap">
+                                    <span data-category="inapp">In App</span>
+                                    <span data-category="web">Web</span>
+                                    <span data-category="network">Network</span>
+                                    <span data-category="crash">Crash</span>
+                                    <span data-category="etc">Etc.</span>
+                                </div>
+                                <img class="img_icon_wide_point_btn" alt="" id="btnSourceMap">
+                            </div>
+                            <!-- detail   -->
+                            <div class="log_detail_contents_wrap">
+                                <div class="log_type_details">
+                                    <div class="bold_purple log_type_detail_title" data-log-type="error">
+                                        Exception Type:
+                                    </div>
+                                    <div class="bold_purple log_type_detail_title" data-log-type="crash">
+                                        Crash Type:
+                                    </div>
+                                    <div class="bold_purple log_type_detail_title" data-log-type="code">
+                                        HTTP Code:
+                                    </div>
+                                    <div class="textarea_wrap">
+                                        <textarea class="enable_scrollbar" id="pTypeError" readonly></textarea>
+                                    </div>
+                                </div>
+                                <div class="log_type_details">
+                                    <div class="bold_purple">Message from OS:</div>
+                                    <div class="textarea_wrap">
+                                        <textarea class="red enable_scrollbar" id="pMessages" readonly></textarea>
+                                    </div>
+                                </div>
+
+                                <div class="log_type_details">
+                                    <div class="bold_purple">Full Text:</div>
+                                    <div class="textarea_wrap">
+                                        <textarea class="enable_scrollbar" id="logDetailFullText" readonly></textarea>
+                                    </div>
+                                </div>
+
+                                <div class="log_type_details">
+                                    <div class="bold_purple">Stack Trace (Thru. Sourcemaps):</div>
+                                    <div class="textarea_wrap">
+                                        <textarea class="enable_scrollbar" id="logDetailSourceMap" readonly></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="textarea_wrap icon_info_box hidden" id="txidWrap">
+                        <textarea class="enable_scrollbar" id="ptxid" readonly></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--debugging guide navbar #디버깅 가이드-->
+    <div class="maxy_popup_gray_bg_wrap popup_right_side_wrap debug_guide_slide">
+        <div id="{{id}}__debugGuide"></div>
+    </div>
+
+    <!--source map guide slide popup-->
+    <div class="maxy_popup_gray_bg_wrap popup_right_side_wrap log_detail_slide">
+        <div id="{{id}}__logDetailSlide"></div>
+    </div>
+</div>

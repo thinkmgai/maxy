@@ -1,0 +1,53 @@
+{
+  "aggs": {
+    "sleepCount": {
+      "date_histogram": {
+        "field": "sleepDate",
+        "interval": "day",
+        "time_zone": "Asia/Seoul",
+        "format": "yyyy-MM-dd",
+        "extended_bounds": {
+          "min": #{searchToDay},
+          "max": #{searchFromDay}
+        }
+      }
+    }
+  },
+  "query": {
+    "bool": {
+      "filter": [
+        {
+          "term": {
+            "packageNm": #{packageNm}
+          }
+        },
+        {
+          "term": {
+            "serverType": #{serverType}
+          }
+        },
+        #[isAppVer]
+        {
+          "term": {
+            "appVer": #{appVer}
+          }
+        },
+        #[/isAppVer]
+        {
+          "term": {
+            "deviceSt": "S"
+          }
+        },
+        {
+          "range": {
+            "sleepDate": {
+              "gte": #{searchToDt},
+              "lte": #{searchFromDt},
+              "format": "epoch_millis"
+            }
+          }
+        }
+      ]
+    }
+  }
+}

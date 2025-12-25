@@ -1,0 +1,267 @@
+<style>
+    .maxy_popup_common.setting {
+        padding: 0;
+        width: 19vw;
+        min-width: 360px;
+        height: 60vh;
+        min-height: 600px;
+    }
+
+    .dark_mode .maxy_popup_common.setting {
+        background-color: var(--color-block-dark-1);
+    }
+
+    @media screen and (max-width: 1441px) {
+        .maxy_popup_common.setting {
+            height: 90vh;
+        }
+    }
+
+    .maxy_popup_common.setting .maxy_popup_grid_s_wrap {
+        gap: 0;
+    }
+
+    .maxy_popup_common.setting .icon_title {
+        content: url("/images/maxy/icon-title-session-setting.svg");
+        width: 19px;
+    }
+
+    .dark_mode .maxy_popup_common.setting .icon_title {
+        content: url("/images/maxy/dark-icon-title-session-setting.svg");
+    }
+
+    .maxy_popup_common.setting .maxy_popup_title_wrap {
+        min-height: auto;
+        padding: 1.2em 1.2em 1.2em 2em;
+    }
+
+    .maxy_popup_common.setting .maxy_popup_content_wrap {
+        display: grid;
+        /*grid-template-rows: 24% 54% 22%;*/
+        grid-template-rows: 30% 70%;
+        height: calc(100% - 106px);
+    }
+
+    .maxy_popup_common.setting .input_wrap {
+        background-color: #F7F8FA;
+    }
+
+    .dark_mode .maxy_popup_common.setting .input_wrap {
+        background-color: #2D2E2F;
+    }
+
+    .maxy_popup_common.setting .maxy_popup_footer {
+        padding: 1.2em;
+        margin-left: auto;
+    }
+
+    .maxy_popup_content_wrap .input_wrap {
+        display: grid;
+        grid-template-rows: 29% 46% 25%;
+        padding: .5em 2em .5em 2em;
+    }
+
+    .maxy_popup_content_wrap .input_wrap > div:nth-child(1),
+    .maxy_popup_content_wrap .input_wrap > div:nth-child(3) {
+        display: flex;
+        align-items: center;
+        gap: .5em;
+        font-size: 12px;
+        color: #838383;
+        font-weight: 600;
+    }
+
+    .maxy_popup_content_wrap .input_wrap > div:nth-child(3) {
+        justify-content: center;
+        color: var(--logo-purple-1);
+    }
+
+    .input_wrap input[type="text"] {
+        width: 100%;
+    }
+
+    .input_wrap .input_data {
+        gap: 27px;
+        max-width: 100%;
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+    }
+
+    .input_wrap .input_data > div {
+        display: flex;
+        flex-direction: column;
+        gap: .5em;
+        justify-content: space-evenly;
+    }
+
+    .input_wrap .input_data label {
+        text-align: center;
+        color: var(--color-subtitle-light);
+    }
+
+    .information_wrap {
+        padding: 1.2em 1.2em 1.2em 2em;
+        display: grid;
+        height: 100%;
+        grid-template-rows: 1fr 1fr 1fr;
+    }
+
+    .information_wrap .information {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-evenly;
+    }
+
+    .information_wrap .information > div:nth-child(2) {
+        font-size: 15px;
+        font-weight: bold;
+    }
+
+    .information_wrap .information > div:nth-child(3) {
+        line-height: normal;
+        color: var(--color-subtitle-light);
+    }
+
+    .information_wrap .information .icon_lcp {
+        content: url("/images/maxy/icon-lcp.svg");
+    }
+
+    .dark_mode  .information_wrap .information .icon_lcp {
+        content: url("/images/maxy/dark-icon-lcp.svg");
+    }
+
+    .information_wrap .information .icon_inp {
+        content: url("/images/maxy/icon-inp.svg");
+    }
+
+    .dark_mode .information_wrap .information .icon_inp {
+        content: url("/images/maxy/dark-icon-inp.svg");
+        height: 21px;
+    }
+
+    .information_wrap .information .icon_cls {
+        content: url("/images/maxy/icon-cls.svg");
+    }
+
+    .dark_mode .information_wrap .information .icon_cls {
+        content: url("/images/maxy/dark-icon-cls.svg");
+    }
+
+    .information_wrap .information img {
+        height: 18px;
+    }
+
+    img.icon_graph_chart {
+        height: 10px;
+        content: url("/images/maxy/icon-graph-chart.svg");
+    }
+
+    .dark_mode img.icon_graph_chart {
+        content: url("/images/maxy/dark-icon-graph-chart.svg");
+    }
+
+    .input_wrap .column {
+        padding-right: 3.5em;
+        padding-left: 3.5em;
+        display: flex;
+        gap: 1em;
+        align-items: center;
+    }
+
+    .input_wrap.small {
+        grid-template-rows: 30% 30% 40%;
+    }
+
+    .input_wrap.small span {
+        line-height: normal;
+        text-align: center;
+    }
+
+    label.gray {
+        color: var(--color-subtitle-light);
+    }
+
+    .dark_mode .maxy_popup_content_wrap .white {
+        color: white !important;
+    }
+
+    .dark_mode .btn_common {
+        border: 1px solid var(--logo-purple-1) !important;
+        color: var(--logo-purple-1) !important;
+    }
+</style>
+<div class="maxy_popup_common setting" id="{{id}}__popup">
+    <div class="maxy_popup_grid_s_wrap">
+        <div class="maxy_popup_title_wrap">
+            <div class="maxy_popup_title_left">
+                <img alt="" class="icon_title">
+                <span>Setting</span>
+            </div>
+            <div class="maxy_popup_title_right">
+                <img alt="" class="icon_close" id="btnClose">
+            </div>
+        </div>
+
+        <div class="maxy_popup_content_wrap">
+            <div class="input_wrap">
+                <div>
+                    <img class="icon_graph_chart">
+                    <span class="white">Core Vital</span>
+                </div>
+                <div class="input_data">
+                    <div>
+                        <label for="lcp_input">LCP</label>
+                        <input class="white" type="text" id="lcp_input">
+                    </div>
+                    <div>
+                        <label for="inp_input">INP(FID)</label>
+                        <input class="white" type="text" id="inp_input">
+                    </div>
+                    <div>
+                        <label for="cls_input">CLS</label>
+                        <input class="white" type="text" id="cls_input">
+                    </div>
+                </div>
+                <div>
+                    <span>원하는 비율을 입력하세요. ※ Default) 40:30:30</span>
+                </div>
+            </div>
+            <div class="information_wrap">
+                <div class="information">
+                    <div><img class="icon_lcp"></div>
+                    <div>최대 콘텐츠 페인트 (Largest Contentful Paint)</div>
+                    <div>로드 성능을 측정합니다. <br/> 성능 측정의 기준을 페이지 별 리소스 구성에 맞출 수 있습니다.</div>
+                </div>
+                <div class="information">
+                    <div><img class="icon_inp"></div>
+                    <div>페인팅 상호작용 (Interactive to Next Paint)</div>
+                    <div>요청부터 응답까지의 소요시간을 측정합니다. <br/> 병목 구간 등 사용자 체감 성능을 파악할 수 있습니다.</div>
+                </div>
+                <div class="information">
+                    <div><img class="icon_cls"></div>
+                    <div>누적 레이아웃 변경 (Cumulative Layout Shift)</div>
+                    <div>시각적 안정성을 측정합니다. <br/> 성능 측정의 기준을 UI/UX에 맞출 수 있습니다.</div>
+                </div>
+            </div>
+<!--            <div class="input_wrap small">-->
+<!--                <div>-->
+<!--                    <img class="icon_graph_chart">-->
+<!--                    <span>Value</span>-->
+<!--                </div>-->
+<!--                <div class="">-->
+<!--                    <div class="column">-->
+<!--                        <label for="value_input" class="gray">Value</label>-->
+<!--                        <input type="text" id="value_input">%-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--                <div>-->
+<!--                    <span>모니터링 비율을 선택하십시오. <br/>단, 비율이 높을수록 항목의 크기가 작아집니다.</span>-->
+<!--                </div>-->
+<!--            </div>-->
+        </div>
+
+        <div class="maxy_popup_footer">
+            <button class="btn_common opposite" id="btnSave">저장</button>
+        </div>
+    </div>
+</div>

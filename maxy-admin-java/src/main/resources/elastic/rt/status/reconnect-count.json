@@ -1,0 +1,71 @@
+{
+  "aggs": {
+    "revisit": {
+      "date_histogram": {
+        "field": "appStartTm",
+        "interval": "1d",
+        "time_zone": "Asia/Seoul",
+        "format": "yyyy-MM-dd",
+        "extended_bounds": {
+          "min": #{fromDt},
+          "max": #{toDt}
+        }
+      },
+      "aggs": {
+        "res": {
+          "range": {
+            "field": "retentionDay",
+            "ranges": [
+              {
+                "from": 2
+              }
+            ],
+            "keyed": false
+          }
+        }
+      }
+    }
+  },
+  "size": 0,
+  "query": {
+    "bool": {
+      "filter": [
+        {
+          "term": {
+            "packageNm": #{packageNm}
+          }
+        },
+        {
+          "term": {
+            "serverType": #{serverType}
+          }
+        },
+        #[isOsType]
+        {
+          "term": {
+            "osType": #{osType}
+          }
+        },
+        #[/isOsType]
+        #[isAppVer]
+        {
+          "term": {
+            "appVer": #{appVer}
+          }
+        },
+        #[/isAppVer]
+        {
+          "range": {
+            "appStartTm": {
+              "from": #{fromTimestamp},
+              "to": #{toTimestamp},
+              "include_lower": true,
+              "include_upper": true,
+              "time_zone": "Z"
+            }
+          }
+        }
+      ]
+    }
+  }
+}

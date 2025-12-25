@@ -1,0 +1,78 @@
+.logmeter-widget {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.logmeter-canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.logmeter-widget--dark {
+  background: linear-gradient(152deg, rgba(10, 16, 29, 0.95) 0%, #10172a 70%);
+  box-shadow: 0 16px 36px rgba(2, 6, 23, 0.55);
+  color: #e2e8f0;
+}
+
+.logmeter-widget--dark .logmeter-header {
+  color: #f8fafc;
+}
+
+.logmeter-widget--dark .logmeter-status {
+  background: rgba(15, 23, 42, 0.7);
+  border-color: rgba(59, 130, 246, 0.28);
+  color: #dbeafe;
+}
+
+.logmeter-widget--dark .logmeter-footer {
+  background: rgba(15, 23, 42, 0.55);
+  border-top: 1px solid rgba(59, 130, 246, 0.24);
+}
+
+.logmeter-widget--dark .logmeter-footer__item {
+  color: #cbd5f5;
+}
+
+.logmeter-tooltip {
+  position: absolute;
+  z-index: 10;
+  pointer-events: none;
+  min-width: 120px;
+  padding: 8px 10px;
+  background: #ffffff;
+  color: #111827;
+  border-radius: 10px;
+  box-shadow: 0 8px 18px rgba(15, 23, 42, 0.12);
+  border: 1px solid rgba(148, 163, 184, 0.32);
+  transform: translate(-10px, -10px);
+}
+
+.logmeter-widget--dark .logmeter-tooltip {
+  background: #ffffff;
+  color: #111827;
+  border-color: rgba(148, 163, 184, 0.32);
+}
+
+.logmeter-tooltip__title {
+  font-weight: 700;
+  font-size: 12px;
+  margin-bottom: 4px;
+  letter-spacing: 0.01em;
+}
+
+.logmeter-tooltip__row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  line-height: 1.5;
+  gap: 12px;
+  color: #475569;
+}
+
+.logmeter-tooltip__row span:last-child {
+  font-variant-numeric: tabular-nums;
+  color: #0f172a;
+  font-weight: 600;
+}

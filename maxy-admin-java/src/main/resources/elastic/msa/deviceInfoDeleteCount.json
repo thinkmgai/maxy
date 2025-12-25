@@ -1,0 +1,38 @@
+{
+  "query": {
+    "bool": {
+      "filter": [
+        {
+          "term": {
+            "appDeleteYn": "Y"
+          }
+        },
+        {
+          "term": {
+            "packageNm": #{packageNm}
+          }
+        },
+        {
+          "term": {
+            "serverType": #{serverType}
+          }
+        },
+        #[isAppVer]
+        {
+          "term": {
+            "appVer": #{appVer}
+          }
+        },
+        #[/isAppVer]
+        {
+          "range": {
+            "appStartTm": {
+              "gte": #{searchFromDt},
+              "lte": #{searchToDt}
+            }
+          }
+        }
+      ]
+    }
+  }
+}

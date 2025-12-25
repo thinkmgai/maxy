@@ -1,0 +1,188 @@
+{
+  "size" : 1000,
+  "query" : {
+    "bool" : {
+      "must" : [
+        {
+          "bool" : {
+            "must" : [
+              {
+                "bool" : {
+                  "must" : [
+                    {
+                      "term" : {
+                        "osType" : {
+                          "value" : #{osType},
+                    "boost" : 1.0
+                    }
+                  }
+                  },
+                    {
+                      "term" : {
+                        "osVer" : {
+                          "value" : #{osVer},
+                    "boost" : 1.0
+                    }
+                  }
+                  },
+                    {
+                      "term" : {
+                        "logTypeNm" : {
+                          "value" : #{logTypeNm},
+                    "boost" : 1.0
+                    }
+                  }
+                  },
+                    {
+                      "term" : {
+                        "logTypeDnm" : {
+                          "value" : #{logTypeDnm},
+                    "boost" : 1.0
+                    }
+                  }
+                  }
+                  ],
+                  "adjust_pure_negative" : true,
+                  "boost" : 1.0
+                }
+              },
+              {
+                "term" : {
+                  "appVer" : {
+                    "value" : #{appVer},
+              "boost" : 1.0
+              }
+            }
+            }
+            ],
+            "adjust_pure_negative" : true,
+            "boost" : 1.0
+          }
+        },
+        {
+          "term" : {
+            "deviceModel" : {
+              "value" : #{deviceModel},
+        "boost" : 1.0
+        }
+      }
+      }
+      ],
+      "adjust_pure_negative" : true,
+      "boost" : 1.0
+    }
+  },
+  "_source" : false,
+  "fields" : [
+    {
+      "field" : "aliasValue"
+    },
+    {
+      "field" : "appBuildNum"
+    },
+    {
+      "field" : "appVer"
+    },
+    {
+      "field" : "batteryLvl"
+    },
+    {
+      "field" : "comSensitivity"
+    },
+    {
+      "field" : "comType"
+    },
+    {
+      "field" : "cpuUsage"
+    },
+    {
+      "field" : "deviceId"
+    },
+    {
+      "field" : "deviceModel"
+    },
+    {
+      "field" : "intervaltime"
+    },
+    {
+      "field" : "ip"
+    },
+    {
+      "field" : "logDate"
+    },
+    {
+      "field" : "logMonth"
+    },
+    {
+      "field" : "logTm",
+      "format" : "epoch_millis"
+    },
+    {
+      "field" : "logType"
+    },
+    {
+      "field" : "logTypeDnm"
+    },
+    {
+      "field" : "logTypeNm"
+    },
+    {
+      "field" : "logYear"
+    },
+    {
+      "field" : "loginYn"
+    },
+    {
+      "field" : "memUsage"
+    },
+    {
+      "field" : "osType"
+    },
+    {
+      "field" : "osVer"
+    },
+    {
+      "field" : "packageNm"
+    },
+    {
+      "field" : "referer"
+    },
+    {
+      "field" : "regDt",
+      "format" : "epoch_millis"
+    },
+    {
+      "field" : "reqUrl"
+    },
+    {
+      "field" : "resMsg"
+    },
+    {
+      "field" : "serverType"
+    },
+    {
+      "field" : "simOperatorNm"
+    },
+    {
+      "field" : "storageTotal"
+    },
+    {
+      "field" : "storageUsage"
+    },
+    {
+      "field" : "timezone"
+    },
+    {
+      "field" : "webviewVer"
+    }
+  ],
+  "sort" : [
+    {
+      "logTm" : {
+        "order" : "asc",
+        "missing" : "_last",
+        "unmapped_type" : "date"
+      }
+    }
+  ]
+}

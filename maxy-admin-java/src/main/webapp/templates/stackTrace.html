@@ -1,0 +1,355 @@
+<style>
+.log_detail_contents_wrap > * {
+    min-height: 0;
+}
+
+.log_detail_contents_wrap .textarea_wrap {
+    min-height: 0;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+/* 밝은 테마 (기본) */
+.stack-trace-container {
+    font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+    font-size: 13px;
+    background: var(--black-9);
+    color: var(--black-0);
+    padding-top: 0.5em;
+    border-radius: 8px;
+    height: 100px;
+    max-height: 100%;
+    overflow-y: auto;
+    box-sizing: border-box;
+    flex: 1 1 auto;
+    min-height: 0;
+}
+
+.stack-frame {
+    background: var(--black-7);
+    border: 1px solid var(--black-3);
+    border-radius: 6px;
+    margin-bottom: 12px;
+    overflow: hidden;
+    transition: all 0.2s ease;
+}
+
+.stack-frame:hover {
+    border-color: var(--logo-purple-1);
+    box-shadow: 0 2px 8px rgba(114, 119, 255, 0.15);
+}
+
+.stack-frame-header {
+    background: var(--black-8);
+    padding: 10px 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-bottom: 1px solid var(--black-3);
+    cursor: pointer;
+    user-select: none;
+}
+
+.frame-number {
+    background: var(--logo-purple-1);
+    color: #fff;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-weight: bold;
+    font-size: 11px;
+    min-width: 24px;
+    text-align: center;
+}
+
+.frame-function {
+    color: var(--logo-purple-2);
+    font-weight: 600;
+    flex-shrink: 0;
+}
+
+.frame-location {
+    color: var(--black-2);
+    font-size: 12px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.stack-frame-body {
+    padding: 14px;
+    display: none;
+}
+
+.stack-frame.expanded .stack-frame-body {
+    display: block;
+}
+
+.toggle-icon {
+    /*margin-left: auto;
+    transition: transform 0.2s ease;
+    font-size: 12px;
+    color: var(--black-2);*/
+
+    width: 14px;
+    height: 14px;
+    margin-left: auto;
+    transition: transform 0.3s ease;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+
+    background-image: url('/images/maxy/arrow-down.svg');
+}
+
+.stack-frame.expanded .toggle-icon {
+    background-image: url('/images/maxy/arrow-up.svg');
+}
+
+.source-info {
+    margin-bottom: 12px;
+}
+
+.source-path {
+    margin-bottom: 8px;
+    display: flex;
+    gap: 8px;
+}
+
+.source-path .label {
+    color: var(--logo-purple-1);
+    font-weight: 600;
+    min-width: 50px;
+}
+
+.source-path .value {
+    color: var(--red-0);
+    word-break: break-all;
+}
+
+.source-position {
+    display: flex;
+    gap: 16px;
+}
+
+.position-item {
+    display: flex;
+    gap: 6px;
+}
+
+.position-item .label {
+    color: var(--logo-purple-1);
+    font-weight: 600;
+}
+
+.position-item .value {
+    color: var(--green-4);
+    font-weight: 600;
+}
+
+.code-snippet {
+    margin-top: 12px;
+    background: var(--black-8);
+    border: 1px solid var(--black-3);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.snippet-header {
+    background: var(--black-8);
+    padding: 6px 10px;
+    color: var(--black-2);
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-bottom: 1px solid var(--black-3);
+}
+
+.snippet-code {
+    margin: 0;
+    padding: 12px;
+    overflow-x: auto;
+    line-height: 1.6;
+    color: var(--black-0);
+    white-space: break-spaces;
+}
+
+.snippet-code::-webkit-scrollbar {
+    height: 8px;
+}
+
+.snippet-code::-webkit-scrollbar-track {
+    background: var(--black-8);
+}
+
+.snippet-code::-webkit-scrollbar-thumb {
+    background: var(--black-3);
+    border-radius: 4px;
+}
+
+.snippet-code::-webkit-scrollbar-thumb:hover {
+    background: var(--black-2);
+}
+
+.stack-trace-container::-webkit-scrollbar {
+    width: 10px;
+}
+
+.stack-trace-container::-webkit-scrollbar-track {
+    background: var(--black-9);
+}
+
+.stack-trace-container::-webkit-scrollbar-thumb {
+    background: var(--black-3);
+    border-radius: 5px;
+}
+
+.stack-trace-container::-webkit-scrollbar-thumb:hover {
+    background: var(--black-2);
+}
+
+/* 다크 모드 */
+.dark_mode .stack-trace-container {
+    background: var(--color-table-row-dark-1);
+    color: var(--black-9);
+}
+
+.dark_mode .stack-frame {
+    background: var(--color-table-bg-dark-1);
+    border: 1px solid #353434;
+}
+
+.dark_mode .stack-frame:hover {
+    border-color: var(--logo-purple-1);
+    box-shadow: 0 2px 8px rgba(114, 119, 255, 0.3);
+}
+
+.dark_mode .stack-frame-header {
+    background: var(--color-table-bg-dark-1);
+    border-bottom: 1px solid #353434;
+}
+
+/*.dark_mode .toggle-icon {
+    color: var(--black-9);
+}*/
+
+.dark_mode .toggle-icon {
+    background-image: url('/images/maxy/dark-arrow-down.svg');
+}
+
+.dark_mode .stack-frame.expanded .toggle-icon {
+    background-image: url('/images/maxy/dark-arrow-up.svg');
+}
+
+.dark_mode .frame-function {
+    color: var(--logo-purple-1);
+}
+
+.dark_mode .frame-location {
+    color: var(--black-3);
+}
+
+.dark_mode .source-path .label {
+    color: var(--logo-purple-1);
+}
+
+.dark_mode .source-path .value {
+    color: var(--yellow-1);
+}
+
+.dark_mode .position-item .label {
+    color: var(--logo-purple-1);
+}
+
+.dark_mode .position-item .value {
+    color: var(--green-3);
+}
+
+.dark_mode .code-snippet {
+    background: var(--black-1);
+    border: 1px solid var(--black-2);
+}
+
+.dark_mode .snippet-header {
+    background: var(--black-1);
+    color: var(--black-9);
+    border-bottom: 1px solid var(--black-2);
+}
+
+.dark_mode .snippet-code {
+    color: var(--black-9);
+}
+
+.dark_mode .snippet-code::-webkit-scrollbar-track {
+    background: var(--black-1);
+}
+
+.dark_mode .snippet-code::-webkit-scrollbar-thumb {
+    background: var(--black-2);
+}
+
+.dark_mode .snippet-code::-webkit-scrollbar-thumb:hover {
+    background: var(--black-3);
+}
+
+.dark_mode .stack-trace-container::-webkit-scrollbar-track {
+    background: var(--black-1);
+}
+
+.dark_mode .stack-trace-container::-webkit-scrollbar-thumb {
+    background: var(--black-2);
+}
+
+.dark_mode .stack-trace-container::-webkit-scrollbar-thumb:hover {
+    background: var(--black-3);
+}
+</style>
+
+<div class="stack-trace-container">
+    {{#each frames}}
+    <div class="stack-frame">
+        <div class="stack-frame-header">
+            <span class="frames-number">#{{@index}}</span>
+            <span class="frame-function">{{file}}</span>
+            <span class="frame-location">{{line}}:{{column}}</span>
+            <span class="toggle-icon"></span>
+        </div>
+        <div class="stack-frame-body">
+            <div class="source-info">
+
+                {{!-- raw가 있으면 source 위에 표시 --}}
+                {{#if raw}}
+                <div class="source-path">
+                    <span class="label">Raw:</span>
+                    <span class="value">{{raw}}</span>
+                </div>
+                {{/if}}
+
+                <div class="source-path">
+                    <span class="label">Source:</span>
+                    <span class="value">{{source}}</span>
+                </div>
+
+                <div class="source-position">
+                    <span class="position-item">
+                        <span class="label">Line:</span>
+                        <span class="value">{{line}}</span>
+                    </span>
+                    <span class="position-item">
+                        <span class="label">Column:</span>
+                        <span class="value">{{column}}</span>
+                    </span>
+                </div>
+            </div>
+
+            {{#if snippet}}
+            <div class="code-snippet">
+                <div class="snippet-header">Code Context:</div>
+                <pre class="snippet-code">{{snippet}}</pre>
+            </div>
+            {{/if}}
+        </div>
+    </div>
+    {{/each}}
+</div>

@@ -1,0 +1,77 @@
+{
+  "aggs": {
+    "res": {
+      "terms": {
+        "field": "deviceModel",
+        "order": {
+          "_count": "desc"
+        },
+        "size": 9999
+      },
+      "aggs": {
+        "userCount": {
+          "cardinality": {
+            "field": "deviceId.raw"
+          }
+        },
+        "order_by_userCount": {
+          "bucket_sort": {
+            "sort": [
+              {"userCount.value": {"order": "desc"}}
+            ]
+          }
+        },
+        "value": {
+          "date_histogram": {
+            "field": "logTm",
+            "calendar_interval": "1h",
+            "time_zone": "Asia/Seoul",
+            "min_doc_count": 1
+          },
+          "aggs": {
+            "usage": {
+              "avg": {
+                "field": "memUsage"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "size": 0,
+  "query": {
+    "bool": {
+      "filter": [
+        {
+          "term": {
+            "packageNm": #{packageNm}
+          }
+        },
+        {
+          "term": {
+            "serverType": #{serverType}
+          }
+        },
+        #[isOsType]
+        {
+          "term": {
+            "osType": #{osType}
+      }
+        },
+        #[/isOsType]
+        {
+          "range": {
+            "logTm": {
+              "from": #{fromTimestamp},
+              "to": #{toTimestamp},
+              "include_lower": true,
+              "include_upper": true,
+              "time_zone": "Z"
+            }
+          }
+        }
+      ]
+    }
+  }
+}

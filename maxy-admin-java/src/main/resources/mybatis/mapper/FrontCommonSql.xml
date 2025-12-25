@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkm.maxy.mapper.FrontCommonMapper">
+    <select id="selectMarkedUrl" resultType="FrontUrl" parameterType="FrontUrl">
+        select req_url
+        from maxy_front_url
+        where mark = true
+          and package_nm = #{packageNm}
+          and server_type = #{serverType}
+          and type = #{type}
+          and user_no = #{userNo}
+    </select>
+
+    <select id="selectAllUrl" resultType="FrontUrl" parameterType="FrontUrl">
+        select package_nm, server_type, user_no, req_url, mark, upd_dt, upd_no
+        from maxy_front_url
+        where package_nm = #{packageNm}
+          and server_type = #{serverType}
+          and type = #{type}
+          and user_no = #{userNo}
+    </select>
+
+    <insert id="markUrl" parameterType="FrontUrl">
+        replace into maxy_front_url
+            (package_nm, server_type, user_no, req_url, type, mark, upd_dt, upd_no)
+        VALUES (#{packageNm},
+                #{serverType},
+                #{userNo},
+                #{reqUrl},
+                #{type},
+                #{mark},
+                #{updDt},
+                #{userNo})
+    </insert>
+
+    <delete id="deleteUrls" parameterType="java.util.List">
+        delete from maxy_front_url
+        where (package_nm,
+               server_type,
+               user_no,
+               req_url,
+               type) in
+        (
+        <foreach collection="list" item="item" separator=",">
+            (#{item.packageNm},
+             #{item.serverType},
+             #{item.userNo},
+             #{item.reqUrl},
+             #{item.type})
+        </foreach>
+        )
+    </delete>
+
+    <select id="selectFeeldexConfig" resultType="FrontFeeldexVO" parameterType="FrontFeeldexVO">
+        select lcp,
+               inp,
+               cls
+        from maxy_front_feeldex_config
+        where package_nm = #{packageNm}
+          and server_type = #{serverType}
+    </select>
+
+    <insert id="insertFeeldexConfig" parameterType="FrontFeeldexVO">
+        replace into maxy_front_feeldex_config
+            (package_nm, server_type, lcp, inp, cls, fcp, ttfb, upd_dt, upd_no)
+        VALUES (#{packageNm},
+                #{serverType},
+                #{lcp},
+                #{inp},
+                #{cls},
+                0,
+                0,
+                #{updDt},
+                #{userNo})
+    </insert>
+</mapper>

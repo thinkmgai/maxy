@@ -1,0 +1,32 @@
+<mapper namespace="responsetime">
+  <select id="selectResponseTimeIncremental">
+    <![CDATA[
+    SELECT
+        reg_dt          AS reg_dt,
+        package_nm      AS package_nm,
+        server_type     AS server_type,
+        os_type         AS os_type,
+        device_id       AS device_id,
+        device_model    AS device_model,
+        req_url         AS req_url,
+        com_type        AS com_type,
+        com_sensitivity AS com_sensitivity,
+        cpu_usage       AS cpu_usage,
+        sim_operator_nm AS sim_operator_nm,
+        app_ver         AS app_ver,
+        intervaltime    AS intervaltime,
+        log_tm          AS log_tm,
+        log_type        AS log_type,
+        wait_time       AS wait_time,
+        download_time   AS download_time,
+        response_size   AS response_size,
+        request_size    AS request_size
+    FROM maxy_app_total_log
+    WHERE reg_dt > toDateTime64('{{ start_iso }}', 3)
+      AND log_tm_dt >= now() - INTERVAL 15 MINUTE
+      AND log_type IN (524291, 8388612)
+      AND intervaltime > 0
+    ORDER BY reg_dt
+    ]]>
+  </select>
+</mapper>

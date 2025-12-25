@@ -1,0 +1,28 @@
+<style>
+</style>
+<div class="right_navbar" id="{{id}}__navbar">
+    <div class="right_navbar_content">
+        <div class="right_navbar_header">
+            <h4 data-t="management.components.setting.title.{{id}}"></h4>
+            <img class="ic_question" id="{{id}}__navbar_tooltip">
+        </div>
+
+        <div class="navbar_middle_wrap">
+            <h3>Warning Time</h3>
+            <span data-t="management.components.setting.prefix.{{id}}"></span>
+        </div>
+
+        <div class="navbar_input_wrap">
+            <div class="inner_wrap">
+                <input data-type="{{param.type}}" id="{{id}}__optMaxSize" type="text">
+                <span class="txt_postfix" data-t="management.components.setting.postfix.{{id}}"></span>
+            </div>
+        </div>
+        <div class="txt_gray txt_tip" data-t="management.components.setting.tip.{{id}} 50000 100"></div>
+    </div>
+    <div class="right_navbar_footer">
+        <button class="btn_common opposite btn_component_setting_save"
+                data-t="common.btn.save"
+                data-type="{{id}}"></button>
+    </div>
+</div>

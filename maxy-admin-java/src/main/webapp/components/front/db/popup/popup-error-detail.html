@@ -1,0 +1,288 @@
+<style>
+    .maxy_popup_content_wrap {
+        display: grid;
+        grid-template-rows: 23% 3% auto;
+        gap: .8em;
+    }
+
+    .date_time_wrap {
+        text-align: right;
+    }
+
+    .maxy_popup_common .user_info_wrap .content_wrap {
+        height: 100%;
+        display: grid;
+        grid-template-rows: 50% 50%;
+    }
+
+    .maxy_popup_common .user_info_wrap .content_wrap .bot {
+        padding: 1em;
+        display: grid;
+        row-gap: .5em;
+    }
+
+    #errorTimeLinePopup .web_chart_wrap {
+        grid-template-rows: minmax(148px, 17%) minmax(300px, 83%) ;
+    }
+
+    .error_info_wrap {
+        border: none !important;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .error_info_wrap .graph_title {
+        width: 20%;
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .error_info_wrap .content_wrap {
+        position: relative;
+        overflow-y: auto;
+        height: 100%;
+        border: 1px solid #e3e5e8;
+        border-radius: var(--radius);
+    }
+
+    .content_wrap.stack {
+        padding: 1em;
+        display: grid;
+        grid-template-rows: 8% auto;
+    }
+
+    .error_into_wrap .content_wrap.session {
+        display: none;
+    }
+
+    .error_info_wrap .type_tab {
+        border-bottom: none;
+        grid-template-columns: repeat(2, 1fr);
+        width: 15%;
+    }
+
+    .top .text {
+        white-space: nowrap;
+        overflow: auto;
+    }
+
+    .read {
+        border-radius: 5px;
+        background-color: var(--color-grid-cell-button-light);
+        padding: 0.4em 0.8em 0.4em 0.8em;
+        color: #B0B1C0;
+    }
+
+    .dark_mode .read {
+        background-color: #38393d;
+        border: 1px solid #6C6E8B;
+        color: white;
+    }
+
+    .read.on {
+        background-color: #DEEFFA;
+        color: #087BD5;
+    }
+
+    .dark_mode .read.on {
+        background-color: #38393d;
+        border: 1px solid #6C6E8B;
+        color: #1eaeff;
+    }
+
+    .error_stack_table {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .error_stack_table > li {
+        padding: .8em;
+        cursor: default;
+        border-bottom: 1px solid var(--color-border-out-light);
+    }
+
+    .dark_mode .error_stack_table > li {
+        border-bottom: 1px solid var(--black-6);
+    }
+
+    .stack-list {
+        height: calc(100% - 4px);
+        overflow-y: auto;
+        position: relative;
+    }
+
+    .error_stack_info {
+        display: flex;
+        gap: .7em;
+        align-items: center;
+        font-weight: bold;
+    }
+
+    .error_info_wrap .header_wrap {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .icon_session_replay {
+        margin-top: 10px;
+    }
+
+    .maxy_popup_title_right.error {
+        font-size: 15px;
+        font-weight: bold;
+    }
+
+    .dark_mode .error_info_wrap .content_wrap {
+        border: none;
+        background-color: var(--color-block-dark-1);
+    }
+
+    #dateTime {
+        height: 12px;
+    }
+
+    .stack-trace-container {
+        height: 100% !important;
+    }
+</style>
+
+<div class="maxy_popup_common front" id="{{id}}">
+    <div class="maxy_popup_grid_s_wrap">
+        <div class="maxy_popup_title_wrap front">
+            <div class="maxy_popup_title_left">
+                <img alt="" class="icon_graph">
+                <span>Check List / </span>
+                <span>Error</span>
+            </div>
+            <div class="maxy_popup_title_right error">
+                <div id="totalHits"></div>
+                /
+                <div id="count"></div>
+            </div>
+        </div>
+
+        <div class="maxy_popup_content_wrap">
+            <div class="" id="{{id}}__chart"></div>
+            <div class="date_time_wrap">
+                <img class="icon-start-time">
+                <div id="dateTime">{{period}}</div>
+            </div>
+            <div class="maxy_box core_vital_wrap" id="{{id}}_list"></div>
+        </div>
+    </div>
+
+    <!-- 상세 정보를 표시할 컨테이너 - popup-analysis-ajax-api-detail.html이 로드됨 -->
+    <div class="maxy_popup_gray_bg_wrap popup_right_side_wrap">
+        <div class="maxy_popup_title_wrap front">
+            <div class="maxy_popup_title_left">
+                <img class="img_profiling" alt="" src="">
+                <span class="bold" id="title">Profiling / </span>
+                <span>Error</span>
+            </div>
+            <div class="maxy_popup_title_right">
+                <img alt="" class="btn_front_page_flow" id="btnPageFlow">
+            </div>
+        </div>
+        <div class="web_chart_wrap">
+            <div class="user_info_wrap maxy_box">
+                <div class="content_wrap">
+                    <div class="top">
+                        <div class="item">
+                            <div class="key">
+                                <img class="icon_info_p">
+                                <span>Browser</span>
+                            </div>
+                            <span class="text" id="browser"></span>
+                        </div>
+                        <div class="item">
+                            <div class="key">
+                                <img class="icon_use_type_p">
+                                <span>Use Type</span>
+                            </div>
+                            <span class="text" id="platform"></span>
+                        </div>
+                        <div class="item">
+                            <div class="key">
+                                <img class="icon_os_type_p">
+                                <span>OS</span>
+                            </div>
+                            <span class="text" id="os"></span>
+                        </div>
+                        <div class="item">
+                            <div class="key">
+                                <img class="icon_device_type_p">
+                                <span>Device</span>
+                            </div>
+                            <span class="text" id="deviceModel"></span>
+                        </div>
+                        <div class="item">
+                            <div class="key">
+                                <img class="icon_location">
+                                <span>Location</span>
+                            </div>
+                            <span class="text" id="timezone"></span>
+                        </div>
+                        <div class="item">
+                            <div class="key">
+                                <img class="icon_user_id_p">
+                                <span>User ID</span>
+                            </div>
+                            <span class="text" id="userId"></span>
+                        </div>
+                        <div class="item">
+                            <div class="key">
+                                <img class="icon_user_ip_p">
+                                <span>User IP</span>
+                            </div>
+                            <span class="text" id="ip"></span>
+                        </div>
+                        <div class="item">
+                            <div class="key">
+                                <img class="icon_txid_p">
+                                <span>TXID</span>
+                            </div>
+                            <span class="text" id="txid"></span>
+                        </div>
+                    </div>
+                    <div class="bot">
+                        <div class="item all">
+                            <div class="key">
+                                <img class="icon_url">
+                                <span>Target URL</span>
+                            </div>
+                            <div class="url enable_scrollbar" id="reqUrl"></div>
+                        </div>
+                        <div class="item all">
+                            <div class="key">
+                                <img class="icon_error_msg">
+                                <span>Msg</span>
+                            </div>
+                            <div class="url enable_scrollbar" id="resMsg"></div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="error_info_wrap" id="{{id}}__{{topChartId}}">
+                <div class="header_wrap">
+                    <div class="type_tab">
+                        <button class="selected tab" data-type="stack">Stack</button>
+                        <button class="tab" data-type="session">Session</button>
+                    </div>
+                    <button class="icon_session_replay" id="btnSessionReplay"></button>
+                </div>
+
+                <div class="content_wrap stack" id="stack">
+                    <div class="error_stack_info">
+                        <button class="read on" id="readFlag">New</button>
+                        <span id="readAt"></span>
+                    </div>
+                    <div class="stack-list enable_scrollbar"></div>
+                </div>
+                <div class="content_wrap session">
+                    <div class="tabulator-no-hover" id="sessionListTable"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

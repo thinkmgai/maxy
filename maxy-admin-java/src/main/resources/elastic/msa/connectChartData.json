@@ -1,0 +1,54 @@
+{
+  "aggs": {
+    "connectCount": {
+      "date_histogram": {
+        "field": "logTm",
+        "interval": "day",
+        "time_zone": "Asia/Seoul",
+        "format": "yyyy-MM-dd",
+        "extended_bounds": {
+          "min": #{searchToDay},
+          "max": #{searchFromDay}
+        }
+      }
+    }
+  },
+  "size": 0,
+  "query": {
+    "bool": {
+      "filter": [
+        {
+          "term": {
+            "packageNm": #{packageNm}
+          }
+        },
+        {
+          "term": {
+            "serverType": #{serverType}
+          }
+        }
+        #[isAppVer]
+        ,{
+          "term": {
+            "appVer": #{appVer}
+          }
+        }
+        #[/isAppVer]
+        ,{
+           "range": {
+              "logTm": {
+                "gte": #{searchToDt},
+                "lte": #{searchFromDt},
+                "format": "epoch_millis"
+            }
+          }
+        },
+        {
+          "term": {
+            "logTypeDnm" : "App start"
+          }
+        }
+      ]
+    }
+  }
+}

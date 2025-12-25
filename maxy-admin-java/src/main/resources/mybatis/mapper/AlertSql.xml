@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkm.maxy.mapper.AlertMapper">
+    <select id="selectAlertConfig" parameterType="AlertLimitConfigVO" resultType="AlertLimitConfigVO">
+        select package_nm,
+               server_type,
+               target,
+               target_desc,
+               target_postfix,
+               limit_value,
+               optional,
+               limit_overtime,
+               alert_period,
+               template_msg,
+               use_yn,
+               reg_dt,
+               reg_no
+        from maxy_alert_limit_config
+        where package_nm = #{packageNm}
+          and server_type = #{serverType}
+    </select>
+
+    <insert id="upsertAlertConfig" parameterType="java.util.List">
+        INSERT INTO maxy_alert_limit_config (
+            package_nm,
+            server_type,
+            target,
+            target_desc,
+            target_postfix,
+            limit_value,
+            optional,
+            limit_overtime,
+            alert_period,
+            template_msg,
+            use_yn,
+            reg_dt,
+            reg_no,
+            upd_dt,
+            upd_no
+        )
+        VALUES
+        <foreach collection="list" item="item" separator=",">
+            (
+            #{item.packageNm},
+            #{item.serverType},
+            #{item.target},
+            #{item.targetDesc},
+            #{item.targetPostfix},
+            #{item.limitValue},
+            #{item.optional},
+            #{item.limitOvertime},
+            #{item.alertPeriod},
+            #{item.templateMsg},
+            #{item.useYn},
+            #{item.regDt},
+            #{item.regNo},
+            #{item.updDt},
+            #{item.updNo}
+            )
+        </foreach>
+        ON DUPLICATE KEY UPDATE
+        target_desc = VALUES(target_desc),
+        target_postfix = VALUES(target_postfix),
+        limit_value = VALUES(limit_value),
+        optional = VALUES(optional),
+        limit_overtime = VALUES(limit_overtime),
+        alert_period = VALUES(alert_period),
+        template_msg = VALUES(template_msg),
+        use_yn = VALUES(use_yn),
+        upd_dt = VALUES(upd_dt),
+        upd_no = VALUES(upd_no)
+    </insert>
+
+    <select id="selectAlertHistoryList" parameterType="AlertHistoryVO" resultType="AlertHistoryVO">
+        select h.seq,
+               h.package_nm,
+               h.server_type,
+               h.alert_type,
+               c.target_desc as alert_desc,
+               h.send_method,
+               h.target,
+               h.message,
+               h.result,
+               h.reg_dt
+        from maxy_alert_history h
+                 inner join maxy_alert_limit_config c
+                            on c.package_nm = h.package_nm
+                                and c.server_type = h.server_type
+                                and c.target = h.alert_type
+        where h.package_nm = #{packageNm}
+          and h.server_type = #{serverType}
+        order by h.reg_dt desc
+    </select>
+
+    <select id="selectAlertSendConfig" parameterType="AlertSendConfigVO" resultType="AlertSendConfigVO">
+        select package_nm,
+               server_type,
+               send_type,
+               send_url,
+               token,
+               account_id,
+               account_pw,
+               use_yn,
+               reg_dt,
+               reg_no,
+               upd_dt,
+               upd_no
+        from maxy_alert_send_config
+        where package_nm = #{packageNm}
+          and server_type = #{serverType}
+          and send_type = #{sendType}
+    </select>
+
+    <select id="selectAlertSendTargets" parameterType="AlertSendConfigVO" resultType="AlertSendTargetVO">
+        select package_nm,
+               server_type,
+               send_type,
+               target,
+               description,
+               reg_dt,
+               reg_no,
+               upd_dt,
+               upd_no
+        from maxy_alert_send_target
+        where package_nm = #{packageNm}
+          and server_type = #{serverType}
+          and send_type = #{sendType}
+    </select>
+
+    <insert id="upsertAlertSendConfig" parameterType="AlertSendConfigVO">
+        INSERT INTO maxy_alert_send_config (
+            package_nm,
+            server_type,
+            send_type,
+            send_url,
+            token,
+            account_id,
+            account_pw,
+            use_yn,
+            reg_dt,
+            reg_no,
+            upd_dt,
+            upd_no
+        )
+        VALUES (
+            #{packageNm},
+            #{serverType},
+            #{sendType},
+            #{sendUrl},
+            #{token},
+            #{accountId},
+            #{accountPw},
+            #{useYn},
+            #{regDt},
+            #{regNo},
+            #{updDt},
+            #{updNo}
+        ) ON DUPLICATE KEY UPDATE
+        send_url = VALUES (send_url),
+        token = VALUES (token),
+        account_id = VALUES (account_id),
+        account_pw = VALUES (account_pw),
+        use_yn = VALUES (use_yn),
+        upd_dt = VALUES (upd_dt),
+        upd_no = VALUES (upd_no)
+    </insert>
+
+    <delete id="deleteAlertSendConfig" parameterType="AlertSendConfigVO">
+        DELETE FROM maxy_alert_send_config
+        WHERE package_nm  = #{packageNm}
+          AND server_type = #{serverType}
+          AND send_type   = #{sendType}
+    </delete>
+
+    <delete id="deleteAlertSendTargets" parameterType="AlertSendConfigVO">
+        DELETE FROM maxy_alert_send_target
+        WHERE package_nm  = #{packageNm}
+          AND server_type = #{serverType}
+          AND send_type   = #{sendType}
+    </delete>
+
+    <insert id="insertAlertSendTargets" parameterType="AlertSendConfigVO">
+        INSERT INTO maxy_alert_send_target (
+        package_nm,
+        server_type,
+        send_type,
+        target,
+        description,
+        reg_dt,
+        reg_no,
+        upd_dt,
+        upd_no
+        ) VALUES
+        <foreach collection="targets" item="t" separator=",">
+            (
+            #{packageNm},
+            #{serverType},
+            #{sendType},
+            #{t.target},
+            #{t.description},
+            #{t.regDt},
+            #{t.regNo},
+            #{t.updDt},
+            #{t.updNo}
+            )
+        </foreach>
+    </insert>
+
+    <update id="updateAlertSendConfigUseYn" parameterType="AlertSendConfigVO">
+        UPDATE maxy_alert_send_config
+        SET use_yn = #{useYn},
+            upd_dt = #{updDt},
+            upd_no = #{updNo}
+        WHERE package_nm  = #{packageNm}
+          AND server_type = #{serverType}
+          AND send_type   = #{sendType}
+    </update>
+</mapper>

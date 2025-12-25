@@ -1,0 +1,104 @@
+{
+  "aggs": {
+    "count": {
+      "terms": {
+        "field": "contents.occur.raw",
+        "size": 50
+      },
+      "aggs": {
+        "osType": {
+          "terms": {
+            "field": "osType",
+            "size": 10
+          },
+          "aggs": {
+            "appVer": {
+              "terms": {
+                "field": "appVer",
+                "size": 10
+              },
+              "aggs": {
+                "time": {
+                  "terms": {
+                    "field": "logTm",
+                    "size": 1,
+                    "order": {
+                      "_key": "desc"
+                    }
+                  },
+                  "aggs": {
+                    "userId": {
+                      "terms": {
+                        "field": "userId.raw",
+                        "size": 1,
+                        "order": {
+                          "_key": "desc"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "size": 0,
+  "query": {
+    "bool": {
+      "must": [
+        {
+          "term": {
+            "packageNm": #{packageNm}
+          }
+        },
+        {
+          "term": {
+            "serverType": #{serverType}
+          }
+        },
+        {
+          "exists": {
+            "field": "userId"
+          }
+        },
+        #[isOsType]
+        {
+          "term": {
+            "osType": #{osType}
+          }
+        },
+        #[/isOsType]
+        #[isAppVer]
+        {
+          "term": {
+            "appVer": #{appVer}
+          }
+        },
+        #[/isAppVer]
+        {
+          "range": {
+            "logTm": {
+              "gte": #{fromTimestamp},
+              "lte": #{toTimestamp}
+            }
+          }
+        }
+      ],
+      "must_not": [
+        {
+          "term": {
+            "userId.raw": "-"
+          }
+        },
+        {
+          "term": {
+            "userId.raw": ""
+          }
+        }
+      ]
+    }
+  }
+}

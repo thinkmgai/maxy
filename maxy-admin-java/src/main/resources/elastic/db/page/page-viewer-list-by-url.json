@@ -1,0 +1,85 @@
+{
+  "query": {
+    "bool": {
+      "filter": [
+        {
+          "term": {
+            "packageNm": #{packageNm}
+          }
+        },
+        {
+          "term": {
+            "serverType": #{serverType}
+          }
+        },
+        #[searchDeviceId]
+        {
+          "term": {
+            "deviceId.raw": #{searchValue}
+          }
+        },
+        #[/searchDeviceId]
+        #[searchUserNm]
+        {
+          "term": {
+            "userNm": #{searchValue}
+          }
+        },
+        #[/searchUserNm]
+        #[searchUserId]
+        {
+          "term": {
+            "userId": #{searchValue}
+          }
+        },
+        #[/searchUserId]
+        #[isOsType]
+        {
+          "term": {
+            "osType": #{osType}
+          }
+        },
+        #[/isOsType]
+        {
+          "term": {
+            "reqUrl.raw": #{reqUrl}
+          }
+        },
+        {
+          "range": {
+            "pageStartTm": {
+              "from": #{from},
+              "to": #{to},
+              "include_lower": true,
+              "include_upper": true,
+              "time_zone": "Z"
+            }
+          }
+        }
+      ]
+    }
+  },
+  "size": 1000,
+  "sort": [
+    {
+      "pageStartTm" : {
+        "order" : "desc",
+        "missing" : "_last",
+        "unmapped_type" : "date"
+      }
+    },
+    {
+      "deviceId.raw" : {
+        "order" : "asc",
+        "missing" : "_last",
+        "unmapped_type" : "keyword"
+      }
+    }
+  ]
+  #[isMoreData]
+  ,"search_after": [
+    #{lastLogTm},
+    #{lastDeviceId}
+  ]
+  #[/isMoreData]
+}

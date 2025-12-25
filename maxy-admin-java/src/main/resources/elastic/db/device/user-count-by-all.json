@@ -1,0 +1,36 @@
+{
+  "size": 0,
+  "track_total_hits": true,
+  "query": {
+    "bool": {
+      "filter": [
+        {
+          "term": {
+            "packageNm": #{packageNm}
+          }
+        },
+        {
+          "term": {
+            "serverType": #{serverType}
+          }
+        },
+        #[isOsType]
+        {
+          "term": {
+            "osType": #{osType}
+          }
+        },
+        #[/isOsType]
+        {
+          "range": {
+            "accessDate": {
+              "gte": #{fromDate},
+              "lte": #{toDate},
+              "time_zone": "Z"
+            }
+          }
+        }
+      ]
+    }
+  }
+}

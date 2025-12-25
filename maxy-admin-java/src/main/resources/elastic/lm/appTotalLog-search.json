@@ -1,0 +1,276 @@
+{
+  "size" : #{size},
+  "query" : {
+    "bool" : {
+      "must" : [
+        {
+          "bool" : {
+            "must" : [
+              {
+                "term" : {
+                  "packageNm" : {
+                    "value" : #{packageNm}
+                  }
+                }
+              },
+              {
+                "term" : {
+                  "serverType" : {
+                    "value" : #{serverType}
+                  }
+                }
+              }
+    #[searchAppVer]
+              ,{
+                "term" : {
+                    "appVer" : {
+                      "value" : #{appVer}
+                  }
+                }
+              }
+    #[/searchAppVer]
+    #[isDeviceModel]
+            ,{
+              "term" : {
+                "deviceModel" : #{deviceModel}
+              }
+             }
+    #[/isDeviceModel]
+    #[searchDeviceId]
+            ,{
+              "term":{
+                "deviceId.raw" : {
+                  "value" : #{searchValue}
+                }
+              }
+            }
+    #[/searchDeviceId]
+    #[searchVipYn]
+            ,{
+              "term":{
+                "vipYn" : {
+                  "value" : #{vipYn}
+                }
+              }
+            }
+    #[/searchVipYn]
+    #[searchLogType]
+          ,{
+            "term":{
+              "logTypeNm" : {
+                "value" : #{logTp}
+              }
+            }
+          }
+    #[/searchLogType]
+    #[searchOsType]
+          ,{
+            "term":{
+              "osType" : {
+                "value" : #{osType}
+              }
+            }
+          }
+    #[/searchOsType]
+    #[searchUserNm]
+          ,{
+            "term":{
+              "userNm" : {
+                "query": #{searchValue}
+                }
+              }
+            }
+    #[/searchUserNm]
+    #[searchUserId]
+          ,{
+            "term":{
+              "userId" : {
+                "query": #{searchValue}
+              }
+            }
+          }
+    #[/searchUserId]
+    #[searchReqUrl]
+          ,{
+            "term":{
+              "reqUrl" : {
+                "query": #{searchValue}
+              }
+            }
+          }
+    #[/searchReqUrl]
+    #[searchPhoneNo]
+          ,{
+            "term":{
+              "phoneNo" : {
+                "query": #{searchValue},
+                "operator": "and"
+              }
+            }
+          }
+    #[/searchPhoneNo]
+            ],
+            "adjust_pure_negative" : true
+          }
+        },
+        {
+          "range" : {
+            "logTm" : {
+              "from" : #{fromDt},
+              "to" : #{toDt},
+              "include_lower" : true,
+              "include_upper" : true,
+              "time_zone" : "Z"
+            }
+          }
+        }
+      ],
+      "adjust_pure_negative" : true
+    }
+  },
+  "_source" : false,
+  "fields" : [
+    {
+      "field" : "aliasValue"
+    },
+    {
+      "field" : "appBuildNum"
+    },
+    {
+      "field" : "appVer"
+    },
+    {
+      "field" : "batteryLvl"
+    },
+    {
+      "field" : "comSensitivity"
+    },
+    {
+      "field" : "comType"
+    },
+    {
+      "field" : "cpuUsage"
+    },
+    {
+      "field" : "deviceId"
+    },
+    {
+      "field" : "deviceModel"
+    },
+    {
+      "field" : "intervaltime"
+    },
+    {
+      "field" : "ip"
+    },
+    {
+      "field" : "logDate"
+    },
+    {
+      "field" : "logMonth"
+    },
+    {
+      "field" : "logTm",
+      "format" : "epoch_millis"
+    },
+    {
+      "field" : "logType"
+    },
+    {
+      "field" : "logTypeDnm"
+    },
+    {
+      "field" : "logTypeNm"
+    },
+    {
+      "field" : "logYear"
+    },
+    {
+      "field" : "loginYn"
+    },
+    {
+      "field" : "memUsage"
+    },
+    {
+      "field" : "osType"
+    },
+    {
+      "field" : "osVer"
+    },
+    {
+      "field" : "packageNm"
+    },
+    {
+      "field" : "referer"
+    },
+    {
+      "field" : "regDt",
+      "format" : "epoch_millis"
+    },
+    {
+      "field" : "reqUrl"
+    },
+    {
+      "field" : "resMsg"
+    },
+    {
+      "field" : "serverType"
+    },
+    {
+      "field" : "simOperatorNm"
+    },
+    {
+      "field" : "storageTotal"
+    },
+    {
+      "field" : "storageUsage"
+    },
+    {
+      "field" : "timezone"
+    },
+    {
+      "field" : "webviewVer"
+    },
+    {
+      "field" : "userId"
+    }
+  ],
+  "sort" : [
+    {
+      "logTm" : {
+        "order" : "desc",
+        "missing" : "_last",
+        "unmapped_type" : "date"
+      }
+    },
+    {
+      "deviceId.raw" : {
+        "order" : "asc",
+        "missing" : "_last",
+        "unmapped_type" : "keyword"
+      }
+    },
+    {
+      "logType" : {
+        "order" : "asc",
+        "missing" : "_last",
+        "unmapped_type" : "long"
+      }
+    },
+    {
+    "_id" : {
+        "order" : "asc",
+        "missing" : "_last",
+        "unmapped_type" : "keyword"
+      }
+    }
+  ]
+  #[isMoreData]
+  , "search_after":[
+    #{lastLogTm},
+    #{lastDeviceId},
+    #{lastLogType},
+    #{id}
+  ]
+  #[/isMoreData]
+}

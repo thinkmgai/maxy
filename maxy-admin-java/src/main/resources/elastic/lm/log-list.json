@@ -1,0 +1,159 @@
+{
+  "size" : #{size},
+  "query" : {
+    "bool" : {
+      #[searchLogClass]
+      "minimum_should_match": 1,
+      "should": [#{_rawLogType}],
+      #[/searchLogClass]
+      "must" : [
+        {
+          "term" : {
+            "packageNm" : {
+              "value" : #{packageNm}
+            }
+          }
+        },
+        {
+          "term" : {
+            "serverType" : {
+              "value" : #{serverType}
+            }
+          }
+        }
+    #[isDeviceModel]
+        ,{
+          "term" : {
+            "deviceModel" : #{deviceModel}
+          }
+        }
+    #[/isDeviceModel]
+    #[searchDeviceId]
+        ,{
+          "term": {
+            "deviceId.raw" : {
+              "value" : #{searchValue}
+            }
+          }
+        }
+    #[/searchDeviceId]
+    #[searchVipYn]
+        ,{
+          "term": {
+            "vipYn" : {
+              "value" : #{vipYn}
+            }
+          }
+        }
+    #[/searchVipYn]
+    #[searchOsType]
+        ,{
+          "term": {
+            "osType" : {
+              "value" : #{osType}
+            }
+          }
+        }
+    #[/searchOsType]
+    #[isAppVer]
+        ,{
+          "term": {
+            "appVer": {
+              "value": #{appVer}
+            }
+          }
+        }
+    #[/isAppVer]
+    #[searchUserNm]
+        ,{
+          "term": {
+            "userNm.raw" : #{searchValue}
+          }
+        }
+    #[/searchUserNm]
+    #[searchUserId]
+        ,{
+          "term": {
+            "userId.raw" : #{searchValue}
+          }
+        }
+    #[/searchUserId]
+    #[searchReqUrl]
+        ,{
+          "wildcard": {
+            "reqUrl.raw": {
+              "value": #{searchValue}
+            }
+          }
+        }
+    #[/searchReqUrl]
+        ,
+        {
+          "range" : {
+            "logTm" : {
+              #[isDateType]
+              "from" : #{from},
+              #[/isDateType]
+              #[isToDt]
+              "from" : #{fromDt},
+              "to" : #{toDt},
+              #[/isToDt]
+              "include_lower" : true,
+              "include_upper" : true,
+              "time_zone" : "Z"
+            }
+          }
+        }
+      ]
+    }
+  },
+  "_source" : [
+        "deviceId",
+        "logTm",
+        "packageNm",
+        "serverType",
+        "appVer",
+        "osType",
+        "reqUrl",
+        "intervaltime",
+        "osVer",
+        "loginYn",
+        "logType",
+        "logTypeNm",
+        "logTypeDnm",
+        "userId",
+        "aliasValue",
+        "resMsg",
+        "deviceModel"
+  ],
+  "sort" : [
+    {
+      "logTm" : {
+        "order" : "desc",
+        "missing" : "_last",
+        "unmapped_type" : "long"
+      }
+    },
+    {
+     "deviceId.raw": {
+        "order" : "desc",
+        "missing" : "_last",
+        "unmapped_type" : "long"
+      }
+    },
+    {
+      "logType" : {
+        "order" : "desc",
+        "missing" : "_last",
+        "unmapped_type" : "long"
+      }
+    }
+  ]
+  #[isMoreData]
+  , "search_after":[
+    #{lastLogTm},
+    #{lastDeviceId},
+    #{lastLogType}
+  ]
+  #[/isMoreData]
+}

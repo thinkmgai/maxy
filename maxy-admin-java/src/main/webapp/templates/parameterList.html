@@ -1,0 +1,13 @@
+{{#data}}
+<div class="config_list_item" id="item__{{parameter}}">
+    <div class="list_item">
+        <span>Parameter: {{parameter}}</span>
+    </div>
+    <div class="list_item" style="width:29%;">
+        <div>
+            <span>{{dateFormat regDt}}</span>
+        </div>
+        <button onclick="PA0400.func.delete('{{parameter}}')"><img src="/images/maxy/icon-delete.svg" alt="-"></button>
+    </div>
+</div>
+{{/data}}

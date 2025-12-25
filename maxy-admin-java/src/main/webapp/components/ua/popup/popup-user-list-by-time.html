@@ -1,0 +1,32 @@
+<style>
+    .maxy_popup_common {
+        width: 50vw;
+    }
+
+    .tabulator-row .tabulator-cell:last-of-type {
+        margin-left: auto;
+    }
+
+    .userIdCount {
+        transform: translate(2px, -6px);
+        font-size: 9px;
+    }
+</style>
+
+<div class="maxy_popup_common" id="{{id}}__popup">
+    <div class="maxy_popup_grid_s_wrap">
+        <div class="maxy_popup_title_wrap">
+            <div class="maxy_popup_title_left">
+                <img class="maxy_popup_analysis_icon" alt="">
+                <span id="title">User List</span>
+                <span id="count" class="popup_count"></span>
+            </div>
+
+            <div class="maxy_popup_title_right">
+                <div>{{date}}</div>
+            </div>
+        </div>
+
+        <div id="{{id}}"></div>
+    </div>
+</div>

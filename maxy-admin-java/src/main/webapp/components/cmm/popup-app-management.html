@@ -1,0 +1,633 @@
+<style>
+    .maxy_popup_common.app {
+        display: block;
+        top: 40px;
+        right: -1200px;
+        left: auto !important;
+        width: 1200px;
+        min-width: 1000px;
+        min-height: auto !important;
+        height: calc(100% - 40px);
+        visibility: visible !important;
+        transition: right 0.7s ease;
+        transform: initial !important;
+        padding: 0 !important;
+    }
+
+    .maxy_popup_common.app.show {
+        right: 0;
+    }
+
+    .maxy_popup_common.app .header {
+        height: 60px;
+        width: 100%;
+        padding: 20px 15px;
+        display: flex;
+        justify-content: space-between;
+        gap: 1em;
+        border-bottom: 1px solid #DCDCDC;
+        align-items: center;
+    }
+
+    .maxy_popup_common.app .header .name {
+        display: flex;
+        gap: 1em;
+        align-items: center;
+    }
+
+    .maxy_popup_common.app .header h3 {
+        color: #000;
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: normal;
+    }
+
+    .maxy_popup_common.app .contents {
+        display: flex;
+        flex-direction: column;
+        height: calc(100% - 60px);
+        overflow-y: auto;
+        padding: 20px 25px;
+        background-color: #F7F8FA;
+    }
+
+    .maxy_popup_common.app .contents > div {
+        margin-bottom: 20px;
+    }
+
+    .maxy_popup_common.app .contents > div:last-child {
+        margin-bottom: 0;
+    }
+
+    .maxy_popup_common.app .contents > div:nth-child(4) {
+        margin-bottom: 35px; /* or 0 원하는 값 */
+    }
+
+    .maxy_popup_common.app .contents .title {
+        border-bottom: 1px solid #e3e5e8;
+        margin-bottom: 11px;
+        padding-bottom: 0.5em;
+        color: #4D83A1;
+        font-size: 15px;
+    }
+
+    .maxy_popup_common.app .contents .content.input_4_wrap {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        column-gap: 2em;
+    }
+
+    .maxy_popup_common.app .contents .content.input_4_wrap .grid {
+        display: grid;
+        grid-template-columns: 41% 56%;
+        gap: 3%;
+        align-items: center;
+        position: relative;
+    }
+
+    .maxy_popup_common.app .contents .content.input_4_wrap .grid.unit {
+        grid-template-columns: 41% 45% !important;
+    }
+
+    .maxy_popup_common.app .contents .content.input_4_wrap .grid .add {
+        font-size: 11px;
+        position: relative;
+    }
+
+    .maxy_popup_common.app .contents .content.input_4_wrap .grid .add .detail {
+        font-size: 11px;
+        white-space: nowrap;
+        left: -27px;
+        position: absolute;
+        bottom: -18px;
+        color: #708e9f;
+    }
+
+    .maxy_popup_common.app .contents label {
+        line-height: normal;
+    }
+
+    .maxy_popup_common.app .sub_title {
+        font-size: 12px;
+        color: #808080;
+        margin-bottom: 11px;
+        line-height: normal;
+    }
+
+    .maxy_popup_common.app .sub_title.highlight {
+        color: #FF0000;
+    }
+
+    .maxy_popup_common.app .contents .content.input_2_wrap {
+        display: grid;
+        grid-template-columns: 51% 49%;
+    }
+
+    .maxy_popup_common.app input[type="checkbox"] + label {
+        user-select: none;
+        background: url(/images/maxy/icon-check-circle-off.svg) left / 17px no-repeat transparent;
+        width: 12em;
+        padding-left: 2em;
+        margin-bottom: 11px;
+        padding-bottom: 0.5em;
+        text-decoration: underline #E3E5E8 1px;
+    }
+
+    .maxy_popup_common.app input[type="checkbox"]:checked + label {
+        background: url('/images/maxy/icon-check-circle-on.svg') left / 17px transparent no-repeat;
+        border-radius: 20px;
+    }
+
+    .maxy_popup_common.app .contents .content.input_2_wrap .flex {
+        display: flex;
+    }
+
+    .slider-wrap {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 11px;
+    }
+
+    .ratio-slider {
+        width: 220px;
+        border: none;
+        --track-color: #adc3f1; /* 기본 (녹색) */
+        accent-color: var(--track-color); /* 최신 브라우저 */
+    }
+
+    /* 체크 해제 시 비활성 느낌 */
+    .slider-wrap.disabled {
+        opacity: 0.4;
+        pointer-events: none;
+    }
+
+    #ratioBasedCriteriaWrap, #targetBasedCriteriaWrap {
+        display: none;
+    }
+
+    .grid.unit .unit_txt {
+        position: absolute;
+        right: 0;
+    }
+
+    .front_only {
+        display: none;
+    }
+
+    .btn_wrap {
+        display: flex;
+        gap: .5em;
+    }
+
+    .btn_common.delete {
+        border: 1px solid var(--point-red) !important;
+        color: var(--point-red) !important;
+        display: none;
+    }
+
+    .btn_common.delete.is-show {
+        display: inline-flex;
+    }
+
+    .table_container {
+        max-height: 300px;
+        overflow-y: auto;
+        border-radius: var(--radius);
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        background-color: white;
+    }
+
+    .table_container table {
+        width: 100%;
+        border-collapse: collapse;
+        background-color: white;
+    }
+
+    .table_container table th,
+    .table_container table td {
+        padding: 12px 8px;
+        text-align: left;
+        border-bottom: 1px solid #e3e5e8;
+        vertical-align: middle;
+    }
+
+    .table_container table th {
+        background-color: white;
+        font-weight: 600;
+        color: #4D83A1;
+        font-size: 13px;
+        position: sticky;
+        top: 0;
+        z-index: 10;
+    }
+
+    .table_container table th:last-of-type {
+        width: 60px;
+        text-align: center;
+    }
+
+    .table_container table td {
+        font-size: 12px;
+    }
+
+    .table_container table td.search_td {
+        display: flex;
+        align-items: center;
+        gap: 0.5em;
+    }
+
+    .table_container table .item_select {
+        width: 100%;
+        padding: 6px 8px;
+        border: 1px solid #ddd;
+        border-radius: var(--radius);
+        font-size: 12px;
+    }
+
+    .table_container table .target_input,
+    .table_container table .remark_input {
+        width: 100%;
+        padding: 6px 8px;
+        border: 1px solid #ddd;
+        border-radius: var(--radius);
+        font-size: 12px;
+    }
+
+    .table_container table .btn_add,
+    .table_container table .btn_remove {
+        width: 60px;
+        padding: 6px 12px;
+        border: none;
+        border-radius: var(--radius);
+        font-size: 11px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: background-color 0.2s;
+    }
+
+    .table_container table .btn_add {
+        background-color: var(--color-btn-light-1);
+        color: white;
+    }
+
+    .table_container table .btn_remove {
+        border: 1px solid var(--point-red);
+        color: var(--point-red);
+    }
+
+    .table_container table .registered-row .item_select,
+    .table_container table .registered-row .target_input,
+    .table_container table .registered-row .remark_input {
+        background-color: #f8f9fa;
+        border-color: #e9ecef;
+    }
+
+    .table_container table .registered-row td {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .table_container table .registered-row td:nth-of-type(2) {
+        max-width: 370px;
+    }
+
+    .table_container table .registered-row td:nth-of-type(3) {
+        max-width: 320px;
+    }
+
+    /* 필터링 UI 스타일 */
+    .filter_controls {
+        margin-bottom: 15px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .filter_type_select {
+        width: 100px;
+        padding: 6px 8px;
+        border-radius: var(--radius);
+        font-size: 12px;
+    }
+
+    .filter_input {
+        padding: 6px 8px;
+        border: 1px solid #ddd;
+        border-radius: 3px;
+        font-size: 12px;
+        width: 300px;
+    }
+
+    .filter_clear_btn {
+        padding: 6px 12px;
+        border: 1px solid #ddd;
+        border-radius: var(--radius);
+        font-size: 12px;
+        background: #f8f9fa;
+        cursor: pointer;
+    }
+
+    .filter_clear_btn:hover {
+        background: #e9ecef;
+    }
+
+    input[type=range] {
+        --track-color: #adc3f1; /* 기본값 */
+        -webkit-appearance: none;
+        width: 220px;
+        height: 7px;
+        border-radius: 5px;
+        background: linear-gradient(
+                to right,
+                var(--track-color) 0%,
+                var(--track-color) 0%,
+                #e3e5e8 0%,
+                #e3e5e8 100%
+        );
+        outline: 0;
+    }
+
+    /* thumb */
+    input[type=range]::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        width: 15px;
+        height: 15px;
+        border-radius: 50%;
+        background-color: var(--track-color);
+        cursor: pointer;
+    }
+
+    .slider-wrap.disabled input[type=range] {
+        --track-color: #d6d6d6;
+        background: #d6d6d6;
+    }
+
+    .slider-wrap.disabled input[type=range]::-webkit-slider-thumb {
+        background-color: #d6d6d6;
+        cursor: not-allowed;
+    }
+</style>
+<div class="maxy_popup_common app" id="{{id}}__popUp">
+    <div class="header">
+        <div class="name">
+            <h3>App {{title}}</h3>
+        </div>
+        <div class="btn_wrap">
+            <button class="btn_common delete" id="btnDelete" data-t="common.btn.delete"></button>
+            <button class="btn_common opposite" id="btnSave" data-t="common.btn.save"></button>
+        </div>
+    </div>
+    <div class="contents enable_scrollbar">
+        <div>
+            <div class="title" data-t="system.package.appInfo"></div>
+            <div class="content input_4_wrap">
+                <div class="grid">
+                    <label for="appId">App ID</label>
+                    <input type="text" id="appId">
+                </div>
+                <div class="grid">
+                    <label for="serverType">Server</label>
+                    <select id="serverType"></select>
+                </div>
+                <div class="grid">
+                    <label for="appName">App Name</label>
+                    <input type="text" id="appName">
+                </div>
+                <div class="grid">
+                    <label for="order">Sort Order</label>
+                    <input type="number" id="order" value="0" min="0"
+                           max="100"
+                           step="1">
+                </div>
+            </div>
+        </div>
+        <div>
+            <div class="title" data-t="system.package.collectionInfo"></div>
+            <div class="content input_4_wrap">
+                <div class="grid unit">
+                    <label for="logPeriod">Log Period</label>
+                    <input type="number" id="logPeriod" value="10" min="1" max="600" step="1">
+                    <span class="unit_txt">sec</span>
+                </div>
+                <div class="grid unit">
+                    <label for="pageLogPeriod">Page Log Period</label>
+                    <input type="number" id="pageLogPeriod" value="10" min="0" max="10" step="1">
+                    <span class="unit_txt">min</span>
+                </div>
+                <div class="grid unit">
+                    <label for="sessionLogPeriod">Session Log Period</label>
+                    <input type="number" id="sessionLogPeriod" value="4" min="1" max="10" step="1">
+                    <span class="unit_txt">sec</span>
+                </div>
+                <div class="grid unit">
+                    <label for="logBundleUnits">Log Bundle Units</label>
+                    <input type="number" id="logBundleUnits" value="10" min="1" max="500" step="1">
+                    <span class="unit_txt">logs</span>
+                </div>
+
+            </div>
+        </div>
+        <div>
+            <div class="title" data-t="system.package.statusSetting"></div>
+            <div class="content input_4_wrap" id="statusSettingSection">
+                <div>
+                    <input type="checkbox" id="useYn">
+                    <label for="useYn" data-t="system.package.activate"></label>
+                </div>
+                <div>
+                    <input type="checkbox" id="monitoringYn">
+                    <label for="monitoringYn" data-t="system.package.monitoring"></label>
+                </div>
+                <div>
+                    <input type="checkbox" id="integrationYn">
+                    <label for="integrationYn" data-t="system.package.integratedDb"></label>
+                </div>
+                <div>
+                    <input type="checkbox" id="zipYn">
+                    <label for="zipYn" data-t="system.package.compression"></label>
+                </div>
+                <div>
+                    <input type="checkbox" id="fullMsgYn">
+                    <label for="fullMsgYn" data-t="system.package.apiSend"></label>
+                </div>
+                <div>
+                    <input type="checkbox" id="fullReqMsgYn">
+                    <label for="fullReqMsgYn" data-t="system.package.apiReceive"></label>
+                </div>
+                <div>
+                    <input type="checkbox" id="infoYn">
+                    <label for="infoYn">Client Info</label>
+                </div>
+                <div>
+                    <input type="checkbox" id="appType">
+                    <label for="appType" data-t="system.package.frontMonitoring"></label>
+                </div>
+                <div>
+                    <input type="checkbox" id="sReplayYn">
+                    <label for="sReplayYn" data-t="system.package.sessionReplay"></label>
+                </div>
+            </div>
+        </div>
+        <div class="front_only" id="feeldexSection">
+            <div class="title">4. FeelDex (Level 5 Perceived Score)</div>
+            <div class="sub_title" data-t="system.package.feeldexInfo"></div>
+            <div class="content input_4_wrap">
+                <div class="grid">
+                    <label for="lcp">LCP
+                        <span class="add">
+                            (Largest Contentful Paint)
+                            <span class="detail" data-t="system.package.lcp"></span>
+                        </span>
+                    </label>
+                    <input type="number" id="lcp" min="0" step="1">
+                </div>
+                <div class="grid">
+                    <label for="inp">INP
+                        <span class="add">(Interactive to Next Paint)
+                            <span class="detail" data-t="system.package.inp"></span>
+                        </span>
+                    </label>
+                    <input type="number" id="inp" min="0" step="1">
+                </div>
+                <div class="grid">
+                    <label for="cls">CLS
+                        <span class="add">(Cumulative Layout Shift)
+                            <span class="detail" data-t="system.package.cls"></span>
+                        </span>
+                    </label>
+                    <input type="number" id="cls" min="0" step="1">
+                </div>
+            </div>
+        </div>
+        <div class="data_collection_rate_wrap">
+            <div class="title">5. Data Collection Rate</div>
+            <div class="sub_title" data-t="system.package.dataCollectionRate"></div>
+            <div class="content input_2_wrap">
+                <div class="flex ratio-item">
+                    <input type="checkbox" class="ratio-check" id="collectionLoggingRate">
+                    <label for="collectionLoggingRate" data-t="system.package.web"></label>
+                    <div class="slider-wrap">
+                        <input
+                                type="range"
+                                class="ratio-slider"
+                                min="0"
+                                max="100"
+                                value="100"
+                        >
+                        <span class="ratio-value" id="loggingRatePc">100%</span>
+                    </div>
+                </div>
+                <div class="flex ratio-item">
+                    <input type="checkbox" class="ratio-check" id="collectionLoggingRateMobile">
+                    <label for="collectionLoggingRateMobile" data-t="system.package.webview"></label>
+                    <div class="slider-wrap">
+                        <input
+                                type="range"
+                                class="ratio-slider"
+                                min="0"
+                                max="100"
+                                value="100"
+                        >
+                        <span class="ratio-value" id="loggingRateMobile">100%</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="front_only" id="sessionReplayRateSection">
+            <div class="title">6. Session Replay Collection Rate</div>
+            <div class="sub_title" data-t="system.package.sessionReplayRateDesc"></div>
+            <div class="sub_title highlight" data-t="system.package.sessionReplayRateWarning"></div>
+            <div class="content input_2_wrap">
+                <div class="flex ratio-item">
+                    <input type="checkbox" class="ratio-check" name="sessionBasedCriteria" id="ratioBasedCriteria">
+                    <label for="ratioBasedCriteria">Ratio-based criteria</label>
+                </div>
+                <div class="flex ratio-item">
+                    <input type="checkbox" class="ratio-check" name="sessionBasedCriteria" id="targetBasedCriteria">
+                    <label for="targetBasedCriteria">Target-based criteria</label>
+                </div>
+            </div>
+            <div class="table_wrapper" id="targetBasedCriteriaWrap">
+                <div class="filter_controls">
+                    <select class="filter_type_select">
+                        <option value="target">Target</option>
+                        <option value="remark">Remark</option>
+                    </select>
+                    <input type="text" class="filter_input">
+                    <button type="button" class="filter_clear_btn" data-t="common.btn.reset"></button>
+                </div>
+                <div class="table_container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Target Item</th>
+                                <th>Target</th>
+                                <th>Remark</th>
+                                <th>Registry Date</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody id="targetCriteriaTableBody">
+                            <!-- 새로운 행 추가용 템플릿 -->
+                            <tr class="new_row_template">
+                                <td>
+                                    <select class="item_select">
+                                        <option value="user">User</option>
+                                        <option value="url">Page</option>
+                                    </select>
+                                </td>
+                                <td class="search_td">
+                                    <input type="text" class="target_input" placeholder="Input Target">
+                                    <button type="button" class="btn_search"></button>
+                                </td>
+                                <td>
+                                    <input type="text" class="remark_input" placeholder="Input Remark">
+                                </td>
+                                <td>-</td>
+                                <td>
+                                    <button type="button" class="btn_add" data-t="common.btn.save"></button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="content input_2_wrap" id="ratioBasedCriteriaWrap">
+                <div class="flex ratio-item">
+                    <input type="checkbox" class="ratio-check" id="webCollectionRate">
+                    <label for="webCollectionRate" data-t="system.package.web"></label>
+                    <div id="pWebCollectionRate"></div>
+                    <div class="slider-wrap">
+                        <input
+                                type="range"
+                                class="ratio-slider"
+                                min="0"
+                                max="100"
+                                value=""
+                        >
+                        <span class="ratio-value" id="sessionRatePc">100%</span>
+                    </div>
+                </div>
+                <div class="flex ratio-item">
+                    <input type="checkbox" class="ratio-check" id="webViewCollectionRate">
+                    <label for="webViewCollectionRate" data-t="system.package.webview"></label>
+                    <div id="pWebViewCollectionRate"></div>
+                    <div class="slider-wrap">
+                        <input
+                                type="range"
+                                class="ratio-slider"
+                                min="0"
+                                max="100"
+                                value=""
+                        >
+                        <span class="ratio-value" id="sessionRateMobile">100%</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="maxy_popup_common_wrap" id="maxyUrlSearchPopup"></div>
+</div>

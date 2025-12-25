@@ -1,0 +1,60 @@
+<!--
+    종합 분석 > LoadingTime Scatter > 팝업 > Performance
+    종합 분석 > LoadingTime Line Chart > 팝업 > Performance
+    성능 분석 > LoadingTime > 팝업 > Performance
+-->
+<style>
+    .web_vital_data_box > .maxy_box {
+        display: none;
+    }
+</style>
+
+<div class="web_vital_text_wrap">
+    <p class="vital_title ft-13 bold">Performance</p>
+    <div data-t="dashboard.waterfall.webVitalDesc"></div>
+    <div class="web_vital_data_box">
+        <div class="maxy_box" id="{{id}}LcpBox">
+            <div class="title">LARGEST CONTENTFUL PAINT</div>
+            <div class="web_vital_data">
+                <span class="bp"></span>
+                <span class="value"></span>
+                s
+            </div>
+        </div>
+
+        <div class="maxy_box" id="{{id}}ClsBox">
+            <div class="title">CUMULATIVE LAYOUT SHIFT</div>
+            <div class="web_vital_data">
+                <span class="bp"></span>
+                <span class="value"></span>
+            </div>
+        </div>
+
+        <div class="maxy_box" id="{{id}}InpBox">
+            <div class="title">INTERACTION TO NEXT PAINT</div>
+            <div class="web_vital_data">
+                <span class="bp"></span>
+                <span class="value"></span>
+                ms
+            </div>
+        </div>
+
+    </div>
+    <div class="web_vital_inline_box">
+        <!--<div>
+          <span class="title">First Contentful Paint</span>
+          <span class="text" id="">5.73</span>
+          ms
+        </div>
+        <div>
+          <span class="title">Loading Time</span>
+          <span class="text">2.5</span>
+          s
+        </div>
+        <div>
+          <span class="title">First Input Delay</span>
+          <span class="text" id="{{id}}Fid">-</span>
+        </div>-->
+    </div>
+    <div class="web_vital_chart" id="{{id}}Chart"></div>
+</div>

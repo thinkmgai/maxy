@@ -1,0 +1,127 @@
+{
+  "aggs": {
+    "device_buckets": {
+      "composite": {
+        "size": 100,
+        "sources": [
+          {
+            "deviceId": {
+              "terms": {
+                "field": "deviceId.raw"
+              }
+            }
+          }
+        ]
+      },
+      "aggs": {
+        "latest_log": {
+          "top_hits": {
+            "size": 1,
+            "_source": {
+              "includes": ["parentLogDate", "intervaltime", "userId", "clientNo"]
+            },
+            "sort": [
+              {
+                "parentLogDate": {
+                  "order": "desc"
+                }
+              }
+            ]
+          }
+        },
+        "latest_log_date": {
+          "max": {
+            "field": "parentLogDate"
+          }
+        },
+        "total_interval_time": {
+          "sum": {
+            "field": "intervaltime"
+          }
+        },
+        "userId": {
+          "terms": {
+            "field": "userId.raw",
+            "size": 50
+          },
+          "aggs": {
+            "latest_page_start": {
+              "top_hits": {
+                "size": 1,
+                "_source": {
+                  "includes": ["pageStartTm"]
+                },
+                "sort": [
+                  {
+                    "pageStartTm": {
+                      "order": "desc"
+                    }
+                  }
+                ]
+              }
+            },
+            "latest_page_start_time": {
+              "max": {
+                "field": "pageStartTm"
+              }
+            },
+            "sort_by_latest_page_start_time": {
+              "bucket_sort": {
+                "sort": [
+                  {
+                    "latest_page_start_time": {
+                      "order": "desc"
+                    }
+                  }
+                ],
+                "size": 50
+              }
+            }
+          }
+        },
+        "sort_by_latest_log_date": {
+          "bucket_sort": {
+            "sort": [
+              {
+                "latest_log_date": {
+                  "order": "desc"
+                }
+              }
+            ],
+            "size": 100
+          }
+        }
+      }
+    }
+  },
+  "size": 0,
+  "query": {
+    "bool": {
+      "filter": [
+        {
+          "term": {
+            "packageNm": {
+              "value": #{packageNm}
+            }
+          }
+        },
+        {
+          "term": {
+            "serverType": {
+              "value": #{serverType}
+            }
+          }
+        },
+        {
+          "range": {
+            "parentLogDate": {
+              "gte": #{from},
+              "lte": #{to},
+              "time_zone": "Z"
+            }
+          }
+        }
+      ]
+    }
+  }
+}

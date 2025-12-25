@@ -1,0 +1,92 @@
+{
+  "size": 0,
+  "aggs": {
+    "res": {
+      "date_histogram": {
+        "field": "intervaltime",
+        "fixed_interval": #{fixedInterval},
+        "min_doc_count": 1
+      }
+    }
+  },
+  "query": {
+    "bool": {
+      "filter": [
+        {
+          "term": {
+            "packageNm": #{packageNm}
+          }
+        },
+        {
+          "term": {
+            "serverType": #{serverType}
+          }
+        },
+        {
+          "terms": {
+            "logType": ["8388612", "524291"]
+          }
+        },
+        #[isOsType]
+        {
+          "term": {
+            "osType": #{osType}
+          }
+        },
+        #[/isOsType]
+        {
+          "term": {
+            "reqUrl.raw": #{reqUrl}
+          }
+        },
+        #[issimOperatorNm]
+        {
+          "term": {
+            "simOperatorNm": #{simOperatorNm}
+          }
+        },
+        #[/issimOperatorNm]
+        #[iscomType]
+        {
+          "term": {
+            "comType": #{comType}
+          }
+        },
+        #[/iscomType]
+        #[isdeviceModel]
+        {
+          "term": {
+            "deviceModel": #{deviceModel}
+          }
+        },
+        #[/isdeviceModel]
+        {
+          "range": {
+            "logTm": {
+              "gte": #{from},
+              "lte": #{to},
+              "time_zone": "Z"
+            }
+          }
+        },
+        {
+          "range": {
+            "intervaltime": {
+              "gte": 0
+            }
+          }
+        }
+        #[intervalRange]
+        , {
+          "range": {
+            "intervaltime": {
+              "gte": #{top},
+              "lte": #{bot}
+            }
+          }
+        }
+        #[/intervalRange]
+      ]
+    }
+  }
+}

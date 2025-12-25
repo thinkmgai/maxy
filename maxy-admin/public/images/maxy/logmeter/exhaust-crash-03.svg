@@ -1,0 +1,22 @@
+<svg width="184" height="38" viewBox="0 0 184 38" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="exhaust03_smoke" x1="30" y1="19" x2="166" y2="19" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#FF1C14" stop-opacity="0.92"/>
+      <stop offset="0.38" stop-color="#FF726D" stop-opacity="0.78"/>
+      <stop offset="0.78" stop-color="#DCD0D0" stop-opacity="0.68"/>
+      <stop offset="1" stop-color="#C4B5B5" stop-opacity="0.3"/>
+    </linearGradient>
+    <radialGradient id="exhaust03_core" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse"
+      gradientTransform="translate(54 19) scale(26 8.8)">
+      <stop offset="0" stop-color="#FFD1CF"/>
+      <stop offset="1" stop-color="#FE3A33" stop-opacity="0.3"/>
+    </radialGradient>
+    <filter id="exhaust03_blur" x="0" y="0" width="184" height="38" filterUnits="userSpaceOnUse">
+      <feGaussianBlur stdDeviation="3.8"/>
+    </filter>
+  </defs>
+  <path d="M32 19C50 9 76 6 104 7C126 7.8 148 5.2 166 8.4C146 21.5 118 29 92 30C66 31.4 44 25.4 32 19Z"
+        fill="url(#exhaust03_smoke)" filter="url(#exhaust03_blur)"/>
+  <path d="M42 19C46 13.2 58 12 72 13C80 14 94 12.5 114 14.7C96 20 78 22.4 62 23C48 23.6 44 21.2 42 19Z"
+        fill="url(#exhaust03_core)"/>
+</svg>

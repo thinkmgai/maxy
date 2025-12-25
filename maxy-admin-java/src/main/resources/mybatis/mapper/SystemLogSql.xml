@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkm.maxy.mapper.SystemLogMapper">
+
+    <select id="selectSystemLogList" resultType="SystemLogVO" parameterType="SystemLogVO">
+        select id,
+               consumer_name,
+               thread_num,
+               type,
+               msg,
+               param,
+               reg_dt
+        from consumer_status_logging
+        where reg_dt between #{from} and #{to}
+          and consumer_name = #{consumerName}
+          and thread_num = #{threadNum}
+    </select>
+
+</mapper>

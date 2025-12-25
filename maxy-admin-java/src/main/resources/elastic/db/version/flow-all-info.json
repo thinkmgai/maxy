@@ -1,0 +1,81 @@
+{
+  "size": 0,
+  "aggs": {
+    "res": {
+      "composite": {
+        "sources": [
+          {
+            "osType": {
+              "terms": {
+                "field": "osType",
+                "order": "desc"
+              }
+            }
+          },
+          {
+            "appVer": {
+              "terms": {
+                "field": "appVer",
+                "order": "desc"
+              }
+            }
+          }
+        ],
+        "size": 1000
+      },
+      "aggs": {
+        "loadingTime": {
+          "percentiles": {
+            "field": "loadingTime",
+            "percents": [50]
+          }
+        },
+        "error": {
+          "sum": {
+            "field": "errorCount"
+          }
+        },
+        "crash": {
+          "sum": {
+            "field": "crashCount"
+          }
+        }
+      }
+    }
+  },
+  "query": {
+    "bool": {
+      "filter": [
+        {
+          "term": {
+            "packageNm": #{packageNm}
+          }
+        },
+        {
+          "term": {
+            "serverType": #{serverType}
+          }
+        },
+        {
+          "terms": {
+            "osType": #{_rawOsType}
+          }
+        },
+        {
+          "terms": {
+            "appVer": #{_rawAppVer}
+          }
+        },
+        {
+          "range": {
+            "pageStartTm": {
+              "gte": #{from},
+              "lte": #{to},
+              "time_zone": "Z"
+            }
+          }
+        }
+      ]
+    }
+  }
+}

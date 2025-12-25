@@ -1,0 +1,216 @@
+<mapper namespace="metrics">
+  <select id="selectBITodayStatiistic2">
+    <![CDATA[
+    WITH
+        today_users AS (
+            SELECT
+                package_nm,
+                server_type,
+                os_type,
+                groupBitmapMergeState(users) AS bm
+            FROM maxy_device_access_bitmap FINAL
+            WHERE log_date = today()
+            GROUP BY package_nm, server_type, os_type
+        ),
+        last7_users AS (
+            SELECT
+                package_nm,
+                server_type,
+                os_type,
+                groupBitmapMergeState(users) AS bm
+            FROM maxy_device_access_bitmap FINAL
+            WHERE log_date >= today() - 7
+              AND log_date < today()
+            GROUP BY package_nm, server_type, os_type
+        ),
+        mau_users AS (
+            SELECT
+                package_nm,
+                server_type,
+                os_type,
+                groupBitmapMergeState(users) AS bm
+            FROM maxy_device_access_bitmap FINAL
+            WHERE log_date >= today() - 30
+            GROUP BY package_nm, server_type, os_type
+        )
+    SELECT
+        t.package_nm AS package_nm,
+        t.server_type AS server_type,
+        t.os_type AS os_type,
+        bitmapCardinality(t.bm) AS dau,
+        bitmapCardinality(bitmapAnd(t.bm, l.bm)) AS revisit_7d,
+        bitmapCardinality(m.bm) AS mau
+    FROM today_users AS t
+    LEFT JOIN last7_users AS l USING (package_nm, server_type, os_type)
+    LEFT JOIN mau_users  AS m USING (package_nm, server_type, os_type)
+    ORDER BY t.package_nm, t.server_type, t.os_type
+    ]]>
+  </select>
+
+  <select id="selectBITodayStatiistic1">
+    <![CDATA[
+    SELECT
+        package_nm,
+        server_type,
+        os_type,
+        sum(visit_cnt)      AS total_visit,
+        sum(install_cnt)    AS total_install,
+        sum(login_cnt)      AS total_login
+    FROM maxy_device_access_history
+    WHERE log_date = today()
+    GROUP BY package_nm, server_type, os_type
+    ]]>
+  </select>
+
+  <select id="selectBITodayPageSummary">
+    <![CDATA[
+    SELECT
+        package_nm AS package_nm,
+        server_type AS server_type,
+        os_type AS os_type,
+        sum(crash_count) AS crash_count,
+        sum(error_count) AS error_count,
+        sum(log_count) AS log_count,
+        avg(intervaltime) AS intervaltime_avg,
+        avg(lcp) AS lcp_avg,
+        avg(ttfb) AS ttfb_avg,
+        avg(fcp) AS fcp_avg,
+        avg(inp) AS inp_avg,
+        count() AS pv
+    FROM maxy_device_page_flow
+    WHERE page_start_tm_dt >= toStartOfDay(today())
+      AND page_start_tm_dt < toStartOfDay(today() + 1)
+    GROUP BY package_nm, server_type, os_type
+    ]]>
+  </select>
+
+  <select id="selectBIDailyStatiistic1">
+    <![CDATA[
+    SELECT
+        package_nm,
+        server_type,
+        os_type,
+        sum(visit_cnt)      AS total_visit,
+        sum(install_cnt)    AS total_install,
+        sum(login_cnt)      AS total_login
+    FROM maxy_device_access_history
+    WHERE log_date = yesterday()
+    GROUP BY package_nm, server_type, os_type
+    ]]>
+  </select>
+
+  <select id="selectBIDailyStatiistic2">
+    <![CDATA[
+    WITH
+        day_users AS (
+            SELECT
+                package_nm,
+                server_type,
+                os_type,
+                groupBitmapMergeState(users) AS bm
+            FROM maxy_device_access_bitmap FINAL
+            WHERE log_date = yesterday()
+            GROUP BY package_nm, server_type, os_type
+        ),
+        last7_users AS (
+            SELECT
+                package_nm,
+                server_type,
+                os_type,
+                groupBitmapMergeState(users) AS bm
+            FROM maxy_device_access_bitmap FINAL
+            WHERE log_date >= yesterday() - 7
+              AND log_date < yesterday()
+            GROUP BY package_nm, server_type, os_type
+        ),
+        mau_users AS (
+            SELECT
+                package_nm,
+                server_type,
+                os_type,
+                groupBitmapMergeState(users) AS bm
+            FROM maxy_device_access_bitmap FINAL
+            WHERE log_date >= yesterday() - 29
+              AND log_date <= yesterday()
+            GROUP BY package_nm, server_type, os_type
+        )
+    SELECT
+        d.package_nm AS package_nm,
+        d.server_type AS server_type,
+        d.os_type AS os_type,
+        bitmapCardinality(d.bm) AS dau,
+        bitmapCardinality(bitmapAnd(d.bm, l.bm)) AS revisit_7d,
+        bitmapCardinality(m.bm) AS mau
+    FROM day_users AS d
+    LEFT JOIN last7_users AS l USING (package_nm, server_type, os_type)
+    LEFT JOIN mau_users  AS m USING (package_nm, server_type, os_type)
+    ORDER BY d.package_nm, d.server_type, d.os_type
+    ]]>
+  </select>
+
+  <select id="selectBIDailyPageSummary">
+    <![CDATA[
+    SELECT
+        package_nm AS package_nm,
+        server_type AS server_type,
+        os_type AS os_type,
+        sum(crash_count) AS crash_count,
+        sum(error_count) AS error_count,
+        sum(log_count) AS log_count,
+        avg(intervaltime) AS intervaltime_avg,
+        avg(lcp) AS lcp_avg,
+        avg(ttfb) AS ttfb_avg,
+        avg(fcp) AS fcp_avg,
+        avg(inp) AS inp_avg,
+        count() AS pv
+    FROM maxy_device_page_flow
+    WHERE page_start_tm_dt >= toStartOfDay(yesterday())
+      AND page_start_tm_dt < toStartOfDay(today())
+    GROUP BY package_nm, server_type, os_type
+    ]]>
+  </select>
+
+  <select id="selectTotalLogIncremental">
+    <![CDATA[
+    SELECT
+        package_nm AS package_nm,
+        server_type AS server_type,
+        count() AS log_count,
+        max(reg_dt) AS last_reg_dt
+    FROM maxy_app_total_log
+    WHERE reg_dt > toDateTime64('{{ start_iso }}', 3)
+      AND log_tm_dt >= now() - INTERVAL 10 MINUTE
+      AND log_type NOT IN (2097152,65538,131076,131077,131109,262148,524292,8388613,1048579,1048594)
+    GROUP BY package_nm, server_type
+    -- ORDER BY package_nm, server_type
+    ]]>
+  </select>
+
+  <select id="selectTodayTroubleCounts">
+    <![CDATA[
+    SELECT
+        package_nm,
+        server_type,
+        countIf(log_type = 2097152) AS today_crash_count,
+        countIf(log_type != 2097152) AS today_error_count
+    FROM maxy_app_trouble_log
+    WHERE log_tm_dt >= toStartOfDay(today())
+      AND log_tm_dt < toStartOfDay(today() + 1)
+    GROUP BY package_nm, server_type
+    ]]>
+  </select>
+
+  <select id="selectWeeklyTroubleAverages">
+    <![CDATA[
+    SELECT
+        package_nm,
+        server_type,
+        countIf(log_type = 2097152) / 7.0 AS avg_crash_7d,
+        countIf(log_type != 2097152) / 7.0 AS avg_error_7d
+    FROM maxy_app_trouble_log
+    WHERE log_tm_dt >= toStartOfDay(today() - 7)
+      AND log_tm_dt < toStartOfDay(today())
+    GROUP BY package_nm, server_type
+    ]]>
+  </select>
+</mapper>

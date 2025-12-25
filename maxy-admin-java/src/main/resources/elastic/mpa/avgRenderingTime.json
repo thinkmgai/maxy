@@ -1,0 +1,70 @@
+{
+  "aggs": {
+    "deviceModel": {
+      "terms": {
+        "field": "deviceModel",
+        "size": #{size}
+      },
+      "aggs": {
+        "aliasValue_stats": {
+          "terms": {
+            "field": "aliasValue",
+            "size": #{size}
+          },
+          "aggs": {
+            "max": {
+              "max": {
+                "field": "loadingTime"
+              }
+            },
+            "min": {
+              "min": {
+                "field": "loadingTime"
+              }
+            },
+            "median": {
+              "percentiles": {
+                "field": "loadingTime",
+                "percents": [
+                  50
+                ]
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "size": 0,
+  "query": {
+    "bool": {
+      "must": [
+        {
+          "term": {
+            "packageNm": #{packageNm}
+        }
+      },
+        {
+          "term": {
+            "serverType": #{serverType}
+        }
+      },
+        {
+          "range": {
+            "pageStartTm": {
+              "gte": #{searchFromDt},
+              "lte": #{searchToDt}
+            }
+          }
+        }
+        #[isOsType]
+        ,{
+          "term": {
+            "osType": #{osType}
+          }
+        }
+        #[/isOsType]
+      ]
+    }
+  }
+}

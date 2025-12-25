@@ -1,0 +1,63 @@
+{
+  "aggs": {
+    "installCount": {
+      "date_histogram": {
+        "field": "appStartTm",
+        "interval": "1d",
+        "time_zone": "Asia/Seoul",
+        "min_doc_count": 1,
+        "extended_bounds": {
+          "min": #{fromTimestamp},
+          "max": #{toTimestamp}
+        }
+      }
+    }
+  },
+  "size": 0,
+  "query": {
+    "bool": {
+      "filter": [
+        {
+          "term": {
+            "packageNm": #{packageNm}
+          }
+        },
+        {
+          "term": {
+            "serverType": #{serverType}
+          }
+        },
+        {
+          "term": {
+            "appCreateYn": "Y"
+          }
+        },
+        #[isOsType]
+        {
+          "term": {
+            "osType": #{osType}
+          }
+        },
+        #[/isOsType]
+        #[isAppVer]
+        {
+          "term": {
+            "appVer": #{appVer}
+          }
+        },
+        #[/isAppVer]
+        {
+          "range": {
+            "appStartTm": {
+              "from": #{fromTimestamp},
+              "to": #{toTimestamp},
+              "include_lower": true,
+              "include_upper": true,
+              "time_zone": "Z"
+            }
+          }
+        }
+      ]
+    }
+  }
+}

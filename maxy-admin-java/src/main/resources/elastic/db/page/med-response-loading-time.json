@@ -1,0 +1,69 @@
+{
+  "aggs": {
+    "loadingTime": {
+      "percentiles": {
+        "field": "loadingTime",
+        "percents": [
+          50
+        ]
+      }
+    },
+    "responseTime": {
+      "percentiles": {
+        "field": "responseTime",
+        "percents": [
+          50
+        ]
+      }
+    }
+  },
+  "size": 0,
+  "query": {
+    "bool": {
+      "filter": [
+        {
+          "term": {
+            "packageNm": #{packageNm}
+          }
+        },
+        {
+          "term": {
+            "serverType": #{serverType}
+          }
+        },
+        #[isOsType]
+        {
+          "term": {
+            "osType": #{osType}
+      }
+        },
+        #[/isOsType]
+
+        #[isReqUrl]
+        {
+          "term": {
+            "reqUrl.raw": #{reqUrl}
+          }
+        },
+        #[/isReqUrl]
+
+        #[isDeviceModel]
+        {
+          "term": {
+            "deviceModel": #{deviceModel}
+          }
+        },
+        #[/isDeviceModel]
+        {
+          "range": {
+            "pageStartTm": {
+              "gte": "now-7d/d",
+              "lte": "now/d",
+              "time_zone": "Z"
+            }
+          }
+        }
+      ]
+    }
+  }
+}

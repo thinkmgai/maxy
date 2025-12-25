@@ -1,0 +1,46 @@
+{
+  "query": {
+    "bool": {
+      "must": [
+        {
+          "range": {
+            "logTm": {
+              "gte": #{searchFromDt},
+              "lte": #{searchToDt}
+            }
+          }
+        },
+        {
+          "term": {
+            "packageNm": #{packageNm}
+          }
+        },
+        {
+          "term": {
+            "serverType": #{serverType}
+          }
+        },
+        {
+          "term": {
+            "appVer": #{appVer}
+          }
+        },
+        {
+          "term": {
+            "osType": #{osType}
+          }
+        },
+        {
+          "term": {
+            "reqUrl.raw": #{reqUrl}
+          }
+        },
+        {
+          "term": {
+            "osVer": #{osVer}
+          }
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkm.maxy.mapper.DashboardIntegrationMapper">
+    <select id="selectAppInfoList" parameterType="AppInfoVO" resultType="AppInfoVO">
+        select map.package_nm, map.server_type
+        from maxy_app_package map
+                 join maxy_app_package_user mapu
+                      on map.package_nm = mapu.package_nm
+                          and map.server_type = mapu.server_type
+        where mapu.user_no = #{userNo}
+          and map.integration_yn = 'Y'
+          and map.use_yn = 'Y'
+    </select>
+</mapper>

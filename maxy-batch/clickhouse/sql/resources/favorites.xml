@@ -1,0 +1,27 @@
+<mapper namespace="favorites">
+  <select id="selectFavoritesTodayTopPages">
+    <![CDATA[
+    SELECT
+        package_id,
+        server_type,
+        os_type AS os_type,
+        page_name,
+        countMerge(cnt) AS cnt,
+        sumMerge(sum_log_count) AS log_count,
+        sumMerge(sum_error_count) AS error_count,
+        sumMerge(sum_crash_count) AS crash_count,
+        avgMerge(avg_loading_tm) AS avg_loading_tm,
+        avgMerge(avg_interval_tm) AS avg_interval_tm,
+        sumMerge(sum_mem_usage) AS sum_mem_usage,
+        sumMerge(sum_cpu_usage) AS sum_cpu_usage,
+        sumMerge(sum_response_tm) AS sum_response_tm,
+        sumMerge(sum_request_count) AS request_count,
+        uniqExactMerge(uniq_device_count) AS uniq_device_count
+    FROM maxy_page_daily
+    WHERE log_date = today()
+    GROUP BY package_id, server_type, os_type, page_name
+    ORDER BY package_id, server_type, os_type, cnt DESC
+    LIMIT 30 BY package_id, server_type, os_type
+    ]]>
+  </select>
+</mapper>

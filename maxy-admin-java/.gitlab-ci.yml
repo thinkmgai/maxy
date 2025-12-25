@@ -1,0 +1,57 @@
+variables:
+  MAVEN_OPTS: -Dmaven.repo.local=/Users/thinkm/.m2/repository
+
+stages:
+  - build
+  - package
+  - deploy-dev
+  - deploy-demo
+
+cache:
+  paths:
+    - /Users/thinkm/.m2/repository
+    - target
+
+build-job:
+  stage: build
+  script:
+    - echo "Maven compile start"
+    - export JAVA_HOME=`/usr/libexec/java_home -v 17`
+    - "mvn -version"
+    - "mvn compile"
+  when: manual
+
+package-job:
+  stage: package
+  script:
+    - echo "Maven packaging start"
+    - export JAVA_HOME=`/usr/libexec/java_home -v 17`
+    - "mvn -version"
+    - "mvn package"
+  when: manual
+  needs:
+    - build-job
+
+deploy-dev:
+  stage: deploy-dev
+  environment:
+    name: development
+  script:
+    - echo "Send maxy-admin.war"
+    - scp -P 22 target/maxy-admin.war maxy@192.168.10.137:/home/maxy/maxy-server/deploy
+    - echo "Build & Deploy dev start"
+    - ssh -p 22 maxy@192.168.10.137 "/home/maxy/maxy-server/update/update-admin-j.sh"
+  when: manual
+  needs:
+    - package-job
+
+#deploy-demo:
+#  stage: deploy-demo
+#  environment:
+#    name: production
+#  script:
+#    - echo "Build & Deploy dev start"
+#    - ssh -p 22 thinkm@192.168.10.147 "/home/thinkm/maxy/maxy-update/update_maxy_admin.sh"
+#  when: manual
+#  needs:
+#    - deploy-dev

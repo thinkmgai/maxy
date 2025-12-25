@@ -1,0 +1,43 @@
+{
+  "size": "10000",
+  "sort": [
+    {
+      "sleepDate": {
+        "order": "asc"
+      }
+    }
+  ],
+  "query": {
+    "bool": {
+      "must": [
+        {
+          "bool" : {
+            "must" : [
+              {
+                "term" : {
+                  "packageNm" : {
+                    "value" : #{packageNm}
+                  }
+                }
+              },
+              {
+                "term" : {
+                  "serverType" : {
+                    "value" : #{serverType}
+                  }
+                }
+              },
+              {
+                "term" : {
+                  "activeSt" : {
+                    "value" : "N"
+                  }
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,490 @@
+<style>
+    .maxy_popup_common.ajax .web_chart_wrap {
+        grid-template-rows: minmax(148px, 17%) minmax(70px, 7%) minmax(350px, 76%);
+    }
+
+    .maxy_popup_common.ajax .web_chart_wrap .web_performance_wrap.maxy_box {
+        gap: 1em;
+    }
+
+    .maxy_popup_common.ajax .web_vital_wrap {
+        border: none;
+    }
+
+    .maxy_popup_common.ajax .user_info_wrap .content_wrap {
+        display: grid;
+        grid-template-rows: 50% 50%;
+    }
+
+    .maxy_popup_common .user_info_wrap .content_wrap .bot {
+        padding: 1em;
+    }
+
+    .maxy_popup_common.ajax .user_info_wrap .content_wrap .bot {
+        padding: 1em;
+        display: grid;
+        row-gap: .5em;
+    }
+
+    @media screen and (max-height: 816px) {
+        .maxy_popup_common .user_info_wrap .content_wrap .bot > div:first-child {
+            display: grid;
+            grid-template-columns: 11% auto !important;
+        }
+    }
+
+    .maxy_popup_common .user_info_wrap .content_wrap .bot .error_type_wrap {
+        display: grid;
+    }
+
+    .maxy_popup_common.ajax .dv5_wrap {
+        display: grid;
+        grid-template-columns: 19.3% 19.5% 19.5% 19.2% 19.3%;
+        gap: .8em;
+        border: none;
+        padding: 0;
+    }
+
+    .maxy_popup_common.ajax .dv5_wrap > .dv_content {
+        border-radius: var(--radius);
+        padding: .7em;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-evenly;
+        background-color: #f7f8fa;
+    }
+
+    .dark_mode .maxy_popup_common.ajax .dv5_wrap > .dv_content {
+        border: none;
+        background-color: var(--color-block-dark-1);
+    }
+
+    .maxy_popup_common.ajax .dv_content .key {
+        color: var(--color-subtitle-light);
+        white-space: nowrap;
+        width: fit-content;
+    }
+
+    .maxy_popup_common.ajax .dv_content .value {
+        white-space: nowrap;
+        width: fit-content;
+        font-size: 1.1em;
+    }
+
+    .maxy_popup_common.ajax .web_vital_wrap .vital_title,
+    .maxy_popup_common.ajax .waterfall_graph_title_wrap .waterfall_title {
+        font-size: 13px;
+    }
+
+    .ajax_dv_wrap.chart {
+        overflow-y: auto;
+        display: grid;
+        grid-template-rows: 45% 28% auto;
+    }
+
+    @media screen and (max-width: 1441px) {
+        .ajax_dv_wrap.chart {
+            grid-template-rows: 47% 40% auto;
+        }
+    }
+
+    .xrange_chart_wrap .yaxis_list .yaxis {
+        align-items: center;
+        grid-template-columns: 5% 52% 43% !important;
+    }
+
+    .txid_wrap {
+        margin-top: 10px;
+        height: 20px;
+        line-height: 30px;
+        display: flex;
+        gap: 2%;
+    }
+
+    .xrange_chart_wrap .yaxis_list .name, .txid_wrap .name {
+        color: var(--color-subtitle-light);
+    }
+
+    .dark_mode .xrange_chart_wrap .yaxis_list .yaxis:first-child {
+        border-top: 1px solid var(--black-6) !important;
+    }
+
+    .dark_mode .xrange_chart_wrap .yaxis_list .yaxis {
+        border-bottom: 1px solid var(--black-6) !important;
+    }
+
+    .xrange_chart_wrap {
+        display: grid;
+        grid-template-columns: 21% 79%;
+    }
+
+    .xrange_chart_wrap .yaxis .circle {
+        width: 10px;
+        height: 10px;
+        display: flex;
+        border-radius: 11px;
+        align-items: center;
+    }
+    .xrange_chart_wrap .yaxis .circle.blue {
+        background-color: #4285F499;
+    }
+
+    .xrange_chart_wrap .yaxis .circle.yellow {
+        background-color: #FBBC0599;
+    }
+
+    .xrange_chart_wrap .yaxis .circle.green {
+        background-color: #34A85399;
+    }
+
+    .xrange_chart_wrap .yaxis .circle.purple {
+        background-color: #9587ff99;
+    }
+
+    .xrange_chart_wrap .yaxis .circle.lightgreen {
+        background-color: #4FCFA099;
+    }
+
+    .xrange_chart_wrap .yaxis .circle.mustard {
+        background-color: #FFD74A99;
+    }
+
+    .xrange_chart_wrap .yaxis .circle.lightpurple {
+        background-color: #DFDCFF99;
+    }
+
+    .jennifer_chart_container {
+        position: relative;
+        max-height: 0;
+        opacity: 0;
+        transform: translateY(-30px);
+        transition: max-height 0.3s ease-out, opacity 0.3s ease-out, transform 0.3s ease-out;
+    }
+
+    .jennifer_chart_container.collapse {
+        max-height: 0;
+        opacity: 0;
+        transform: translateY(30px); /* 아래에서 위로 접히는 효과를 위해 변경 */
+        overflow: hidden;
+        pointer-events: none;
+    }
+
+    .jennifer_chart_container.expand {
+        max-height: 300px;
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    .jennifer_alarm_wrap {
+        margin-top: 2em;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        visibility: visible;
+        opacity: 1;
+        transition: visibility 0s, opacity 0.3s ease-out;
+    }
+
+    .jennifer_alarm_wrap.hidden {
+        visibility: hidden;
+        opacity: 0;
+    }
+
+    .jennifer_alarm_wrap .txt {
+        display: flex;
+        height: 14px;
+        line-height: 14px;
+        margin-top: 1em;
+        font-size: 14px;
+        color: #FCB500;
+        width: 100%;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .btn_jennifer {
+        width: 14em;
+        margin-top: 1.5em;
+        border-radius: 20px;
+        border: 1px solid var(--logo-purple-1);
+        color: var(--logo-purple-1);
+        padding: .7em;
+    }
+
+    .btn_jennifer.close {
+        background-image: url(/images/maxy/icon-x-p.svg);
+        background-size: 15px;
+        background-repeat: no-repeat;
+        background-position: 12% center;
+        display: block;
+        margin: 0 auto .2em auto;
+        padding: .7em 3.5em .7em 3.5em;
+        width: auto;
+    }
+
+    .maxy_popup_title_left span.status {
+        margin-left: .5em;
+    }
+
+    .user_info_wrap .error_type_wrap > div:first-child {
+        display: grid;
+        grid-template-columns: 32% auto;
+        align-items: center;
+    }
+
+    .maxy_popup_common.ajax .ajax_dv_wrap .content_title_wrap {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .maxy_popup_common.ajax:not(.area) .count_wrap > .title:last-child {
+        margin-left: auto;
+    }
+
+    .count_wrap.align-center .count {
+        gap: 1em;
+        display: flex;
+        align-items: center;
+    }
+
+    #pageAjaxTime > div {
+        height: 12px;
+    }
+</style>
+
+<div class="maxy_popup_common front {{logType}}" id="{{id}}">
+    <div class="maxy_popup_grid_s_wrap">
+        <div class="maxy_popup_title_wrap front">
+            <div class="maxy_popup_title_left">
+                <img alt="" class="icon_graph">
+                <span>Check List / </span>
+                <span>{{type}}</span>
+            </div>
+            <div class="maxy_popup_title_right">
+                <div class="date_time_wrap" id="pageAjaxTime">
+                    <img class="icon-start-time">
+                    <div data-type="time">{{period}}</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="maxy_front_popup_content_wrap">
+            <div class="content_title_wrap">
+                <div class="count_wrap align-center">
+                    <div class="count">
+                        <div class="title">
+                            <span class="key grey">Average</span>
+                            <span class="text" id="avg"></span>
+                            <span class="grey">ms</span>
+                        </div>
+                        <div class="title">
+                            <img class="icon_list_count">
+                            <span class="text" id="user"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="maxy_box core_vital_wrap" id="{{id}}_list"></div>
+        </div>
+    </div>
+
+    <!-- 상세 정보를 표시할 컨테이너 -->
+    <div class="maxy_popup_gray_bg_wrap popup_right_side_wrap">
+        <div class="maxy_popup_title_wrap front">
+            <div class="maxy_popup_title_left">
+                <img class="img_profiling" alt="" src="">
+                <span class="bold" id="title">Profiling / </span>
+                <span>{{type}}</span>
+                <span class="status"></span>
+            </div>
+            <div class="maxy_popup_title_right">
+                <img alt="" class="btn_front_page_flow" id="btnPageFlow">
+            </div>
+        </div>
+        <div class="web_chart_wrap">
+            <div class="user_info_wrap maxy_box">
+                <div class="content_wrap">
+                    <div class="top">
+                        <div class="item">
+                            <div class="key">
+                                <img class="icon_info_p">
+                                <span>Browser</span>
+                            </div>
+                            <span class="text" id="browser"></span>
+                        </div>
+                        <div class="item">
+                            <div class="key">
+                                <img class="icon_use_type_p">
+                                <span>Use Type</span>
+                            </div>
+                            <span class="text" id="platform"></span>
+                        </div>
+                        <div class="item">
+                            <div class="key">
+                                <img class="icon_os_type_p">
+                                <span>OS</span>
+                            </div>
+                            <span class="text" id="os"></span>
+                        </div>
+                        <div class="item">
+                            <div class="key">
+                                <img class="icon_device_type_p">
+                                <span>Device</span>
+                            </div>
+                            <span class="text" id="deviceModel"></span>
+                        </div>
+                        <div class="item">
+                            <div class="key">
+                                <img class="icon_location">
+                                <span>Location</span>
+                            </div>
+                            <span class="text" id="timezone"></span>
+                        </div>
+                        <div class="item">
+                            <div class="key">
+                                <img class="icon_user_id_p">
+                                <span>User ID</span>
+                            </div>
+                            <span class="text" id="userId"></span>
+                        </div>
+                        <div class="item">
+                            <div class="key">
+                                <img class="icon_user_ip_p">
+                                <span>User IP</span>
+                            </div>
+                            <span class="text" id="ip"></span>
+                        </div>
+                        <div class="item txid">
+                            <div class="key">
+                                <img class="icon_txid_p">
+                                <span>TXID</span>
+                            </div>
+                            <span class="text" id="txid"></span>
+                        </div>
+                    </div>
+                    <div class="bot">
+                        <div class="item all">
+                            <div class="key">
+                                <img class="icon_url">
+                                <span>Target URL</span>
+                            </div>
+                            <div class="url enable_scrollbar" id="reqUrl"></div>
+                        </div>
+                        <div class="item all error_type_wrap">
+                            <div class="key">
+                                <img class="icon_error_msg">
+                                <span>Msg</span>
+                            </div>
+                            <div class="url enable_scrollbar" id="resMsg"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="web_vital_wrap dv5_wrap" id="{{id}}__{{topChartId}}">
+                <div class="dv_content">
+                    <div class="key">Response Time</div>
+                    <div class="value bold" id="intervalTime"></div>
+                </div>
+                <div class="dv_content">
+                    <div class="key">Start</div>
+                    <div class="value bold" id="startTime"></div>
+                </div>
+                <div class="dv_content">
+                    <div class="key">End</div>
+                    <div class="value bold" id="endTime"></div>
+                </div>
+                <div class="dv_content">
+                    <div class="key">Requested Size</div>
+                    <div class="value bold" id="reqSize"></div>
+                </div>
+                <div class="dv_content">
+                    <div class="key">Response Size</div>
+                    <div class="value bold" id="resSize"></div>
+                </div>
+            </div>
+            <div class="web_performance_wrap maxy_box" id="{{id}}__{{botChartId}}">
+                <div class="ajax_dv_wrap flex-column">
+                    <div class="bold">Compare with All (Target)</div>
+                    <div class="content_title_wrap">
+                        <div class="align-center">
+                            <img class="icon_list_count">
+                            <span class="text" id="count"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="ajax_dv_wrap chart enable_scrollbar">
+                    <div id="{{botChartId}}"></div>
+                    <div class="xrange_chart_wrap" id="{{botChartId}}__time">
+                        <div class="yaxis_list">
+                            <div class="yaxis">
+                                <span class="circle blue"></span>
+                                <div class="name" data-t="common.text.elapsedTime"></div>
+                                <div class="duration" id="duration"></div>
+                            </div>
+                            <div class="yaxis">
+                                <span class="circle yellow"></span>
+                                <div class="name" data-t="common.text.reqWaitingTime"></div>
+                                <div class="duration"></div>
+                            </div>
+                            <div class="yaxis">
+                                <span class="circle green"></span>
+                                <div class="name" data-t="common.text.downloadTime"></div>
+                                <div class="duration"></div>
+                            </div>
+                        </div>
+                        <div id="{{botChartId}}__timeChart"></div>
+                    </div>
+
+                    <div id="{{botChartId}}__jennifer">
+                        <!-- Jennifer Soft 연동 , Jennifer soft 데이터 있을 때만 보여주기 -->
+                        <div class="jennifer_alarm_wrap">
+                            <div class="txt">
+                                <span class="mk_error"></span>
+                                <span data-t="common.text.jenniferConnect"></span>
+                            </div>
+                            <button class="btn_jennifer" data-t="common.text.jenniferAdd" id="btnJnfOpen"></button>
+                        </div>
+
+                        <div class="jennifer_chart_container collapse" id="{{id}}__jenniferChartWrap">
+                            <div class="bold">Profiling with Jennifer</div>
+                            <div class="jennifer_chart_wrap enable_scrollbar">
+                                <div class="txid_wrap">
+                                    <div class="name">TXID</div>
+                                    <div id=""></div>
+                                </div>
+                                <div class="xrange_chart_wrap">
+                                    <div class="yaxis_list">
+                                        <div class="yaxis">
+                                            <span class="circle purple"></span>
+                                            <div class="name">WAS</div>
+                                            <div class="duration" id=""></div>
+                                        </div>
+                                        <div class="yaxis">
+                                            <span class="circle lightgreen"></span>
+                                            <div class="name">Network</div>
+                                            <div class="duration"></div>
+                                        </div>
+                                        <div class="yaxis">
+                                            <span class="circle mustard"></span>
+                                            <div class="name">SQL/SQL Fetch</div>
+                                            <div class="duration"></div>
+                                        </div>
+                                        <div class="yaxis">
+                                            <span class="circle lightpurple"></span>
+                                            <div class="name">External</div>
+                                            <div class="duration"></div>
+                                        </div>
+                                    </div>
+                                    <div id="{{botChartId}}__jenniferChart"></div>
+                                </div>
+                                <button class="btn_jennifer close" data-t="common.text.jenniferClose" id="btnJnfClose"></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkm.maxy.mapper.LogLevelMapper">
+    <insert id="insertLogLevel" parameterType="LogLevelVO">
+        INSERT INTO maxy_log_level (log_level_id, log_level_nm, description, package_nm, server_type, use_yn, reg_dt,
+                                    upd_no, upd_dt)
+        SELECT COALESCE(MAX(log_level_id), 0) + 1,
+               (SELECT DISTINCT display_nm
+                FROM maxy_app_package
+                WHERE package_nm = #{packageNm}
+                  and server_type = #{serverType}),
+               (SELECT DISTINCT display_nm
+                FROM maxy_app_package
+                WHERE package_nm = #{packageNm} and server_type = #{serverType}),
+               #{packageNm},
+               #{serverType},
+               'Y',
+               #{regDt},
+               #{userNo},
+               #{regDt}
+        FROM maxy_log_level;
+    </insert>
+
+    <delete id="deleteLogLevel" parameterType="LogLevelVO">
+        delete
+        from maxy_log_level
+        where package_nm = #{packageNm} and server_type = #{serverType}
+    </delete>
+
+    <select id="selectLogLevelListByLogLevelId" parameterType="LogLevelVO" resultType="LogLevelVO">
+        select mem.log_type
+        from maxy_log_level_mem mem
+                 inner join maxy_log_level mll
+                            on mll.log_level_id = mem.log_level_id
+        where mem.log_level_id = #{logLevelId}
+    </select>
+
+    <insert id="insertLogLevelMemList" parameterType="java.util.List">
+        INSERT INTO maxy_log_level_mem
+        (log_level_id, log_type, log_type_nm, log_type_dnm, reg_no, reg_dt, upd_no, upd_dt)
+        VALUES
+        <foreach collection="list" item="item" separator=",">
+            (
+            (SELECT log_level_id FROM maxy_log_level
+            WHERE package_nm = #{item.packageNm}
+            and server_type = #{item.serverType}),
+            #{item.logType},
+            #{item.logTypeNm},
+            #{item.logTypeDnm},
+            #{item.userNo},
+            #{item.regDt},
+            #{item.userNo},
+            #{item.regDt}
+            )
+        </foreach>
+    </insert>
+
+    <delete id="deleteLogLevelMemList" parameterType="LogLevelVO">
+        delete
+        from maxy_log_level_mem
+        where log_level_id =
+              (select log_level_id
+               from maxy_log_level
+               where package_nm = #{packageNm}
+                 and server_type = #{serverType})
+    </delete>
+
+    <select id="selectLogLevelInfoByAppInfo" parameterType="LogLevelVO" resultType="LogLevelVO">
+        select log_level_id
+        from maxy_log_level
+        where package_nm = #{packageNm}
+          and server_type = #{serverType}
+    </select>
+</mapper>

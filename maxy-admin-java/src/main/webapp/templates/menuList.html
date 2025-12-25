@@ -1,0 +1,28 @@
+<div class="menu_root">
+    <button type="button" class="tree_btn open"></button>
+    <div class="tree_text_box">
+        <span class="menu_nm">Root</span>
+        <span class="additional"></span>
+    </div>
+</div>
+{{#menuList}}
+<div class="menu_item menu_lvl_{{grpLevel}}"
+     data-up-menu-id="{{upMenuId}}"
+     {{#isGroupMem upMenuId menuGrp}}{{/isGroupMem}}
+>
+    {{#isChild subMenuYn menuId upMenuId}}{{/isChild}}
+    <div class="tree_text_box {{isDisabled deleteYn}}"
+         data-up-menu-id="{{upMenuId}}"
+         data-menu-id="{{menuId}}"
+         data-menu-nm="{{getMenuNm menuNm}}"
+         data-menu-url="{{menuUrl}}"
+         data-delete-yn="{{deleteYn}}"
+         data-role-gbn="{{roleGbn}}"
+         data-order-seq="{{orderSeq}}"
+         data-grp-Level="{{grpLevel}}"
+    >
+        <span class="menu_nm">{{getMenuNm menuNm}}</span>
+        <span class="additional">({{menuId}} / {{isDel deleteYn  roleNm}})</span>
+    </div>
+</div>
+{{/menuList}}

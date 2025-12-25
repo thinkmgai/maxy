@@ -1,0 +1,104 @@
+<style>
+
+</style>
+<table class="log_stack_table">
+    <thead>
+    <tr>
+        <th>Procedure</th>
+        <th>Time</th>
+        <th>Run Time</th>
+        <th>Log Class</th>
+        <th>Log Type</th>
+        <th>Requested URL</th>
+    </tr>
+    </thead>
+    <tbody class="enable_scrollbar">
+    {{#each data.before}}
+    <tr
+            data-com-type="{{comType}}"
+            data-com-sensitivity="{{comSensitivity}}"
+            data-cpu-usage="{{cpuUsage}}"
+            data-mem-usage="{{memUsage}}"
+            data-res-msg="{{resMsg}}"
+            data-app-ver="{{appVer}}"
+            data-package-nm="{{packageNm}}"
+            data-server-type="{{serverType}}"
+            data-os-type="{{osType}}"
+            data-device-id="{{deviceId}}"
+            data-log-type="{{logType}}"
+    >
+        <td><img src="/images/maxy/icon-down-triangle-gr.svg">{{minusIdx @index ../data.before.length}}</td>
+        <td>{{dateFormat logTm}}</td>
+        <td>
+            <div>{{timeFormatter intervaltime}}</div>
+        </td>
+        <td>
+            <span class="{{logTypeFormatter logType}}"></span>
+            {{logTypeNm}}
+        </td>
+        <td>
+            <span class="{{logTypeDetailFormatter logType}}"></span>
+            {{logTypeDnm}}
+        </td>
+        <td data-type="reqUrl" id="log_stack_before_aliasValue_{{@index}}">
+            <div>{{reqUrl}}</div>
+        </td>
+    </tr>
+    {{/each}}
+    {{#each data.center}}
+    <tr
+            class="target"
+            data-com-type="{{comType}}"
+            data-com-sensitivity="{{comSensitivity}}"
+            data-cpu-usage="{{cpuUsage}}"
+            data-mem-usage="{{memUsage}}"
+            data-res-msg="{{resMsg}}"
+            data-log-type="{{logType}}"
+    >
+        <td>{{@index}}</td>
+        <td>{{dateFormat logTm}}</td>
+        <td>
+            <div>{{timeFormatter intervaltime}}</div>
+        </td>
+        <td>
+            <span class="{{logTypeFormatter logType}}"></span>
+            {{logTypeNm}}
+        </td>
+        <td>
+            <span class="{{logTypeDetailFormatter logType}}"></span>
+            {{logTypeDnm}}
+        </td>
+        <td data-type="reqUrl" id="log_stack_center_aliasValue_{{@index}}">
+            <div>{{reqUrl}}</div>
+        </td>
+    </tr>
+    {{/each}}
+    {{#each data.after}}
+    <tr
+            data-com-type="{{comType}}"
+            data-com-sensitivity="{{comSensitivity}}"
+            data-cpu-usage="{{cpuUsage}}"
+            data-mem-usage="{{memUsage}}"
+            data-res-msg="{{resMsg}}"
+            data-log-type="{{logType}}"
+    >
+        <td><img src="/images/maxy/icon-up-triangle-gr.svg">{{plusIdx @index}}</td>
+        <td>{{dateFormat logTm}}</td>
+        <td>
+            <div>{{timeFormatter intervaltime}}</div>
+        </td>
+        <td>
+            <span class="{{logTypeFormatter logType}}"></span>
+            {{logTypeNm}}
+        </td>
+        <td>
+            <span class="{{logTypeDetailFormatter logType}}"></span>
+            {{logTypeDnm}}
+        </td>
+        <td data-type="reqUrl" id="log_stack_after_aliasValue_{{@index}}">
+            <div>{{reqUrl}}</div>
+        </td>
+    </tr>
+    {{/each}}
+    </tbody>
+</table>

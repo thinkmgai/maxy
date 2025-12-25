@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkm.maxy.mapper.BotMapper">
+    <select id="selectBotHistory" parameterType="BotVO" resultType="BotVO">
+        select id,
+               user_no,
+               package_nm,
+               server_type,
+               occur_date,
+               round_info,
+               round_time,
+               msg,
+               parameter,
+               type,
+               reg_dt
+        from maxy_ai_bot_history
+        where user_no = #{userNo}
+          and package_nm = #{packageNm}
+          and server_type = #{serverType}
+          and occur_date = #{occurDate}
+    </select>
+
+    <select id="selectLatestBotHistory" parameterType="BotVO" resultType="BotVO">
+        select a1.occur_date,
+               a1.round_time,
+               a1.msg,
+               a1.parameter,
+               a1.package_nm,
+               a1.server_type,
+               a1.type
+        from maxy_ai_bot_history a1,
+             (select round_time, occur_date
+              from maxy_ai_bot_history
+              where user_no = #{userNo}
+                and package_nm = #{packageNm}
+                and server_type = #{serverType}
+              order by reg_dt desc
+              limit 1) a2
+        where a1.round_time = a2.round_time
+          and a1.occur_date = a2.occur_date
+          and a1.user_no = #{userNo}
+          and a1.package_nm = #{packageNm}
+          and a1.server_type = #{serverType}
+    </select>
+
+    <select id="selectBotHistoryGroup" parameterType="BotVO" resultType="BotVO">
+        select occur_date,
+               count(1) as group_count
+        from maxy_ai_bot_history
+        where user_no = #{userNo}
+          and package_nm = #{packageNm}
+          and server_type = #{serverType}
+        group by occur_date desc
+        limit 365
+    </select>
+
+    <select id="selectBotConfig" parameterType="BotVO" resultType="BotVO">
+        select id,
+               type,
+               round_info,
+               round_time_1,
+               round_time_2,
+               round_time_3,
+               round_time_4,
+               round_time_5,
+               round_time_6,
+               round_time_7,
+               round_time_8,
+               round_time_9,
+               round_time_10
+        from maxy_ai_bot_config
+        where package_nm = #{packageNm}
+          and server_type = #{serverType}
+          and user_no = #{userNo}
+        limit 1
+    </select>
+
+    <insert id="insertBotConfig" parameterType="BotVO">
+        insert into maxy_ai_bot_config (package_nm, server_type, user_no, type,
+                                        round_info, round_time_1, round_time_2, round_time_3, round_time_4,
+                                        round_time_5,
+                                        round_time_6, round_time_7, round_time_8, round_time_9, round_time_10,
+                                        reg_dt, reg_no, upd_dt, upd_no)
+        values (#{packageNm},
+                #{serverType},
+                #{userNo},
+                #{type},
+                #{roundInfo},
+                #{roundTime1},
+                #{roundTime2},
+                #{roundTime3},
+                #{roundTime4},
+                #{roundTime5},
+                #{roundTime6},
+                #{roundTime7},
+                #{roundTime8},
+                #{roundTime9},
+                #{roundTime10},
+                #{regDt},
+                #{userNo},
+                #{regDt},
+                #{userNo})
+    </insert>
+
+    <update id="updateBotConfig" parameterType="BotVO">
+        UPDATE maxy_ai_bot_config
+        SET package_nm    = #{packageNm},
+            server_type   = #{serverType},
+            user_no       = #{userNo},
+            type          = #{type},
+            round_info    = #{roundInfo},
+            round_time_1  = #{roundTime1},
+            round_time_2  = #{roundTime2},
+            round_time_3  = #{roundTime3},
+            round_time_4  = #{roundTime4},
+            round_time_5  = #{roundTime5},
+            round_time_6  = #{roundTime6},
+            round_time_7  = #{roundTime7},
+            round_time_8  = #{roundTime8},
+            round_time_9  = #{roundTime9},
+            round_time_10 = #{roundTime10},
+            upd_dt        = #{regDt},
+            upd_no        = #{userNo}
+        WHERE id = #{id}
+    </update>
+</mapper>

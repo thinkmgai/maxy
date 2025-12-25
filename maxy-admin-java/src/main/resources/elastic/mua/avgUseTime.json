@@ -1,0 +1,56 @@
+{
+  "aggs": {
+    "usingTime": {
+      "date_histogram": {
+        "field": "appStartTm",
+        "interval": "day",
+        "time_zone": "Asia/Seoul",
+        "format": "yyyy-MM-dd",
+        "extended_bounds": {
+          "min": #{searchToDay},
+          "max": #{searchFromDay}
+        }
+      },
+      "aggs": {
+        "test": {
+          "avg": {
+            "field": "usingTime"
+          }
+        }
+      }
+    }
+  },
+  "size": 0,
+  "query": {
+    "bool": {
+      "filter": [
+        {
+          "term": {
+            "packageNm": #{packageNm}
+          }
+        },
+        {
+          "term": {
+            "serverType": #{serverType}
+          }
+        },
+        #[isAppVer]
+        {
+          "term": {
+            "appVer": #{appVer}
+          }
+        },
+        #[/isAppVer]
+        {
+          "range": {
+            "appStartTm": {
+              "gte": #{searchToDt},
+              "lte": #{searchFromDt},
+              "format": "epoch_millis"
+            }
+          }
+        }
+      ]
+    }
+  }
+}

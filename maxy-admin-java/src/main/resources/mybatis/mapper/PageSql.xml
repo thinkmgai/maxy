@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkm.maxy.mapper.PageMapper">
+    <select id="selectPageAliasList" resultType="PagesVO">
+        select package_nm,
+               req_url,
+               app_page_nm,
+               app_page_desc,
+               use_yn,
+               upd_dt,
+               server_type,
+               data_type,
+               monitoring_yn
+        from maxy_app_page
+        where app_page_nm is not null
+          and app_page_nm != ''
+          and use_yn = 'Y'
+        order by data_type
+    </select>
+
+    <select id="selectAllPageList" resultType="PagesVO" parameterType="PagesVO">
+        select package_nm,
+               req_url,
+               app_page_nm,
+               app_page_desc,
+               upd_dt,
+               server_type,
+               data_type,
+               monitoring_yn
+        from maxy_app_page
+        where package_nm = #{packageNm}
+          and server_type = #{serverType}
+          and use_yn = 'Y'
+        order by data_type
+        limit #{limit} offset #{offset}
+    </select>
+
+    <select id="selectAllPageListByType" resultType="PagesVO" parameterType="PagesVO">
+        select package_nm,
+        req_url,
+        app_page_nm,
+        app_page_desc,
+        upd_dt,
+        server_type,
+        data_type,
+        monitoring_yn
+        from maxy_app_page
+        where package_nm = #{packageNm}
+        and server_type = #{serverType}
+        and use_yn = 'Y'
+        <if test='searchValue != null and searchValue != ""'>
+            <choose>
+                <when test='searchType == "reqUrl"'>
+                    and req_url like CONCAT('%',#{searchValue},'%')
+                </when>
+                <when test='searchType == "appPageNm"'>
+                    and app_page_nm like CONCAT('%',#{searchValue},'%')
+                </when>
+            </choose>
+        </if>
+        <if test='type != null and type != ""'>
+            and data_type = #{type}
+        </if>
+        order by data_type
+        limit #{limit} offset #{offset}
+    </select>
+
+    <!--  page list paging 용 전체 count 구하기  -->
+    <select id="countAllPageListByType" resultType="PagesVO" parameterType="PagesVO">
+        select count(1) as page_count
+        from maxy_app_page
+        where package_nm = #{packageNm}
+        and server_type = #{serverType}
+        and use_yn = 'Y'
+        <if test='searchValue != null and searchValue != ""'>
+            <choose>
+                <when test='searchType == "reqUrl"'>
+                    and req_url like CONCAT('%',#{searchValue},'%')
+                </when>
+                <when test='searchType == "appPageNm"'>
+                    and app_page_nm like CONCAT('%',#{searchValue},'%')
+                </when>
+            </choose>
+        </if>
+        <if test='type != null and type != ""'>
+            and data_type = #{type}
+        </if>
+    </select>
+
+    <update id="updatePage" parameterType="PagesVO">
+        update
+            maxy_app_page
+        set app_page_nm   = NULLIF(#{appPageNm}, ''),
+            app_page_desc = NULLIF(#{appPageDesc}, ''),
+            landing_yn    = 'N',
+            use_yn        = 'Y',
+            monitoring_yn = #{monitoringYn},
+            upd_dt        = #{regDt}
+        where package_nm = #{packageNm}
+          and server_type = #{serverType}
+          and req_url = #{reqUrl}
+          and data_type = #{dataType}
+    </update>
+
+    <update id="updatePageMarketingInsight" parameterType="PagesVO">
+        update maxy_app_page
+        set
+        app_page_nm = case
+        <foreach collection="infoList" item="item">
+            when package_nm = #{packageNm}
+            and server_type = #{serverType}
+            and req_url = #{item.reqUrl}
+            and data_type = #{item.dataType}
+            then #{item.appPageNm}
+        </foreach>
+        end,
+        upd_dt = case
+        <foreach collection="infoList" item="item">
+            when package_nm = #{packageNm}
+            and server_type = #{serverType}
+            and req_url = #{item.reqUrl}
+            and data_type = #{item.dataType}
+            then #{item.regDt}
+        </foreach>
+        end
+        where (package_nm, server_type, req_url, data_type) in
+        (<foreach collection="infoList" item="item" separator=",">
+        (#{packageNm}, #{serverType}, #{item.reqUrl}, #{item.dataType})
+    </foreach>);
+    </update>
+
+    <update id="replacePageInfoByCsvFile" parameterType="PagesVO">
+        replace into maxy_app_page (
+        package_nm,
+        server_type,
+        req_url,
+        data_type,
+        app_page_nm,
+        app_page_desc,
+        monitoring_yn,
+        landing_yn,
+        upd_no,
+        upd_dt,
+        use_yn
+        )
+        values
+        <foreach collection="infoList" item="item" separator=",">
+            (
+            #{item.packageNm},
+            #{item.serverType},
+            #{item.reqUrl},
+            #{item.dataType},
+            #{item.appPageNm},
+            #{item.appPageDesc},
+            #{item.monitoringYn},
+            #{item.landingYn},
+            #{updNo},
+            #{updDt},
+            #{item.useYn}
+            )
+        </foreach>
+    </update>
+
+    <insert id="insertPage" parameterType="PagesVO">
+        INSERT INTO maxy_app_page(app_page_nm, app_page_desc, req_url, landing_yn, use_yn,
+                                  monitoring_yn, reg_dt, package_nm, server_type)
+        VALUES (NULLIF(#{appPageNm}, ''),
+                NULLIF(#{appPageDesc}, ''),
+                #{reqUrl},
+                'N',
+                'Y',
+                #{monitoringYn},
+                #{regDt},
+                #{packageNm},
+                #{serverType});
+    </insert>
+
+    <select id="selectPageParameterList" parameterType="PagesVO" resultType="PagesVO">
+        select package_nm,
+               server_type,
+               parameter,
+               type,
+               reg_dt,
+               reg_no
+        from maxy_page_parameter
+        where package_nm = #{packageNm}
+          and server_type = #{serverType}
+        order by reg_dt desc
+    </select>
+
+    <select id="existPageParameter" parameterType="PagesVO" resultType="int">
+        select count(1)
+        from maxy_page_parameter
+        where package_nm = #{packageNm}
+          and server_type = #{serverType}
+          and parameter = #{parameter}
+          and type = #{type}
+    </select>
+
+    <insert id="insertPageParameter" parameterType="PagesVO">
+        INSERT INTO maxy_page_parameter(package_nm,
+                                        server_type,
+                                        parameter,
+                                        type,
+                                        reg_dt,
+                                        reg_no)
+        VALUES (#{packageNm},
+                #{serverType},
+                #{parameter},
+                #{type},
+                #{regDt},
+                #{userNo})
+    </insert>
+
+    <update id="deletePageParameter" parameterType="PagesVO">
+        delete
+        from maxy_page_parameter
+        where package_nm = #{packageNm}
+          and server_type = #{serverType}
+          and parameter = #{parameter}
+          and type = #{type}
+    </update>
+
+    <update id="upsertPage" parameterType="PagesVO">
+        INSERT INTO maxy_app_page(
+        app_page_nm, app_page_desc, req_url, landing_yn, use_yn,
+        monitoring_yn, reg_dt, package_nm, server_type
+        ) VALUES (NULLIF(#{appPageNm}, ''),
+        NULLIF(#{appPageDesc}, ''),
+        #{reqUrl},
+        'N',
+        'Y',
+        'N',
+        #{regDt},
+        #{packageNm},
+        #{serverType})
+        ON DUPLICATE KEY UPDATE
+        app_page_nm = VALUES(app_page_nm)
+    </update>
+</mapper>

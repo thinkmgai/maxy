@@ -1,0 +1,87 @@
+<!--
+    종합 분석 > Basic Information > 팝업 (Log, Error, Crash 제외한 나머지)
+-->
+<style>
+    .maxy_popup_common.ccu {
+        display: block !important;
+        top: 40px;
+        right: -1500px;
+        left: auto !important;
+        width: 50%;
+        min-width: 625px;
+        min-height: auto !important;
+        height: calc(100% - 40px);
+        visibility: visible !important;
+        transition: right 0.5s ease;
+        transform: initial !important;
+    }
+
+    .maxy_popup_common.ccu.show {
+        right: 0;
+    }
+
+    /* 우측 팝업 숨김 애니메이션 */
+    .maxy_popup_common.ccu.hidden {
+        right: -1500px !important;
+    }
+
+    .maxy_popup_common .maxy_component_btn_wrap {
+        justify-content: flex-end;
+    }
+
+    .maxy_popup_title_left > span:nth-child(3) {
+        color: black !important;
+    }
+
+    .maxy_popup_common .summary_wrap {
+        border: 1px solid var(--color-border-out-light);
+        border-radius: var(--radius);
+        display: grid;
+        padding: .8em;
+        height: 75px;
+    }
+
+    .maxy_popup_title_right .date_time_wrap, .maxy_popup_title_right > div > span:nth-child(2) {
+        color: var(--color-subtitle-light);
+    }
+
+    .dark_mode .maxy_popup_title_right > div > span:nth-child(2) {
+        color: var(--black-9);
+    }
+
+    .maxy_popup_common.ccu .graph_wrap {
+        height: calc(100% - 123px) !important;
+    }
+</style>
+
+<div class="maxy_popup_common ccu" id="{{id}}__popUp">
+
+    <div class="maxy_popup_grid_s_wrap">
+        <div class="maxy_popup_title_wrap">
+            <div class="maxy_popup_title_left">
+                <img class="maxy_popup_analysis_icon" alt="">
+                <span>Statistics</span>
+                <span class="title">/ {{getTitle title}}</span>
+            </div>
+            <div class="maxy_popup_title_right">
+                <div class="calendar_wrap">
+                    <button class="btn_calendar" id=""></button>
+                    <input type="text" id="{{id}}Calendar" class="calendar_input">
+                </div>
+            </div>
+        </div>
+
+        <div class="summary_wrap" id="summaryWrap">
+            {{#each summaryTitle}}
+            <div class="summary_content">
+                <div>{{getTitle title}}</div>
+                <div class="content_value" data-bitype="{{type}}">-</div>
+            </div>
+            {{/each}}
+        </div>
+
+        <div class="graph_wrap" id="{{id}}GraphWrap">
+
+        </div>
+    </div>
+</div>

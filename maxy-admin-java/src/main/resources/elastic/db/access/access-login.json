@@ -1,0 +1,59 @@
+{
+  "aggs": {
+    "res": {
+      "date_histogram": {
+        "field": "appStartTm",
+        "calendar_interval": #{calendarInterval},
+        "time_zone": "Asia/Seoul",
+        "min_doc_count": 1
+      },
+      "aggs": {
+        "count": {
+          "cardinality": {
+            "field": "deviceId.raw"
+          }
+        }
+      }
+    }
+  },
+  "size": 0,
+  "query": {
+    "bool": {
+      "filter": [
+        {
+          "term": {
+            "packageNm": #{packageNm}
+          }
+        },
+        {
+          "term": {
+            "serverType": #{serverType}
+          }
+        },
+        #[isOsType]
+        {
+          "term": {
+            "osType": #{osType}
+          }
+        },
+        #[/isOsType]
+        {
+          "term": {
+            "loginYn": "Y"
+          }
+        },
+        {
+          "range": {
+            "appStartTm": {
+              "from": #{fromTimestamp},
+              "to": #{toTimestamp},
+              "include_lower": true,
+              "include_upper": true,
+              "time_zone": "Z"
+            }
+          }
+        }
+      ]
+    }
+  }
+}
