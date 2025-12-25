@@ -1,0 +1,40 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "maxy-admin-build",
+      "type": "shell",
+      "command": "npm",
+      "options": {
+        "cwd": "${workspaceFolder}/maxy-admin" 
+      },
+      "args": [
+        "run","build"    // 분석할 경로
+      ],
+      "group": {
+        "kind": "build", //CMD+SHIFT+B
+        "isDefault": true
+      },
+      "problemMatcher": [],
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared"
+      }
+    },
+    {
+      "label": "Download OpenAPI JSON",
+      "type": "shell",
+      "command": "curl -L -o openapi.json http://localhost:8081/openapi.json",
+      "problemMatcher": []
+    },
+    {
+      "label": "Preview with Redocly",
+      "type": "shell",
+      "command": "code --command redocly.previewOpenapi",
+      "dependsOn": ["Download OpenAPI JSON"],
+      "problemMatcher": []
+    }
+  ]
+}

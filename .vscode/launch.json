@@ -1,0 +1,100 @@
+{
+    // IntelliSense를 사용하여 가능한 특성에 대해 알아보세요.
+    // 기존 특성에 대한 설명을 보려면 가리킵니다.
+    // 자세한 내용을 보려면 https://go.microsoft.com/fwlink/?linkid=830387을(를) 방문하세요.
+    "version": "0.2.0",
+    "configurations": [
+        {
+        "name": "어드민_디버깅",
+        "type": "chrome",
+        "request": "launch",
+        "url": "http://localhost:8080",
+        "webRoot": "${workspaceFolder}",
+        "sourceMaps": true,
+        },
+        {
+            "name": "어드민",
+            "type": "node",
+            "request": "launch",
+            "cwd": "${workspaceFolder}/maxy-admin",
+            "runtimeExecutable": "npm",
+            "runtimeArgs": ["run", "dev"],
+            "console": "integratedTerminal",
+            "internalConsoleOptions": "neverOpen"
+            } ,
+        {
+            "name": "API서버",
+            "type": "debugpy",
+            "request": "launch",
+            "cwd": "${workspaceFolder}/maxy-api",
+            "program": "apiserver.py",
+            "env": {
+                "CLICKHOUSE_HOST": "192.168.10.177",
+                "CLICKHOUSE_PORT": "8123",
+                "CLICKHOUSE_USER": "maxy",
+                "CLICKHOUSE_PASSWORD": "maxy!@#",
+                "CLICKHOUSE_DB": "default",
+                "CLICKHOUSE_SECURE": "false",
+                "VALKEY_HOST": "192.168.10.177",
+                "VALKEY_PORT": "6379",
+                "VALKEY_PASSWORD": "",
+                "VALKEY_DB": "0",
+                "VALKEY_SSL": "false",
+                "VALKEY_PREFIX": "stats:realtime",
+                "PORT": "8081",
+                "MAXY_FILEDB_URL": "http://192.168.10.177:8887",
+                "CLICKHOUSE_LOG_SQL": "true"
+            },
+        },
+         
+        {
+            "name": "배치 스케줄러",
+            "type": "debugpy",
+            "request": "launch",
+            "cwd": "${workspaceFolder}/maxy-batch",
+            "program": "scheduler.py",
+            "console": "internalConsole",
+            "x_console": "integratedTerminal",
+            "justMyCode": true,
+            "env": {
+                "CLICKHOUSE_HOST": "192.168.10.177",
+                "CLICKHOUSE_PORT": "8123",
+                "CLICKHOUSE_USER": "maxy",
+                "CLICKHOUSE_PASSWORD": "maxy!@#",
+                "CLICKHOUSE_DB": "default",
+                "CLICKHOUSE_SECURE": "false",
+                "VALKEY_HOST": "192.168.10.177",
+                "VALKEY_PORT": "6379",
+                "VALKEY_PASSWORD": "",
+                "VALKEY_DB": "0",
+                "VALKEY_SSL": "false",
+                "VALKEY_PREFIX": "stats:realtime"
+            }
+        },
+    {
+        "name": "프로듀셔",
+        "type": "debugpy",
+        "request": "launch",
+        "cwd": "${workspaceFolder}/maxy-producer",
+        "program": "maxy_core.py",
+        "justMyCode": false,
+    }
+            ,
+        {
+            "name": "[검증]마케팅",
+            "type": "debugpy",
+            "request": "launch",
+            "cwd": "${workspaceFolder}/maxy-makedata",
+            "program": "마케팅.py",
+            "justMyCode": true
+        },
+        {
+            "name": "[검증]검증_Android",
+            "type": "debugpy",
+            "request": "launch",
+            "cwd": "${workspaceFolder}/maxy-makedata",
+            "program": "검증_Android.py",
+            "justMyCode": true
+        }
+    ]
+}

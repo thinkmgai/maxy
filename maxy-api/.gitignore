@@ -1,0 +1,7 @@
+log/*
+__pycache__
+get-pip.py
+Data/marketing.funnel_info.csv
+Data/marketing.funnel_sample.csv
+Data/marketing.group_by_id.csv
+Data/marketing.group.csv

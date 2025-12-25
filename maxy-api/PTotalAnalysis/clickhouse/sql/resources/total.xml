@@ -1,0 +1,68 @@
+<mapper namespace="total">
+  <select id="selectSummary">
+    SELECT log_date AS date,
+           pv,
+           uv,
+           round(error_rate, 4) AS error_rate
+    FROM total_overview
+    WHERE log_date BETWEEN '{{ start_date }}' AND '{{ end_date }}'
+    {% if application_id %}AND application_id = {{ application_id }}{% endif %}
+    ORDER BY log_date
+    LIMIT {{ limit }}
+  </select>
+
+  <select id="selectInstallSeries">
+    <![CDATA[
+    SELECT
+        stat_date   AS date,
+        os_type     AS os_type,
+        sum(install) AS install
+    FROM maxy_device_statistic
+    WHERE stat_date BETWEEN toDate('{{ start_date }}') AND toDate('{{ end_date }}')
+      AND package_nm = '{{ package_nm }}'
+      AND server_type = {{ server_type }}
+    GROUP BY stat_date, os_type
+    ORDER BY stat_date, os_type
+    ]]>
+  </select>
+
+  <select id="selectMetricSeries">
+    <![CDATA[
+    SELECT
+        stat_date AS date,
+        os_type   AS os_type,
+        sum(install)        AS install,
+        sum(login)          AS login,
+        sum(dau)            AS dau,
+        sum(revisit_7d)     AS revisit_7d,
+        sum(mau)            AS mau,
+        sum(pv)             AS pv,
+        avg(intervaltime_avg) AS intervaltime_avg,
+        sum(log_count)      AS log_count,
+        sum(error_count)    AS error_count,
+        sum(js_error_count) AS js_error_count,
+        sum(crash_count)    AS crash_count
+    FROM maxy_device_statistic
+    WHERE stat_date BETWEEN toDate('{{ start_date }}') AND toDate('{{ end_date }}')
+      AND package_nm = '{{ package_nm }}'
+      AND server_type = {{ server_type }}
+    GROUP BY stat_date, os_type
+    ORDER BY stat_date, os_type
+    ]]>
+  </select>
+
+  <select id="selectMauMonthlySeries">
+    <![CDATA[
+    SELECT
+        toStartOfMonth(stat_date) AS date,
+        os_type                   AS os_type,
+        max(mau)                  AS mau
+    FROM maxy_device_statistic
+    WHERE stat_date BETWEEN toDate('{{ start_date }}') AND toDate('{{ end_date }}')
+      AND package_nm = '{{ package_nm }}'
+      AND server_type = {{ server_type }}
+    GROUP BY date, os_type
+    ORDER BY date, os_type
+    ]]>
+  </select>
+</mapper>

@@ -1,0 +1,82 @@
+﻿{
+  "event": {
+    "order": 1,
+    "id": 9,
+    "name": "이벤트",
+    "sub": [
+      {"order": 1, "id": 91, "name": "account_info", "default": []},
+      {"order": 2, "id": 92, "name": "buy_amount", "default": []},
+      {"order": 3, "id": 93, "name": "sell_amount", "default": []}
+    ],
+    "enable_step": true
+  },
+  "standard": [
+    {
+      "order": 1,
+      "id": 1,
+      "name": "사용자",
+      "sub": [
+        {"order": 1, "id": 11, "name": "신규/재방문", "default": ["new", "returning"]},
+        {"order": 2, "id": 12, "name": "로그인", "default": ["true", "false"]},
+        {"order": 3, "id": 13, "name": "고객 등급", "default": ["프리미엄", "골드", "실버"]},
+        {"order": 4, "id": 14, "name": "상태(정상/휴면/이탈)", "default": ["active", "sleep", "dropoff"]}
+      ],
+      "enable_step": false
+    },
+    {
+      "order": 2,
+      "id": 2,
+      "name": "플랫폼/기기",
+      "sub": [
+        {"order": 1, "id": 21, "name": "플랫폼", "default": ["Android", "iOS", "Web"]},
+        {"order": 2, "id": 22, "name": "기기", "default": ["mobile", "tablet", "desktop"]},
+        {"order": 3, "id": 23, "name": "운영체제", "default": ["Android", "iOS", "Windows", "macOS", "Linux", "Chrome OS", "Others"]},
+        {"order": 4, "id": 24, "name": "앱 버전", "default": []},
+        {"order": 5, "id": 25, "name": "브라우저", "default": ["Chrome", "Safari", "Edge", "Firefox", "Opera", "Samsung Internet", "Android Webview", "Safari (in-app)"]}
+      ],
+      "enable_step": false
+    },
+    {
+      "order": 3,
+      "id": 3,
+      "name": "페이지",
+      "sub": [
+        {"order": 1, "id": 31, "name": "페이지 이름", "default": []},
+        {"order": 2, "id": 32, "name": "페이지경로+쿼리문자열", "default": []},
+        {"order": 3, "id": 33, "name": "호스트이름", "default": []}
+      ],
+      "enable_step": true
+    },
+    {
+      "order": 4,
+      "id": 4,
+      "name": "국가/지역",
+      "sub": [
+        {"order": 1, "id": 41, "name": "국가", "default": []},
+        {"order": 2, "id": 42, "name": "도시", "default": []},
+        {"order": 3, "id": 43, "name": "지역", "default": []}
+      ],
+      "enable_step": false
+    },
+    {
+      "order": 5,
+      "id": 5,
+      "name": "소스/매체",
+      "sub": [
+        {"order": 1, "id": 51, "name": "소스", "default": []},
+        {"order": 2, "id": 52, "name": "매체", "default": []}
+      ],
+      "enable_step": false
+    },
+    {
+      "order": 6,
+      "id": 6,
+      "name": "이벤트 속성",
+      "sub": [
+        {"order": 1, "id": 61, "name": "이벤트 이름", "default": []},
+        {"order": 2, "id": 62, "name": "중요 이벤트", "default": ["true", "false"]}
+      ],
+      "enable_step": false
+    }
+  ]
+}

@@ -1,0 +1,272 @@
+<mapper namespace="funnel">
+  <select id="selectFunnel">
+    SELECT step,
+           users,
+           round(conversion_rate, 4) AS conversion_rate
+    FROM funnel_summary
+    WHERE log_date BETWEEN '{{ start_date }}' AND '{{ end_date }}'
+    {% if application_id %}AND application_id = {{ application_id }}{% endif %}
+    ORDER BY step
+    LIMIT {{ limit }}
+  </select>
+
+  <!--
+    Dynamic session-based funnel by segment.
+    Expects the following params:
+      step_exprs: list of boolean expressions for windowFunnel steps.
+      segment_cases: list of objects with "key" and "condition" (boolean).
+      include_status: bool to include ACTIVE/SLEEP/DROPOFF segment flags.
+      p_from / p_to: datetime strings for event_time filter.
+  -->
+  <select id="sessionClosed">
+<![CDATA[
+WITH filtered_events AS
+(
+    SELECT *
+    FROM maxy_mkt_event_log
+    WHERE event_time >= toDateTime(%(p_from)s)
+      AND event_time < toDateTime(%(p_to)s) + INTERVAL 1 DAY
+),
+session_user AS
+(
+    SELECT
+        session_id,
+        coalesce(argMaxIf(user_key, event_time, user_key != ''), any(user_key)) AS session_user_key
+    FROM filtered_events
+    GROUP BY session_id
+),
+base AS
+(
+    SELECT
+        coalesce(su.session_user_key, e.user_key) AS user_key,
+        e.*
+    FROM filtered_events e
+    LEFT JOIN session_user su USING (session_id)
+),
+{% if segment_cases %}
+segment_flags AS
+(
+    SELECT
+        user_key,
+        arrayFilter(x -> x != '', [
+            {% for segment in segment_cases %}
+            if({{ segment.condition }}, '{{ segment.key }}', ''){{ "," if not loop.last else "" }}
+            {% endfor %}
+        ]) AS segment_keys
+    FROM base
+    GROUP BY user_key
+),
+user_segments AS
+(
+    SELECT
+        user_key,
+        ifNull(segment_keys, []) AS segment_keys
+    FROM segment_flags
+),
+{% else %}
+user_segments AS
+(
+    SELECT DISTINCT
+        user_key,
+        ['ALL'] AS segment_keys
+    FROM base
+),
+{% endif %}
+funnel_data AS
+(
+    SELECT
+        user_key,
+        session_id,
+        windowFunnel(3600, 'strict_deduplication')(
+            event_time,
+            {% for expr in step_exprs %}
+            {{ expr }}{{ "," if not loop.last else "" }}
+            {% endfor %}
+        ) AS funnel_steps
+    FROM base
+    GROUP BY user_key, session_id
+),
+user_funnel AS
+(
+    SELECT
+        user_key,
+        max(funnel_steps) AS funnel_steps
+    FROM funnel_data
+    GROUP BY user_key
+)
+SELECT
+    arrayJoin(us.segment_keys) AS segment_key,
+    {% for idx in range(step_exprs|length) %}
+    countIf(uf.funnel_steps >= {{ idx + 1 }}) AS step{{ idx + 1 }}_users{% if not loop.last %},{% endif %}
+    {% endfor %}
+    {% for idx in range(2, (step_exprs|length) + 1) %}
+    , round(
+        countIf(uf.funnel_steps >= {{ idx }})
+        / nullIf(countIf(uf.funnel_steps >= 1), 0) * 100,
+        2
+    ) AS step{{ idx }}_conversion
+    {% endfor %}
+FROM user_funnel uf
+LEFT JOIN user_segments us USING (user_key)
+GROUP BY segment_key
+ORDER BY segment_key
+]]>
+  </select>
+
+  <!--
+    Dynamic open funnel by segment (non-sequential entrance allowed).
+    Params:
+      step_exprs: list of boolean expressions per step (evaluated on events)
+      segment_cases: list of {key, condition}
+      p_from / p_to: datetime bounds
+  -->
+  <select id="sessionOpen">
+<![CDATA[
+WITH user_last_event AS
+(
+    SELECT
+        user_key,
+        max(event_time) AS last_event_time
+    FROM maxy_mkt_event_log
+    WHERE event_time >= toDateTime({{ p_from | default("now() - INTERVAL 60 DAY") }})
+    GROUP BY user_key
+),
+filtered_events AS
+(
+    SELECT *
+    FROM maxy_mkt_event_log
+    WHERE event_time >= toDateTime(%(p_from)s)
+      AND event_time < toDateTime(%(p_to)s) + INTERVAL 1 DAY
+),
+session_user AS
+(
+    SELECT
+        session_id,
+        coalesce(argMaxIf(user_key, event_time, user_key != ''), any(user_key)) AS session_user_key
+    FROM filtered_events
+    GROUP BY session_id
+),
+base AS
+(
+    SELECT
+        coalesce(su.session_user_key, e.user_key) AS user_key,
+        e.session_id,
+        e.user_id,
+        e.event_time,
+        e.event_name,
+        e.platform,
+        e.os_category,
+        e.app_version,
+        e.os_version,
+        e.device_category,
+        e.device_model,
+        e.browser,
+        e.geo_country,
+        e.geo_region,
+        e.geo_city,
+        e.traffic_source,
+        e.medium,
+        e.campaign,
+        e.sex,
+        e.age,
+        e.event_params,
+        e.user_properties,
+        e.is_important_event,
+        e.is_first_install,
+        e.is_first_open
+    FROM filtered_events e
+    LEFT JOIN session_user su USING (session_id)
+),
+{% if segment_cases %}
+segment_flags AS
+(
+    SELECT
+        user_key,
+        arrayFilter(x -> x != '', [
+            {% for segment in segment_cases %}
+            if({{ segment.condition }}, '{{ segment.key }}', ''){{ "," if not loop.last else "" }}
+            {% endfor %}
+        ]) AS segment_keys
+    FROM base
+    GROUP BY user_key
+),
+{% endif %}
+step_hits AS
+(
+    SELECT
+        user_key,
+        {% for expr in step_exprs %}
+        max(toUInt8({{ expr }})) AS s{{ loop.index }}{% if not loop.last %},{% endif %}
+        {% endfor %}
+    FROM base
+    GROUP BY user_key
+),
+analysis AS
+(
+    SELECT
+        sh.user_key,
+        {% for idx in range(step_exprs|length) %}
+        toUInt8(s{{ idx + 1 }}) AS s{{ idx + 1 }}{% if not loop.last %},{% endif %}
+        {% endfor %}
+        {% for idx in range(2, (step_exprs|length) + 1) %}
+        , (toUInt8(s{{ idx }}) = 1{% for j in range(1, idx) %} AND toUInt8(s{{ j }}) = 0{% endfor %}) AS s{{ idx }}_entrance
+        {% endfor %}
+        {% for idx in range(3, (step_exprs|length) + 1) %}
+        , (
+            toUInt8(s{{ idx }}) = 1
+            AND (
+                {% for j in range(1, idx) %}
+                toUInt8(s{{ j }}) = 1{{ " OR" if not loop.last else "" }}
+                {% endfor %}
+            )
+            AND (
+                {% for j in range(1, idx) %}
+                toUInt8(s{{ j }}) = 0{{ " OR" if not loop.last else "" }}
+                {% endfor %}
+            )
+        ) AS s{{ idx }}_skipped
+        {% endfor %}
+        {% if segment_cases %}
+        , ifNull(sf.segment_keys, []) AS segment_keys
+        {% else %}
+        , ['ALL'] AS segment_keys
+        {% endif %}
+    FROM step_hits sh
+    {% if segment_cases %}LEFT JOIN segment_flags sf USING (user_key){% endif %}
+)
+SELECT
+    arrayJoin(segment_keys) AS segment_key,
+    {% for idx in range(step_exprs|length) %}
+    countIf(s{{ idx + 1 }} = 1) AS step{{ idx + 1 }}_users{% if not loop.last %},{% endif %}
+    {% endfor %}
+    {% for idx in range(2, (step_exprs|length) + 1) %}
+    , countIf(s{{ idx }}_entrance = 1) AS step{{ idx }}_entrance
+    {% endfor %}
+    {% for idx in range(3, (step_exprs|length) + 1) %}
+    , countIf(s{{ idx }}_skipped = 1) AS step{{ idx }}_skipped
+    {% endfor %}
+    {% for idx in range(1, (step_exprs|length) + 1) %}
+    , (
+        countIf(s{{ idx }} = 1)
+        - {% if idx >= 2 %}countIf(s{{ idx }}_entrance = 1){% else %}0{% endif %}
+        - {% if idx >= 3 %}countIf(s{{ idx }}_skipped = 1){% else %}0{% endif %}
+    ) AS step{{ idx }}_passed
+    {% endfor %}
+    {% for idx in range(1, (step_exprs|length)) %}
+    , countIf(s{{ idx }} = 1 AND s{{ idx + 1 }} = 0) AS step{{ idx }}_dropped
+    {% endfor %}
+    {% for idx in range(2, (step_exprs|length) + 1) %}
+    , round(
+        countIf(s{{ idx }} = 1)
+        / nullIf(countIf(s1 = 1), 0) * 100,
+        2
+    ) AS step{{ idx }}_conversion
+    {% endfor %}
+FROM analysis
+GROUP BY segment_key
+ORDER BY segment_key
+]]>
+  </select>
+
+
+</mapper>

@@ -1,0 +1,7 @@
+applicationId,appName,packageId,serverType,fullMsg,pageLogPeriod,loggingRate,order
+1,MAXY,maxy.thinkm.co.kr,2,true,7,1.0,6
+2,MAXY,maxy.thinkm.co.kr,0,true,7,1.0,5
+3,씽크엠모티터링,thinkm.co.kr,1,true,7,1.0,4
+4,씽크엠모니터개발,thinkm.dev,0,true,7,1.0,3
+5,maxy,maxy,0,true,7,1.0,2
+6,hohak2,hohak2,0,true,7,1.0,1

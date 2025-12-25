@@ -1,0 +1,12 @@
+<mapper namespace="performance">
+  <select id="selectMetrics">
+    SELECT metric,
+           avg_value,
+           p95_value
+    FROM performance_summary
+    WHERE log_date BETWEEN '{{ start_date }}' AND '{{ end_date }}'
+    {% if application_id %}AND application_id = {{ application_id }}{% endif %}
+    ORDER BY metric
+    LIMIT {{ limit }}
+  </select>
+</mapper>

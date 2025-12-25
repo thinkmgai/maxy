@@ -1,0 +1,81 @@
+<mapper namespace="resourceusage">
+  <select id="selectModels">
+    <![CDATA[
+    SELECT
+        package_id AS package_id,
+        server_type AS server_type,
+        os_type AS os_type,
+        device_model AS device_model,
+        uniqExactMerge(uniq_device_count) AS user_count_day,
+        sumMerge(sum_log_count) AS log_count_day,
+        sumMerge(sum_cpu_usage) AS sum_cpu_usage_day,
+        sumMerge(sum_mem_usage) AS sum_mem_usage_day
+    FROM maxy_model_hourly
+    WHERE hour_bucket >= toStartOfDay(now())
+      AND hour_bucket < toStartOfDay(addDays(now(), 1))
+      AND package_id = %(package_id)s
+      AND server_type = %(server_type)s
+      AND device_model != ''
+      AND (%(os_type)s = '' OR os_type = %(os_type)s)
+    GROUP BY
+        package_id,
+        server_type,
+        os_type,
+        device_model
+    ORDER BY user_count_day DESC, device_model ASC
+    LIMIT %(limit_plus_one)s OFFSET %(offset)s
+    ]]>
+  </select>
+
+  <select id="selectModelsTotals">
+    <![CDATA[
+    SELECT
+        sum(user_count_day) AS total_count,
+        sum(log_count_day) AS total_log_count,
+        count() AS total_rows
+    FROM (
+        SELECT
+            uniqExactMerge(uniq_device_count) AS user_count_day,
+            sumMerge(sum_log_count) AS log_count_day
+        FROM maxy_model_hourly
+        WHERE hour_bucket >= toStartOfDay(now())
+          AND hour_bucket < toStartOfDay(addDays(now(), 1))
+          AND package_id = %(package_id)s
+          AND server_type = %(server_type)s
+          AND device_model != ''
+          AND (%(os_type)s = '' OR os_type = %(os_type)s)
+        GROUP BY
+            package_id,
+            server_type,
+            os_type,
+            device_model
+    )
+    ]]>
+  </select>
+
+  <select id="selectModelSeries">
+    <![CDATA[
+    SELECT
+        hour_bucket AS hour_bucket,
+        if(
+            sumMerge(sum_log_count) = 0,
+            0,
+            intDiv(sumMerge(sum_cpu_usage), sumMerge(sum_log_count))
+        ) AS avg_cpu_usage,
+        if(
+            sumMerge(sum_log_count) = 0,
+            0,
+            intDiv(sumMerge(sum_mem_usage), sumMerge(sum_log_count))
+        ) AS avg_mem_usage
+    FROM maxy_model_hourly
+    WHERE hour_bucket >= toStartOfDay(now())
+      AND hour_bucket < toStartOfDay(addDays(now(), 1))
+      AND package_id = %(package_id)s
+      AND server_type = %(server_type)s
+      AND device_model = %(device_model)s
+      AND (%(os_type)s = '' OR os_type = %(os_type)s)
+    GROUP BY hour_bucket
+    ORDER BY hour_bucket ASC
+    ]]>
+  </select>
+</mapper>

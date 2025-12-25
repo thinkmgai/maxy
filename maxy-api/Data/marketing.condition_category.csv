@@ -1,0 +1,8 @@
+id,group_type,order,name,enable_step
+9,event,1,이벤트,true
+1,standard,1,사용자,true
+2,standard,2,플랫폼/기기,false
+3,standard,3,페이지,true
+4,standard,4,국가/지역,false
+5,standard,5,소스/매체,false
+6,standard,6,이벤트 속성,true

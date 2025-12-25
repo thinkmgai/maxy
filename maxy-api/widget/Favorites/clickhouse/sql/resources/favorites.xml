@@ -1,0 +1,66 @@
+<mapper namespace="favorites">
+  <select id="selectFavoritesTroubleList">
+    <![CDATA[
+    SELECT
+        log_tm AS logTm,
+        device_id AS deviceId,
+        user_id AS userId,
+        log_type AS logType,
+        os_type AS osType,
+        app_ver AS appVer,
+        logName AS logName,
+        device_model AS deviceModel,
+        mem_usage AS memUsage
+    FROM maxy_app_trouble_log
+    WHERE log_tm_dt >= toDateTime(%(from_ts)s)
+      AND log_tm_dt <  toDateTime(%(to_ts)s)
+      AND package_nm = %(package_nm)s
+      AND server_type = %(server_type)s
+      AND page_url = %(req_url)s
+      AND (
+            (log_type = %(crash_log_type)s AND %(trouble_type)s = %(crash_log_type)s)
+         OR (log_type != %(crash_log_type)s AND %(trouble_type)s != %(crash_log_type)s)
+      )
+      AND (%(os_type)s = '' OR os_type = %(os_type)s)
+    ORDER BY log_tm DESC, device_id DESC
+    LIMIT %(limit_plus_one)s OFFSET %(offset)s
+    ]]>
+  </select>
+
+  <select id="selectFavoritesTroubleDetail">
+    <![CDATA[
+    SELECT
+        log_tm AS logTm,
+        device_id AS deviceId,
+        user_id AS userId,
+        log_type AS logType,
+        os_type AS osType,
+        os_ver AS osVer,
+        app_ver AS appVer,
+        device_model AS deviceModel,
+        com_type AS comType,
+        com_sensitivity AS comSensitivity,
+        cpu_usage AS cpuUsage,
+        mem_usage AS memUsage,
+        battery_lvl AS batteryLvl,
+        webview_ver AS webviewVer,
+        app_build_num AS appBuildNum,
+        req_url AS reqUrl,
+        res_msg AS resMsg,
+        intervaltime AS intervaltime,
+        storage_usage AS storageUsage,
+        storage_total AS storageTotal,
+        timezone AS timezone,
+        sim_operator_nm AS simOperatorNm,
+        ip AS ip,
+        page_id AS pageId
+    FROM maxy_app_trouble_log
+    WHERE package_nm = %(package_nm)s
+      AND server_type = %(server_type)s
+      AND log_tm = %(log_tm)s
+      AND device_id = %(device_id)s
+      AND mem_usage = %(mem_usage)s
+    LIMIT 1
+    ]]>
+  </select>
+</mapper>

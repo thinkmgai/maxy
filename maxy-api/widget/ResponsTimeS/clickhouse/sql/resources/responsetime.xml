@@ -1,0 +1,40 @@
+<mapper namespace="responsetime">
+  <select id="selectResponseTimeDetail">
+    <![CDATA[
+    SELECT
+        log_tm AS logTm,
+        device_id AS deviceId,
+        log_type AS logType,
+        req_url AS reqUrl,
+        page_url AS pageUrl,
+        user_id AS userId,
+        res_msg AS resMsg,
+        coalesce(intervaltime, 0) AS intervaltime,
+        coalesce(download_time, 0) AS downloadTime,
+        coalesce(wait_time, 0) AS waitTime,
+        response_size AS responseSize,
+        request_size AS requestSize,
+        webview_ver AS webviewVer,
+        app_build_num AS appBuildNum,
+        storage_total AS storageTotal,
+        storage_usage AS storageUsage,
+        battery_lvl AS batteryLvl,
+        mem_usage AS memUsage,
+        cpu_usage AS cpuUsage,
+        com_sensitivity AS comSensitivity,
+        com_type AS comType,
+        sim_operator_nm AS simOperatorNm,
+        os_type AS osType,
+        app_ver AS appVer,
+        timezone AS timezone,
+        ip AS ip,
+        status_code AS statusCode
+    FROM maxy_app_total_log
+    WHERE device_id = %(device_id)s
+      AND log_tm = %(log_tm)s
+    ORDER BY reg_dt DESC
+    LIMIT 1
+    ]]>
+  </select>
+</mapper>
+

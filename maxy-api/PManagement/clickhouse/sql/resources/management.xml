@@ -1,0 +1,13 @@
+<mapper namespace="management">
+  <select id="searchUsers">
+    SELECT user_no,
+           user_id,
+           level,
+           app_name
+    FROM management_user
+    WHERE 1=1
+    {% if keyword %}AND (user_id LIKE '%{{ keyword }}%' OR app_name LIKE '%{{ keyword }}%'){% endif %}
+    ORDER BY user_no DESC
+    LIMIT {{ limit }}
+  </select>
+</mapper>

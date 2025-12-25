@@ -1,0 +1,22 @@
+<mapper namespace="waterfall">
+  <select id="selectEventTimeLine">
+    <![CDATA[
+    SELECT
+        log_tm AS logTm,
+        log_type AS logType,
+        coalesce(intervaltime, 0) AS intervaltime,
+        req_url AS reqUrl,
+        page_url AS pageUrl,
+        res_msg AS resMsg
+    FROM maxy_app_total_log
+    WHERE device_id = %(device_id)s
+      AND log_tm >= %(from_ts)s
+      AND log_tm <= %(to_ts)s
+      AND (coalesce(%(page_id)s, '') = '' OR page_id = %(page_id)s)
+      AND (coalesce(%(package_nm)s, '') = '' OR package_nm = %(package_nm)s)
+      AND (%(server_type)s IS NULL OR server_type = %(server_type)s)
+    ORDER BY log_tm ASC
+    LIMIT %(limit)s
+    ]]>
+  </select>
+</mapper>

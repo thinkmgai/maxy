@@ -1,0 +1,60 @@
+<mapper namespace="pvequalizer">
+  <select id="selectPVEqualizerAllInfoList">
+    <![CDATA[
+    SELECT
+        page_name AS reqUrl,
+        sumMerge(sum_log_count) AS viewCount,
+        uniqExactMerge(uniq_device_count) AS uniqDeviceCount,
+        avgMerge(avg_interval_tm) AS intervaltime
+    FROM maxy_page_daily
+    WHERE log_date >= toDate(%(from_date)s)
+      AND log_date <  toDate(%(to_date)s)
+      AND package_id = %(package_id)s
+      AND server_type = %(server_type)s
+      AND page_name != ''
+      AND (%(os_type)s = '' OR os_type = %(os_type)s)
+    GROUP BY page_name
+    ORDER BY viewCount DESC, reqUrl ASC
+    LIMIT %(limit)s OFFSET %(offset)s
+    ]]>
+  </select>
+
+  <select id="selectPVEqualizerDetailList">
+    <![CDATA[
+    SELECT
+        page_start_tm AS logTm,
+        device_id AS deviceId,
+        user_id AS userId,
+        intervaltime AS stayTime,
+        loading_time AS loadingTime
+    FROM maxy_device_page_flow
+    WHERE page_start_tm_dt >= toDateTime(%(from_ts)s)
+      AND page_start_tm_dt <  toDateTime(%(to_ts)s)
+      AND package_nm = %(package_nm)s
+      AND server_type = %(server_type)s
+      AND page_name = %(page_name)s
+      AND (%(os_type)s = '' OR os_type = %(os_type)s)
+    ORDER BY page_start_tm DESC
+    LIMIT %(limit)s OFFSET %(offset)s
+    ]]>
+  </select>
+
+  <select id="selectPVEqualizerDetailChart">
+    <![CDATA[
+    SELECT
+        toStartOfHour(page_start_tm_dt) AS bucket,
+        toString(bucket) AS time,
+        avg(intervaltime) AS stayTime,
+        avg(loading_time) AS loadingTime
+    FROM maxy_device_page_flow
+    WHERE page_start_tm_dt >= toDateTime(%(from_ts)s)
+      AND page_start_tm_dt <  toDateTime(%(to_ts)s)
+      AND package_nm = %(package_nm)s
+      AND server_type = %(server_type)s
+      AND page_name = %(page_name)s
+      AND (%(os_type)s = '' OR os_type = %(os_type)s)
+    GROUP BY bucket
+    ORDER BY bucket ASC
+    ]]>
+  </select>
+</mapper>
