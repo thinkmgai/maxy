@@ -2,30 +2,30 @@
 @tailwind components;
 @tailwind utilities;
 
-
+/* 공통 토큰(common.css)에서 정의한 배경/글자 색상을 globals.css에서 body 루트 변수로 연결 */
 :root {
-  --background: #ffffff;
-  --foreground: #1f2937;
+  --background: var(--color-bg-light-1);
+  --foreground: var(--color-text-primary);
 }
 
 :root[data-theme="dark"] {
-  --background: #0f172a;
-  --foreground: #ebf1ff;
+  --background: var(--color-bg-dark-1);
+  --foreground: var(--color-text-primary);
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: "Pretendard", var(--font-geist-sans), Arial, Helvetica, sans-serif;
+  font-family: var(--font-body);
   margin: 0;
 }
 
 body.dark_mode {
-  background: #0f172a;
-  color: #ebf1ff;
+  background: var(--color-bg-dark-1);
+  color: var(--color-text-primary);
 }
 
 body.light_mode {
-  background: #ffffff;
-  color: #1f2937;
+  background: var(--color-bg-light-1);
+  color: var(--color-text-primary);
 }

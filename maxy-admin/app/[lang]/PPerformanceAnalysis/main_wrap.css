@@ -236,7 +236,7 @@ h1.sub {
 .pa_contents_wrap .core_vital_wrap .core_vital_line_tooltip {
     line-height: 16px;
     font-size: 12px;
-    font-family: "Pretendard", sans-serif;
+    font-family: var(--font-body);
 }
 
 .ic_question {
@@ -292,7 +292,7 @@ h1.sub {
 }
 
 .dialog {
-    font-family: 'Pretendard', sans-serif;
+    font-family: var(--font-body);
 }
 
 .dialog-header {
@@ -308,7 +308,7 @@ h1.sub {
 }
 
 .font-mono {
-    font-family: monospace;
+    font-family: var(--font-mono);
 }
 
 #ajaxPageChart .highcharts-point, #ajaxApiChart .highcharts-point {
