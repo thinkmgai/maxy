@@ -1,5 +1,13 @@
 @charset "UTF-8";
 
+/*
+ * 공통 스타일 토큰 정리
+ * - 폰트/폰트 크기: body, 입력, 테이블/리스트/팝업 텍스트 기본값
+ * - 색상 토큰: globals.css의 배경/글자, 페이지별 main_wrap.css, 위젯 툴팁/라벨에서 사용
+ * - 테이블/리스트/팝업 색상: Tabulator 테이블(.table), 리스트 헤더/row, 팝업 헤더·푸터 전역 스타일
+ * 이 파일의 토큰을 수정하면 어드민 전역 스타일이 한 번에 변경됩니다.
+ */
+
 *,
 *::before,
 *::after {
@@ -9,10 +17,20 @@
     /*scrollbar-width: none;*/
     -ms-overflow-style: none;
     font-size: var(--font-m-size);
-    font-family: "Pretendard", sans-serif;
+    font-family: var(--font-body);
 }
 
 :root {
+    --font-body: "Pretendard", var(--font-geist-sans), Arial, Helvetica, sans-serif;
+    --font-heading: "Pretendard", var(--font-geist-sans), Arial, Helvetica, sans-serif;
+    --font-mono: var(--font-geist-mono), "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+
+    --color-text-primary: #1f2937;
+    --color-text-secondary: #4b5563;
+    --color-popup-title: #111827;
+    --color-popup-body: #1f2937;
+    --color-border-subtle: #e5e7eb;
+
     --black-0: #000000;
     --black-1: #2F2F2F; /* sidebar bg */
     --black-2: #636363; /* paging, sidebar-off-text, search-result-text */
@@ -58,6 +76,7 @@
 
     --window-min-width: 1280px;
 
+    /* 폰트 크기: body/리스트/테이블/팝업 기본 폰트 사이즈 */
     --font-s-size: 10px;
     --font-m-size: 13px;
     --font-l-size: 16px;
@@ -153,17 +172,33 @@
     --color-readonly: #a9a9a9;
 }
 
+:root[data-theme="dark"],
+.dark_mode {
+    --color-text-primary: #ebf1ff;
+    --color-text-secondary: #c7d2fe;
+    --color-popup-title: #f3f4f6;
+    --color-popup-body: #e5e7eb;
+    --color-border-subtle: #3f4142;
+}
+
 
 *::-webkit-scrollbar {
     display: none;
 }
 
 body {
-    font-family: "Pretendard", sans-serif;
+    font-family: var(--font-body);
     min-height: 100vh;
     position: relative;
     font-size: var(--font-m-size);
     font-weight: 400;
+    color: var(--color-text-primary);
+    background-color: var(--color-bg-light-1);
+}
+
+body.dark_mode {
+    color: var(--color-text-primary);
+    background-color: var(--color-bg-dark-1);
 }
 
 a {
@@ -172,6 +207,80 @@ a {
 
 ul {
     list-style: none;
+}
+
+.font-body {
+    font-family: var(--font-body);
+}
+
+.font-heading {
+    font-family: var(--font-heading);
+    font-weight: 600;
+}
+
+.font-mono {
+    font-family: var(--font-mono);
+}
+
+.text-muted {
+    color: var(--color-text-secondary);
+}
+
+table,
+.table-common {
+    font-family: var(--font-body);
+    color: var(--color-text-primary);
+    background-color: var(--color-table-bg-light-1);
+    border-color: var(--color-border-subtle);
+}
+
+table th,
+.table-common th {
+    font-family: var(--font-heading);
+    color: var(--color-grid-title-light);
+    background-color: var(--color-table-row-light-1);
+}
+
+table td,
+.table-common td {
+    font-family: var(--font-body);
+}
+
+.dark_mode table,
+.dark_mode .table-common {
+    color: var(--color-text-primary);
+    background-color: var(--color-table-bg-dark-1);
+    border-color: var(--color-border-subtle);
+}
+
+.dark_mode table th,
+.dark_mode .table-common th {
+    color: var(--color-title-dark);
+    background-color: var(--color-table-block-dark-1);
+}
+
+ul,
+ol,
+li,
+.list-common {
+    font-family: var(--font-body);
+    color: var(--color-text-primary);
+}
+
+.dialog,
+.modal,
+.popup,
+.popup-common {
+    font-family: var(--font-body);
+    color: var(--color-popup-body);
+}
+
+.dialog .dialog-header,
+.modal .dialog-header,
+.popup .popup-title,
+.popup-common .popup-title {
+    font-family: var(--font-heading);
+    color: var(--color-popup-title);
 }
 
 /* 버튼 */
@@ -192,7 +301,7 @@ input[type="number"],
 input[type="time"],
 input[type="password"],
 select {
-    font-family: 'Pretendard', sans-serif;
+    font-family: var(--font-body);
     height: var(--box-height);
     padding-left: var(--left-padding);
     border: 1px solid var(--color-border-in-light);
@@ -207,7 +316,7 @@ input[type="time"]:read-only,
 input[type="email"]:read-only,
 textarea:read-only,
 select:disabled {
-    font-family: 'Pretendard', sans-serif;
+    font-family: var(--font-body);
     color: var(--black-2);
     background-color: white;
     cursor: default;
@@ -221,6 +330,7 @@ textarea {
     resize: none;
     outline: none;
     padding: var(--left-padding);
+    font-family: var(--font-body);
 }
 
 
@@ -7146,7 +7256,7 @@ textarea.red {
 .tooltip_waterfall {
     pointer-events: none; /* 툴팁이 마우스 이벤트를 방해하지 않도록 설정 */
     font-size: 13px;
-    font-family: "Pretendard", sans-serif;
+    font-family: var(--font-body);
 }
 
 .tooltip_waterfall .bold {
@@ -7291,7 +7401,7 @@ textarea.red {
 }
 
 .highcharts-label.highcharts-no-data text {
-    font-family: "Pretendard", sans-serif;
+    font-family: var(--font-body);
 }
 
 @media screen and (max-width: 1536px) {
